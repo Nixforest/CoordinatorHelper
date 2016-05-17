@@ -1,0 +1,30 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="MainPrj.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="UdpMainPort" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1691</Value>
+    </Setting>
+    <Setting Name="ServerURL" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://spj.daukhimiennam.com</Value>
+    </Setting>
+    <Setting Name="PhoneKey" Type="System.String" Scope="User">
+      <Value Profile="(Default)">phone</Value>
+    </Setting>
+    <Setting Name="URLGetCustomerByPhone" Type="System.String" Scope="User">
+      <Value Profile="(Default)">/api/default/getCustomerByPhone</Value>
+    </Setting>
+    <Setting Name="PhoneListToken" Type="System.String" Scope="User">
+      <Value Profile="(Default)">-</Value>
+    </Setting>
+    <Setting Name="TestingMode" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="ChannelNumber" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">8</Value>
+    </Setting>
+    <Setting Name="URLGetCustomerByKeyword" Type="System.String" Scope="User">
+      <Value Profile="(Default)">/api/default/getCustomerByKeyword</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
