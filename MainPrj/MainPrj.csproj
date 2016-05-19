@@ -47,6 +47,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\BaseResponseModel.cs" />
+    <Compile Include="Model\CallModel.cs" />
+    <Compile Include="Model\CallType.cs" />
     <Compile Include="Model\CardDataModel.cs" />
     <Compile Include="Model\CardDataType.cs" />
     <Compile Include="MainForm.cs">
@@ -55,7 +57,9 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Model\CardDataStatus.cs" />
     <Compile Include="Model\CustomerModel.cs" />
+    <Compile Include="Model\HistoryColumns.cs" />
     <Compile Include="Model\SelectorColumns.cs" />
     <Compile Include="Model\SelectorModel.cs" />
     <Compile Include="Program.cs" />
@@ -66,6 +70,12 @@
     </Compile>
     <Compile Include="View\ChannelControl.Designer.cs">
       <DependentUpon>ChannelControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\HistoryView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\HistoryView.Designer.cs">
+      <DependentUpon>HistoryView.cs</DependentUpon>
     </Compile>
     <Compile Include="View\SelectorView.cs">
       <SubType>Form</SubType>
@@ -95,8 +105,12 @@
     <EmbeddedResource Include="View\ChannelControl.resx">
       <DependentUpon>ChannelControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="View\HistoryView.resx">
+      <DependentUpon>HistoryView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\SelectorView.resx">
       <DependentUpon>SelectorView.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="View\SettingView.resx">
       <DependentUpon>SettingView.cs</DependentUpon>

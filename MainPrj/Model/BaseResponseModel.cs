@@ -6,6 +6,9 @@ using System.Text;
 
 namespace MainPrj.Model
 {
+    /// <summary>
+    /// Response data from server.
+    /// </summary>
     [DataContract]
     class BaseResponseModel
     {

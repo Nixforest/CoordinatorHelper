@@ -81,6 +81,87 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Đặt hàng ngay.
+        /// </summary>
+        internal static string CallType1 {
+            get {
+                return ResourceManager.GetString("CallType1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đặt hàng sau.
+        /// </summary>
+        internal static string CallType2 {
+            get {
+                return ResourceManager.GetString("CallType2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bảo trì.
+        /// </summary>
+        internal static string CallType3 {
+            get {
+                return ResourceManager.GetString("CallType3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gọi đến.
+        /// </summary>
+        internal static string CardDataStatus1 {
+            get {
+                return ResourceManager.GetString("CardDataStatus1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gọi đi.
+        /// </summary>
+        internal static string CardDataStatus2 {
+            get {
+                return ResourceManager.GetString("CardDataStatus2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đang xử lý.
+        /// </summary>
+        internal static string CardDataStatus3 {
+            get {
+                return ResourceManager.GetString("CardDataStatus3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Xong.
+        /// </summary>
+        internal static string CardDataStatus4 {
+            get {
+                return ResourceManager.GetString("CardDataStatus4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nhỡ.
+        /// </summary>
+        internal static string CardDataStatus5 {
+            get {
+                return ResourceManager.GetString("CardDataStatus5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Xong.
+        /// </summary>
+        internal static string CardDataStatus6 {
+            get {
+                return ResourceManager.GetString("CardDataStatus6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Lỗi decode dữ liệu.
         /// </summary>
         internal static string DecoderError {
@@ -108,6 +189,34 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Có lỗi xảy ra. Nguyên nhân:
+        ///.
+        /// </summary>
+        internal static string ErrorCause {
+            get {
+                return ResourceManager.GetString("ErrorCause", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lỗi địa chỉ IP không hợp lệ.
+        /// </summary>
+        internal static string ErrorIPAddressInvalid {
+            get {
+                return ResourceManager.GetString("ErrorIPAddressInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The length of host name is greater than 255 characters.
+        /// </summary>
+        internal static string ErrorLengthOfHostName {
+            get {
+                return ResourceManager.GetString("ErrorLengthOfHostName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Chức năng đang được hoàn thiện. Xin vui lòng thử lại sau..
         /// </summary>
         internal static string FunctionProcessing {
@@ -131,6 +240,15 @@ namespace MainPrj.Properties {
         internal static string InternetConnectionError {
             get {
                 return ResourceManager.GetString("InternetConnectionError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Line.
+        /// </summary>
+        internal static string Line {
+            get {
+                return ResourceManager.GetString("Line", resourceCulture);
             }
         }
         

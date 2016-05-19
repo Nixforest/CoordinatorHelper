@@ -40,9 +40,9 @@ namespace MainPrj
         /// <summary>
         /// Fourth field.
         /// </summary>
-        private string channel = "";
+        private int channel = -1;
 
-        public string Channel
+        public int Channel
         {
             get { return channel; }
             set { channel = value; }
@@ -50,12 +50,12 @@ namespace MainPrj
         /// <summary>
         /// Fifth field.
         /// </summary>
-        private string fifth = "";
+        private int status = -1;
 
-        public string Fifth
+        public int Status
         {
-            get { return fifth; }
-            set { fifth = value; }
+            get { return status; }
+            set { status = value; }
         }
         /// <summary>
         /// Sixth field.
@@ -73,6 +73,7 @@ namespace MainPrj
         /// <param name="data">String data</param>
         public CardDataModel(string data)
         {
+            int n;
             if (data != null)
             {
                 string[] arrDataBuf = data.Split(',');
@@ -81,8 +82,22 @@ namespace MainPrj
                     first = arrDataBuf[(int)CardDataType.CARDDATA_TYPE1];
                     phone = arrDataBuf[(int)CardDataType.CARDDATA_PHONE];
                     third = arrDataBuf[(int)CardDataType.CARDDATA_TYPE3];
-                    channel = arrDataBuf[(int)CardDataType.CARDDATA_CHANNEL];
-                    fifth = arrDataBuf[(int)CardDataType.CARDDATA_TYPE5];
+                    string channelStr = arrDataBuf[(int)CardDataType.CARDDATA_CHANNEL];
+                    if (!String.IsNullOrEmpty(channelStr))
+                    {
+                        if (int.TryParse(channelStr, out n))
+                        {
+                            channel = n - 1;
+                        }
+                    }
+                    string statusStr = arrDataBuf[(int)CardDataType.CARDDATA_STATUS];
+                    if (!String.IsNullOrEmpty(statusStr))
+                    {
+                        if (int.TryParse(statusStr, out n))
+                        {
+                            status = n - 1;
+                        }
+                    }
                     sixth = arrDataBuf[(int)CardDataType.CARDDATA_TYPE6];
                 }
             }

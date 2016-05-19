@@ -1,5 +1,7 @@
-﻿using System;
+﻿using MainPrj.Util;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
@@ -63,7 +65,7 @@ namespace MainPrj.Model
             get { return customer_type; }
             set { customer_type = value; }
         }
-        [DataMember(Name = "contact", IsRequired = true)]
+        [DataMember(Name = "contact", IsRequired = false)]
         private string contact;
 
         public string Contact
@@ -71,7 +73,7 @@ namespace MainPrj.Model
             get { return contact; }
             set { contact = value; }
         }
-        [DataMember(Name = "contact_note", IsRequired = true)]
+        [DataMember(Name = "contact_note", IsRequired = false)]
         private string contact_note;
 
         public string Contact_note
@@ -111,13 +113,13 @@ namespace MainPrj.Model
             set { agencyNearest = value; }
         }
 
-        private string note;
+        //private string note;
 
-        public string Note
-        {
-            get { return note; }
-            set { note = value; }
-        }
+        //public string Note
+        //{
+        //    get { return note; }
+        //    set { note = value; }
+        //}
         public CustomerModel()
         {
             this.customer_id = String.Empty;
@@ -132,7 +134,30 @@ namespace MainPrj.Model
             this.sale_phone = String.Empty;
             this.sale_type = String.Empty;
             this.agencyNearest = String.Empty;
-            this.note = String.Empty;
+            //this.note = String.Empty;
+        }
+        /// <summary>
+        /// Convert to string.
+        /// </summary>
+        /// <returns>String object</returns>
+        public override string ToString()
+        {
+            string retVal = String.Empty;
+            MemoryStream msU = new MemoryStream();
+            DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(CustomerModel));
+            try
+            {
+                js.WriteObject(msU, this);
+                msU.Position = 0;
+                var sr = new StreamReader(msU);
+                retVal = sr.ReadToEnd();
+                sr.Close();
+            }
+            catch (Exception ex)
+            {
+                CommonProcess.ShowErrorMessage(Properties.Resources.ErrorCause + ex.Message);
+            }
+            return retVal;
         }
     }
 }

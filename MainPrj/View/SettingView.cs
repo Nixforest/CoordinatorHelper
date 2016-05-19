@@ -1,8 +1,10 @@
-﻿using System;
+﻿using MainPrj.Util;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -47,6 +49,13 @@ namespace MainPrj.View
             Properties.Settings.Default.PhoneKey = tbxKeyIncommingPhone.Text;
             Properties.Settings.Default.TestingMode = chbTestingMode.Checked;
             Properties.Settings.Default.URLGetCustomerByKeyword = tbxURLGetCustomerByKeyword.Text;
+            Properties.Settings.Default.KeywordKey = tbxKeyKeyword.Text;
+            Properties.Settings.Default.URLUpdateCustomerPhone = tbxURLUpdateCustomerPhone.Text;
+            Properties.Settings.Default.CustomerIdKey = tbxKeyCustomerId.Text;
+            //FileInfo.
+            Properties.Settings.Default.HistoryFilePath = tbxHistoryFilepath.Text;
+            Properties.Settings.Default.HistoryFileName = tbxHistoryFilename.Text;
+            Properties.Settings.Default.CallIdFormat = tbxCallIdFormat.Text;
 
             // Save setting
             Properties.Settings.Default.Save();
@@ -78,6 +87,28 @@ namespace MainPrj.View
             tbxKeyIncommingPhone.Text = Properties.Settings.Default.PhoneKey;
             chbTestingMode.Checked = Properties.Settings.Default.TestingMode;
             tbxURLGetCustomerByKeyword.Text = Properties.Settings.Default.URLGetCustomerByKeyword;
+            tbxKeyKeyword.Text = Properties.Settings.Default.KeywordKey;
+            tbxURLUpdateCustomerPhone.Text = Properties.Settings.Default.URLUpdateCustomerPhone;
+            tbxKeyCustomerId.Text = Properties.Settings.Default.CustomerIdKey;
+            tbxIP.Text = CommonProcess.GetLocalIPAddress();
+            tbxHistoryFilepath.Text = Properties.Settings.Default.HistoryFilePath;
+            tbxHistoryFilename.Text = Properties.Settings.Default.HistoryFileName;
+            tbxCallIdFormat.Text = Properties.Settings.Default.CallIdFormat;
+        }
+        /// <summary>
+        /// Handle when click on button Open file.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void btnOpenFile_Click(object sender, EventArgs e)
+        {
+            using (FolderBrowserDialog fileDialog = new FolderBrowserDialog())
+            {
+                if (DialogResult.OK == fileDialog.ShowDialog())
+                {
+                    tbxHistoryFilepath.Text = fileDialog.SelectedPath;
+                }
+            }
         }
     }
 }

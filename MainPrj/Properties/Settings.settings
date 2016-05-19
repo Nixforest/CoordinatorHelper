@@ -26,5 +26,32 @@
     <Setting Name="URLGetCustomerByKeyword" Type="System.String" Scope="User">
       <Value Profile="(Default)">/api/default/getCustomerByKeyword</Value>
     </Setting>
+    <Setting Name="ListeningCardMode" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="PhoneCutLength" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">5</Value>
+    </Setting>
+    <Setting Name="KeywordKey" Type="System.String" Scope="User">
+      <Value Profile="(Default)">keyword</Value>
+    </Setting>
+    <Setting Name="URLUpdateCustomerPhone" Type="System.String" Scope="User">
+      <Value Profile="(Default)">/api/default/updateCustomerPhone</Value>
+    </Setting>
+    <Setting Name="CustomerIdKey" Type="System.String" Scope="User">
+      <Value Profile="(Default)">customer_id</Value>
+    </Setting>
+    <Setting Name="HistoryFilePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">D:\</Value>
+    </Setting>
+    <Setting Name="HistoryFileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">history.txt</Value>
+    </Setting>
+    <Setting Name="CallIdFormat" Type="System.String" Scope="User">
+      <Value Profile="(Default)">yyyyMMddHHmmss</Value>
+    </Setting>
+    <Setting Name="FinishMark" Type="System.String" Scope="User">
+      <Value Profile="(Default)">X</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -15,7 +15,7 @@ namespace MainPrj
         CARDDATA_PHONE,
         CARDDATA_TYPE3,
         CARDDATA_CHANNEL,
-        CARDDATA_TYPE5,
+        CARDDATA_STATUS,
         CARDDATA_TYPE6,
         CARDDATA_NUM,
     }

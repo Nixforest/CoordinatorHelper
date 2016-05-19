@@ -40,6 +40,14 @@ namespace MainPrj
         /// List of tab control.
         /// </summary>
         private List<ChannelControl> listChannelControl = new List<ChannelControl>();
+        /// <summary>
+        /// List of calls.
+        /// </summary>
+        private List<CallModel> listCalls = new List<CallModel>();
+        /// <summary>
+        /// List flag need update title of tab controls.
+        /// </summary>
+        private bool[] listChannelNeedUpdateTitle = new bool[Properties.Settings.Default.ChannelNumber];
 
         /// <summary>
         /// Constructor.
@@ -47,8 +55,55 @@ namespace MainPrj
         public MainForm()
         {
             InitializeComponent();
+            this.mainTabControl.DrawMode = TabDrawMode.OwnerDrawFixed;
+            this.mainTabControl.DrawItem += mainTabControl_DrawItem;
             // Start thread
             StartUdpThread();
+        }
+        /// <summary>
+        /// Handle draw tab title.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">DrawItemEventArgs</param>
+        void mainTabControl_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            if (e.Index.Equals(this.mainTabControl.SelectedIndex))
+            {
+                e.Graphics.FillRectangle(Brushes.White, e.Bounds);
+            }
+            e.Graphics.DrawString(mainTabControl.TabPages[e.Index].Text,
+                mainTabControl.Font,
+                Brushes.Black,
+                new PointF(e.Bounds.X + 3, e.Bounds.Y + 3));
+            string title = mainTabControl.TabPages[e.Index].Text;
+            if (title.Contains(Properties.Resources.CardDataStatus1))
+            {
+                e.Graphics.DrawString(mainTabControl.TabPages[e.Index].Text,
+                    mainTabControl.Font,
+                    Brushes.Green,
+                    new PointF(e.Bounds.X + 3, e.Bounds.Y + 3));
+            }
+            if (title.Contains(Properties.Resources.CardDataStatus3))
+            {
+                e.Graphics.DrawString(mainTabControl.TabPages[e.Index].Text,
+                    mainTabControl.Font,
+                    Brushes.Blue,
+                    new PointF(e.Bounds.X + 3, e.Bounds.Y + 3));
+            }
+            if (title.Contains(Properties.Resources.CardDataStatus4))
+            {
+                e.Graphics.DrawString(mainTabControl.TabPages[e.Index].Text,
+                    mainTabControl.Font,
+                    Brushes.Black,
+                    new PointF(e.Bounds.X + 3, e.Bounds.Y + 3));
+            }
+            if (title.Contains(Properties.Resources.CardDataStatus5))
+            {
+                e.Graphics.DrawString(mainTabControl.TabPages[e.Index].Text,
+                    mainTabControl.Font,
+                    Brushes.Red,
+                    new PointF(e.Bounds.X + 3, e.Bounds.Y + 3));
+            }
         }
         /// <summary>
         /// Start udp in separate thread.
@@ -99,7 +154,7 @@ namespace MainPrj
         /// </summary>
         private void ConnectWithTansonicCard()
         {
-            string recvBuf = "";
+            string recvBuf = String.Empty;
             IPEndPoint remoteHost = new IPEndPoint(IPAddress.Any, 0);
             while (mainUdp != null)
             {
@@ -111,7 +166,9 @@ namespace MainPrj
                     {
                         recvBuf = Encoding.ASCII.GetString(dataBuf, 0, dataBuf.Length);
                     }
-                    if (!Properties.Settings.Default.TestingMode)
+                    if ((Properties.Settings.Default.TestingMode                    // Testing mode is ON
+                            && Properties.Settings.Default.ListeningCardMode)       // but ListeningCard mode is ON
+                        || !Properties.Settings.Default.TestingMode)                // Testing mode is OFF
                     {
                         PrintData(recvBuf);
                     }
@@ -154,15 +211,6 @@ namespace MainPrj
             CardDataModel model = new CardDataModel(data);          // Data model
             bool needUpdate = false;                                // Flag need update UI
             ChannelControl channel = null;                          // Channel incomming
-            int incommingChannel = this.currentChannel;             // Channel incomming index
-            // Get channel information
-            if (!String.IsNullOrEmpty(model.Channel))
-            {
-                if (int.TryParse(model.Channel, out n))
-                {
-                    incommingChannel = n - 1;
-                }
-            }
             // Get incomming number information
             if (!String.IsNullOrEmpty(model.Phone))
             {
@@ -172,12 +220,46 @@ namespace MainPrj
                     // Insert value into current channel
                     try
                     {
-                        channel = this.listChannelControl.ElementAt(incommingChannel);
-                        // If incomming phone number is changed
-                        if (!channel.GetPhone().Equals(model.Phone))
+                        // Get incomming channel
+                        if ((model.Channel >= 0)
+                            && (model.Channel < Properties.Settings.Default.ChannelNumber))
                         {
-                            needUpdate = true;
+                            channel = this.listChannelControl.ElementAt(model.Channel);
                         }
+                        string statusStr = String.Empty;
+                        Color color = Color.White;
+                        // Handle update channel title
+                        switch (model.Status)
+                        {
+                            case (int)CardDataStatus.CARDDATA_RINGING:
+                                statusStr = Properties.Resources.CardDataStatus1;
+                                color = Color.DarkGreen;
+                                break;
+                            case (int)CardDataStatus.CARDDATA_CALLING:
+                                //statusStr = Properties.Resources.CardDataStatus2;
+                                break;
+                            case (int)CardDataStatus.CARDDATA_HANDLING:
+                                statusStr = Properties.Resources.CardDataStatus3;
+                                color = Color.Blue;
+                                needUpdate = true;
+                                break;
+                            case (int)CardDataStatus.CARDDATA_HANGUP:
+                                statusStr = Properties.Resources.CardDataStatus4;
+                                color = Color.Pink;
+                                break;
+                            case (int)CardDataStatus.CARDDATA_MISS:
+                                needUpdate = true;
+                                statusStr = Properties.Resources.CardDataStatus5;
+                                color = Color.Red;
+                                break;
+                            case (int)CardDataStatus.CARDDATA_RECORD:
+                                statusStr = Properties.Resources.CardDataStatus6;
+                                break;
+                            default:
+                                break;
+                        }
+                        // Update tab title
+                        UpdateTabTitle(model.Channel, model.Phone, model.Status, statusStr);
                     }
                     catch (ArgumentOutOfRangeException)
                     {
@@ -187,9 +269,9 @@ namespace MainPrj
             }
             if (needUpdate)
             {
-                if (!incommingChannel.Equals(this.currentChannel))
+                if (!model.Channel.Equals(this.currentChannel))
                 {
-                    this.currentChannel = incommingChannel;
+                    this.currentChannel = model.Channel;
                     // Show up incomming channel
                     if ((this.currentChannel >= 0)
                         && (this.currentChannel < Properties.Settings.Default.ChannelNumber))
@@ -200,8 +282,9 @@ namespace MainPrj
                 if (channel != null)
                 {
                     channel.SetPhone(model.Phone);
-                    UpdateData(model.Phone);
+                    UpdateData(model.Phone, model.Status);
                 }
+                //this.listCalls.Add
             }
             this.tbxLog.Text = data + "\r\n" + this.tbxLog.Text;
         }
@@ -230,6 +313,11 @@ namespace MainPrj
             this.listChannelControl.Add(this.channelControlLine6);
             this.listChannelControl.Add(this.channelControlLine7);
             this.listChannelControl.Add(this.channelControlLine8);
+            // Turn on flag update tab title
+            for (int i = 0; i < this.listChannelNeedUpdateTitle.Length; i++)
+            {
+                this.listChannelNeedUpdateTitle[i] = true;
+            }
             // For test
             TurnOnOffTestingMode(Properties.Settings.Default.TestingMode);
 
@@ -237,13 +325,14 @@ namespace MainPrj
             {
                 this.channelControlLine2.SetPhone("01869194542");
                 this.channelControlLine3.SetPhone("01674816039");
+                this.chbListenFromCard.Checked = Properties.Settings.Default.ListeningCardMode;
             }
         }
         /// <summary>
         /// Update data to channel tab.
         /// </summary>
         /// <param name="phone">Incomming number</param>
-        private void UpdateData(string phone)
+        private void UpdateData(string phone, int status)
         {
             // Get list of customers
             List<CustomerModel> listCustomer = CommonProcess.RequestCustomerByPhone(phone);
@@ -257,6 +346,7 @@ namespace MainPrj
             }
             // Get current channel
             ChannelControl channel = null;
+            CustomerModel customer = new CustomerModel();
             try
             {
                 channel = this.listChannelControl.ElementAt(this.currentChannel);
@@ -269,13 +359,10 @@ namespace MainPrj
             switch (listCustomer.Count)
             {
                 case 0:         // Incomming phone is current not existing in system
-                    //CommonProcess.ShowInformMessage(Properties.Resources.NewIncommingPhone, MessageBoxButtons.OK);
-                    CustomerModel customer = new CustomerModel();
                     customer.Name = "Khách Hàng Mới";
-                    SetChannelInformation(channel, customer);
                     break;
                 case 1:         // A customer has phone number is match with incomming phone
-                    SetChannelInformation(channel, listCustomer.ElementAt(0));
+                    customer = listCustomer.ElementAt(0);
                     break;
                 default:        // 2 or more customer has phone number is match with incomming phone
                     List<SelectorModel> listSelector = new List<SelectorModel>();
@@ -303,14 +390,17 @@ namespace MainPrj
                             // Found
                             if (customerId.Equals(customerInfo.Id))
                             {
-                                // Update data to channel
-                                SetChannelInformation(channel, customerInfo);
+                               customer = customerInfo;
                                 break;
                             }
                         }
                     }
                     break;
             }
+
+            SetChannelInformation(channel, customer);
+            CallModel call = new CallModel(System.DateTime.Now, this.currentChannel, customer, phone, status);
+            this.listCalls.Add(call);
         }
         /// <summary>
         /// Set data to channel tab.
@@ -330,6 +420,7 @@ namespace MainPrj
                 channel.SetCustomerType(customer.CustomerType);
                 channel.SetNote(customer.Contact_note);
                 channel.SetSaleInfor(customer.Sale_name, customer.Sale_phone);
+                channel.Data = customer;
             }
         }
         /// <summary>
@@ -362,7 +453,7 @@ namespace MainPrj
                         ChannelControl tab = this.listChannelControl.ElementAt(this.currentChannel);
                         tab.SetPhone(phone);
                         // Request server and update data from server
-                        UpdateData(phone);
+                        UpdateData(phone, (int)CardDataStatus.CARDDATA_RINGING);
                     }
                     catch (ArgumentOutOfRangeException)
                     {
@@ -379,6 +470,7 @@ namespace MainPrj
         {
             btnSearch.Visible = onoff;
             tbxLog.Visible = onoff;
+            chbListenFromCard.Visible = onoff;
         }
         /// <summary>
         /// Handle when click Create order button
@@ -440,6 +532,9 @@ namespace MainPrj
                 case Keys.F4:
                     HandleClickTransferToSaleButton();
                     break;
+                case Keys.F5:
+                    HandleClickHistoryButton();
+                    break;
                 default:
                     break;
             }
@@ -471,6 +566,84 @@ namespace MainPrj
         private void HandleClickTransferToSaleButton()
         {
             CommonProcess.ShowInformMessageProcessing();
+        }
+        /// <summary>
+        /// Handle when click History button.
+        /// </summary>
+        private void HandleClickHistoryButton()
+        {
+            HistoryView view = new HistoryView();
+            view.ListData.AddRange(this.listCalls);
+            view.ShowDialog();
+            this.listCalls.Clear();
+            this.listCalls.AddRange(view.ListData);
+        }
+
+        /// <summary>
+        /// Handle when click on checkbox Listen from card.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void chbListenFromCard_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.ListeningCardMode = chbListenFromCard.Checked;
+            Properties.Settings.Default.Save();
+        }
+        /// <summary>
+        /// Update tab page title.
+        /// </summary>
+        /// <param name="channel">Chanel</param>
+        /// <param name="phone">Phone</param>
+        /// <param name="status">Status</param>
+        /// <param name="statusStr">Status string</param>
+        private void UpdateTabTitle(int channel, string phone, int status, string statusStr)
+        {
+            if ((channel >= 0) && (channel < Properties.Settings.Default.ChannelNumber))
+            {
+                if (this.listChannelNeedUpdateTitle[channel])                           // Flag is ON
+                {
+                    if (status.Equals((int)CardDataStatus.CARDDATA_CALLING))            // Status is calling
+                    {
+                        this.listChannelNeedUpdateTitle[channel] = false;               // Turn off flag
+                        return;
+                    }
+                }
+                else                                                                    // Flag is OFF
+                {
+                    if (status.Equals((int)CardDataStatus.CARDDATA_RINGING))            // Status is ringing
+                    {
+                        this.listChannelNeedUpdateTitle[channel] = true;
+                    }
+                }
+                // Flag is ON
+                if (this.listChannelNeedUpdateTitle[channel])
+                {
+                    // Update tab title
+                    this.mainTabControl.TabPages[channel].Text = String.Format("{0} :{1}-{2}",
+                                channel + 1,
+                                phone,
+                                statusStr);
+                }
+            }
+        }
+        /// <summary>
+        /// Handle when click History button.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void tbxHistory_Click(object sender, EventArgs e)
+        {
+            HandleClickHistoryButton();
+        }
+        /// <summary>
+        /// Handle when close form.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // Write history file
+            CommonProcess.WriteHistory(this.listCalls);
         }
     }
 }

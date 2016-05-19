@@ -118,5 +118,113 @@ namespace MainPrj.Properties {
                 this["URLGetCustomerByKeyword"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ListeningCardMode {
+            get {
+                return ((bool)(this["ListeningCardMode"]));
+            }
+            set {
+                this["ListeningCardMode"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5")]
+        public int PhoneCutLength {
+            get {
+                return ((int)(this["PhoneCutLength"]));
+            }
+            set {
+                this["PhoneCutLength"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("keyword")]
+        public string KeywordKey {
+            get {
+                return ((string)(this["KeywordKey"]));
+            }
+            set {
+                this["KeywordKey"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("/api/default/updateCustomerPhone")]
+        public string URLUpdateCustomerPhone {
+            get {
+                return ((string)(this["URLUpdateCustomerPhone"]));
+            }
+            set {
+                this["URLUpdateCustomerPhone"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("customer_id")]
+        public string CustomerIdKey {
+            get {
+                return ((string)(this["CustomerIdKey"]));
+            }
+            set {
+                this["CustomerIdKey"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("D:\\")]
+        public string HistoryFilePath {
+            get {
+                return ((string)(this["HistoryFilePath"]));
+            }
+            set {
+                this["HistoryFilePath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("history.txt")]
+        public string HistoryFileName {
+            get {
+                return ((string)(this["HistoryFileName"]));
+            }
+            set {
+                this["HistoryFileName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("yyyyMMddHHmmss")]
+        public string CallIdFormat {
+            get {
+                return ((string)(this["CallIdFormat"]));
+            }
+            set {
+                this["CallIdFormat"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("X")]
+        public string FinishMark {
+            get {
+                return ((string)(this["FinishMark"]));
+            }
+            set {
+                this["FinishMark"] = value;
+            }
+        }
     }
 }

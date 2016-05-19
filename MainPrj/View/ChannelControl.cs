@@ -14,6 +14,13 @@ namespace MainPrj.View
     public partial class ChannelControl : UserControl
     {
         private AutoCompleteStringCollection autoComplete = new AutoCompleteStringCollection();
+        private CustomerModel data = new CustomerModel();
+
+        public CustomerModel Data
+        {
+            get { return data; }
+            set { data = value; }
+        }
         /// <summary>
         /// Constructor.
         /// </summary>
@@ -73,7 +80,7 @@ namespace MainPrj.View
                     listPhoneControl.ElementAt(i).Text = listPhone[i];
                     if (tbxIncommingNumber.Text.Equals(listPhone[i]))
                     {
-                        listPhoneControl.ElementAt(i).ForeColor = Color.Red;
+                        listPhoneControl.ElementAt(i).ForeColor = SystemColors.Highlight;
                     }
                     else
                     {
@@ -132,20 +139,20 @@ namespace MainPrj.View
         /// </summary>
         public void ClearData()
         {
-            this.tbxCustomerName.Text = "";
-            this.tbxAddress.Text = "";
-            this.tbxCustomerTel1.Text = "";
-            this.tbxCustomerTel2.Text = "";
-            this.tbxCustomerTel3.Text = "";
-            this.tbxCustomerTel4.Text = "";
-            this.tbxCustomerTel5.Text = "";
-            this.tbxCost.Text = "";
-            this.tbxAgency.Text = "";
-            this.tbxAgencyNearest.Text = "";
-            this.tbxContact.Text = "";
-            this.tbxCustomerType.Text = "";
-            this.tbxNote.Text = "";
-            this.tbxSaleName.Text = "";
+            this.tbxCustomerName.Text = String.Empty;
+            this.tbxAddress.Text = String.Empty;
+            this.tbxCustomerTel1.Text = String.Empty;
+            this.tbxCustomerTel2.Text = String.Empty;
+            this.tbxCustomerTel3.Text = String.Empty;
+            this.tbxCustomerTel4.Text = String.Empty;
+            this.tbxCustomerTel5.Text = String.Empty;
+            this.tbxCost.Text = String.Empty;
+            this.tbxAgency.Text = String.Empty;
+            this.tbxAgencyNearest.Text = String.Empty;
+            this.tbxContact.Text = String.Empty;
+            this.tbxCustomerType.Text = String.Empty;
+            this.tbxNote.Text = String.Empty;
+            this.tbxSaleName.Text = String.Empty;
         }
         /// <summary>
         /// Handle when change text value.
@@ -154,19 +161,24 @@ namespace MainPrj.View
         /// <param name="e">EventArgs</param>
         private void tbxCustomerName_TextChanged(object sender, EventArgs e)
         {
-            List<CustomerModel> listCustomer = CommonProcess.RequestCustomerByPhone(tbxCustomerName.Text);
-            // Check if has error when handle common process
-            if (CommonProcess.HasError)
-            {
-                // Reset flag
-                CommonProcess.HasError = false;
-                // Stop
-                return;
-            }
-            foreach (CustomerModel item in listCustomer)
-            {
-                autoComplete.Add(item.Name + item.Address);
-            }
+            //if (tbxCustomerName.Focused)
+            //{
+            //    //List<CustomerModel> listCustomer = CommonProcess.RequestCustomerByKeyword(tbxCustomerName.Text);
+            //    List<CustomerModel> listCustomer = CommonProcess.RequestCustomerByPhone(tbxCustomerName.Text);
+            //    // Check if has error when handle common process
+            //    if (CommonProcess.HasError)
+            //    {
+            //        // Reset flag
+            //        CommonProcess.HasError = false;
+            //        // Stop
+            //        return;
+            //    }
+            //    foreach (CustomerModel item in listCustomer)
+            //    {
+            //        autoComplete.Add(item.Name + item.Address);
+            //    }
+            //}
+            data.Name = tbxCustomerName.Text.Trim();
         }
         /// <summary>
         /// Handle when after load control.
@@ -175,9 +187,16 @@ namespace MainPrj.View
         /// <param name="e">EventArgs</param>
         private void ChannelControl_Load(object sender, EventArgs e)
         {
-            tbxCustomerName.AutoCompleteMode = AutoCompleteMode.Suggest;
-            tbxCustomerName.AutoCompleteSource = AutoCompleteSource.CustomSource;
             tbxCustomerName.AutoCompleteCustomSource = autoComplete;
+        }
+        /// <summary>
+        /// Handle when change text of note.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void tbxNote_TextChanged(object sender, EventArgs e)
+        {
+            data.Contact_note = tbxNote.Text.Trim();
         }
     }
 }

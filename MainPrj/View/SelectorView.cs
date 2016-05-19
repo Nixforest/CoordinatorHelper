@@ -20,7 +20,7 @@ namespace MainPrj.View
         /// <summary>
         /// Selected id.
         /// </summary>
-        private string selectedId = "";
+        private string selectedId = String.Empty;
 
         public string SelectedId
         {
@@ -104,21 +104,6 @@ namespace MainPrj.View
         /// <param name="e">EventArgs</param>
         private void listViewSelector_Enter(object sender, EventArgs e)
         {
-            // Check if selected id is empty
-            //if (String.IsNullOrEmpty(this.selectedId))
-            //{
-            //    // Show message box
-            //    DialogResult result = MessageBox.Show(this, Properties.Resources.AreYouSureNotSelectCustomer,
-            //            Properties.Resources.Inform, MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk);
-            //    if (result.Equals(DialogResult.Yes))
-            //    {
-            //        this.Close();
-            //    }
-            //}
-            //else
-            //{
-            //    this.Close();
-            //}
         }
 
         /// <summary>
@@ -145,7 +130,11 @@ namespace MainPrj.View
                 }
             }
         }
-
+        /// <summary>
+        /// Handle when item selection change on listview.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
         private void listViewSelector_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
             if (this.listViewSelector.SelectedItems.Count > 0)
