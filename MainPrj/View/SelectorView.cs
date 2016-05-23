@@ -58,12 +58,12 @@ namespace MainPrj.View
                 arr[(int)SelectorColumns.SELECTOR_COLUMN_ID] = listData[i].Id;
                 item = new ListViewItem(arr);
                 this.listViewSelector.Items.Add(item);
-                this.listViewSelector.Select();
-                if (this.listViewSelector.Items.Count > 0)
-                {
-                    this.listViewSelector.Items[0].Selected = true;
-                    this.selectedId = this.listViewSelector.Items[0].SubItems[(int)SelectorColumns.SELECTOR_COLUMN_ID].Text;
-                }
+                //this.listViewSelector.Select();
+                //if (this.listViewSelector.Items.Count > 0)
+                //{
+                //    this.listViewSelector.Items[0].Selected = true;
+                //    this.selectedId = this.listViewSelector.Items[0].SubItems[(int)SelectorColumns.SELECTOR_COLUMN_ID].Text;
+                //}
             }
         }
         /// <summary>
@@ -115,17 +115,9 @@ namespace MainPrj.View
         {
             if (e.KeyCode.Equals(Keys.Enter))
             {
-                if (String.IsNullOrEmpty(this.selectedId))
+                if (this.listViewSelector.SelectedItems.Count > 0)
                 {
-                    // Show message box
-                    DialogResult result = CommonProcess.ShowInformMessage(Properties.Resources.AreYouSureNotSelectCustomer);
-                    if (result.Equals(DialogResult.Yes))
-                    {
-                        this.Close();
-                    }
-                }
-                else
-                {
+                    this.selectedId = this.listViewSelector.SelectedItems[0].SubItems[(int)SelectorColumns.SELECTOR_COLUMN_ID].Text;
                     this.Close();
                 }
             }
@@ -137,10 +129,7 @@ namespace MainPrj.View
         /// <param name="e">EventArgs</param>
         private void listViewSelector_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
-            if (this.listViewSelector.SelectedItems.Count > 0)
-            {
-                this.selectedId = this.listViewSelector.SelectedItems[0].SubItems[(int)SelectorColumns.SELECTOR_COLUMN_ID].Text;
-            }
+            
         }
     }
 }

@@ -280,6 +280,15 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tìm kiếm.
+        /// </summary>
+        internal static string SearchString {
+            get {
+                return ResourceManager.GetString("SearchString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Xin vui lòng chọn Khách Hàng.
         /// </summary>
         internal static string SelectorTitleCustomer {

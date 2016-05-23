@@ -105,6 +105,7 @@ namespace MainPrj.Model
             get { return sale_type; }
             set { sale_type = value; }
         }
+        [DataMember(Name = "customer_delivery_agent", IsRequired = false)]
         private string agencyNearest;
 
         public string AgencyNearest

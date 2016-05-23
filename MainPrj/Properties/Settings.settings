@@ -53,5 +53,32 @@
     <Setting Name="FinishMark" Type="System.String" Scope="User">
       <Value Profile="(Default)">X</Value>
     </Setting>
+    <Setting Name="ColorTabActiveBackground" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">White</Value>
+    </Setting>
+    <Setting Name="ColorIncommingCallText" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">Lime</Value>
+    </Setting>
+    <Setting Name="ColorHandleCallText" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">Blue</Value>
+    </Setting>
+    <Setting Name="ColorFinishCallTabText" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">Black</Value>
+    </Setting>
+    <Setting Name="ColorMissCallText" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">Red</Value>
+    </Setting>
+    <Setting Name="StartSearchTextLength" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">2</Value>
+    </Setting>
+    <Setting Name="ColorFinishCallText" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">Black</Value>
+    </Setting>
+    <Setting Name="ColorFinishCallBackground" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">InactiveCaption</Value>
+    </Setting>
+    <Setting Name="TimeAutoCloseMsgBox" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">60000</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

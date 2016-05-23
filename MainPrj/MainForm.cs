@@ -69,40 +69,38 @@ namespace MainPrj
         {
             if (e.Index.Equals(this.mainTabControl.SelectedIndex))
             {
-                e.Graphics.FillRectangle(Brushes.White, e.Bounds);
+                e.Graphics.FillRectangle(new SolidBrush(Properties.Settings.Default.ColorTabActiveBackground), e.Bounds);
             }
-            e.Graphics.DrawString(mainTabControl.TabPages[e.Index].Text,
-                mainTabControl.Font,
-                Brushes.Black,
-                new PointF(e.Bounds.X + 3, e.Bounds.Y + 3));
             string title = mainTabControl.TabPages[e.Index].Text;
+			Font font = this.mainTabControl.Font;
+			PointF point = new PointF((float)(e.Bounds.X + 3), (float)(e.Bounds.Y + 3));
             if (title.Contains(Properties.Resources.CardDataStatus1))
             {
-                e.Graphics.DrawString(mainTabControl.TabPages[e.Index].Text,
-                    mainTabControl.Font,
-                    Brushes.Green,
-                    new PointF(e.Bounds.X + 3, e.Bounds.Y + 3));
+                e.Graphics.DrawString(title, font,
+                    new SolidBrush(Properties.Settings.Default.ColorIncommingCallText),
+                    point);
             }
-            if (title.Contains(Properties.Resources.CardDataStatus3))
+            else if (title.Contains(Properties.Resources.CardDataStatus3))
             {
-                e.Graphics.DrawString(mainTabControl.TabPages[e.Index].Text,
-                    mainTabControl.Font,
-                    Brushes.Blue,
-                    new PointF(e.Bounds.X + 3, e.Bounds.Y + 3));
+                e.Graphics.DrawString(title, font,
+                    new SolidBrush(Properties.Settings.Default.ColorHandleCallText),
+                    point);
             }
-            if (title.Contains(Properties.Resources.CardDataStatus4))
+            else if (title.Contains(Properties.Resources.CardDataStatus4))
             {
-                e.Graphics.DrawString(mainTabControl.TabPages[e.Index].Text,
-                    mainTabControl.Font,
-                    Brushes.Black,
-                    new PointF(e.Bounds.X + 3, e.Bounds.Y + 3));
+                e.Graphics.DrawString(title, font,
+                    new SolidBrush(Properties.Settings.Default.ColorFinishCallTabText),
+                    point);
             }
-            if (title.Contains(Properties.Resources.CardDataStatus5))
+            else if (title.Contains(Properties.Resources.CardDataStatus5))
             {
-                e.Graphics.DrawString(mainTabControl.TabPages[e.Index].Text,
-                    mainTabControl.Font,
-                    Brushes.Red,
-                    new PointF(e.Bounds.X + 3, e.Bounds.Y + 3));
+                e.Graphics.DrawString(title, font,
+                    new SolidBrush(Properties.Settings.Default.ColorMissCallText),
+                    point);
+            }
+            else
+            {
+                e.Graphics.DrawString(title, font, Brushes.Black, point);
             }
         }
         /// <summary>
@@ -398,30 +396,9 @@ namespace MainPrj
                     break;
             }
 
-            SetChannelInformation(channel, customer);
             CallModel call = new CallModel(System.DateTime.Now, this.currentChannel, customer, phone, status);
             this.listCalls.Add(call);
-        }
-        /// <summary>
-        /// Set data to channel tab.
-        /// </summary>
-        /// <param name="channel">Channel control</param>
-        /// <param name="customer">Customer information</param>
-        private void SetChannelInformation(ChannelControl channel, CustomerModel customer)
-        {
-            if ((channel != null) && (customer != null))
-            {
-                channel.ClearData();
-                channel.SetCustomerName(customer.Name);
-                channel.SetAddress(customer.Address);
-                channel.SetPhoneList(customer.PhoneList);
-                channel.SetAgency(customer.AgencyName);
-                channel.SetContact(customer.Contact);
-                channel.SetCustomerType(customer.CustomerType);
-                channel.SetNote(customer.Contact_note);
-                channel.SetSaleInfor(customer.Sale_name, customer.Sale_phone);
-                channel.Data = customer;
-            }
+            CommonProcess.SetChannelInformation(channel, call.Customer);
         }
         /// <summary>
         /// Handle when change tab index.
@@ -442,23 +419,19 @@ namespace MainPrj
             string phone = this.listChannelControl.ElementAt(this.currentChannel).GetPhone();
             int n = 0;
             // Get incomming number information
-            if (!String.IsNullOrEmpty(phone))
+            if (!String.IsNullOrEmpty(phone) && int.TryParse(phone, out n))
             {
-                // Check phone is valid
-                if (int.TryParse(phone, out n))
+                // Insert value into current channel
+                try
                 {
-                    // Insert value into current channel
-                    try
-                    {
-                        ChannelControl tab = this.listChannelControl.ElementAt(this.currentChannel);
-                        tab.SetPhone(phone);
-                        // Request server and update data from server
-                        UpdateData(phone, (int)CardDataStatus.CARDDATA_RINGING);
-                    }
-                    catch (ArgumentOutOfRangeException)
-                    {
-                        CommonProcess.ShowErrorMessage(Properties.Resources.ArgumentOutOfRange);
-                    }
+                    ChannelControl tab = this.listChannelControl.ElementAt(this.currentChannel);
+                    tab.SetPhone(phone);
+                    // Request server and update data from server
+                    UpdateData(phone, (int)CardDataStatus.CARDDATA_RINGING);
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    CommonProcess.ShowErrorMessage(Properties.Resources.ArgumentOutOfRange);
                 }
             }
         }
@@ -518,6 +491,31 @@ namespace MainPrj
         /// <param name="e">EventArgs</param>
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
         {
+			if (e.KeyCode == Keys.Return)
+			{
+				ChannelControl channelControl = null;
+				try
+				{
+					channelControl = this.listChannelControl.ElementAt(this.currentChannel);
+				}
+				catch (ArgumentOutOfRangeException)
+				{
+					CommonProcess.ShowErrorMessage(Properties.Resources.ArgumentOutOfRange);
+					return;
+				}
+				if (channelControl != null)
+				{
+					channelControl.SearchCustomer();
+					foreach (CallModel current in this.listCalls)
+					{
+						if (channelControl.Data.Id.Equals(current.Customer.Id))
+						{
+							current.Customer.Contact_note = channelControl.Data.Contact_note;
+						}
+					}
+				}
+				return;
+			}
             switch (e.KeyCode)
             {
                 case Keys.F1:
@@ -572,11 +570,20 @@ namespace MainPrj
         /// </summary>
         private void HandleClickHistoryButton()
         {
-            HistoryView view = new HistoryView();
-            view.ListData.AddRange(this.listCalls);
-            view.ShowDialog();
-            this.listCalls.Clear();
-            this.listCalls.AddRange(view.ListData);
+            HistoryView historyView = new HistoryView();
+            historyView.ListData.AddRange(this.listCalls);
+            historyView.ShowDialog();
+            foreach (CallModel current in historyView.ListData)
+            {
+                foreach (CallModel current2 in this.listCalls)
+                {
+                    if (current.Id.Equals(current2.Id))
+                    {
+                        current2.IsFinish = current.IsFinish;
+                        break;
+                    }
+                }
+            }
         }
 
         /// <summary>

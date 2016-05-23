@@ -118,9 +118,10 @@ namespace MainPrj.View
                                     MemoryStream msU = new MemoryStream(encodingBytes);
                                     CallModel callModel = (CallModel)js.ReadObject(msU);
                                     listCalls.Add(callModel);
+                                    this.listData.Add(callModel);
                                 }
                             }
-                            for (int i = listCalls.Count - 1; i >= 0 ; i--)
+                            for (int i = listCalls.Count - 1; i >= 0; i--)
                             {
                                 this.listViewHistory.Items.Add(CreateListViewItem(listCalls[i], ++index));
                             }
@@ -174,12 +175,12 @@ namespace MainPrj.View
             item = new ListViewItem(arr);
             if (callModel.Status.Equals((int)CardDataStatus.CARDDATA_MISS))
             {
-                item.ForeColor = Color.Red;
+                item.ForeColor = Properties.Settings.Default.ColorMissCallText;
             }
             if (callModel.IsFinish)
             {
-                item.ForeColor = Color.Black;
-                item.BackColor = SystemColors.ButtonFace;
+                item.ForeColor = Properties.Settings.Default.ColorFinishCallText;
+                item.BackColor = Properties.Settings.Default.ColorFinishCallBackground;
             }
             item.Tag = callModel.Id;
             return item;
@@ -194,16 +195,62 @@ namespace MainPrj.View
             // Has a row is selected
             if (this.listViewHistory.SelectedItems.Count > 0)
             {
-                string id = this.listViewHistory.SelectedItems[0].Tag.ToString();
-                //this.listViewHistory.SelectedItems[0].SubItems[(int)HistoryColumns.HISTORY_COLUMN_NOTE].Text = Properties.Settings.Default.FinishMark;
-                this.listViewHistory.SelectedItems[0].ForeColor = Color.Black;
-                this.listViewHistory.SelectedItems[0].BackColor = SystemColors.ButtonFace;
+                foreach (ListViewItem item in this.listViewHistory.SelectedItems)
+                {
+                    string id = item.Tag.ToString();
+                    item.ForeColor = Properties.Settings.Default.ColorFinishCallText;
+                    item.BackColor = Properties.Settings.Default.ColorFinishCallBackground;
+                    for (int i = 0; i < this.listData.Count; i++)
+                    {
+                        if (this.listData[i].Id.Equals(id))
+                        {
+                            this.listData[i].IsFinish = true;
+                        }
+                    }
+                }
+
+            }
+        }
+
+        private void listViewHistory_DoubleClick(object sender, EventArgs e)
+        {
+            CustomerView customerView = new CustomerView();
+            CallModel callModel = null;
+            if (this.listViewHistory.SelectedItems.Count == 1)
+            {
+                string value = this.listViewHistory.SelectedItems[0].Tag.ToString();
                 for (int i = 0; i < this.listData.Count; i++)
                 {
-                    if (this.listData[i].Id.Equals(id))
+                    if (this.listData[i].Id.Equals(value))
                     {
-                        this.listData[i].IsFinish = true;
+                        callModel = this.listData[i];
+                        customerView.GetChannel().SetPhone(callModel.Phone);
+                        CommonProcess.SetChannelInformation(customerView.GetChannel(), callModel.Customer);
+                        break;
                     }
+                }
+            }
+            customerView.ShowDialog();
+            if (callModel != null)
+            {
+                CustomerModel data = customerView.GetChannel().Data;
+                callModel.Customer.Id = data.Id;
+                callModel.Customer.Name = data.Name;
+                callModel.Customer.Address = data.Address;
+                callModel.Customer.PhoneList = data.PhoneList;
+                callModel.Customer.AgencyName = data.AgencyName;
+                callModel.Customer.CustomerType = data.CustomerType;
+                callModel.Customer.Contact = data.Contact;
+                callModel.Customer.Contact_note = data.Contact_note;
+                callModel.Customer.Sale_name = data.Sale_name;
+                callModel.Customer.Sale_phone = data.Sale_phone;
+                callModel.Customer.Sale_type = data.Sale_type;
+                callModel.Customer.AgencyNearest = data.AgencyNearest;
+                if (this.listViewHistory.SelectedItems.Count == 1)
+                {
+                    ListViewItem listViewItem = this.listViewHistory.SelectedItems[0];
+                    listViewItem.SubItems[6].Text = data.Contact_note;
+                    listViewItem.SubItems[7].Text = string.Format("{0} - {1}", data.Name, data.Address);
                 }
             }
         }

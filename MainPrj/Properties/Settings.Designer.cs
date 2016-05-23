@@ -226,5 +226,113 @@ namespace MainPrj.Properties {
                 this["FinishMark"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("White")]
+        public global::System.Drawing.Color ColorTabActiveBackground {
+            get {
+                return ((global::System.Drawing.Color)(this["ColorTabActiveBackground"]));
+            }
+            set {
+                this["ColorTabActiveBackground"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Lime")]
+        public global::System.Drawing.Color ColorIncommingCallText {
+            get {
+                return ((global::System.Drawing.Color)(this["ColorIncommingCallText"]));
+            }
+            set {
+                this["ColorIncommingCallText"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Blue")]
+        public global::System.Drawing.Color ColorHandleCallText {
+            get {
+                return ((global::System.Drawing.Color)(this["ColorHandleCallText"]));
+            }
+            set {
+                this["ColorHandleCallText"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Black")]
+        public global::System.Drawing.Color ColorFinishCallTabText {
+            get {
+                return ((global::System.Drawing.Color)(this["ColorFinishCallTabText"]));
+            }
+            set {
+                this["ColorFinishCallTabText"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Red")]
+        public global::System.Drawing.Color ColorMissCallText {
+            get {
+                return ((global::System.Drawing.Color)(this["ColorMissCallText"]));
+            }
+            set {
+                this["ColorMissCallText"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        public int StartSearchTextLength {
+            get {
+                return ((int)(this["StartSearchTextLength"]));
+            }
+            set {
+                this["StartSearchTextLength"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Black")]
+        public global::System.Drawing.Color ColorFinishCallText {
+            get {
+                return ((global::System.Drawing.Color)(this["ColorFinishCallText"]));
+            }
+            set {
+                this["ColorFinishCallText"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("InactiveCaption")]
+        public global::System.Drawing.Color ColorFinishCallBackground {
+            get {
+                return ((global::System.Drawing.Color)(this["ColorFinishCallBackground"]));
+            }
+            set {
+                this["ColorFinishCallBackground"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("60000")]
+        public double TimeAutoCloseMsgBox {
+            get {
+                return ((double)(this["TimeAutoCloseMsgBox"]));
+            }
+            set {
+                this["TimeAutoCloseMsgBox"] = value;
+            }
+        }
     }
 }

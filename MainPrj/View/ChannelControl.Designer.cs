@@ -30,6 +30,7 @@
         {
             this.tbxIncommingNumber = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.tbxSearchCustomer = new System.Windows.Forms.TextBox();
             this.tbxCost = new System.Windows.Forms.TextBox();
             this.tbxCustomerTel4 = new System.Windows.Forms.TextBox();
             this.tbxCustomerTel2 = new System.Windows.Forms.TextBox();
@@ -54,7 +55,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.tbxSearchCustomer = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -103,10 +103,22 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Thông tin Khách Hàng";
             // 
+            // tbxSearchCustomer
+            // 
+            this.tbxSearchCustomer.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.tbxSearchCustomer.Location = new System.Drawing.Point(610, 26);
+            this.tbxSearchCustomer.Name = "tbxSearchCustomer";
+            this.tbxSearchCustomer.Size = new System.Drawing.Size(224, 29);
+            this.tbxSearchCustomer.TabIndex = 4;
+            this.tbxSearchCustomer.Text = "Tìm kiếm";
+            this.tbxSearchCustomer.Enter += new System.EventHandler(this.tbxSearchCustomer_Enter);
+            this.tbxSearchCustomer.Leave += new System.EventHandler(this.tbxSearchCustomer_Leave);
+            // 
             // tbxCost
             // 
             this.tbxCost.Location = new System.Drawing.Point(662, 130);
             this.tbxCost.Name = "tbxCost";
+            this.tbxCost.ReadOnly = true;
             this.tbxCost.Size = new System.Drawing.Size(173, 29);
             this.tbxCost.TabIndex = 3;
             // 
@@ -114,6 +126,7 @@
             // 
             this.tbxCustomerTel4.Location = new System.Drawing.Point(159, 130);
             this.tbxCustomerTel4.Name = "tbxCustomerTel4";
+            this.tbxCustomerTel4.ReadOnly = true;
             this.tbxCustomerTel4.Size = new System.Drawing.Size(220, 29);
             this.tbxCustomerTel4.TabIndex = 3;
             // 
@@ -121,6 +134,7 @@
             // 
             this.tbxCustomerTel2.Location = new System.Drawing.Point(384, 95);
             this.tbxCustomerTel2.Name = "tbxCustomerTel2";
+            this.tbxCustomerTel2.ReadOnly = true;
             this.tbxCustomerTel2.Size = new System.Drawing.Size(220, 29);
             this.tbxCustomerTel2.TabIndex = 3;
             // 
@@ -128,6 +142,7 @@
             // 
             this.tbxCustomerTel5.Location = new System.Drawing.Point(384, 130);
             this.tbxCustomerTel5.Name = "tbxCustomerTel5";
+            this.tbxCustomerTel5.ReadOnly = true;
             this.tbxCustomerTel5.Size = new System.Drawing.Size(220, 29);
             this.tbxCustomerTel5.TabIndex = 2;
             // 
@@ -135,6 +150,7 @@
             // 
             this.tbxCustomerTel3.Location = new System.Drawing.Point(610, 95);
             this.tbxCustomerTel3.Name = "tbxCustomerTel3";
+            this.tbxCustomerTel3.ReadOnly = true;
             this.tbxCustomerTel3.Size = new System.Drawing.Size(225, 29);
             this.tbxCustomerTel3.TabIndex = 2;
             // 
@@ -142,6 +158,7 @@
             // 
             this.tbxCustomerTel1.Location = new System.Drawing.Point(159, 95);
             this.tbxCustomerTel1.Name = "tbxCustomerTel1";
+            this.tbxCustomerTel1.ReadOnly = true;
             this.tbxCustomerTel1.Size = new System.Drawing.Size(220, 29);
             this.tbxCustomerTel1.TabIndex = 2;
             // 
@@ -149,6 +166,7 @@
             // 
             this.tbxSaleName.Location = new System.Drawing.Point(159, 389);
             this.tbxSaleName.Name = "tbxSaleName";
+            this.tbxSaleName.ReadOnly = true;
             this.tbxSaleName.Size = new System.Drawing.Size(676, 29);
             this.tbxSaleName.TabIndex = 2;
             // 
@@ -156,6 +174,7 @@
             // 
             this.tbxCustomerType.Location = new System.Drawing.Point(159, 275);
             this.tbxCustomerType.Name = "tbxCustomerType";
+            this.tbxCustomerType.ReadOnly = true;
             this.tbxCustomerType.Size = new System.Drawing.Size(676, 29);
             this.tbxCustomerType.TabIndex = 2;
             // 
@@ -172,6 +191,7 @@
             // 
             this.tbxContact.Location = new System.Drawing.Point(159, 240);
             this.tbxContact.Name = "tbxContact";
+            this.tbxContact.ReadOnly = true;
             this.tbxContact.Size = new System.Drawing.Size(676, 29);
             this.tbxContact.TabIndex = 2;
             // 
@@ -188,6 +208,7 @@
             // 
             this.tbxAgencyNearest.Location = new System.Drawing.Point(159, 199);
             this.tbxAgencyNearest.Name = "tbxAgencyNearest";
+            this.tbxAgencyNearest.ReadOnly = true;
             this.tbxAgencyNearest.Size = new System.Drawing.Size(676, 29);
             this.tbxAgencyNearest.TabIndex = 2;
             // 
@@ -204,6 +225,7 @@
             // 
             this.tbxAgency.Location = new System.Drawing.Point(159, 164);
             this.tbxAgency.Name = "tbxAgency";
+            this.tbxAgency.ReadOnly = true;
             this.tbxAgency.Size = new System.Drawing.Size(676, 29);
             this.tbxAgency.TabIndex = 2;
             // 
@@ -238,6 +260,7 @@
             // 
             this.tbxAddress.Location = new System.Drawing.Point(159, 60);
             this.tbxAddress.Name = "tbxAddress";
+            this.tbxAddress.ReadOnly = true;
             this.tbxAddress.Size = new System.Drawing.Size(676, 29);
             this.tbxAddress.TabIndex = 2;
             // 
@@ -299,15 +322,6 @@
             this.label1.Size = new System.Drawing.Size(159, 24);
             this.label1.TabIndex = 0;
             this.label1.Text = "Tên Khách Hàng:";
-            // 
-            // tbxSearchCustomer
-            // 
-            this.tbxSearchCustomer.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.tbxSearchCustomer.Location = new System.Drawing.Point(610, 26);
-            this.tbxSearchCustomer.Name = "tbxSearchCustomer";
-            this.tbxSearchCustomer.Size = new System.Drawing.Size(224, 29);
-            this.tbxSearchCustomer.TabIndex = 4;
-            this.tbxSearchCustomer.Text = "Tìm kiếm";
             // 
             // ChannelControl
             // 

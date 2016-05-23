@@ -77,6 +77,7 @@
             this.listViewHistory.UseCompatibleStateImageBehavior = false;
             this.listViewHistory.View = System.Windows.Forms.View.Details;
             this.listViewHistory.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.listViewHistory_ItemSelectionChanged);
+            this.listViewHistory.DoubleClick += new System.EventHandler(this.listViewHistory_DoubleClick);
             // 
             // columnHeader1
             // 

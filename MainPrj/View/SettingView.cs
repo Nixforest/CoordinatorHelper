@@ -56,7 +56,14 @@ namespace MainPrj.View
             Properties.Settings.Default.HistoryFilePath = tbxHistoryFilepath.Text;
             Properties.Settings.Default.HistoryFileName = tbxHistoryFilename.Text;
             Properties.Settings.Default.CallIdFormat = tbxCallIdFormat.Text;
-
+            Properties.Settings.Default.ColorMissCallText = this.btnMissCallTextColor.BackColor;
+            Properties.Settings.Default.ColorFinishCallText = this.btnFinishCallColor.ForeColor;
+            Properties.Settings.Default.ColorFinishCallBackground = this.btnFinishCallColor.BackColor;
+            Properties.Settings.Default.TimeAutoCloseMsgBox = (int)(this.nUDTimeAutoCloseMsgBox.Value * 1000);
+            Properties.Settings.Default.ColorTabActiveBackground = this.btnTabActiveBackgroundColor.BackColor;
+            Properties.Settings.Default.ColorIncommingCallText = this.btnTabIncommingTextColor.BackColor;
+            Properties.Settings.Default.ColorHandleCallText = this.btnTabHandleCallTextColor.BackColor;
+            Properties.Settings.Default.ColorFinishCallTabText = this.btnTabFinishCallTextColor.BackColor;
             // Save setting
             Properties.Settings.Default.Save();
             // Close form
@@ -94,6 +101,16 @@ namespace MainPrj.View
             tbxHistoryFilepath.Text = Properties.Settings.Default.HistoryFilePath;
             tbxHistoryFilename.Text = Properties.Settings.Default.HistoryFileName;
             tbxCallIdFormat.Text = Properties.Settings.Default.CallIdFormat;
+            this.btnMissCallTextColor.BackColor = Properties.Settings.Default.ColorMissCallText;
+            this.btnFinishCallColor.ForeColor = Properties.Settings.Default.ColorFinishCallText;
+            this.btnFinishCallTextColor.BackColor = Properties.Settings.Default.ColorFinishCallText;
+            this.btnFinishCallColor.BackColor = Properties.Settings.Default.ColorFinishCallBackground;
+            this.btnFinishCallBackColor.BackColor = Properties.Settings.Default.ColorFinishCallBackground;
+            this.nUDTimeAutoCloseMsgBox.Value = (decimal)Properties.Settings.Default.TimeAutoCloseMsgBox / 1000m;
+            this.btnTabActiveBackgroundColor.BackColor = Properties.Settings.Default.ColorTabActiveBackground;
+            this.btnTabIncommingTextColor.BackColor = Properties.Settings.Default.ColorIncommingCallText;
+            this.btnTabHandleCallTextColor.BackColor = Properties.Settings.Default.ColorHandleCallText;
+            this.btnTabFinishCallTextColor.BackColor = Properties.Settings.Default.ColorFinishCallTabText;
         }
         /// <summary>
         /// Handle when click on button Open file.
@@ -108,6 +125,70 @@ namespace MainPrj.View
                 {
                     tbxHistoryFilepath.Text = fileDialog.SelectedPath;
                 }
+            }
+        }
+        private void btnMissCallTextColor_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = this.colorDialog.ShowDialog();
+            if (dialogResult.Equals(DialogResult.OK))
+            {
+                this.btnMissCallTextColor.BackColor = this.colorDialog.Color;
+            }
+        }
+
+        private void btnFinishCallTextColor_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = this.colorDialog.ShowDialog();
+            if (dialogResult.Equals(DialogResult.OK))
+            {
+                this.btnFinishCallTextColor.BackColor = this.colorDialog.Color;
+                this.btnFinishCallColor.ForeColor = this.colorDialog.Color;
+            }
+        }
+
+        private void btnFinishCallBackColor_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = this.colorDialog.ShowDialog();
+            if (dialogResult.Equals(DialogResult.OK))
+            {
+                this.btnFinishCallBackColor.BackColor = this.colorDialog.Color;
+                this.btnFinishCallColor.BackColor = this.colorDialog.Color;
+            }
+        }
+
+        private void btnTabActiveBackground_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = this.colorDialog.ShowDialog();
+            if (dialogResult.Equals(DialogResult.OK))
+            {
+                this.btnTabActiveBackgroundColor.BackColor = this.colorDialog.Color;
+            }
+        }
+
+        private void btnIncommingTextColor_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = this.colorDialog.ShowDialog();
+            if (dialogResult.Equals(DialogResult.OK))
+            {
+                this.btnTabIncommingTextColor.BackColor = this.colorDialog.Color;
+            }
+        }
+
+        private void btnTabHandleCallTextColor_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = this.colorDialog.ShowDialog();
+            if (dialogResult.Equals(DialogResult.OK))
+            {
+                this.btnTabHandleCallTextColor.BackColor = this.colorDialog.Color;
+            }
+        }
+
+        private void btnTabFinishCallTextColor_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = this.colorDialog.ShowDialog();
+            if (dialogResult.Equals(DialogResult.OK))
+            {
+                this.btnTabFinishCallTextColor.BackColor = this.colorDialog.Color;
             }
         }
     }

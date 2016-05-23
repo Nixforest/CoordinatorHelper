@@ -71,6 +71,12 @@
     <Compile Include="View\ChannelControl.Designer.cs">
       <DependentUpon>ChannelControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="View\CustomerView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\CustomerView.Designer.cs">
+      <DependentUpon>CustomerView.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\HistoryView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -104,6 +110,9 @@
     </Compile>
     <EmbeddedResource Include="View\ChannelControl.resx">
       <DependentUpon>ChannelControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\CustomerView.resx">
+      <DependentUpon>CustomerView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\HistoryView.resx">
       <DependentUpon>HistoryView.cs</DependentUpon>

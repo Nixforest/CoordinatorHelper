@@ -1,6 +1,8 @@
 ﻿using MainPrj.Model;
+using MainPrj.View;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -282,7 +284,67 @@ namespace MainPrj.Util
                 {
                     ShowErrorMessage(Properties.Resources.ErrorCause + ex.Message);
                 }
-                
+
+            }
+        }
+        /// <summary>
+        /// Set data to channel tab.
+        /// </summary>
+        /// <param name="channel">Channel control</param>
+        /// <param name="customer">Customer information</param>
+        public static void SetChannelInformation(ChannelControl channel, CustomerModel customer)
+        {
+            if ((channel != null) && (customer != null))
+            {
+                channel.ClearData();
+                channel.SetCustomerName(customer.Name);
+                channel.SetAddress(customer.Address);
+                channel.SetPhoneList(customer.PhoneList);
+                channel.SetAgency(customer.AgencyName);
+                channel.SetAgencyNearest(customer.AgencyNearest);
+                channel.SetContact(customer.Contact);
+                channel.SetCustomerType(customer.CustomerType);
+                channel.SetNote(customer.Contact_note);
+                channel.SetSaleInfor(customer.Sale_name, customer.Sale_phone);
+                channel.Data = customer;
+            }
+        }
+        public static bool IsValidPhone(string phone)
+        {
+            bool result = false;
+            int num;
+            if (!string.IsNullOrEmpty(phone) && int.TryParse(phone, out num))
+            {
+                result = true;
+            }
+            return result;
+        }
+        public static void UpdateCustomerPhone(string customerId, string phone)
+        {
+            using (WebClient webClient = new WebClient())
+            {
+                string arg_0B_0 = string.Empty;
+                try
+                {
+                    byte[] bytes = webClient.UploadValues(Properties.Settings.Default.ServerURL
+                        + Properties.Settings.Default.URLUpdateCustomerPhone, new NameValueCollection
+					{
+						{
+							Properties.Settings.Default.CustomerIdKey,
+							customerId
+						},
+						{
+							Properties.Settings.Default.PhoneKey,
+							phone
+						}
+					});
+                    Encoding.UTF8.GetString(bytes);
+                }
+                catch (WebException)
+                {
+                    CommonProcess.ShowErrorMessage(Properties.Resources.InternetConnectionError);
+                    CommonProcess.HasError = true;
+                }
             }
         }
     }
