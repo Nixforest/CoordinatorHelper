@@ -101,7 +101,7 @@
             // 
             // columnHeader5
             // 
-            this.columnHeader5.Text = "Trạng thái";
+            this.columnHeader5.Text = "Cuộc gọi";
             this.columnHeader5.Width = 140;
             // 
             // columnHeader6

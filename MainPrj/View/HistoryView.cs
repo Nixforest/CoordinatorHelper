@@ -224,7 +224,7 @@ namespace MainPrj.View
                     if (this.listData[i].Id.Equals(value))
                     {
                         callModel = this.listData[i];
-                        customerView.GetChannel().SetPhone(callModel.Phone);
+                        customerView.GetChannel().SetIncommingPhone(callModel.Phone);
                         CommonProcess.SetChannelInformation(customerView.GetChannel(), callModel.Customer);
                         break;
                     }

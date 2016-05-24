@@ -45,12 +45,12 @@
             this.listViewSelector.FullRowSelect = true;
             this.listViewSelector.GridLines = true;
             this.listViewSelector.HideSelection = false;
-            this.listViewSelector.Location = new System.Drawing.Point(15, 15);
+            this.listViewSelector.Location = new System.Drawing.Point(14, 14);
             this.listViewSelector.Margin = new System.Windows.Forms.Padding(6);
             this.listViewSelector.MultiSelect = false;
             this.listViewSelector.Name = "listViewSelector";
             this.listViewSelector.ShowItemToolTips = true;
-            this.listViewSelector.Size = new System.Drawing.Size(885, 328);
+            this.listViewSelector.Size = new System.Drawing.Size(884, 315);
             this.listViewSelector.TabIndex = 0;
             this.listViewSelector.UseCompatibleStateImageBehavior = false;
             this.listViewSelector.View = System.Windows.Forms.View.Details;
@@ -80,11 +80,11 @@
             // 
             // SelectorView
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(915, 358);
+            this.ClientSize = new System.Drawing.Size(904, 344);
             this.Controls.Add(this.listViewSelector);
-            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "SelectorView";

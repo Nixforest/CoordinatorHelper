@@ -11,9 +11,14 @@ using MainPrj.Model;
 
 namespace MainPrj.View
 {
+    /// <summary>
+    /// User control Channel.
+    /// </summary>
     public partial class ChannelControl : UserControl
     {
-        private AutoCompleteStringCollection autoComplete = new AutoCompleteStringCollection();
+        /// <summary>
+        /// Current data.
+        /// </summary>
         private CustomerModel data = new CustomerModel();
 
         public CustomerModel Data
@@ -32,7 +37,7 @@ namespace MainPrj.View
         /// Set phone number.
         /// </summary>
         /// <param name="phone"></param>
-        public void SetPhone(string phone)
+        public void SetIncommingPhone(string phone)
         {
             this.tbxIncommingNumber.Text = phone;
         }
@@ -40,7 +45,7 @@ namespace MainPrj.View
         /// Get phone number.
         /// </summary>
         /// <returns>Incomming number</returns>
-        public string GetPhone()
+        public string GetIncommingPhone()
         {
             return this.tbxIncommingNumber.Text;
         }
@@ -66,6 +71,10 @@ namespace MainPrj.View
         /// <param name="phone">Phone string</param>
         public void SetPhoneList(string phone)
         {
+            if (phone == null)
+            {
+                return;
+            }
             string[] listPhone = phone.Split(Properties.Settings.Default.PhoneListToken.ToCharArray());
             List<TextBox> listPhoneControl = new List<TextBox>();
             listPhoneControl.Add(this.tbxCustomerTel1);
@@ -169,23 +178,6 @@ namespace MainPrj.View
         /// <param name="e">EventArgs</param>
         private void tbxCustomerName_TextChanged(object sender, EventArgs e)
         {
-            //if (tbxCustomerName.Focused)
-            //{
-            //    //List<CustomerModel> listCustomer = CommonProcess.RequestCustomerByKeyword(tbxCustomerName.Text);
-            //    List<CustomerModel> listCustomer = CommonProcess.RequestCustomerByPhone(tbxCustomerName.Text);
-            //    // Check if has error when handle common process
-            //    if (CommonProcess.HasError)
-            //    {
-            //        // Reset flag
-            //        CommonProcess.HasError = false;
-            //        // Stop
-            //        return;
-            //    }
-            //    foreach (CustomerModel item in listCustomer)
-            //    {
-            //        autoComplete.Add(item.Name + item.Address);
-            //    }
-            //}
             data.Name = tbxCustomerName.Text.Trim();
         }
         /// <summary>
@@ -195,7 +187,6 @@ namespace MainPrj.View
         /// <param name="e">EventArgs</param>
         private void ChannelControl_Load(object sender, EventArgs e)
         {
-            tbxCustomerName.AutoCompleteCustomSource = autoComplete;
         }
         /// <summary>
         /// Handle when change text of note.
@@ -206,7 +197,11 @@ namespace MainPrj.View
         {
             data.Contact_note = tbxNote.Text.Trim();
         }
-
+        /// <summary>
+        /// Handle when focus on Search textbox
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
         private void tbxSearchCustomer_Enter(object sender, EventArgs e)
         {
             if (this.tbxSearchCustomer.Text.Equals(Properties.Resources.SearchString))
@@ -216,60 +211,68 @@ namespace MainPrj.View
             }
         }
 
+        /// <summary>
+        /// Handle when lost focus on Search textbox
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
         private void tbxSearchCustomer_Leave(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(this.tbxSearchCustomer.Text))
+            if (string.IsNullOrWhiteSpace(this.tbxSearchCustomer.Text.Trim()))
             {
                 this.tbxSearchCustomer.Text = Properties.Resources.SearchString;
                 this.tbxSearchCustomer.ForeColor = SystemColors.GrayText;
             }
         }
-
+        /// <summary>
+        /// Search customer.
+        /// </summary>
         public void SearchCustomer()
         {
-            if (this.tbxSearchCustomer.Focused && this.tbxSearchCustomer.Text.Length >= Properties.Settings.Default.StartSearchTextLength)
+            if (this.tbxSearchCustomer.Focused
+                && this.tbxSearchCustomer.Text.Length >= Properties.Settings.Default.StartSearchTextLength)
             {
-                List<CustomerModel> list = CommonProcess.RequestCustomerByKeyword(this.tbxSearchCustomer.Text);
+                List<CustomerModel> listResult = CommonProcess.RequestCustomerByKeyword(this.tbxSearchCustomer.Text);
                 if (CommonProcess.HasError)
                 {
                     CommonProcess.HasError = false;
                     return;
                 }
-                List<SelectorModel> list2 = new List<SelectorModel>();
-                foreach (CustomerModel current in list)
+                List<SelectorModel> listSelector = new List<SelectorModel>();
+                foreach (CustomerModel customer in listResult)
                 {
-                    list2.Add(new SelectorModel
+                    listSelector.Add(new SelectorModel
                     {
-                        Id = current.Id,
-                        Name = current.Name,
-                        Address = current.Address
+                        Id = customer.Id,
+                        Name = customer.Name,
+                        Address = customer.Address
                     });
                 }
                 SelectorView selectorView = new SelectorView();
-                selectorView.ListData = list2;
+                selectorView.ListData = listSelector;
                 selectorView.Text = Properties.Resources.SelectorTitleCustomer;
-                selectorView.Location = new Point(this.tbxSearchCustomer.Location.X, this.tbxSearchCustomer.Location.Y + this.tbxSearchCustomer.Bounds.Height);
                 selectorView.ShowDialog();
                 string selectedId = selectorView.SelectedId;
                 if (!string.IsNullOrEmpty(selectedId))
                 {
-                    foreach (CustomerModel current2 in list)
+                    foreach (CustomerModel customer in listResult)
                     {
-                        if (selectedId.Equals(current2.Id))
+                        if (selectedId.Equals(customer.Id))
                         {
-                            this.data.Id = current2.Id;
-                            this.data.Name = current2.Name;
-                            this.data.Address = current2.Address;
-                            this.data.PhoneList = current2.PhoneList;
-                            this.data.AgencyName = current2.AgencyName;
-                            this.data.CustomerType = current2.CustomerType;
-                            this.data.Contact = current2.Contact;
-                            CustomerModel expr_1DE = this.data;
-                            expr_1DE.Contact_note += current2.Contact_note;
-                            this.data.Sale_name = current2.Sale_name;
-                            this.data.Sale_phone = current2.Sale_phone;
-                            this.data.Sale_type = current2.Sale_type;
-                            this.data.AgencyNearest = current2.AgencyNearest;
+                            // Update data
+                            this.data.Id = customer.Id;
+                            this.data.Name = customer.Name;
+                            this.data.Address = customer.Address;
+                            this.data.PhoneList = customer.PhoneList;
+                            this.data.AgencyName = customer.AgencyName;
+                            this.data.AgencyNearest = customer.AgencyNearest;
+                            this.data.Contact = customer.Contact;
+                            this.data.CustomerType = customer.CustomerType;
+                            this.data.Contact_note += customer.Contact_note;
+                            this.data.Sale_name = customer.Sale_name;
+                            this.data.Sale_phone = customer.Sale_phone;
+                            this.data.Sale_type = customer.Sale_type;
+
                             this.SetCustomerName(this.data.Name);
                             this.SetAddress(this.data.Address);
                             this.SetPhoneList(this.data.PhoneList);
@@ -280,18 +283,26 @@ namespace MainPrj.View
                             this.SetNote(this.data.Contact_note);
                             this.SetSaleInfor(this.data.Sale_name, this.data.Sale_phone);
                             string text = string.Empty;
-                            if (CommonProcess.IsValidPhone(this.GetPhone()) && !current2.PhoneList.Contains(this.GetPhone()))
+                            if (CommonProcess.IsValidPhone(this.GetIncommingPhone()))
                             {
-                                if (string.IsNullOrEmpty(current2.PhoneList))
+                                // Update phone
+                                if (string.IsNullOrEmpty(customer.PhoneList))
                                 {
-                                    text = this.GetPhone();
+                                    text = this.GetIncommingPhone();
                                 }
                                 else
                                 {
-                                    text = string.Format("{0}{1}{2}", current2.PhoneList, Properties.Settings.Default.PhoneListToken, this.GetPhone());
+                                    if (!customer.PhoneList.Contains(this.GetIncommingPhone()))
+                                    {
+                                        text = string.Format("{0}{1}{2}", customer.PhoneList,
+                                        Properties.Settings.Default.PhoneListToken, this.GetIncommingPhone());
+                                    }
                                 }
-                                CommonProcess.UpdateCustomerPhone(selectedId, text);
-                                this.SetPhoneList(text);
+                                if (!String.IsNullOrEmpty(text))
+                                {
+                                    CommonProcess.UpdateCustomerPhone(selectedId, text);
+                                    this.SetPhoneList(text);
+                                }
                                 break;
                             }
                             break;
@@ -300,6 +311,10 @@ namespace MainPrj.View
                 }
             }
         }
+        /// <summary>
+        ///  Check can change tab.
+        /// </summary>
+        /// <returns></returns>
         public bool CanChangeTab()
         {
             return !this.tbxCustomerName.Focused && !this.tbxSearchCustomer.Focused && !this.tbxNote.Focused;

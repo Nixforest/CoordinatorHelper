@@ -48,20 +48,22 @@
             customerModel1.Sale_type = "";
             this.channelControl.Data = customerModel1;
             this.channelControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.channelControl.Location = new System.Drawing.Point(9, 15);
-            this.channelControl.Margin = new System.Windows.Forms.Padding(6);
+            this.channelControl.Location = new System.Drawing.Point(17, 28);
+            this.channelControl.Margin = new System.Windows.Forms.Padding(11, 11, 11, 11);
             this.channelControl.Name = "channelControl";
-            this.channelControl.Size = new System.Drawing.Size(846, 468);
+            this.channelControl.Size = new System.Drawing.Size(849, 474);
             this.channelControl.TabIndex = 0;
             // 
             // CustomerView
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(870, 494);
+            this.ClientSize = new System.Drawing.Size(882, 499);
             this.Controls.Add(this.channelControl);
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.KeyPreview = true;
+            this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "CustomerView";

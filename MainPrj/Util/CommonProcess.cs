@@ -7,8 +7,10 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using System.Timers;
 using System.Windows.Forms;
 
 namespace MainPrj.Util
@@ -155,6 +157,11 @@ namespace MainPrj.Util
             }
             return String.Empty;
         }
+        [DllImport("user32.dll", EntryPoint = "FindWindow", SetLastError = true)]
+        private static extern IntPtr FindWindowByCaption(IntPtr ZeroOnly, string lpWindowName);
+
+        [DllImport("user32.dll")]
+        private static extern int PostMessage(IntPtr hWnd, uint msg, int wParam, int lParam);
         /// <summary>
         /// Show error message box.
         /// </summary>
@@ -162,6 +169,19 @@ namespace MainPrj.Util
         /// <returns>Dialog result</returns>
         public static DialogResult ShowErrorMessage(string msg)
         {
+            System.Timers.Timer timer = new System.Timers.Timer(Properties.Settings.Default.TimeAutoCloseMsgBox)
+            {
+                AutoReset = false
+            };
+            timer.Elapsed += delegate(object param0, ElapsedEventArgs param1)
+            {
+                IntPtr hWnd = CommonProcess.FindWindowByCaption(IntPtr.Zero, Properties.Resources.Error);
+                if (hWnd.ToInt32() != 0)
+                {
+                    CommonProcess.PostMessage(hWnd, 16u, 0, 0);
+                }
+            };
+            timer.Enabled = true;
             return MessageBox.Show(msg, Properties.Resources.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
         /// <summary>
@@ -309,6 +329,11 @@ namespace MainPrj.Util
                 channel.Data = customer;
             }
         }
+        /// <summary>
+        /// Check if phone is valid
+        /// </summary>
+        /// <param name="phone">Phone string to check</param>
+        /// <returns>True if phone is valid, False otherwise</returns>
         public static bool IsValidPhone(string phone)
         {
             bool result = false;
@@ -319,11 +344,15 @@ namespace MainPrj.Util
             }
             return result;
         }
+        /// <summary>
+        /// Update customer phone
+        /// </summary>
+        /// <param name="customerId">Customer Id</param>
+        /// <param name="phone">Phone to update</param>
         public static void UpdateCustomerPhone(string customerId, string phone)
         {
             using (WebClient webClient = new WebClient())
             {
-                string arg_0B_0 = string.Empty;
                 try
                 {
                     byte[] bytes = webClient.UploadValues(Properties.Settings.Default.ServerURL
@@ -338,7 +367,6 @@ namespace MainPrj.Util
 							phone
 						}
 					});
-                    Encoding.UTF8.GetString(bytes);
                 }
                 catch (WebException)
                 {

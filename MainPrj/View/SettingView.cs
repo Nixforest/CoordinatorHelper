@@ -59,11 +59,12 @@ namespace MainPrj.View
             Properties.Settings.Default.ColorMissCallText = this.btnMissCallTextColor.BackColor;
             Properties.Settings.Default.ColorFinishCallText = this.btnFinishCallColor.ForeColor;
             Properties.Settings.Default.ColorFinishCallBackground = this.btnFinishCallColor.BackColor;
-            Properties.Settings.Default.TimeAutoCloseMsgBox = (int)(this.nUDTimeAutoCloseMsgBox.Value * 1000);
+            Properties.Settings.Default.TimeAutoCloseMsgBox = (double)(this.nUDTimeAutoCloseMsgBox.Value * 1000);
             Properties.Settings.Default.ColorTabActiveBackground = this.btnTabActiveBackgroundColor.BackColor;
             Properties.Settings.Default.ColorIncommingCallText = this.btnTabIncommingTextColor.BackColor;
             Properties.Settings.Default.ColorHandleCallText = this.btnTabHandleCallTextColor.BackColor;
             Properties.Settings.Default.ColorFinishCallTabText = this.btnTabFinishCallTextColor.BackColor;
+            Properties.Settings.Default.PhoneCutLength = (int)this.nUDPhoneCutLen.Value;
             // Save setting
             Properties.Settings.Default.Save();
             // Close form
@@ -111,6 +112,7 @@ namespace MainPrj.View
             this.btnTabIncommingTextColor.BackColor = Properties.Settings.Default.ColorIncommingCallText;
             this.btnTabHandleCallTextColor.BackColor = Properties.Settings.Default.ColorHandleCallText;
             this.btnTabFinishCallTextColor.BackColor = Properties.Settings.Default.ColorFinishCallTabText;
+            this.nUDPhoneCutLen.Value = Properties.Settings.Default.PhoneCutLength;
         }
         /// <summary>
         /// Handle when click on button Open file.

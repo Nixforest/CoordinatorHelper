@@ -180,7 +180,7 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Có lỗi xảy ra.
+        ///   Looks up a localized string similar to Coordinator.Error.
         /// </summary>
         internal static string Error {
             get {

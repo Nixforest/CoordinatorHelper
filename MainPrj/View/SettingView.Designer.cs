@@ -80,10 +80,13 @@
             this.label22 = new System.Windows.Forms.Label();
             this.btnTabFinishCallTextColor = new System.Windows.Forms.Button();
             this.colorDialog = new System.Windows.Forms.ColorDialog();
+            this.label23 = new System.Windows.Forms.Label();
+            this.nUDPhoneCutLen = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.nUDMainPort)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nUDTimeAutoCloseMsgBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nUDPhoneCutLen)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -480,7 +483,6 @@
             // 
             // nUDTimeAutoCloseMsgBox
             // 
-            this.nUDTimeAutoCloseMsgBox.Enabled = false;
             this.nUDTimeAutoCloseMsgBox.Location = new System.Drawing.Point(184, 175);
             this.nUDTimeAutoCloseMsgBox.Maximum = new decimal(new int[] {
             99999,
@@ -488,7 +490,6 @@
             0,
             0});
             this.nUDTimeAutoCloseMsgBox.Name = "nUDTimeAutoCloseMsgBox";
-            this.nUDTimeAutoCloseMsgBox.ReadOnly = true;
             this.nUDTimeAutoCloseMsgBox.Size = new System.Drawing.Size(114, 20);
             this.nUDTimeAutoCloseMsgBox.TabIndex = 1;
             // 
@@ -564,6 +565,27 @@
             this.btnTabFinishCallTextColor.UseVisualStyleBackColor = true;
             this.btnTabFinishCallTextColor.Click += new System.EventHandler(this.btnTabFinishCallTextColor_Click);
             // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(10, 322);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(150, 13);
+            this.label23.TabIndex = 0;
+            this.label23.Text = "Độ dài phone hiển thị trên tab:";
+            // 
+            // nUDPhoneCutLen
+            // 
+            this.nUDPhoneCutLen.Location = new System.Drawing.Point(184, 320);
+            this.nUDPhoneCutLen.Maximum = new decimal(new int[] {
+            99999,
+            0,
+            0,
+            0});
+            this.nUDPhoneCutLen.Name = "nUDPhoneCutLen";
+            this.nUDPhoneCutLen.Size = new System.Drawing.Size(114, 20);
+            this.nUDPhoneCutLen.TabIndex = 1;
+            // 
             // SettingView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -585,9 +607,11 @@
             this.Controls.Add(this.label17);
             this.Controls.Add(this.btnAdvance);
             this.Controls.Add(this.label16);
+            this.Controls.Add(this.nUDPhoneCutLen);
             this.Controls.Add(this.nUDTimeAutoCloseMsgBox);
             this.Controls.Add(this.label22);
             this.Controls.Add(this.nUDMainPort);
+            this.Controls.Add(this.label23);
             this.Controls.Add(this.label21);
             this.Controls.Add(this.label18);
             this.Controls.Add(this.label20);
@@ -613,6 +637,7 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nUDTimeAutoCloseMsgBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nUDPhoneCutLen)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -672,5 +697,7 @@
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.Button btnTabFinishCallTextColor;
         private System.Windows.Forms.ColorDialog colorDialog;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.NumericUpDown nUDPhoneCutLen;
     }
 }

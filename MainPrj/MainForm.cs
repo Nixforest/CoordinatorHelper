@@ -267,7 +267,10 @@ namespace MainPrj
             }
             if (needUpdate)
             {
-                if (!model.Channel.Equals(this.currentChannel))
+                ChannelControl currentChannelCtrl = this.listChannelControl[this.currentChannel];
+                
+                if (!model.Channel.Equals(this.currentChannel)
+                    && currentChannelCtrl.CanChangeTab())
                 {
                     this.currentChannel = model.Channel;
                     // Show up incomming channel
@@ -279,7 +282,7 @@ namespace MainPrj
                 }
                 if (channel != null)
                 {
-                    channel.SetPhone(model.Phone);
+                    channel.SetIncommingPhone(model.Phone);
                     UpdateData(model.Phone, model.Status);
                 }
                 //this.listCalls.Add
@@ -321,8 +324,8 @@ namespace MainPrj
 
             if (Properties.Settings.Default.TestingMode)
             {
-                this.channelControlLine2.SetPhone("01869194542");
-                this.channelControlLine3.SetPhone("01674816039");
+                this.channelControlLine2.SetIncommingPhone("01869194542");
+                this.channelControlLine3.SetIncommingPhone("01674816039");
                 this.chbListenFromCard.Checked = Properties.Settings.Default.ListeningCardMode;
             }
         }
@@ -416,7 +419,7 @@ namespace MainPrj
         /// <param name="e">EventArgs</param>
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            string phone = this.listChannelControl.ElementAt(this.currentChannel).GetPhone();
+            string phone = this.listChannelControl.ElementAt(this.currentChannel).GetIncommingPhone();
             int n = 0;
             // Get incomming number information
             if (!String.IsNullOrEmpty(phone) && int.TryParse(phone, out n))
@@ -425,7 +428,7 @@ namespace MainPrj
                 try
                 {
                     ChannelControl tab = this.listChannelControl.ElementAt(this.currentChannel);
-                    tab.SetPhone(phone);
+                    tab.SetIncommingPhone(phone);
                     // Request server and update data from server
                     UpdateData(phone, (int)CardDataStatus.CARDDATA_RINGING);
                 }
@@ -628,7 +631,7 @@ namespace MainPrj
                     // Update tab title
                     this.mainTabControl.TabPages[channel].Text = String.Format("{0} :{1}-{2}",
                                 channel + 1,
-                                phone,
+                                phone.Substring(Math.Max(0, phone.Length - Properties.Settings.Default.PhoneCutLength)),
                                 statusStr);
                 }
             }

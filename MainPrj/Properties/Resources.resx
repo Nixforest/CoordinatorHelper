@@ -159,7 +159,7 @@ Nhấn NO để chọn lại Khách hàng.</value>
     <value>Có lỗi xảy ra khi mã hóa dữ liệu trả về.</value>
   </data>
   <data name="Error" xml:space="preserve">
-    <value>Có lỗi xảy ra</value>
+    <value>Coordinator.Error</value>
     <comment>Error</comment>
   </data>
   <data name="ErrorCause" xml:space="preserve">
