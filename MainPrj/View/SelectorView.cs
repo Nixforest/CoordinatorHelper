@@ -131,5 +131,14 @@ namespace MainPrj.View
         {
             
         }
+        /// <summary>
+        /// Handle when click Close button
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

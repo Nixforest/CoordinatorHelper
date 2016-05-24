@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingView));
             this.label1 = new System.Windows.Forms.Label();
             this.nUDMainPort = new System.Windows.Forms.NumericUpDown();
             this.btnAdvance = new System.Windows.Forms.Button();
@@ -627,6 +628,7 @@
             this.Controls.Add(this.label11);
             this.Controls.Add(this.tbxIP);
             this.Controls.Add(this.label10);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SettingView";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Cài đặt chung";

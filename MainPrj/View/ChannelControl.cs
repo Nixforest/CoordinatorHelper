@@ -178,7 +178,7 @@ namespace MainPrj.View
         /// <param name="e">EventArgs</param>
         private void tbxCustomerName_TextChanged(object sender, EventArgs e)
         {
-            data.Name = tbxCustomerName.Text.Trim();
+            //data.Name = tbxCustomerName.Text.Trim();
         }
         /// <summary>
         /// Handle when after load control.

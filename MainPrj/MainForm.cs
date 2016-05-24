@@ -360,7 +360,7 @@ namespace MainPrj
             switch (listCustomer.Count)
             {
                 case 0:         // Incomming phone is current not existing in system
-                    customer.Name = "Khách Hàng Mới";
+                    customer.Name = String.Empty;
                     break;
                 case 1:         // A customer has phone number is match with incomming phone
                     customer = listCustomer.ElementAt(0);

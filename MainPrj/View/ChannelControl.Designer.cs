@@ -283,6 +283,7 @@
             this.tbxCustomerName.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             this.tbxCustomerName.Location = new System.Drawing.Point(159, 26);
             this.tbxCustomerName.Name = "tbxCustomerName";
+            this.tbxCustomerName.ReadOnly = true;
             this.tbxCustomerName.Size = new System.Drawing.Size(445, 29);
             this.tbxCustomerName.TabIndex = 2;
             this.tbxCustomerName.TextChanged += new System.EventHandler(this.tbxCustomerName_TextChanged);

@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             MainPrj.Model.CustomerModel customerModel1 = new MainPrj.Model.CustomerModel();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CustomerView));
             this.channelControl = new MainPrj.View.ChannelControl();
             this.SuspendLayout();
             // 
@@ -49,7 +50,7 @@
             this.channelControl.Data = customerModel1;
             this.channelControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.channelControl.Location = new System.Drawing.Point(17, 28);
-            this.channelControl.Margin = new System.Windows.Forms.Padding(11, 11, 11, 11);
+            this.channelControl.Margin = new System.Windows.Forms.Padding(11);
             this.channelControl.Name = "channelControl";
             this.channelControl.Size = new System.Drawing.Size(849, 474);
             this.channelControl.TabIndex = 0;
@@ -62,8 +63,9 @@
             this.Controls.Add(this.channelControl);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
-            this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.Margin = new System.Windows.Forms.Padding(6);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "CustomerView";

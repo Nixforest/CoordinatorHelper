@@ -36,6 +36,7 @@
             MainPrj.Model.CustomerModel customerModel6 = new MainPrj.Model.CustomerModel();
             MainPrj.Model.CustomerModel customerModel7 = new MainPrj.Model.CustomerModel();
             MainPrj.Model.CustomerModel customerModel8 = new MainPrj.Model.CustomerModel();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.mainMenuStrip = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemSetting = new System.Windows.Forms.ToolStripMenuItem();
@@ -476,6 +477,7 @@
             this.Controls.Add(this.btnCreateOrder);
             this.Controls.Add(this.mainMenuStrip);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.MainMenuStrip = this.mainMenuStrip;
             this.Margin = new System.Windows.Forms.Padding(6);
