@@ -15,6 +15,7 @@ namespace MainPrj.View
 {
     public partial class HistoryView : Form
     {
+        private static HistoryView form = null;
         /// <summary>
         /// List of data.
         /// </summary>
@@ -34,6 +35,22 @@ namespace MainPrj.View
         {
             get { return selectedId; }
             set { selectedId = value; }
+        }
+        /// <summary>
+        /// Get singleton instance.
+        /// </summary>
+        /// <returns>Current instance</returns>
+        public static HistoryView GetInstance()
+        {
+            if (form == null || form.IsDisposed)
+            {
+                form = new HistoryView();
+            }
+            else
+            {
+                form.BringToFront();
+            }
+            return form;
         }
         /// <summary>
         /// Constructor.
@@ -270,9 +287,102 @@ namespace MainPrj.View
                 case Keys.F5:
                     this.Close();
                     break;
+                case Keys.Enter:
+                    this.SearchByKeyword(String.Empty);
+                    this.SearchByKeyword(this.tbxSearch.Text.Trim());
+                    break;
                 default:
                     break;
             }
+        }
+        /// <summary>
+        /// Search keyword in listview.
+        /// </summary>
+        /// <param name="keyword">Keyword</param>
+        private void SearchByKeyword(string keyword)
+        {
+            keyword = CommonProcess.RemoveSign4VietnameseString(keyword).ToLower();
+            if (!String.IsNullOrEmpty(keyword))
+            {
+                foreach (ListViewItem item in this.listViewHistory.Items)
+                {
+                    foreach (System.Windows.Forms.ListViewItem.ListViewSubItem subItem in item.SubItems)
+                    {
+                        string text = CommonProcess.RemoveSign4VietnameseString(subItem.Text).ToLower();
+                        if (text.Contains(keyword))
+                        {
+                            item.UseItemStyleForSubItems = false;
+                            subItem.ForeColor = Properties.Settings.Default.ColorFoundKeywordText;
+                            subItem.BackColor = Properties.Settings.Default.ColorFoundKeywordBackground;
+                            break;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                foreach (ListViewItem item in this.listViewHistory.Items)
+                {
+                    item.UseItemStyleForSubItems = true;
+                    item.ForeColor = Color.Black;
+                    item.BackColor = Color.White;
+                    if (item.SubItems[(int)HistoryColumns.HISTORY_COLUMN_STATUS].Text.Equals(CommonProcess.GetStatusString((int)CardDataStatus.CARDDATA_MISS)))
+                    {
+                        item.ForeColor = Properties.Settings.Default.ColorMissCallText;
+                    }
+                    string id = item.Tag.ToString();
+                    for (int i = 0; i < this.listData.Count; i++)
+                    {
+                        if (this.listData[i].Id.Equals(id))
+                        {
+                            if (this.listData[i].IsFinish)
+                            {
+                                item.ForeColor = Properties.Settings.Default.ColorFinishCallText;
+                                item.BackColor = Properties.Settings.Default.ColorFinishCallBackground;
+                            }
+                        }
+                    }
+                }
+            }
+            this.listViewHistory.Refresh();
+        }
+        /// <summary>
+        /// Handle when enter focus on Search textbox.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void tbxSearch_Enter(object sender, EventArgs e)
+        {
+            if (this.tbxSearch.Text.Equals(Properties.Resources.SearchString))
+            {
+                this.tbxSearch.Text = string.Empty;
+                this.tbxSearch.ForeColor = Color.Black;
+            }
+        }
+
+        /// <summary>
+        /// Handle when lost focus on Search textbox.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void tbxSearch_Leave(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(this.tbxSearch.Text.Trim()))
+            {
+                this.tbxSearch.Text = Properties.Resources.SearchString;
+                this.tbxSearch.ForeColor = SystemColors.GrayText;
+            }
+        }
+        /// <summary>
+        /// Clear search process.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+            tbxSearch.Text = Properties.Resources.SearchString;
+            tbxSearch.ForeColor = SystemColors.GrayText;
+            SearchByKeyword(String.Empty);
         }
     }
 }

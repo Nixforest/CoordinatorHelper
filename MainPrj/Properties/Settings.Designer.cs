@@ -334,5 +334,41 @@ namespace MainPrj.Properties {
                 this["TimeAutoCloseMsgBox"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool UpdatePhone {
+            get {
+                return ((bool)(this["UpdatePhone"]));
+            }
+            set {
+                this["UpdatePhone"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Black")]
+        public global::System.Drawing.Color ColorFoundKeywordText {
+            get {
+                return ((global::System.Drawing.Color)(this["ColorFoundKeywordText"]));
+            }
+            set {
+                this["ColorFoundKeywordText"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0, 192, 0")]
+        public global::System.Drawing.Color ColorFoundKeywordBackground {
+            get {
+                return ((global::System.Drawing.Color)(this["ColorFoundKeywordBackground"]));
+            }
+            set {
+                this["ColorFoundKeywordBackground"] = value;
+            }
+        }
     }
 }

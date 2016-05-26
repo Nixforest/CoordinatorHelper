@@ -240,7 +240,7 @@ namespace MainPrj.View
             if (this.tbxSearchCustomer.Focused
                 && this.tbxSearchCustomer.Text.Length >= Properties.Settings.Default.StartSearchTextLength)
             {
-                List<CustomerModel> listResult = CommonProcess.RequestCustomerByKeyword(this.tbxSearchCustomer.Text);
+                List<CustomerModel> listResult = CommonProcess.RequestCustomerByKeyword(this.tbxSearchCustomer.Text.Trim());
                 if (CommonProcess.HasError)
                 {
                     CommonProcess.HasError = false;
@@ -256,10 +256,11 @@ namespace MainPrj.View
                         Address = customer.Address
                     });
                 }
-                SelectorView selectorView = new SelectorView();
+                SelectorView selectorView = SelectorView.GetInstance();
                 selectorView.ListData = listSelector;
                 selectorView.Text = Properties.Resources.SelectorTitleCustomer;
-                selectorView.ShowDialog();
+                //selectorView.ShowDialog();
+                selectorView.Show();
                 string selectedId = selectorView.SelectedId;
                 if (!string.IsNullOrEmpty(selectedId))
                 {

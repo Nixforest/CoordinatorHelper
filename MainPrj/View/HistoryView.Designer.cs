@@ -41,12 +41,15 @@
             this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnOpenFile = new System.Windows.Forms.Button();
             this.btnFinish = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.tbxSearch = new System.Windows.Forms.TextBox();
+            this.btnClear = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnClose
             // 
             this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnClose.Location = new System.Drawing.Point(1177, 593);
+            this.btnClose.Location = new System.Drawing.Point(1190, 591);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(116, 36);
             this.btnClose.TabIndex = 0;
@@ -69,11 +72,11 @@
             this.listViewHistory.GridLines = true;
             this.listViewHistory.HideSelection = false;
             this.listViewHistory.LabelEdit = true;
-            this.listViewHistory.Location = new System.Drawing.Point(98, 12);
+            this.listViewHistory.Location = new System.Drawing.Point(110, 46);
             this.listViewHistory.MultiSelect = false;
             this.listViewHistory.Name = "listViewHistory";
             this.listViewHistory.ShowItemToolTips = true;
-            this.listViewHistory.Size = new System.Drawing.Size(1195, 575);
+            this.listViewHistory.Size = new System.Drawing.Size(1196, 541);
             this.listViewHistory.TabIndex = 1;
             this.listViewHistory.UseCompatibleStateImageBehavior = false;
             this.listViewHistory.View = System.Windows.Forms.View.Details;
@@ -122,7 +125,7 @@
             // 
             // btnOpenFile
             // 
-            this.btnOpenFile.Location = new System.Drawing.Point(11, 74);
+            this.btnOpenFile.Location = new System.Drawing.Point(12, 109);
             this.btnOpenFile.Name = "btnOpenFile";
             this.btnOpenFile.Size = new System.Drawing.Size(82, 63);
             this.btnOpenFile.TabIndex = 2;
@@ -132,7 +135,7 @@
             // 
             // btnFinish
             // 
-            this.btnFinish.Location = new System.Drawing.Point(11, 12);
+            this.btnFinish.Location = new System.Drawing.Point(12, 46);
             this.btnFinish.Name = "btnFinish";
             this.btnFinish.Size = new System.Drawing.Size(82, 57);
             this.btnFinish.TabIndex = 2;
@@ -140,12 +143,45 @@
             this.btnFinish.UseVisualStyleBackColor = true;
             this.btnFinish.Click += new System.EventHandler(this.btnFinish_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 13);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(92, 24);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "Tìm kiếm:";
+            // 
+            // tbxSearch
+            // 
+            this.tbxSearch.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.tbxSearch.Location = new System.Drawing.Point(110, 10);
+            this.tbxSearch.Name = "tbxSearch";
+            this.tbxSearch.Size = new System.Drawing.Size(388, 29);
+            this.tbxSearch.TabIndex = 0;
+            this.tbxSearch.Text = "Tìm kiếm";
+            this.tbxSearch.Enter += new System.EventHandler(this.tbxSearch_Enter);
+            this.tbxSearch.Leave += new System.EventHandler(this.tbxSearch_Leave);
+            // 
+            // btnClear
+            // 
+            this.btnClear.Location = new System.Drawing.Point(504, 9);
+            this.btnClear.Name = "btnClear";
+            this.btnClear.Size = new System.Drawing.Size(93, 31);
+            this.btnClear.TabIndex = 4;
+            this.btnClear.Text = "Hủy";
+            this.btnClear.UseVisualStyleBackColor = true;
+            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
+            // 
             // HistoryView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
-            this.ClientSize = new System.Drawing.Size(1301, 639);
+            this.ClientSize = new System.Drawing.Size(1318, 639);
+            this.Controls.Add(this.btnClear);
+            this.Controls.Add(this.tbxSearch);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.btnFinish);
             this.Controls.Add(this.btnOpenFile);
             this.Controls.Add(this.listViewHistory);
@@ -160,6 +196,7 @@
             this.Load += new System.EventHandler(this.HistoryView_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.HistoryView_KeyDown);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -177,5 +214,8 @@
         private System.Windows.Forms.Button btnOpenFile;
         private System.Windows.Forms.ColumnHeader columnHeader8;
         private System.Windows.Forms.Button btnFinish;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox tbxSearch;
+        private System.Windows.Forms.Button btnClear;
     }
 }

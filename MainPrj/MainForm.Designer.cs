@@ -67,6 +67,7 @@
             this.channelControlLine6 = new MainPrj.View.ChannelControl();
             this.channelControlLine7 = new MainPrj.View.ChannelControl();
             this.channelControlLine8 = new MainPrj.View.ChannelControl();
+            this.chbUpdatePhone = new System.Windows.Forms.CheckBox();
             this.mainMenuStrip.SuspendLayout();
             this.mainTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -275,9 +276,9 @@
             this.chbListenFromCard.AutoSize = true;
             this.chbListenFromCard.Location = new System.Drawing.Point(932, 588);
             this.chbListenFromCard.Name = "chbListenFromCard";
-            this.chbListenFromCard.Size = new System.Drawing.Size(162, 28);
+            this.chbListenFromCard.Size = new System.Drawing.Size(172, 28);
             this.chbListenFromCard.TabIndex = 13;
-            this.chbListenFromCard.Text = "Listen from card";
+            this.chbListenFromCard.Text = "Listen from card?";
             this.chbListenFromCard.UseVisualStyleBackColor = true;
             this.chbListenFromCard.CheckedChanged += new System.EventHandler(this.chbListenFromCard_CheckedChanged);
             // 
@@ -484,6 +485,17 @@
             this.channelControlLine8.Size = new System.Drawing.Size(1316, 482);
             this.channelControlLine8.TabIndex = 0;
             // 
+            // chbUpdatePhone
+            // 
+            this.chbUpdatePhone.AutoSize = true;
+            this.chbUpdatePhone.Location = new System.Drawing.Point(1032, 551);
+            this.chbUpdatePhone.Name = "chbUpdatePhone";
+            this.chbUpdatePhone.Size = new System.Drawing.Size(236, 28);
+            this.chbUpdatePhone.TabIndex = 13;
+            this.chbUpdatePhone.Text = "Update phone to server?";
+            this.chbUpdatePhone.UseVisualStyleBackColor = true;
+            this.chbUpdatePhone.CheckedChanged += new System.EventHandler(this.chbUpdatePhone_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
@@ -491,6 +503,7 @@
             this.ClientSize = new System.Drawing.Size(1596, 873);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.btnSearch);
+            this.Controls.Add(this.chbUpdatePhone);
             this.Controls.Add(this.chbListenFromCard);
             this.Controls.Add(this.tbxHistory);
             this.Controls.Add(this.btnTransferToSale);
@@ -562,6 +575,7 @@
         private System.Windows.Forms.Button tbxHistory;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel;
+        private System.Windows.Forms.CheckBox chbUpdatePhone;
     }
 }
 

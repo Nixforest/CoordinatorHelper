@@ -80,5 +80,14 @@
     <Setting Name="TimeAutoCloseMsgBox" Type="System.Double" Scope="User">
       <Value Profile="(Default)">60000</Value>
     </Setting>
+    <Setting Name="UpdatePhone" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="ColorFoundKeywordText" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">Black</Value>
+    </Setting>
+    <Setting Name="ColorFoundKeywordBackground" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">0, 192, 0</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

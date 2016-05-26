@@ -65,6 +65,8 @@ namespace MainPrj.View
             Properties.Settings.Default.ColorHandleCallText = this.btnTabHandleCallTextColor.BackColor;
             Properties.Settings.Default.ColorFinishCallTabText = this.btnTabFinishCallTextColor.BackColor;
             Properties.Settings.Default.PhoneCutLength = (int)this.nUDPhoneCutLen.Value;
+            Properties.Settings.Default.ColorFoundKeywordText = this.btnSearchResultText.BackColor;
+            Properties.Settings.Default.ColorFoundKeywordBackground = this.btnSearchResultBackground.BackColor;
             // Save setting
             Properties.Settings.Default.Save();
             // Close form
@@ -112,6 +114,10 @@ namespace MainPrj.View
             this.btnTabIncommingTextColor.BackColor = Properties.Settings.Default.ColorIncommingCallText;
             this.btnTabHandleCallTextColor.BackColor = Properties.Settings.Default.ColorHandleCallText;
             this.btnTabFinishCallTextColor.BackColor = Properties.Settings.Default.ColorFinishCallTabText;
+            this.btnSearchResult.ForeColor = Properties.Settings.Default.ColorFoundKeywordText;
+            this.btnSearchResult.BackColor = Properties.Settings.Default.ColorFoundKeywordBackground;
+            this.btnSearchResultText.BackColor = Properties.Settings.Default.ColorFoundKeywordText;
+            this.btnSearchResultBackground.BackColor = Properties.Settings.Default.ColorFoundKeywordBackground;
             this.nUDPhoneCutLen.Value = Properties.Settings.Default.PhoneCutLength;
         }
         /// <summary>
@@ -191,6 +197,26 @@ namespace MainPrj.View
             if (dialogResult.Equals(DialogResult.OK))
             {
                 this.btnTabFinishCallTextColor.BackColor = this.colorDialog.Color;
+            }
+        }
+
+        private void btnSearchResultText_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = this.colorDialog.ShowDialog();
+            if (dialogResult.Equals(DialogResult.OK))
+            {
+                this.btnSearchResultText.BackColor = this.colorDialog.Color;
+                this.btnSearchResult.ForeColor = this.colorDialog.Color;
+            }
+        }
+
+        private void btnSearchResultBackground_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = this.colorDialog.ShowDialog();
+            if (dialogResult.Equals(DialogResult.OK))
+            {
+                this.btnSearchResultBackground.BackColor = this.colorDialog.Color;
+                this.btnSearchResult.BackColor = this.colorDialog.Color;
             }
         }
     }

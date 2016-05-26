@@ -93,9 +93,9 @@
             // 
             // SelectorView
             // 
+            this.AcceptButton = this.btnClose;
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.btnClose;
             this.ClientSize = new System.Drawing.Size(904, 384);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.listViewSelector);

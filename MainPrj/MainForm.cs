@@ -335,6 +335,7 @@ namespace MainPrj
                 this.channelControlLine2.SetIncommingPhone("01869194542");
                 this.channelControlLine3.SetIncommingPhone("01674816039");
                 this.chbListenFromCard.Checked = Properties.Settings.Default.ListeningCardMode;
+                this.chbUpdatePhone.Checked = Properties.Settings.Default.UpdatePhone;
             }
         }
         /// <summary>
@@ -391,10 +392,11 @@ namespace MainPrj
                         listSelector.Add(selectorModel);
                     }
                     // Create SelectorView
-                    SelectorView selectorForm = new SelectorView();
+                    SelectorView selectorForm = SelectorView.GetInstance();
                     selectorForm.ListData = listSelector;
                     selectorForm.Text = Properties.Resources.SelectorTitleCustomer;
-                    selectorForm.ShowDialog();
+                    //selectorForm.ShowDialog();
+                    selectorForm.Show();
                     // Get customer id that user selected
                     string customerId = selectorForm.SelectedId;
                     if (!String.IsNullOrEmpty(customerId))
@@ -461,6 +463,7 @@ namespace MainPrj
             btnSearch.Visible = onoff;
             tbxLog.Visible = onoff;
             chbListenFromCard.Visible = onoff;
+            chbUpdatePhone.Visible = onoff;
         }
         /// <summary>
         /// Handle when click Create order button
@@ -589,9 +592,10 @@ namespace MainPrj
         /// </summary>
         private void HandleClickHistoryButton()
         {
-            HistoryView historyView = new HistoryView();
+            HistoryView historyView = HistoryView.GetInstance();
             historyView.ListData.AddRange(this.listCalls);
-            historyView.ShowDialog();
+            //historyView.ShowDialog();
+            historyView.Show();
             foreach (CallModel current in historyView.ListData)
             {
                 foreach (CallModel current2 in this.listCalls)
@@ -678,6 +682,16 @@ namespace MainPrj
         private void UpdateStatus(string status)
         {
             toolStripStatusLabel.Text = status;
+        }
+        /// <summary>
+        /// Handle when check in Update phone checkbox
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void chbUpdatePhone_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.UpdatePhone = chbUpdatePhone.Checked;
+            Properties.Settings.Default.Save();
         }
     }
 }

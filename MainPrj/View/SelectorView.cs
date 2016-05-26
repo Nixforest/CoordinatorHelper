@@ -13,6 +13,23 @@ namespace MainPrj.View
 {
     public partial class SelectorView : Form
     {
+        private static SelectorView form;
+        /// <summary>
+        /// Get singleton instance.
+        /// </summary>
+        /// <returns>Current instance</returns>
+        public static SelectorView GetInstance()
+        {
+            if (form == null || form.IsDisposed)
+            {
+                form = new SelectorView();
+            }
+            else
+            {
+                form.BringToFront();
+            }
+            return form;
+        }
         /// <summary>
         /// List of data.
         /// </summary>
@@ -87,15 +104,15 @@ namespace MainPrj.View
         private void SelectorView_FormClosing(object sender, FormClosingEventArgs e)
         {
             // Check if selected id is empty
-            if (String.IsNullOrEmpty(this.selectedId))
-            {
-                // Show message box
-                DialogResult result = CommonProcess.ShowInformMessage(Properties.Resources.AreYouSureNotSelectCustomer);
-                if (result.Equals(DialogResult.No))
-                {
-                    e.Cancel = true;
-                }
-            }
+            //if (String.IsNullOrEmpty(this.selectedId))
+            //{
+            //    // Show message box
+            //    DialogResult result = CommonProcess.ShowInformMessage(Properties.Resources.AreYouSureNotSelectCustomer);
+            //    if (result.Equals(DialogResult.No))
+            //    {
+            //        e.Cancel = true;
+            //    }
+            //}
         }
         /// <summary>
         /// Handle when active listview.
@@ -138,6 +155,11 @@ namespace MainPrj.View
         /// <param name="e">EventArgs</param>
         private void btnClose_Click(object sender, EventArgs e)
         {
+            if (this.listViewSelector.SelectedItems.Count > 0)
+            {
+                this.selectedId = this.listViewSelector.SelectedItems[0].SubItems[(int)SelectorColumns.SELECTOR_COLUMN_ID].Text;
+                this.Close();
+            }
             this.Close();
         }
     }

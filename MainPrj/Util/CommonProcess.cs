@@ -351,12 +351,14 @@ namespace MainPrj.Util
         /// <param name="phone">Phone to update</param>
         public static void UpdateCustomerPhone(string customerId, string phone)
         {
-            using (WebClient webClient = new WebClient())
+            if (Properties.Settings.Default.UpdatePhone)
             {
-                try
+                using (WebClient webClient = new WebClient())
                 {
-                    byte[] bytes = webClient.UploadValues(Properties.Settings.Default.ServerURL
-                        + Properties.Settings.Default.URLUpdateCustomerPhone, new NameValueCollection
+                    try
+                    {
+                        byte[] bytes = webClient.UploadValues(Properties.Settings.Default.ServerURL
+                            + Properties.Settings.Default.URLUpdateCustomerPhone, new NameValueCollection
 					{
 						{
 							Properties.Settings.Default.CustomerIdKey,
@@ -367,13 +369,47 @@ namespace MainPrj.Util
 							phone
 						}
 					});
-                }
-                catch (WebException)
-                {
-                    CommonProcess.ShowErrorMessage(Properties.Resources.InternetConnectionError);
-                    CommonProcess.HasError = true;
+                    }
+                    catch (WebException)
+                    {
+                        CommonProcess.ShowErrorMessage(Properties.Resources.InternetConnectionError);
+                        CommonProcess.HasError = true;
+                    }
                 }
             }
+        }
+        /// <summary>
+        /// Vietnamese strings sign.
+        /// </summary>
+        private static readonly string[] VietnameseSigns = new string[]
+        {
+            "aAeEoOuUiIdDyY",
+            "áàạảãâấầậẩẫăắằặẳẵ",
+            "ÁÀẠẢÃÂẤẦẬẨẪĂẮẰẶẲẴ",
+            "éèẹẻẽêếềệểễ",
+            "ÉÈẸẺẼÊẾỀỆỂỄ",
+            "óòọỏõôốồộổỗơớờợởỡ",
+            "ÓÒỌỎÕÔỐỒỘỔỖƠỚỜỢỞỠ",
+            "úùụủũưứừựửữ",
+            "ÚÙỤỦŨƯỨỪỰỬỮ",
+            "íìịỉĩ",
+            "ÍÌỊỈĨ",
+            "đ",
+            "Đ",
+            "ýỳỵỷỹ",
+            "ÝỲỴỶỸ"
+        };
+
+        public static string RemoveSign4VietnameseString(string str)
+        {
+            for (int i = 1; i < VietnameseSigns.Length; i++)
+            {
+                for (int j = 0; j < VietnameseSigns[i].Length; j++)
+                {
+                    str = str.Replace(VietnameseSigns[i][j], VietnameseSigns[0][i - 1]);
+                }
+            }
+            return str;
         }
     }
 }

@@ -83,6 +83,12 @@
             this.colorDialog = new System.Windows.Forms.ColorDialog();
             this.label23 = new System.Windows.Forms.Label();
             this.nUDPhoneCutLen = new System.Windows.Forms.NumericUpDown();
+            this.label24 = new System.Windows.Forms.Label();
+            this.label25 = new System.Windows.Forms.Label();
+            this.label26 = new System.Windows.Forms.Label();
+            this.btnSearchResult = new System.Windows.Forms.Button();
+            this.btnSearchResultText = new System.Windows.Forms.Button();
+            this.btnSearchResultBackground = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.nUDMainPort)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -162,6 +168,7 @@
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Máy chủ";
+            this.groupBox1.Visible = false;
             // 
             // tbxPhoneSeparator
             // 
@@ -587,12 +594,69 @@
             this.nUDPhoneCutLen.Size = new System.Drawing.Size(114, 20);
             this.nUDPhoneCutLen.TabIndex = 1;
             // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(10, 352);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(111, 13);
+            this.label24.TabIndex = 0;
+            this.label24.Text = "Màu kết quả tìm kiếm:";
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(92, 381);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(52, 13);
+            this.label25.TabIndex = 0;
+            this.label25.Text = "Màu chữ:";
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(199, 381);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(52, 13);
+            this.label26.TabIndex = 0;
+            this.label26.Text = "Màu nền:";
+            // 
+            // btnSearchResult
+            // 
+            this.btnSearchResult.Location = new System.Drawing.Point(150, 347);
+            this.btnSearchResult.Name = "btnSearchResult";
+            this.btnSearchResult.Size = new System.Drawing.Size(68, 23);
+            this.btnSearchResult.TabIndex = 7;
+            this.btnSearchResult.Text = "AABBBCCC";
+            this.btnSearchResult.UseVisualStyleBackColor = true;
+            // 
+            // btnSearchResultText
+            // 
+            this.btnSearchResultText.Location = new System.Drawing.Point(150, 376);
+            this.btnSearchResultText.Name = "btnSearchResultText";
+            this.btnSearchResultText.Size = new System.Drawing.Size(23, 23);
+            this.btnSearchResultText.TabIndex = 7;
+            this.btnSearchResultText.UseVisualStyleBackColor = true;
+            this.btnSearchResultText.Click += new System.EventHandler(this.btnSearchResultText_Click);
+            // 
+            // btnSearchResultBackground
+            // 
+            this.btnSearchResultBackground.Location = new System.Drawing.Point(257, 376);
+            this.btnSearchResultBackground.Name = "btnSearchResultBackground";
+            this.btnSearchResultBackground.Size = new System.Drawing.Size(23, 23);
+            this.btnSearchResultBackground.TabIndex = 7;
+            this.btnSearchResultBackground.UseVisualStyleBackColor = true;
+            this.btnSearchResultBackground.Click += new System.EventHandler(this.btnSearchResultBackground_Click);
+            // 
             // SettingView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(906, 635);
+            this.Controls.Add(this.btnSearchResultBackground);
+            this.Controls.Add(this.btnSearchResultText);
             this.Controls.Add(this.btnFinishCallBackColor);
+            this.Controls.Add(this.btnSearchResult);
             this.Controls.Add(this.btnFinishCallTextColor);
             this.Controls.Add(this.btnFinishCallColor);
             this.Controls.Add(this.btnTabFinishCallTextColor);
@@ -604,8 +668,10 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.btnCancel);
+            this.Controls.Add(this.label26);
             this.Controls.Add(this.btnOpenFile);
             this.Controls.Add(this.label17);
+            this.Controls.Add(this.label25);
             this.Controls.Add(this.btnAdvance);
             this.Controls.Add(this.label16);
             this.Controls.Add(this.nUDPhoneCutLen);
@@ -615,6 +681,7 @@
             this.Controls.Add(this.label23);
             this.Controls.Add(this.label21);
             this.Controls.Add(this.label18);
+            this.Controls.Add(this.label24);
             this.Controls.Add(this.label20);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.label19);
@@ -701,5 +768,11 @@
         private System.Windows.Forms.ColorDialog colorDialog;
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.NumericUpDown nUDPhoneCutLen;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.Button btnSearchResult;
+        private System.Windows.Forms.Button btnSearchResultText;
+        private System.Windows.Forms.Button btnSearchResultBackground;
     }
 }
