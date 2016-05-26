@@ -230,6 +230,7 @@ namespace MainPrj
                         switch (model.Status)
                         {
                             case (int)CardDataStatus.CARDDATA_RINGING:
+                                UpdateStatus(String.Format(Properties.Resources.IncommingCall, model.Phone));
                                 statusStr = Properties.Resources.CardDataStatus1;
                                 color = Color.DarkGreen;
                                 break;
@@ -267,25 +268,32 @@ namespace MainPrj
             }
             if (needUpdate)
             {
-                ChannelControl currentChannelCtrl = this.listChannelControl[this.currentChannel];
-                
-                if (!model.Channel.Equals(this.currentChannel)
-                    && currentChannelCtrl.CanChangeTab())
+                if (this.listChannelControl[this.currentChannel].CanChangeTab())
                 {
-                    this.currentChannel = model.Channel;
-                    // Show up incomming channel
-                    if ((this.currentChannel >= 0)
-                        && (this.currentChannel < Properties.Settings.Default.ChannelNumber))
+                    if (!model.Channel.Equals(this.currentChannel))
                     {
-                        this.mainTabControl.SelectedIndex = this.currentChannel;
+                        this.currentChannel = model.Channel;
+                        // Show up incomming channel
+                        if ((this.currentChannel >= 0)
+                            && (this.currentChannel < Properties.Settings.Default.ChannelNumber))
+                        {
+                            this.mainTabControl.SelectedIndex = this.currentChannel;
+                        }
+                    }
+                    if (channel != null)
+                    {
+                        channel.SetIncommingPhone(model.Phone);
+                        UpdateData(model.Phone, model.Status, this.currentChannel);
                     }
                 }
-                if (channel != null)
+                else
                 {
-                    channel.SetIncommingPhone(model.Phone);
-                    UpdateData(model.Phone, model.Status);
+                    if (channel != null)
+                    {
+                        channel.SetIncommingPhone(model.Phone);
+                        UpdateData(model.Phone, model.Status, model.Channel);
+                    }
                 }
-                //this.listCalls.Add
             }
             this.tbxLog.Text = data + "\r\n" + this.tbxLog.Text;
         }
@@ -333,7 +341,7 @@ namespace MainPrj
         /// Update data to channel tab.
         /// </summary>
         /// <param name="phone">Incomming number</param>
-        private void UpdateData(string phone, int status)
+        private void UpdateData(string phone, int status, int channelIdx)
         {
             // Get list of customers
             List<CustomerModel> listCustomer = CommonProcess.RequestCustomerByPhone(phone);
@@ -345,12 +353,12 @@ namespace MainPrj
                 // Stop
                 return;
             }
-            // Get current channel
             ChannelControl channel = null;
             CustomerModel customer = new CustomerModel();
             try
             {
-                channel = this.listChannelControl.ElementAt(this.currentChannel);
+                // Get channel need update
+                channel = this.listChannelControl.ElementAt(channelIdx);
             }
             catch (ArgumentOutOfRangeException)
             {
@@ -366,6 +374,12 @@ namespace MainPrj
                     customer = listCustomer.ElementAt(0);
                     break;
                 default:        // 2 or more customer has phone number is match with incomming phone
+                    // Channel need update is not current channel
+                    if (!channelIdx.Equals(this.currentChannel))
+                    {
+                        // Not show selector list
+                        break;
+                    }
                     List<SelectorModel> listSelector = new List<SelectorModel>();
                     // Create list selector data
                     foreach (CustomerModel customerInfo in listCustomer)
@@ -399,7 +413,7 @@ namespace MainPrj
                     break;
             }
 
-            CallModel call = new CallModel(System.DateTime.Now, this.currentChannel, customer, phone, status);
+            CallModel call = new CallModel(System.DateTime.Now, channelIdx, customer, phone, status);
             this.listCalls.Add(call);
             CommonProcess.SetChannelInformation(channel, call.Customer);
         }
@@ -430,7 +444,7 @@ namespace MainPrj
                     ChannelControl tab = this.listChannelControl.ElementAt(this.currentChannel);
                     tab.SetIncommingPhone(phone);
                     // Request server and update data from server
-                    UpdateData(phone, (int)CardDataStatus.CARDDATA_RINGING);
+                    UpdateData(phone, (int)CardDataStatus.CARDDATA_RINGING, this.currentChannel);
                 }
                 catch (ArgumentOutOfRangeException)
                 {
@@ -559,7 +573,9 @@ namespace MainPrj
         /// </summary>
         private void HandleClickUpdateCustomerButton()
         {
-            CommonProcess.ShowInformMessageProcessing();
+            //CommonProcess.ShowInformMessageProcessing();
+            this.listChannelControl[this.currentChannel].SaveNote();
+            UpdateStatus(Properties.Resources.NoteSaved);
         }
         /// <summary>
         /// Handle when click Transfer To Sale button.
@@ -654,6 +670,14 @@ namespace MainPrj
         {
             // Write history file
             CommonProcess.WriteHistory(this.listCalls);
+        }
+        /// <summary>
+        /// Update status content.
+        /// </summary>
+        /// <param name="status">Update status</param>
+        private void UpdateStatus(string status)
+        {
+            toolStripStatusLabel.Text = status;
         }
     }
 }

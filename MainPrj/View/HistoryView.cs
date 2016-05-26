@@ -211,7 +211,11 @@ namespace MainPrj.View
 
             }
         }
-
+        /// <summary>
+        /// Handle when double click on item list view
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
         private void listViewHistory_DoubleClick(object sender, EventArgs e)
         {
             CustomerView customerView = new CustomerView();
@@ -252,6 +256,22 @@ namespace MainPrj.View
                     listViewItem.SubItems[6].Text = data.Contact_note;
                     listViewItem.SubItems[7].Text = string.Format("{0} - {1}", data.Name, data.Address);
                 }
+            }
+        }
+        /// <summary>
+        /// Handle press key on window
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void HistoryView_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.F5:
+                    this.Close();
+                    break;
+                default:
+                    break;
             }
         }
     }

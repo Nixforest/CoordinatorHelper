@@ -226,6 +226,15 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Có cuộc gọi đến: {0}.
+        /// </summary>
+        internal static string IncommingCall {
+            get {
+                return ResourceManager.GetString("IncommingCall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Thông báo.
         /// </summary>
         internal static string Inform {
@@ -268,6 +277,15 @@ namespace MainPrj.Properties {
         internal static string NewIncommingPhone {
             get {
                 return ResourceManager.GetString("NewIncommingPhone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ghi chú đã được lưu lại.
+        /// </summary>
+        internal static string NoteSaved {
+            get {
+                return ResourceManager.GetString("NoteSaved", resourceCulture);
             }
         }
         

@@ -89,10 +89,12 @@ namespace MainPrj.View
                     listPhoneControl.ElementAt(i).Text = listPhone[i];
                     if (tbxIncommingNumber.Text.Equals(listPhone[i]))
                     {
+                        listPhoneControl.ElementAt(i).BackColor = SystemColors.ButtonFace;
                         listPhoneControl.ElementAt(i).ForeColor = SystemColors.Highlight;
                     }
                     else
                     {
+                        listPhoneControl.ElementAt(i).BackColor = SystemColors.ButtonFace;
                         listPhoneControl.ElementAt(i).ForeColor = Color.Black;
                     }
                 }
@@ -195,7 +197,13 @@ namespace MainPrj.View
         /// <param name="e">EventArgs</param>
         private void tbxNote_TextChanged(object sender, EventArgs e)
         {
+            
+        }
+
+        public void SaveNote()
+        {
             data.Contact_note = tbxNote.Text.Trim();
+            tbxIncommingNumber.Focus();
         }
         /// <summary>
         /// Handle when focus on Search textbox
@@ -317,7 +325,7 @@ namespace MainPrj.View
         /// <returns></returns>
         public bool CanChangeTab()
         {
-            return !this.tbxCustomerName.Focused && !this.tbxSearchCustomer.Focused && !this.tbxNote.Focused;
+            return !this.tbxSearchCustomer.Focused && !this.tbxNote.Focused;
         }
     }
 }

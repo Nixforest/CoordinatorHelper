@@ -218,4 +218,10 @@ Nhấn NO để chọn lại Khách hàng.</value>
     <value>Không thể kết nối đến cổng:</value>
     <comment>Exception connect port</comment>
   </data>
+  <data name="IncommingCall" xml:space="preserve">
+    <value>Có cuộc gọi đến: {0}</value>
+  </data>
+  <data name="NoteSaved" xml:space="preserve">
+    <value>Ghi chú đã được lưu lại</value>
+  </data>
 </root>
