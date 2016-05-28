@@ -15,7 +15,6 @@ namespace MainPrj.View
 {
     public partial class HistoryView : Form
     {
-        private static HistoryView form = null;
         /// <summary>
         /// List of data.
         /// </summary>
@@ -35,22 +34,6 @@ namespace MainPrj.View
         {
             get { return selectedId; }
             set { selectedId = value; }
-        }
-        /// <summary>
-        /// Get singleton instance.
-        /// </summary>
-        /// <returns>Current instance</returns>
-        public static HistoryView GetInstance()
-        {
-            if (form == null || form.IsDisposed)
-            {
-                form = new HistoryView();
-            }
-            else
-            {
-                form.BringToFront();
-            }
-            return form;
         }
         /// <summary>
         /// Constructor.

@@ -256,11 +256,10 @@ namespace MainPrj.View
                         Address = customer.Address
                     });
                 }
-                SelectorView selectorView = SelectorView.GetInstance();
+                SelectorView selectorView = new SelectorView();
                 selectorView.ListData = listSelector;
                 selectorView.Text = Properties.Resources.SelectorTitleCustomer;
-                //selectorView.ShowDialog();
-                selectorView.Show();
+                selectorView.ShowDialog();
                 string selectedId = selectorView.SelectedId;
                 if (!string.IsNullOrEmpty(selectedId))
                 {

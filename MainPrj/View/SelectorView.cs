@@ -13,23 +13,6 @@ namespace MainPrj.View
 {
     public partial class SelectorView : Form
     {
-        private static SelectorView form;
-        /// <summary>
-        /// Get singleton instance.
-        /// </summary>
-        /// <returns>Current instance</returns>
-        public static SelectorView GetInstance()
-        {
-            if (form == null || form.IsDisposed)
-            {
-                form = new SelectorView();
-            }
-            else
-            {
-                form.BringToFront();
-            }
-            return form;
-        }
         /// <summary>
         /// List of data.
         /// </summary>

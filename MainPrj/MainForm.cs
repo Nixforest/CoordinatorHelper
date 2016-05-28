@@ -392,11 +392,10 @@ namespace MainPrj
                         listSelector.Add(selectorModel);
                     }
                     // Create SelectorView
-                    SelectorView selectorForm = SelectorView.GetInstance();
+                    SelectorView selectorForm = new SelectorView();
                     selectorForm.ListData = listSelector;
                     selectorForm.Text = Properties.Resources.SelectorTitleCustomer;
-                    //selectorForm.ShowDialog();
-                    selectorForm.Show();
+                    selectorForm.ShowDialog();
                     // Get customer id that user selected
                     string customerId = selectorForm.SelectedId;
                     if (!String.IsNullOrEmpty(customerId))
@@ -592,10 +591,9 @@ namespace MainPrj
         /// </summary>
         private void HandleClickHistoryButton()
         {
-            HistoryView historyView = HistoryView.GetInstance();
+            HistoryView historyView = new HistoryView();
             historyView.ListData.AddRange(this.listCalls);
-            //historyView.ShowDialog();
-            historyView.Show();
+            historyView.ShowDialog();
             foreach (CallModel current in historyView.ListData)
             {
                 foreach (CallModel current2 in this.listCalls)

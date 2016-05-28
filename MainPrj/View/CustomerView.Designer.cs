@@ -70,7 +70,7 @@
             this.MinimizeBox = false;
             this.Name = "CustomerView";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "CustomerView";
+            this.Text = "Cập nhật thông tin Khách hàng";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CustomerView_KeyDown);
             this.ResumeLayout(false);
 
