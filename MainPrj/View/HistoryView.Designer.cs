@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HistoryView));
             this.btnClose = new System.Windows.Forms.Button();
             this.listViewHistory = new System.Windows.Forms.ListView();
@@ -44,6 +45,10 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tbxSearch = new System.Windows.Forms.TextBox();
             this.btnClear = new System.Windows.Forms.Button();
+            this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItemCopyPhone = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemMarkFinish = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnClose
@@ -82,6 +87,7 @@
             this.listViewHistory.View = System.Windows.Forms.View.Details;
             this.listViewHistory.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.listViewHistory_ItemSelectionChanged);
             this.listViewHistory.DoubleClick += new System.EventHandler(this.listViewHistory_DoubleClick);
+            this.listViewHistory.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listViewHistory_MouseDown);
             // 
             // columnHeader1
             // 
@@ -173,6 +179,32 @@
             this.btnClear.UseVisualStyleBackColor = true;
             this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
+            // contextMenuStrip
+            // 
+            this.contextMenuStrip.Font = new System.Drawing.Font("Segoe UI", 14F);
+            this.contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItemCopyPhone,
+            this.toolStripMenuItemMarkFinish});
+            this.contextMenuStrip.Name = "contextMenuStrip";
+            this.contextMenuStrip.Size = new System.Drawing.Size(278, 86);
+            this.contextMenuStrip.Text = "dfsdf";
+            // 
+            // toolStripMenuItemCopyPhone
+            // 
+            this.toolStripMenuItemCopyPhone.Image = global::MainPrj.Properties.Resources.copy;
+            this.toolStripMenuItemCopyPhone.Name = "toolStripMenuItemCopyPhone";
+            this.toolStripMenuItemCopyPhone.Size = new System.Drawing.Size(277, 30);
+            this.toolStripMenuItemCopyPhone.Text = "Sao chép Số điện thoại";
+            this.toolStripMenuItemCopyPhone.Click += new System.EventHandler(this.toolStripMenuItemCopyPhone_Click);
+            // 
+            // toolStripMenuItemMarkFinish
+            // 
+            this.toolStripMenuItemMarkFinish.Image = global::MainPrj.Properties.Resources.finish;
+            this.toolStripMenuItemMarkFinish.Name = "toolStripMenuItemMarkFinish";
+            this.toolStripMenuItemMarkFinish.Size = new System.Drawing.Size(277, 30);
+            this.toolStripMenuItemMarkFinish.Text = "Đánh dấu hoàn thành";
+            this.toolStripMenuItemMarkFinish.Click += new System.EventHandler(this.toolStripMenuItemMarkFinish_Click);
+            // 
             // HistoryView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
@@ -195,6 +227,7 @@
             this.Text = "Lịch sử cuộc gọi";
             this.Load += new System.EventHandler(this.HistoryView_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.HistoryView_KeyDown);
+            this.contextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -217,5 +250,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox tbxSearch;
         private System.Windows.Forms.Button btnClear;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemCopyPhone;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemMarkFinish;
     }
 }

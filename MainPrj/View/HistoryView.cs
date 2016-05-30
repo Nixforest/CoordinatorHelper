@@ -25,6 +25,7 @@ namespace MainPrj.View
             get { return listData; }
             set { listData = value; }
         }
+        private Point rightClick;
         /// <summary>
         /// Selected id.
         /// </summary>
@@ -89,19 +90,25 @@ namespace MainPrj.View
                 {
                     try
                     {
+                        // Open filestream
                         Stream fileStream = fileDialog.OpenFile();
                         if (fileStream != null)
                         {
+                            // Get last index
                             int index = this.listViewHistory.Items.Count;
+                            // Local list
                             List<CallModel> listCalls = new List<CallModel>();
                             DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(CallModel));
                             byte[] encodingBytes = null;
+                            // Stream reader
                             StreamReader sr = new StreamReader(fileStream);
                             while (true)
                             {
+                                // Read line by line
                                 string line = sr.ReadLine();
                                 if (line == null)
                                 {
+                                    // EOF
                                     break;
                                 }
                                 try
@@ -117,15 +124,19 @@ namespace MainPrj.View
                                 {
                                     MemoryStream msU = new MemoryStream(encodingBytes);
                                     CallModel callModel = (CallModel)js.ReadObject(msU);
+                                    // Add to local list
                                     listCalls.Add(callModel);
+                                    // Add to member list
                                     this.listData.Add(callModel);
                                 }
                             }
+                            // Show to list view
                             for (int i = listCalls.Count - 1; i >= 0; i--)
                             {
                                 this.listViewHistory.Items.Add(CreateListViewItem(listCalls[i], ++index));
                             }
                         }
+                        // Close stream
                         fileStream.Close();
                     }
                     catch (Exception ex)
@@ -160,7 +171,6 @@ namespace MainPrj.View
                     time.Minute,
                     time.Second);
             }
-            //arr[(int)HistoryColumns.HISTORY_COLUMN_TIME] = callModel.Id;
             arr[(int)HistoryColumns.HISTORY_COLUMN_PHONE] = callModel.Phone;
             arr[(int)HistoryColumns.HISTORY_COLUMN_CHANNEL] = String.Format("{0}", callModel.Channel + 1);
             arr[(int)HistoryColumns.HISTORY_COLUMN_STATUS] = CommonProcess.GetStatusString(callModel.Status);
@@ -173,15 +183,18 @@ namespace MainPrj.View
                     callModel.Customer.Address);
             }
             item = new ListViewItem(arr);
+            // Miss call
             if (callModel.Status.Equals((int)CardDataStatus.CARDDATA_MISS))
             {
                 item.ForeColor = Properties.Settings.Default.ColorMissCallText;
             }
+            // Finish item
             if (callModel.IsFinish)
             {
                 item.ForeColor = Properties.Settings.Default.ColorFinishCallText;
                 item.BackColor = Properties.Settings.Default.ColorFinishCallBackground;
             }
+            // Set tag value
             item.Tag = callModel.Id;
             return item;
         }
@@ -192,14 +205,23 @@ namespace MainPrj.View
         /// <param name="e">EventArgs</param>
         private void btnFinish_Click(object sender, EventArgs e)
         {
+            HandleFinishItem();
+        }
+        /// <summary>
+        /// Mark item is finish.
+        /// </summary>
+        private void HandleFinishItem()
+        {
             // Has a row is selected
             if (this.listViewHistory.SelectedItems.Count > 0)
             {
                 foreach (ListViewItem item in this.listViewHistory.SelectedItems)
                 {
                     string id = item.Tag.ToString();
+                    // Mark finish
                     item.ForeColor = Properties.Settings.Default.ColorFinishCallText;
                     item.BackColor = Properties.Settings.Default.ColorFinishCallBackground;
+                    // Update data
                     for (int i = 0; i < this.listData.Count; i++)
                     {
                         if (this.listData[i].Id.Equals(id))
@@ -208,7 +230,6 @@ namespace MainPrj.View
                         }
                     }
                 }
-
             }
         }
         /// <summary>
@@ -220,7 +241,7 @@ namespace MainPrj.View
         {
             CustomerView customerView = new CustomerView();
             CallModel callModel = null;
-            if (this.listViewHistory.SelectedItems.Count == 1)
+            if (this.listViewHistory.SelectedItems.Count > 0)
             {
                 string value = this.listViewHistory.SelectedItems[0].Tag.ToString();
                 for (int i = 0; i < this.listData.Count; i++)
@@ -238,23 +259,23 @@ namespace MainPrj.View
             if (callModel != null)
             {
                 CustomerModel data = customerView.GetChannel().Data;
-                callModel.Customer.Id = data.Id;
-                callModel.Customer.Name = data.Name;
-                callModel.Customer.Address = data.Address;
-                callModel.Customer.PhoneList = data.PhoneList;
-                callModel.Customer.AgencyName = data.AgencyName;
-                callModel.Customer.CustomerType = data.CustomerType;
-                callModel.Customer.Contact = data.Contact;
-                callModel.Customer.Contact_note = data.Contact_note;
-                callModel.Customer.Sale_name = data.Sale_name;
-                callModel.Customer.Sale_phone = data.Sale_phone;
-                callModel.Customer.Sale_type = data.Sale_type;
-                callModel.Customer.AgencyNearest = data.AgencyNearest;
+                callModel.Customer.Id               = data.Id;
+                callModel.Customer.Name             = data.Name;
+                callModel.Customer.Address          = data.Address;
+                callModel.Customer.PhoneList        = data.PhoneList;
+                callModel.Customer.AgencyName       = data.AgencyName;
+                callModel.Customer.CustomerType     = data.CustomerType;
+                callModel.Customer.Contact          = data.Contact;
+                callModel.Customer.Contact_note     = data.Contact_note;
+                callModel.Customer.Sale_name        = data.Sale_name;
+                callModel.Customer.Sale_phone       = data.Sale_phone;
+                callModel.Customer.Sale_type        = data.Sale_type;
+                callModel.Customer.AgencyNearest    = data.AgencyNearest;
                 if (this.listViewHistory.SelectedItems.Count == 1)
                 {
                     ListViewItem listViewItem = this.listViewHistory.SelectedItems[0];
-                    listViewItem.SubItems[6].Text = data.Contact_note;
-                    listViewItem.SubItems[7].Text = string.Format("{0} - {1}", data.Name, data.Address);
+                    listViewItem.SubItems[(int)HistoryColumns.HISTORY_COLUMN_NOTE].Text = data.Contact_note;
+                    listViewItem.SubItems[(int)HistoryColumns.HISTORY_COLUMN_CUSTOMER].Text = string.Format("{0} - {1}", data.Name, data.Address);
                 }
             }
         }
@@ -284,14 +305,14 @@ namespace MainPrj.View
         /// <param name="keyword">Keyword</param>
         private void SearchByKeyword(string keyword)
         {
-            keyword = CommonProcess.RemoveSign4VietnameseString(keyword).ToLower();
+            keyword = CommonProcess.NormalizationString(keyword).ToLower();
             if (!String.IsNullOrEmpty(keyword))
             {
                 foreach (ListViewItem item in this.listViewHistory.Items)
                 {
                     foreach (System.Windows.Forms.ListViewItem.ListViewSubItem subItem in item.SubItems)
                     {
-                        string text = CommonProcess.RemoveSign4VietnameseString(subItem.Text).ToLower();
+                        string text = CommonProcess.NormalizationString(subItem.Text).ToLower();
                         if (text.Contains(keyword))
                         {
                             item.UseItemStyleForSubItems = false;
@@ -366,6 +387,53 @@ namespace MainPrj.View
             tbxSearch.Text = Properties.Resources.SearchString;
             tbxSearch.ForeColor = SystemColors.GrayText;
             SearchByKeyword(String.Empty);
+        }
+        /// <summary>
+        /// Handle when click on Listview
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void listViewHistory_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button.Equals(MouseButtons.Right))
+            {
+                rightClick = e.Location;
+                foreach (ListViewItem item in this.listViewHistory.Items)
+                {
+                    if (item.Bounds.Contains(e.Location))
+                    {
+                        this.contextMenuStrip.Show(Cursor.Position);
+                        break;
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// Handle copy phone
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void toolStripMenuItemCopyPhone_Click(object sender, EventArgs e)
+        {
+            string phone = string.Empty;
+            foreach (ListViewItem item in this.listViewHistory.Items)
+            {
+                if (item.Bounds.Contains(rightClick))
+                {
+                    phone = item.SubItems[(int)HistoryColumns.HISTORY_COLUMN_PHONE].Text;
+                    break;
+                }
+            }
+            Clipboard.SetText(phone);
+        }
+        /// <summary>
+        /// Handle finish item.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void toolStripMenuItemMarkFinish_Click(object sender, EventArgs e)
+        {
+            HandleFinishItem();
         }
     }
 }

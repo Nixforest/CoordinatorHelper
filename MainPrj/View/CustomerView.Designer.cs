@@ -31,6 +31,7 @@
             MainPrj.Model.CustomerModel customerModel1 = new MainPrj.Model.CustomerModel();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CustomerView));
             this.channelControl = new MainPrj.View.ChannelControl();
+            this.btnClose = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // channelControl
@@ -55,11 +56,24 @@
             this.channelControl.Size = new System.Drawing.Size(849, 474);
             this.channelControl.TabIndex = 0;
             // 
+            // btnClose
+            // 
+            this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnClose.Location = new System.Drawing.Point(773, 501);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(88, 37);
+            this.btnClose.TabIndex = 1;
+            this.btnClose.Text = "Đóng";
+            this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            // 
             // CustomerView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(882, 499);
+            this.CancelButton = this.btnClose;
+            this.ClientSize = new System.Drawing.Size(873, 550);
+            this.Controls.Add(this.btnClose);
             this.Controls.Add(this.channelControl);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -79,5 +93,6 @@
         #endregion
 
         private ChannelControl channelControl;
+        private System.Windows.Forms.Button btnClose;
     }
 }

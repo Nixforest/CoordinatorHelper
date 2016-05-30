@@ -52,7 +52,7 @@
             this.listViewSelector.MultiSelect = false;
             this.listViewSelector.Name = "listViewSelector";
             this.listViewSelector.ShowItemToolTips = true;
-            this.listViewSelector.Size = new System.Drawing.Size(884, 315);
+            this.listViewSelector.Size = new System.Drawing.Size(1289, 567);
             this.listViewSelector.TabIndex = 0;
             this.listViewSelector.UseCompatibleStateImageBehavior = false;
             this.listViewSelector.View = System.Windows.Forms.View.Details;
@@ -73,7 +73,7 @@
             // columnHeaderAddress
             // 
             this.columnHeaderAddress.Text = "Địa chỉ";
-            this.columnHeaderAddress.Width = 420;
+            this.columnHeaderAddress.Width = 814;
             // 
             // columnHeaderId
             // 
@@ -83,7 +83,7 @@
             // btnClose
             // 
             this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnClose.Location = new System.Drawing.Point(806, 338);
+            this.btnClose.Location = new System.Drawing.Point(1211, 590);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(92, 37);
             this.btnClose.TabIndex = 1;
@@ -96,7 +96,7 @@
             this.AcceptButton = this.btnClose;
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(904, 384);
+            this.ClientSize = new System.Drawing.Size(1318, 639);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.listViewSelector);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));

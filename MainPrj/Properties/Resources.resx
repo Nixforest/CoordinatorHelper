@@ -224,4 +224,22 @@ Nhấn NO để chọn lại Khách hàng.</value>
   <data name="NoteSaved" xml:space="preserve">
     <value>Ghi chú đã được lưu lại</value>
   </data>
+  <data name="copy" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>copy.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="finish" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>finish.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Hủy</value>
+  </data>
+  <data name="DataNotSaveYet" xml:space="preserve">
+    <value>Bạn có muốn lưu thay đổi hay không?</value>
+  </data>
+  <data name="DontSave" xml:space="preserve">
+    <value>Không lưu</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Lưu</value>
+  </data>
 </root>

@@ -108,6 +108,15 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hủy.
+        /// </summary>
+        internal static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Gọi đến.
         /// </summary>
         internal static string CardDataStatus1 {
@@ -162,11 +171,39 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap copy {
+            get {
+                object obj = ResourceManager.GetObject("copy", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bạn có muốn lưu thay đổi hay không?.
+        /// </summary>
+        internal static string DataNotSaveYet {
+            get {
+                return ResourceManager.GetString("DataNotSaveYet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Lỗi decode dữ liệu.
         /// </summary>
         internal static string DecoderError {
             get {
                 return ResourceManager.GetString("DecoderError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Không lưu.
+        /// </summary>
+        internal static string DontSave {
+            get {
+                return ResourceManager.GetString("DontSave", resourceCulture);
             }
         }
         
@@ -213,6 +250,16 @@ namespace MainPrj.Properties {
         internal static string ErrorLengthOfHostName {
             get {
                 return ResourceManager.GetString("ErrorLengthOfHostName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap finish {
+            get {
+                object obj = ResourceManager.GetObject("finish", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -304,6 +351,15 @@ namespace MainPrj.Properties {
         internal static string OutOfMemory {
             get {
                 return ResourceManager.GetString("OutOfMemory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lưu.
+        /// </summary>
+        internal static string Save {
+            get {
+                return ResourceManager.GetString("Save", resourceCulture);
             }
         }
         

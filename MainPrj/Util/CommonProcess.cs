@@ -191,7 +191,7 @@ namespace MainPrj.Util
         /// <returns>Dialog result</returns>
         public static DialogResult ShowInformMessage(string msg)
         {
-            return MessageBox.Show(msg, Properties.Resources.Inform, MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+            return MessageBox.Show(msg, Properties.Resources.Inform, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
         }
         /// <summary>
         /// Show inform message box.
@@ -201,7 +201,7 @@ namespace MainPrj.Util
         /// <returns>Dialog result</returns>
         public static DialogResult ShowInformMessage(string msg, MessageBoxButtons buttons)
         {
-            return MessageBox.Show(msg, Properties.Resources.Inform, buttons, MessageBoxIcon.Information);
+            return MessageBox.Show(msg, Properties.Resources.Inform, buttons, MessageBoxIcon.Warning);
         }
         /// <summary>
         /// Show message box inform about function processing.
@@ -381,7 +381,7 @@ namespace MainPrj.Util
         /// <summary>
         /// Vietnamese strings sign.
         /// </summary>
-        private static readonly string[] VietnameseSigns = new string[]
+        private static readonly string[] UnicodeSigns = new string[]
         {
             "aAeEoOuUiIdDyY",
             "áàạảãâấầậẩẫăắằặẳẵ",
@@ -399,14 +399,18 @@ namespace MainPrj.Util
             "ýỳỵỷỹ",
             "ÝỲỴỶỸ"
         };
-
-        public static string RemoveSign4VietnameseString(string str)
+        /// <summary>
+        /// Remove sign for Vietnamese string.
+        /// </summary>
+        /// <param name="str">String to format</param>
+        /// <returns>String after format</returns>
+        public static string NormalizationString(string str)
         {
-            for (int i = 1; i < VietnameseSigns.Length; i++)
+            for (int i = 1; i < UnicodeSigns.Length; i++)
             {
-                for (int j = 0; j < VietnameseSigns[i].Length; j++)
+                for (int j = 0; j < UnicodeSigns[i].Length; j++)
                 {
-                    str = str.Replace(VietnameseSigns[i][j], VietnameseSigns[0][i - 1]);
+                    str = str.Replace(UnicodeSigns[i][j], UnicodeSigns[0][i - 1]);
                 }
             }
             return str;

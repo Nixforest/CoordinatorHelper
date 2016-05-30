@@ -510,31 +510,6 @@ namespace MainPrj
         /// <param name="e">EventArgs</param>
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
         {
-			if (e.KeyCode == Keys.Return)
-			{
-				ChannelControl channelControl = null;
-				try
-				{
-					channelControl = this.listChannelControl.ElementAt(this.currentChannel);
-				}
-				catch (ArgumentOutOfRangeException)
-				{
-					CommonProcess.ShowErrorMessage(Properties.Resources.ArgumentOutOfRange);
-					return;
-				}
-				if (channelControl != null)
-				{
-					channelControl.SearchCustomer();
-					foreach (CallModel current in this.listCalls)
-					{
-						if (channelControl.Data.Id.Equals(current.Customer.Id))
-						{
-							current.Customer.Contact_note = channelControl.Data.Contact_note;
-						}
-					}
-				}
-				return;
-			}
             switch (e.KeyCode)
             {
                 case Keys.F1:
@@ -551,6 +526,29 @@ namespace MainPrj
                     break;
                 case Keys.F5:
                     HandleClickHistoryButton();
+                    break;
+                case Keys.Return:
+                    ChannelControl channelControl = null;
+				    try
+				    {
+					    channelControl = this.listChannelControl.ElementAt(this.currentChannel);
+				    }
+				    catch (ArgumentOutOfRangeException)
+				    {
+					    CommonProcess.ShowErrorMessage(Properties.Resources.ArgumentOutOfRange);
+					    return;
+				    }
+				    if (channelControl != null)
+				    {
+					    channelControl.SearchCustomer();
+					    foreach (CallModel current in this.listCalls)
+					    {
+						    if (channelControl.Data.Id.Equals(current.Customer.Id))
+						    {
+							    current.Customer.Contact_note = channelControl.Data.Contact_note;
+						    }
+					    }
+				    }
                     break;
                 default:
                     break;

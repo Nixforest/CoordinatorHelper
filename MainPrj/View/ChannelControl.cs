@@ -145,6 +145,14 @@ namespace MainPrj.View
             this.tbxNote.Text = note;
         }
         /// <summary>
+        /// Get note
+        /// </summary>
+        /// <returns>Note value</returns>
+        public string GetNote()
+        {
+            return this.tbxNote.Text.Trim();
+        }
+        /// <summary>
         /// Set Sale information.
         /// </summary>
         /// <param name="saleName">Name of sale</param>
@@ -316,6 +324,7 @@ namespace MainPrj.View
                             break;
                         }
                     }
+                    this.SaveNote();
                 }
             }
         }
