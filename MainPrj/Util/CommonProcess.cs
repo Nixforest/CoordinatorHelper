@@ -3,6 +3,9 @@ using MainPrj.View;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Text;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -20,6 +23,10 @@ namespace MainPrj.Util
     /// </summary>
     public static class CommonProcess
     {
+        private static List<string> AVATAR_BACKCOLOR = new List<string>
+        {
+            "3C79B2", "FF8F88", "6FB9FF", "C0CC44", "AFB28C" 
+        };
         /// <summary>
         /// Flag check if has error in processing.
         /// </summary>
@@ -77,6 +84,65 @@ namespace MainPrj.Util
 
                 if (!String.IsNullOrEmpty(respStr))
                 {
+                    DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(CustomerResponseModel));
+                    byte[] encodingBytes = null;
+                    try
+                    {
+                        // Encoding response data
+                        encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);
+                    }
+                    catch (System.Text.EncoderFallbackException)
+                    {
+                        ShowErrorMessage(Properties.Resources.EncodingError);
+                        HasError = true;
+                    }
+                    if (encodingBytes != null)
+                    {
+                        MemoryStream msU = new MemoryStream(encodingBytes);
+                        CustomerResponseModel baseResp = (CustomerResponseModel)js.ReadObject(msU);
+                        if (baseResp.Record != null)
+                        {
+                            foreach (CustomerModel item in baseResp.Record)
+                            {
+                                result.Add(item);
+                            }
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+        /// <summary>
+        /// Request logout
+        /// </summary>
+        public static void RequestLogout()
+        {
+            UserLoginResponseModel data = new UserLoginResponseModel();
+            using (WebClient client = new WebClient())
+            {
+                string respStr = String.Empty;
+                try
+                {
+                    // Post keyword to server
+                    string value = string.Empty;
+                    value = String.Format("{{\"token\":\"{0}\"}}", Properties.Settings.Default.UserToken);
+                    byte[] response = client.UploadValues(
+                        Properties.Settings.Default.ServerURL + Properties.Settings.Default.URLLogout,
+                        new System.Collections.Specialized.NameValueCollection()
+                    {
+                        { "q", value}
+                    });
+                    // Get response
+                    respStr = System.Text.Encoding.UTF8.GetString(response);
+                }
+                catch (System.Net.WebException)
+                {
+                    ShowErrorMessage(Properties.Resources.InternetConnectionError);
+                    HasError = true;
+                }
+
+                if (!String.IsNullOrEmpty(respStr))
+                {
                     DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(BaseResponseModel));
                     byte[] encodingBytes = null;
                     try
@@ -93,17 +159,80 @@ namespace MainPrj.Util
                     {
                         MemoryStream msU = new MemoryStream(encodingBytes);
                         BaseResponseModel baseResp = (BaseResponseModel)js.ReadObject(msU);
-                        if (baseResp.Record != null)
+                        if (baseResp != null)
                         {
-                            foreach (CustomerModel item in baseResp.Record)
-                            {
-                                result.Add(item);
-                            }
+                            
                         }
                     }
                 }
             }
-            return result;
+        }
+        /// <summary>
+        /// Request login
+        /// </summary>
+        /// <param name="url">Server url</param>
+        /// <param name="username">Username</param>
+        /// <param name="password">password</param>
+        /// <returns>UserLoginResponseModel</returns>
+        public static UserLoginResponseModel RequestLogin(string username, string password)
+        {
+            // Declare result variable
+            UserLoginResponseModel data = new UserLoginResponseModel();
+            using (WebClient client = new WebClient())
+            {
+                string respStr = String.Empty;
+                try
+                {
+                    // Post keyword to server
+                    string value = string.Empty;
+                    value = String.Format("{{\"username\":\"{0}\",\"password\":\"{1}\",\"gcm_device_token\":\"{2}\",\"apns_device_token\":\"{3}\",\"type\":\"2\"}}",
+                        username, password, "1", "1");
+                    byte[] response = client.UploadValues(
+                        Properties.Settings.Default.ServerURL + Properties.Settings.Default.URLLogin,
+                        new System.Collections.Specialized.NameValueCollection()
+                    {
+                        { "q", value}
+                    });
+                    // Get response
+                    respStr = System.Text.Encoding.UTF8.GetString(response);
+                }
+                catch (System.Net.WebException)
+                {
+                    ShowErrorMessage(Properties.Resources.InternetConnectionError);
+                    HasError = true;
+                }
+
+                if (!String.IsNullOrEmpty(respStr))
+                {
+                    DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(UserLoginResponseModel));
+                    byte[] encodingBytes = null;
+                    try
+                    {
+                        // Encoding response data
+                        encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);
+                    }
+                    catch (System.Text.EncoderFallbackException)
+                    {
+                        ShowErrorMessage(Properties.Resources.EncodingError);
+                        HasError = true;
+                    }
+                    if (encodingBytes != null)
+                    {
+                        MemoryStream msU = new MemoryStream(encodingBytes);
+                        UserLoginResponseModel baseResp = (UserLoginResponseModel)js.ReadObject(msU);
+                        if (baseResp != null)
+                        {
+                            data = baseResp;
+                        }
+                        if (!String.IsNullOrEmpty(baseResp.Token))
+                        {
+                            Properties.Settings.Default.UserToken = baseResp.Token;
+                            Properties.Settings.Default.Save();
+                        }
+                    }
+                }
+            }
+            return data;
         }
         /// <summary>
         /// Get local IP address.
@@ -276,6 +405,150 @@ namespace MainPrj.Util
             }
             return retVal;
         }
+        public static string GetRoleString(RoleType type)
+        {
+            string retVal = string.Empty;
+            switch (type)
+            {
+                case RoleType.ROLE_MANAGER:
+                    retVal = "Quản lý";
+                    break;
+                case RoleType.ROLE_ADMIN:
+                    retVal = "Quản lý";
+                    break;
+                case RoleType.ROLE_SALE:
+                    retVal = "Bán hàng";
+                    break;
+                case RoleType.ROLE_CUSTOMER:
+                    retVal = "Khách hàng";
+                    break;
+                case RoleType.ROLE_AGENT:
+                    retVal = "Đại lý";
+                    break;
+                case RoleType.ROLE_MEMBER:
+                    retVal = "Thành viên";
+                    break;
+                case RoleType.ROLE_EMPLOYEE_MAINTAIN:
+                    retVal = "Giao nhận";
+                    break;
+                case RoleType.ROLE_CHECK_MAINTAIN:
+                    break;
+                case RoleType.ROLE_ACCOUNTING_AGENT:
+                    retVal = "Kế Toán Bán Hàng";
+                    break;
+                case RoleType.ROLE_ACCOUNTING_AGENT_PRIMARY:
+                    retVal = "Kế Toán Đại Lý";
+                    break;
+                case RoleType.ROLE_ACCOUNTING_ZONE:
+                    retVal = "Kế Toán Khu Vực";
+                    break;
+                case RoleType.ROLE_MONITORING:
+                    break;
+                case RoleType.ROLE_MONITORING_MAINTAIN:
+                    break;
+                case RoleType.ROLE_MONITORING_MARKET_DEVELOPMENT:
+                    retVal = "Chuyên Viên CCS";
+                    break;
+                case RoleType.ROLE_EMPLOYEE_MARKET_DEVELOPMENT:
+                    break;
+                case RoleType.ROLE_MONITORING_STORE_CARD:
+                    break;
+                case RoleType.ROLE_DIEU_PHOI:
+                    retVal = "Điều Phối";
+                    break;
+                case RoleType.ROLE_SCHEDULE_CAR:
+                    break;
+                case RoleType.ROLE_DIRECTOR:
+                    break;
+                case RoleType.ROLE_SUB_USER_AGENT:
+                    break;
+                case RoleType.ROLE_DRIVER:
+                    break;
+                case RoleType.ROLE_ACCOUNT_RECEIVABLE:
+                    break;
+                case RoleType.ROLE_HEAD_GAS_BO:
+                    break;
+                case RoleType.ROLE_HEAD_GAS_MOI:
+                    break;
+                case RoleType.ROLE_DIRECTOR_BUSSINESS:
+                    break;
+                case RoleType.ROLE_RECEPTION:
+                    break;
+                case RoleType.ROLE_CHIEF_ACCOUNTANT:
+                    break;
+                case RoleType.ROLE_CHIEF_MONITOR:
+                    break;
+                case RoleType.ROLE_MONITOR_AGENT:
+                    break;
+                case RoleType.ROLE_SECRETARY_OF_THE_MEETING:
+                    break;
+                case RoleType.ROLE_HEAD_OF_LEGAL:
+                    break;
+                case RoleType.ROLE_EMPLOYEE_OF_LEGAL:
+                    break;
+                case RoleType.ROLE_ACCOUNTING:
+                    break;
+                case RoleType.ROLE_DEBT_COLLECTION:
+                    break;
+                case RoleType.ROLE_HEAD_TECHNICAL:
+                    break;
+                case RoleType.ROLE_HEAD_OF_MAINTAIN:
+                    break;
+                case RoleType.ROLE_E_MAINTAIN:
+                    break;
+                case RoleType.ROLE_SECURITY_SYSTEM:
+                    break;
+                case RoleType.ROLE_BUSINESS_PROJECT:
+                    break;
+                case RoleType.ROLE_HEAD_OF_BUSINESS:
+                    break;
+                case RoleType.ROLE_WORKER:
+                    break;
+                case RoleType.ROLE_SECURITY:
+                    break;
+                case RoleType.ROLE_MANAGING_DIRECTOR:
+                    break;
+                case RoleType.ROLE_CRAFT_WAREHOUSE:
+                    break;
+                case RoleType.ROLE_HEAD_GAS_FAMILY:
+                    break;
+                case RoleType.ROLE_TEST_CALL_CENTER:
+                    break;
+                case RoleType.ROLE_CHIET_NAP:
+                    break;
+                case RoleType.ROLE_PHU_XE:
+                    break;
+                case RoleType.ROLE_SUB_DIRECTOR:
+                    break;
+                case RoleType.ROLE_ITEMS:
+                    break;
+                case RoleType.ROLE_CASHIER:
+                    break;
+                case RoleType.ROLE_MECHANIC:
+                    break;
+                case RoleType.ROLE_TECHNICAL:
+                    break;
+                case RoleType.ROLE_AUDIT:
+                    break;
+                case RoleType.ROLE_SALE_ADMIN:
+                    break;
+                case RoleType.ROLE_IT:
+                    break;
+                case RoleType.ROLE_IT_EMPLOYEE:
+                    break;
+                case RoleType.ROLE_BRANCH_DIRECTOR:
+                    break;
+                case RoleType.ROLE_CLEANER:
+                    break;
+                case RoleType.ROLE_MANAGER_DRIVER:
+                    break;
+                case RoleType.ROLETYPE_NUM:
+                    break;
+                default:
+                    break;
+            }
+            return retVal;
+        }
         /// <summary>
         /// Handle write file.
         /// </summary>
@@ -336,9 +609,18 @@ namespace MainPrj.Util
         /// <returns>True if phone is valid, False otherwise</returns>
         public static bool IsValidPhone(string phone)
         {
+            return IsValidNumber(phone);
+        }
+        /// <summary>
+        /// Check if string is valid number
+        /// </summary>
+        /// <param name="str">String to check</param>
+        /// <returns>True if string is valid number, False otherwise</returns>
+        public static bool IsValidNumber(string str)
+        {
             bool result = false;
             int num;
-            if (!string.IsNullOrEmpty(phone) && int.TryParse(phone, out num))
+            if (!string.IsNullOrEmpty(str) && int.TryParse(str, out num))
             {
                 result = true;
             }
@@ -414,6 +696,35 @@ namespace MainPrj.Util
                 }
             }
             return str;
+        }
+        /// <summary>
+        /// Create avatar.
+        /// </summary>
+        /// <param name="text">Text</param>
+        /// <param name="size">size of avatar</param>
+        /// <returns>Bitmap object</returns>
+        public static Bitmap CreateAvatar(string text, int size)
+        {
+            Bitmap retVal = new Bitmap(size, size);
+            if (AVATAR_BACKCOLOR.Count == 0)
+            {
+                return retVal;
+            }
+            var randomIdx = new Random().Next(0, AVATAR_BACKCOLOR.Count - 1);
+            var bgColor = AVATAR_BACKCOLOR[randomIdx];
+            var sf = new StringFormat();
+            sf.Alignment = StringAlignment.Center;
+            sf.LineAlignment = StringAlignment.Center;
+            var font = new Font("Calibri", 24, FontStyle.Bold, GraphicsUnit.Pixel);
+            var graphics = Graphics.FromImage(retVal);
+
+            graphics.Clear((Color)new ColorConverter().ConvertFromString("#" + bgColor));
+            graphics.SmoothingMode = SmoothingMode.AntiAlias;
+            graphics.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
+            graphics.DrawString(text, font, new SolidBrush(Color.WhiteSmoke),
+                new RectangleF(0, 0, size, size), sf);
+            graphics.Flush();
+            return retVal;
         }
     }
 }

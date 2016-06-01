@@ -38,36 +38,43 @@
             MainPrj.Model.CustomerModel customerModel8 = new MainPrj.Model.CustomerModel();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.mainMenuStrip = new System.Windows.Forms.MenuStrip();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemLoginLogout = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemLogin = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemLogout = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemConfig = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemSetting = new System.Windows.Forms.ToolStripMenuItem();
             this.tbxLog = new System.Windows.Forms.TextBox();
             this.mainTabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.channelControlLine1 = new MainPrj.View.ChannelControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.channelControlLine2 = new MainPrj.View.ChannelControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.channelControlLine3 = new MainPrj.View.ChannelControl();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.channelControlLine4 = new MainPrj.View.ChannelControl();
             this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.channelControlLine5 = new MainPrj.View.ChannelControl();
             this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.channelControlLine6 = new MainPrj.View.ChannelControl();
             this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.channelControlLine7 = new MainPrj.View.ChannelControl();
             this.tabPage8 = new System.Windows.Forms.TabPage();
+            this.channelControlLine8 = new MainPrj.View.ChannelControl();
             this.btnTransferToSale = new System.Windows.Forms.Button();
             this.btnUpdateCustomer = new System.Windows.Forms.Button();
             this.btnSaveData = new System.Windows.Forms.Button();
             this.btnCreateOrder = new System.Windows.Forms.Button();
             this.btnSearch = new System.Windows.Forms.Button();
             this.chbListenFromCard = new System.Windows.Forms.CheckBox();
-            this.tbxHistory = new System.Windows.Forms.Button();
+            this.btnHistory = new System.Windows.Forms.Button();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.channelControlLine1 = new MainPrj.View.ChannelControl();
-            this.channelControlLine2 = new MainPrj.View.ChannelControl();
-            this.channelControlLine3 = new MainPrj.View.ChannelControl();
-            this.channelControlLine4 = new MainPrj.View.ChannelControl();
-            this.channelControlLine5 = new MainPrj.View.ChannelControl();
-            this.channelControlLine6 = new MainPrj.View.ChannelControl();
-            this.channelControlLine7 = new MainPrj.View.ChannelControl();
-            this.channelControlLine8 = new MainPrj.View.ChannelControl();
             this.chbUpdatePhone = new System.Windows.Forms.CheckBox();
+            this.pbxAvatar = new System.Windows.Forms.PictureBox();
+            this.lblUsername = new System.Windows.Forms.Label();
+            this.lblRole = new System.Windows.Forms.Label();
+            this.btnOrderList = new System.Windows.Forms.Button();
             this.mainMenuStrip.SuspendLayout();
             this.mainTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -79,25 +86,53 @@
             this.tabPage7.SuspendLayout();
             this.tabPage8.SuspendLayout();
             this.statusStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxAvatar)).BeginInit();
             this.SuspendLayout();
             // 
             // mainMenuStrip
             // 
             this.mainMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1});
+            this.toolStripMenuItemLoginLogout,
+            this.toolStripMenuItemConfig});
             this.mainMenuStrip.Location = new System.Drawing.Point(0, 0);
             this.mainMenuStrip.Name = "mainMenuStrip";
             this.mainMenuStrip.Size = new System.Drawing.Size(1596, 24);
             this.mainMenuStrip.TabIndex = 0;
             this.mainMenuStrip.Text = "menuStrip1";
             // 
-            // toolStripMenuItem1
+            // toolStripMenuItemLoginLogout
             // 
-            this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItemLoginLogout.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItemLogin,
+            this.toolStripMenuItemLogout});
+            this.toolStripMenuItemLoginLogout.Name = "toolStripMenuItemLoginLogout";
+            this.toolStripMenuItemLoginLogout.Size = new System.Drawing.Size(77, 20);
+            this.toolStripMenuItemLoginLogout.Text = "Đăng nhập";
+            // 
+            // toolStripMenuItemLogin
+            // 
+            this.toolStripMenuItemLogin.Image = global::MainPrj.Properties.Resources.done_small;
+            this.toolStripMenuItemLogin.Name = "toolStripMenuItemLogin";
+            this.toolStripMenuItemLogin.Size = new System.Drawing.Size(132, 22);
+            this.toolStripMenuItemLogin.Text = "Đăng nhập";
+            this.toolStripMenuItemLogin.Click += new System.EventHandler(this.toolStripMenuItemLogin_Click);
+            // 
+            // toolStripMenuItemLogout
+            // 
+            this.toolStripMenuItemLogout.Enabled = false;
+            this.toolStripMenuItemLogout.Image = global::MainPrj.Properties.Resources.cancel1;
+            this.toolStripMenuItemLogout.Name = "toolStripMenuItemLogout";
+            this.toolStripMenuItemLogout.Size = new System.Drawing.Size(132, 22);
+            this.toolStripMenuItemLogout.Text = "Đăng xuất";
+            this.toolStripMenuItemLogout.Click += new System.EventHandler(this.toolStripMenuItemLogout_Click);
+            // 
+            // toolStripMenuItemConfig
+            // 
+            this.toolStripMenuItemConfig.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItemSetting});
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(56, 20);
-            this.toolStripMenuItem1.Text = "Cài đặt";
+            this.toolStripMenuItemConfig.Name = "toolStripMenuItemConfig";
+            this.toolStripMenuItemConfig.Size = new System.Drawing.Size(56, 20);
+            this.toolStripMenuItemConfig.Text = "Cài đặt";
             // 
             // toolStripMenuItemSetting
             // 
@@ -146,169 +181,6 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "1 :";
             // 
-            // tabPage2
-            // 
-            this.tabPage2.BackColor = System.Drawing.SystemColors.Control;
-            this.tabPage2.Controls.Add(this.channelControlLine2);
-            this.tabPage2.Location = new System.Drawing.Point(4, 34);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1308, 478);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "2 :";
-            // 
-            // tabPage3
-            // 
-            this.tabPage3.BackColor = System.Drawing.SystemColors.Control;
-            this.tabPage3.Controls.Add(this.channelControlLine3);
-            this.tabPage3.Location = new System.Drawing.Point(4, 34);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(1308, 478);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "3 :";
-            // 
-            // tabPage4
-            // 
-            this.tabPage4.BackColor = System.Drawing.SystemColors.Control;
-            this.tabPage4.Controls.Add(this.channelControlLine4);
-            this.tabPage4.Location = new System.Drawing.Point(4, 34);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(1308, 478);
-            this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "4 :";
-            // 
-            // tabPage5
-            // 
-            this.tabPage5.BackColor = System.Drawing.SystemColors.Control;
-            this.tabPage5.Controls.Add(this.channelControlLine5);
-            this.tabPage5.Location = new System.Drawing.Point(4, 34);
-            this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Size = new System.Drawing.Size(1308, 478);
-            this.tabPage5.TabIndex = 4;
-            this.tabPage5.Text = "5 :";
-            // 
-            // tabPage6
-            // 
-            this.tabPage6.BackColor = System.Drawing.SystemColors.Control;
-            this.tabPage6.Controls.Add(this.channelControlLine6);
-            this.tabPage6.Location = new System.Drawing.Point(4, 34);
-            this.tabPage6.Name = "tabPage6";
-            this.tabPage6.Size = new System.Drawing.Size(1308, 478);
-            this.tabPage6.TabIndex = 5;
-            this.tabPage6.Text = "6 :";
-            // 
-            // tabPage7
-            // 
-            this.tabPage7.BackColor = System.Drawing.SystemColors.Control;
-            this.tabPage7.Controls.Add(this.channelControlLine7);
-            this.tabPage7.Location = new System.Drawing.Point(4, 34);
-            this.tabPage7.Name = "tabPage7";
-            this.tabPage7.Size = new System.Drawing.Size(1308, 478);
-            this.tabPage7.TabIndex = 6;
-            this.tabPage7.Text = "7 :";
-            // 
-            // tabPage8
-            // 
-            this.tabPage8.BackColor = System.Drawing.SystemColors.Control;
-            this.tabPage8.Controls.Add(this.channelControlLine8);
-            this.tabPage8.Location = new System.Drawing.Point(4, 34);
-            this.tabPage8.Name = "tabPage8";
-            this.tabPage8.Size = new System.Drawing.Size(1308, 478);
-            this.tabPage8.TabIndex = 7;
-            this.tabPage8.Text = "8 :";
-            // 
-            // btnTransferToSale
-            // 
-            this.btnTransferToSale.Enabled = false;
-            this.btnTransferToSale.Location = new System.Drawing.Point(381, 548);
-            this.btnTransferToSale.Name = "btnTransferToSale";
-            this.btnTransferToSale.Size = new System.Drawing.Size(131, 64);
-            this.btnTransferToSale.TabIndex = 9;
-            this.btnTransferToSale.Text = "(F4) Chuyển cho Sale";
-            this.btnTransferToSale.UseVisualStyleBackColor = true;
-            this.btnTransferToSale.Click += new System.EventHandler(this.btnTransferToSale_Click);
-            // 
-            // btnUpdateCustomer
-            // 
-            this.btnUpdateCustomer.Location = new System.Drawing.Point(234, 548);
-            this.btnUpdateCustomer.Name = "btnUpdateCustomer";
-            this.btnUpdateCustomer.Size = new System.Drawing.Size(141, 64);
-            this.btnUpdateCustomer.TabIndex = 10;
-            this.btnUpdateCustomer.Text = "(F3) Cập nhật Khách Hàng";
-            this.btnUpdateCustomer.UseVisualStyleBackColor = true;
-            this.btnUpdateCustomer.Click += new System.EventHandler(this.btnUpdateCustomer_Click);
-            // 
-            // btnSaveData
-            // 
-            this.btnSaveData.Enabled = false;
-            this.btnSaveData.Location = new System.Drawing.Point(123, 548);
-            this.btnSaveData.Name = "btnSaveData";
-            this.btnSaveData.Size = new System.Drawing.Size(105, 64);
-            this.btnSaveData.TabIndex = 11;
-            this.btnSaveData.Text = "(F2) Đặt hàng sau";
-            this.btnSaveData.UseVisualStyleBackColor = true;
-            this.btnSaveData.Click += new System.EventHandler(this.btnSaveData_Click);
-            // 
-            // btnCreateOrder
-            // 
-            this.btnCreateOrder.Enabled = false;
-            this.btnCreateOrder.Location = new System.Drawing.Point(10, 548);
-            this.btnCreateOrder.Name = "btnCreateOrder";
-            this.btnCreateOrder.Size = new System.Drawing.Size(107, 64);
-            this.btnCreateOrder.TabIndex = 12;
-            this.btnCreateOrder.Text = "(F1) Đặt hàng ngay";
-            this.btnCreateOrder.UseVisualStyleBackColor = true;
-            this.btnCreateOrder.Click += new System.EventHandler(this.btnCreateOrder_Click);
-            // 
-            // btnSearch
-            // 
-            this.btnSearch.Location = new System.Drawing.Point(932, 548);
-            this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(94, 34);
-            this.btnSearch.TabIndex = 1;
-            this.btnSearch.Text = "Test";
-            this.btnSearch.UseVisualStyleBackColor = true;
-            this.btnSearch.Visible = false;
-            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
-            // 
-            // chbListenFromCard
-            // 
-            this.chbListenFromCard.AutoSize = true;
-            this.chbListenFromCard.Location = new System.Drawing.Point(932, 588);
-            this.chbListenFromCard.Name = "chbListenFromCard";
-            this.chbListenFromCard.Size = new System.Drawing.Size(172, 28);
-            this.chbListenFromCard.TabIndex = 13;
-            this.chbListenFromCard.Text = "Listen from card?";
-            this.chbListenFromCard.UseVisualStyleBackColor = true;
-            this.chbListenFromCard.CheckedChanged += new System.EventHandler(this.chbListenFromCard_CheckedChanged);
-            // 
-            // tbxHistory
-            // 
-            this.tbxHistory.Location = new System.Drawing.Point(517, 548);
-            this.tbxHistory.Name = "tbxHistory";
-            this.tbxHistory.Size = new System.Drawing.Size(131, 64);
-            this.tbxHistory.TabIndex = 9;
-            this.tbxHistory.Text = "(F5) Lịch sử cuộc gọi";
-            this.tbxHistory.UseVisualStyleBackColor = true;
-            this.tbxHistory.Click += new System.EventHandler(this.tbxHistory_Click);
-            // 
-            // statusStrip1
-            // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabel});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 851);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1596, 22);
-            this.statusStrip1.TabIndex = 14;
-            this.statusStrip1.Text = "statusStrip1";
-            // 
-            // toolStripStatusLabel
-            // 
-            this.toolStripStatusLabel.ForeColor = System.Drawing.Color.ForestGreen;
-            this.toolStripStatusLabel.Name = "toolStripStatusLabel";
-            this.toolStripStatusLabel.Size = new System.Drawing.Size(39, 17);
-            this.toolStripStatusLabel.Text = "Status";
-            // 
             // channelControlLine1
             // 
             customerModel1.Address = "";
@@ -329,7 +201,18 @@
             this.channelControlLine1.Margin = new System.Windows.Forms.Padding(6);
             this.channelControlLine1.Name = "channelControlLine1";
             this.channelControlLine1.Size = new System.Drawing.Size(1316, 482);
-            this.channelControlLine1.TabIndex = 0;
+            this.channelControlLine1.TabIndex = 1;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage2.Controls.Add(this.channelControlLine2);
+            this.tabPage2.Location = new System.Drawing.Point(4, 34);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(1308, 478);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "2 :";
             // 
             // channelControlLine2
             // 
@@ -353,6 +236,16 @@
             this.channelControlLine2.Size = new System.Drawing.Size(1316, 482);
             this.channelControlLine2.TabIndex = 0;
             // 
+            // tabPage3
+            // 
+            this.tabPage3.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage3.Controls.Add(this.channelControlLine3);
+            this.tabPage3.Location = new System.Drawing.Point(4, 34);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Size = new System.Drawing.Size(1308, 478);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "3 :";
+            // 
             // channelControlLine3
             // 
             customerModel3.Address = "";
@@ -374,6 +267,16 @@
             this.channelControlLine3.Name = "channelControlLine3";
             this.channelControlLine3.Size = new System.Drawing.Size(1316, 482);
             this.channelControlLine3.TabIndex = 0;
+            // 
+            // tabPage4
+            // 
+            this.tabPage4.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage4.Controls.Add(this.channelControlLine4);
+            this.tabPage4.Location = new System.Drawing.Point(4, 34);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Size = new System.Drawing.Size(1308, 478);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "4 :";
             // 
             // channelControlLine4
             // 
@@ -397,6 +300,16 @@
             this.channelControlLine4.Size = new System.Drawing.Size(1316, 482);
             this.channelControlLine4.TabIndex = 0;
             // 
+            // tabPage5
+            // 
+            this.tabPage5.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage5.Controls.Add(this.channelControlLine5);
+            this.tabPage5.Location = new System.Drawing.Point(4, 34);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Size = new System.Drawing.Size(1308, 478);
+            this.tabPage5.TabIndex = 4;
+            this.tabPage5.Text = "5 :";
+            // 
             // channelControlLine5
             // 
             customerModel5.Address = "";
@@ -418,6 +331,16 @@
             this.channelControlLine5.Name = "channelControlLine5";
             this.channelControlLine5.Size = new System.Drawing.Size(1316, 482);
             this.channelControlLine5.TabIndex = 0;
+            // 
+            // tabPage6
+            // 
+            this.tabPage6.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage6.Controls.Add(this.channelControlLine6);
+            this.tabPage6.Location = new System.Drawing.Point(4, 34);
+            this.tabPage6.Name = "tabPage6";
+            this.tabPage6.Size = new System.Drawing.Size(1308, 478);
+            this.tabPage6.TabIndex = 5;
+            this.tabPage6.Text = "6 :";
             // 
             // channelControlLine6
             // 
@@ -441,6 +364,16 @@
             this.channelControlLine6.Size = new System.Drawing.Size(1316, 482);
             this.channelControlLine6.TabIndex = 0;
             // 
+            // tabPage7
+            // 
+            this.tabPage7.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage7.Controls.Add(this.channelControlLine7);
+            this.tabPage7.Location = new System.Drawing.Point(4, 34);
+            this.tabPage7.Name = "tabPage7";
+            this.tabPage7.Size = new System.Drawing.Size(1308, 478);
+            this.tabPage7.TabIndex = 6;
+            this.tabPage7.Text = "7 :";
+            // 
             // channelControlLine7
             // 
             customerModel7.Address = "";
@@ -462,6 +395,16 @@
             this.channelControlLine7.Name = "channelControlLine7";
             this.channelControlLine7.Size = new System.Drawing.Size(1316, 482);
             this.channelControlLine7.TabIndex = 0;
+            // 
+            // tabPage8
+            // 
+            this.tabPage8.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage8.Controls.Add(this.channelControlLine8);
+            this.tabPage8.Location = new System.Drawing.Point(4, 34);
+            this.tabPage8.Name = "tabPage8";
+            this.tabPage8.Size = new System.Drawing.Size(1308, 478);
+            this.tabPage8.TabIndex = 7;
+            this.tabPage8.Text = "8 :";
             // 
             // channelControlLine8
             // 
@@ -485,10 +428,112 @@
             this.channelControlLine8.Size = new System.Drawing.Size(1316, 482);
             this.channelControlLine8.TabIndex = 0;
             // 
+            // btnTransferToSale
+            // 
+            this.btnTransferToSale.Enabled = false;
+            this.btnTransferToSale.Image = global::MainPrj.Properties.Resources.transfer;
+            this.btnTransferToSale.Location = new System.Drawing.Point(10, 618);
+            this.btnTransferToSale.Name = "btnTransferToSale";
+            this.btnTransferToSale.Size = new System.Drawing.Size(180, 64);
+            this.btnTransferToSale.TabIndex = 5;
+            this.btnTransferToSale.Text = "Chuyển cho Sale (F4)";
+            this.btnTransferToSale.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnTransferToSale.UseVisualStyleBackColor = true;
+            this.btnTransferToSale.Click += new System.EventHandler(this.btnTransferToSale_Click);
+            // 
+            // btnUpdateCustomer
+            // 
+            this.btnUpdateCustomer.Image = global::MainPrj.Properties.Resources.update;
+            this.btnUpdateCustomer.Location = new System.Drawing.Point(382, 548);
+            this.btnUpdateCustomer.Name = "btnUpdateCustomer";
+            this.btnUpdateCustomer.Size = new System.Drawing.Size(204, 64);
+            this.btnUpdateCustomer.TabIndex = 4;
+            this.btnUpdateCustomer.Text = "Cập nhật Khách Hàng (F3)";
+            this.btnUpdateCustomer.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnUpdateCustomer.UseVisualStyleBackColor = true;
+            this.btnUpdateCustomer.Click += new System.EventHandler(this.btnUpdateCustomer_Click);
+            // 
+            // btnSaveData
+            // 
+            this.btnSaveData.Enabled = false;
+            this.btnSaveData.Image = global::MainPrj.Properties.Resources.ordertruck;
+            this.btnSaveData.Location = new System.Drawing.Point(196, 548);
+            this.btnSaveData.Name = "btnSaveData";
+            this.btnSaveData.Size = new System.Drawing.Size(180, 64);
+            this.btnSaveData.TabIndex = 3;
+            this.btnSaveData.Text = "Đặt hàng sau (F2)";
+            this.btnSaveData.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnSaveData.UseVisualStyleBackColor = true;
+            this.btnSaveData.Click += new System.EventHandler(this.btnSaveData_Click);
+            // 
+            // btnCreateOrder
+            // 
+            this.btnCreateOrder.Enabled = false;
+            this.btnCreateOrder.Image = global::MainPrj.Properties.Resources.ordernow;
+            this.btnCreateOrder.Location = new System.Drawing.Point(10, 548);
+            this.btnCreateOrder.Name = "btnCreateOrder";
+            this.btnCreateOrder.Size = new System.Drawing.Size(180, 64);
+            this.btnCreateOrder.TabIndex = 2;
+            this.btnCreateOrder.Text = "Đặt hàng ngay (F1)";
+            this.btnCreateOrder.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnCreateOrder.UseVisualStyleBackColor = true;
+            this.btnCreateOrder.Click += new System.EventHandler(this.btnCreateOrder_Click);
+            // 
+            // btnSearch
+            // 
+            this.btnSearch.Location = new System.Drawing.Point(974, 554);
+            this.btnSearch.Name = "btnSearch";
+            this.btnSearch.Size = new System.Drawing.Size(94, 34);
+            this.btnSearch.TabIndex = 1;
+            this.btnSearch.Text = "Test";
+            this.btnSearch.UseVisualStyleBackColor = true;
+            this.btnSearch.Visible = false;
+            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            // 
+            // chbListenFromCard
+            // 
+            this.chbListenFromCard.AutoSize = true;
+            this.chbListenFromCard.Location = new System.Drawing.Point(974, 594);
+            this.chbListenFromCard.Name = "chbListenFromCard";
+            this.chbListenFromCard.Size = new System.Drawing.Size(172, 28);
+            this.chbListenFromCard.TabIndex = 13;
+            this.chbListenFromCard.Text = "Listen from card?";
+            this.chbListenFromCard.UseVisualStyleBackColor = true;
+            this.chbListenFromCard.CheckedChanged += new System.EventHandler(this.chbListenFromCard_CheckedChanged);
+            // 
+            // btnHistory
+            // 
+            this.btnHistory.Image = global::MainPrj.Properties.Resources.history;
+            this.btnHistory.Location = new System.Drawing.Point(196, 618);
+            this.btnHistory.Name = "btnHistory";
+            this.btnHistory.Size = new System.Drawing.Size(180, 64);
+            this.btnHistory.TabIndex = 6;
+            this.btnHistory.Text = "Lịch sử cuộc gọi (F5)";
+            this.btnHistory.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnHistory.UseVisualStyleBackColor = true;
+            this.btnHistory.Click += new System.EventHandler(this.btnHistory_Click);
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 851);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(1596, 22);
+            this.statusStrip1.TabIndex = 14;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel
+            // 
+            this.toolStripStatusLabel.ForeColor = System.Drawing.Color.ForestGreen;
+            this.toolStripStatusLabel.Name = "toolStripStatusLabel";
+            this.toolStripStatusLabel.Size = new System.Drawing.Size(39, 17);
+            this.toolStripStatusLabel.Text = "Status";
+            // 
             // chbUpdatePhone
             // 
             this.chbUpdatePhone.AutoSize = true;
-            this.chbUpdatePhone.Location = new System.Drawing.Point(1032, 551);
+            this.chbUpdatePhone.Location = new System.Drawing.Point(1074, 557);
             this.chbUpdatePhone.Name = "chbUpdatePhone";
             this.chbUpdatePhone.Size = new System.Drawing.Size(236, 28);
             this.chbUpdatePhone.TabIndex = 13;
@@ -496,16 +541,64 @@
             this.chbUpdatePhone.UseVisualStyleBackColor = true;
             this.chbUpdatePhone.CheckedChanged += new System.EventHandler(this.chbUpdatePhone_CheckedChanged);
             // 
+            // pbxAvatar
+            // 
+            this.pbxAvatar.BackColor = System.Drawing.Color.Black;
+            this.pbxAvatar.Location = new System.Drawing.Point(869, 548);
+            this.pbxAvatar.Name = "pbxAvatar";
+            this.pbxAvatar.Size = new System.Drawing.Size(64, 64);
+            this.pbxAvatar.TabIndex = 15;
+            this.pbxAvatar.TabStop = false;
+            // 
+            // lblUsername
+            // 
+            this.lblUsername.AutoSize = true;
+            this.lblUsername.ForeColor = System.Drawing.Color.Blue;
+            this.lblUsername.Location = new System.Drawing.Point(773, 557);
+            this.lblUsername.Name = "lblUsername";
+            this.lblUsername.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.lblUsername.Size = new System.Drawing.Size(90, 24);
+            this.lblUsername.TabIndex = 16;
+            this.lblUsername.Text = "Họ và tên";
+            // 
+            // lblRole
+            // 
+            this.lblRole.AutoSize = true;
+            this.lblRole.ForeColor = System.Drawing.Color.Red;
+            this.lblRole.Location = new System.Drawing.Point(782, 581);
+            this.lblRole.Name = "lblRole";
+            this.lblRole.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.lblRole.Size = new System.Drawing.Size(81, 24);
+            this.lblRole.TabIndex = 16;
+            this.lblRole.Text = "Bộ phận";
+            // 
+            // btnOrderList
+            // 
+            this.btnOrderList.Enabled = false;
+            this.btnOrderList.Image = global::MainPrj.Properties.Resources.list;
+            this.btnOrderList.Location = new System.Drawing.Point(382, 618);
+            this.btnOrderList.Name = "btnOrderList";
+            this.btnOrderList.Size = new System.Drawing.Size(204, 64);
+            this.btnOrderList.TabIndex = 6;
+            this.btnOrderList.Text = "Danh sách đơn hàng (F6)";
+            this.btnOrderList.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnOrderList.UseVisualStyleBackColor = true;
+            this.btnOrderList.Click += new System.EventHandler(this.btnOrderList_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1596, 873);
+            this.Controls.Add(this.lblRole);
+            this.Controls.Add(this.lblUsername);
+            this.Controls.Add(this.pbxAvatar);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.chbUpdatePhone);
             this.Controls.Add(this.chbListenFromCard);
-            this.Controls.Add(this.tbxHistory);
+            this.Controls.Add(this.btnOrderList);
+            this.Controls.Add(this.btnHistory);
             this.Controls.Add(this.btnTransferToSale);
             this.Controls.Add(this.mainTabControl);
             this.Controls.Add(this.btnUpdateCustomer);
@@ -538,6 +631,7 @@
             this.tabPage8.ResumeLayout(false);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxAvatar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -546,7 +640,7 @@
         #endregion
 
         private System.Windows.Forms.MenuStrip mainMenuStrip;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemConfig;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemSetting;
         private System.Windows.Forms.TextBox tbxLog;
         private System.Windows.Forms.TabControl mainTabControl;
@@ -572,10 +666,17 @@
         private System.Windows.Forms.Button btnSaveData;
         private System.Windows.Forms.Button btnCreateOrder;
         private System.Windows.Forms.CheckBox chbListenFromCard;
-        private System.Windows.Forms.Button tbxHistory;
+        private System.Windows.Forms.Button btnHistory;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel;
         private System.Windows.Forms.CheckBox chbUpdatePhone;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemLoginLogout;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemLogin;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemLogout;
+        private System.Windows.Forms.PictureBox pbxAvatar;
+        private System.Windows.Forms.Label lblUsername;
+        private System.Windows.Forms.Label lblRole;
+        private System.Windows.Forms.Button btnOrderList;
     }
 }
 

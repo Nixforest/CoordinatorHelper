@@ -7,6 +7,8 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Text;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -48,6 +50,10 @@ namespace MainPrj
         /// List flag need update title of tab controls.
         /// </summary>
         private bool[] listChannelNeedUpdateTitle = new bool[Properties.Settings.Default.ChannelNumber];
+        /// <summary>
+        /// User login.
+        /// </summary>
+        private UserLoginModel user = null;
 
         /// <summary>
         /// Constructor.
@@ -230,6 +236,7 @@ namespace MainPrj
                         switch (model.Status)
                         {
                             case (int)CardDataStatus.CARDDATA_RINGING:
+                                FlashWindowHelper.Flash(this.Handle);
                                 UpdateStatus(String.Format(Properties.Resources.IncommingCall, model.Phone));
                                 statusStr = Properties.Resources.CardDataStatus1;
                                 color = Color.DarkGreen;
@@ -238,6 +245,7 @@ namespace MainPrj
                                 //statusStr = Properties.Resources.CardDataStatus2;
                                 break;
                             case (int)CardDataStatus.CARDDATA_HANDLING:
+                                FlashWindowHelper.Flash(this.Handle);
                                 statusStr = Properties.Resources.CardDataStatus3;
                                 color = Color.Blue;
                                 needUpdate = true;
@@ -314,6 +322,7 @@ namespace MainPrj
         /// <param name="e">EventArgs</param>
         private void MainForm_Load(object sender, EventArgs e)
         {
+            // Initialize
             this.listChannelControl.Add(this.channelControlLine1);
             this.listChannelControl.Add(this.channelControlLine2);
             this.listChannelControl.Add(this.channelControlLine3);
@@ -322,14 +331,21 @@ namespace MainPrj
             this.listChannelControl.Add(this.channelControlLine6);
             this.listChannelControl.Add(this.channelControlLine7);
             this.listChannelControl.Add(this.channelControlLine8);
+
             // Turn on flag update tab title
             for (int i = 0; i < this.listChannelNeedUpdateTitle.Length; i++)
             {
                 this.listChannelNeedUpdateTitle[i] = true;
             }
+
+            // Check user login
+            if (!String.IsNullOrEmpty(Properties.Settings.Default.UserToken))
+            {
+                // Last user login already -> Request user infor from server
+            }
+
             // For test
             TurnOnOffTestingMode(Properties.Settings.Default.TestingMode);
-
             if (Properties.Settings.Default.TestingMode)
             {
                 this.channelControlLine2.SetIncommingPhone("01869194542");
@@ -434,24 +450,26 @@ namespace MainPrj
         /// <param name="e">EventArgs</param>
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            string phone = this.listChannelControl.ElementAt(this.currentChannel).GetIncommingPhone();
-            int n = 0;
-            // Get incomming number information
-            if (!String.IsNullOrEmpty(phone) && int.TryParse(phone, out n))
-            {
-                // Insert value into current channel
-                try
-                {
-                    ChannelControl tab = this.listChannelControl.ElementAt(this.currentChannel);
-                    tab.SetIncommingPhone(phone);
-                    // Request server and update data from server
-                    UpdateData(phone, (int)CardDataStatus.CARDDATA_RINGING, this.currentChannel);
-                }
-                catch (ArgumentOutOfRangeException)
-                {
-                    CommonProcess.ShowErrorMessage(Properties.Resources.ArgumentOutOfRange);
-                }
-            }
+            //string phone = this.listChannelControl.ElementAt(this.currentChannel).GetIncommingPhone();
+            //int n = 0;
+            //// Get incomming number information
+            //if (!String.IsNullOrEmpty(phone) && int.TryParse(phone, out n))
+            //{
+            //    // Insert value into current channel
+            //    try
+            //    {
+            //        ChannelControl tab = this.listChannelControl.ElementAt(this.currentChannel);
+            //        tab.SetIncommingPhone(phone);
+            //        // Request server and update data from server
+            //        UpdateData(phone, (int)CardDataStatus.CARDDATA_RINGING, this.currentChannel);
+            //    }
+            //    catch (ArgumentOutOfRangeException)
+            //    {
+            //        CommonProcess.ShowErrorMessage(Properties.Resources.ArgumentOutOfRange);
+            //    }
+            //}
+            _TestServer test = new _TestServer();
+            test.ShowDialog();
         }
         /// <summary>
         /// Setting ON/OFF testing control.
@@ -527,6 +545,9 @@ namespace MainPrj
                 case Keys.F5:
                     HandleClickHistoryButton();
                     break;
+                case Keys.F6:
+                    HandleClickListOrderButton();
+                    break;
                 case Keys.Return:
                     ChannelControl channelControl = null;
 				    try
@@ -559,7 +580,8 @@ namespace MainPrj
         /// </summary>
         private void HandleClickCreateOrderButton()
         {
-            CommonProcess.ShowInformMessageProcessing();
+            OrderView order = new OrderView();
+            order.Show();
         }
         /// <summary>
         /// Handle when click Save data button.
@@ -581,6 +603,13 @@ namespace MainPrj
         /// Handle when click Transfer To Sale button.
         /// </summary>
         private void HandleClickTransferToSaleButton()
+        {
+            CommonProcess.ShowInformMessageProcessing();
+        }
+        /// <summary>
+        /// Handle when click List order button.
+        /// </summary>
+        private void HandleClickListOrderButton()
         {
             CommonProcess.ShowInformMessageProcessing();
         }
@@ -657,7 +686,7 @@ namespace MainPrj
         /// </summary>
         /// <param name="sender">Sender</param>
         /// <param name="e">EventArgs</param>
-        private void tbxHistory_Click(object sender, EventArgs e)
+        private void btnHistory_Click(object sender, EventArgs e)
         {
             HandleClickHistoryButton();
         }
@@ -668,8 +697,19 @@ namespace MainPrj
         /// <param name="e">EventArgs</param>
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            // Write history file
-            CommonProcess.WriteHistory(this.listCalls);
+            DialogResult result = CommonProcess.ShowInformMessage(Properties.Resources.AreYouSureToClose,
+                MessageBoxButtons.YesNo);
+            if (result.Equals(DialogResult.Yes))
+            {
+                // Write history file
+                CommonProcess.WriteHistory(this.listCalls);
+                Properties.Settings.Default.UserToken = String.Empty;
+                Properties.Settings.Default.Save();
+            }
+            else
+            {
+                e.Cancel = true;
+            }
         }
         /// <summary>
         /// Update status content.
@@ -688,6 +728,99 @@ namespace MainPrj
         {
             Properties.Settings.Default.UpdatePhone = chbUpdatePhone.Checked;
             Properties.Settings.Default.Save();
+        }
+        /// <summary>
+        /// Handle when select item Login menu
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void toolStripMenuItemLogin_Click(object sender, EventArgs e)
+        {
+            LoginView login = new LoginView();
+            login.ShowDialog();
+            user = new UserLoginModel(login.User);
+            if (!String.IsNullOrEmpty(user.First_name))
+            {
+                Login();
+            }
+        }
+
+        /// <summary>
+        /// Handle when select item Logout menu
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void toolStripMenuItemLogout_Click(object sender, EventArgs e)
+        {
+            if (!String.IsNullOrEmpty(Properties.Settings.Default.UserToken))
+            {
+                CommonProcess.RequestLogout();
+            }
+            user = new UserLoginModel();
+            pbxAvatar.Image = CommonProcess.CreateAvatar(string.Empty, pbxAvatar.Size.Height);
+            Logout();
+        }
+        /// <summary>
+        /// Login handle.
+        /// </summary>
+        private void Login()
+        {
+            // Draw avatar
+            string avatarString = string.Empty;
+            if (!String.IsNullOrEmpty(user.First_name))
+            {
+                string[] token = user.First_name.Split(' ');
+                foreach (string item in token)
+                {
+                    avatarString += String.Format("{0}", item[0]).ToUpper();
+                }
+            }
+            lblUsername.Text = user.First_name;
+            if (lblUsername.Right > (pbxAvatar.Left - 5))
+            {
+                lblUsername.Left = (pbxAvatar.Left - 5) - lblUsername.Width;
+            }
+            lblRole.Text = user.RoleStr;
+            if (lblRole.Right > (pbxAvatar.Left - 5))
+            {
+                lblRole.Left = (pbxAvatar.Left - 5) - lblRole.Width;
+            }
+            pbxAvatar.Image = CommonProcess.CreateAvatar(avatarString, pbxAvatar.Size.Height);
+            // Turn off login menu
+            this.toolStripMenuItemLogin.Enabled = false;
+            this.toolStripMenuItemLogout.Enabled = true;
+            // Update button enable
+            btnCreateOrder.Enabled = user.Role.Equals(RoleType.ROLE_ACCOUNTING_AGENT);
+            btnOrderList.Enabled = user.Role.Equals(RoleType.ROLE_ACCOUNTING_AGENT);
+        }
+        /// <summary>
+        /// Logout handle.
+        /// </summary>
+        private void Logout()
+        {
+            // Turn on login menus
+            this.toolStripMenuItemLogin.Enabled = true;
+            this.toolStripMenuItemLogout.Enabled = false;
+            // Reset token
+            Properties.Settings.Default.UserToken = String.Empty;
+            Properties.Settings.Default.Save();
+            // Reset label content and position
+            lblUsername.Text = Properties.Resources.Name;
+            lblUsername.Left = Properties.Settings.Default.NameLabelPosX;
+            lblRole.Text = Properties.Resources.Role;
+            lblRole.Left = Properties.Settings.Default.RoleLabelPosX;
+            // Update button enable
+            btnCreateOrder.Enabled = false;
+            btnOrderList.Enabled = false;
+        }
+        /// <summary>
+        /// Handle list order
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void btnOrderList_Click(object sender, EventArgs e)
+        {
+            HandleClickListOrderButton();
         }
     }
 }

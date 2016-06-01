@@ -10,10 +10,10 @@ namespace MainPrj.Model
     /// Response data from server.
     /// </summary>
     [DataContract]
-    class BaseResponseModel
+    public class BaseResponseModel
     {
         [DataMember(Name = "status", IsRequired = true)]
-        private string status;
+        protected string status;
 
         public string Status
         {
@@ -21,7 +21,7 @@ namespace MainPrj.Model
             set { status = value; }
         }
         [DataMember(Name = "code", IsRequired = true)]
-        private string code;
+        protected string code;
 
         public string Code
         {
@@ -29,20 +29,20 @@ namespace MainPrj.Model
             set { code = value; }
         }
         [DataMember(Name = "message", IsRequired = true)]
-        private string message;
+        protected string message;
 
         public string Message
         {
             get { return message; }
             set { message = value; }
         }
-        [DataMember(Name = "record", IsRequired = false)]
-        private CustomerModel[] record;
+        [DataMember(Name = "token", IsRequired = false)]
+        protected string token;
 
-        public CustomerModel[] Record
+        public string Token
         {
-            get { return record; }
-            set { record = value; }
+            get { return token; }
+            set { token = value; }
         }
     }
 }

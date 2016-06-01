@@ -89,5 +89,23 @@
     <Setting Name="ColorFoundKeywordBackground" Type="System.Drawing.Color" Scope="User">
       <Value Profile="(Default)">0, 192, 0</Value>
     </Setting>
+    <Setting Name="UserToken" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="URLLogin" Type="System.String" Scope="User">
+      <Value Profile="(Default)">/api/site/login</Value>
+    </Setting>
+    <Setting Name="NameLabelPosX" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">773</Value>
+    </Setting>
+    <Setting Name="RoleLabelPosX" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">782</Value>
+    </Setting>
+    <Setting Name="URLLogout" Type="System.String" Scope="User">
+      <Value Profile="(Default)">/api/site/logout</Value>
+    </Setting>
+    <Setting Name="URLUserProfile" Type="System.String" Scope="User">
+      <Value Profile="(Default)">/api/user/profile</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

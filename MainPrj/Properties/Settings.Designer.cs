@@ -370,5 +370,77 @@ namespace MainPrj.Properties {
                 this["ColorFoundKeywordBackground"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string UserToken {
+            get {
+                return ((string)(this["UserToken"]));
+            }
+            set {
+                this["UserToken"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("/api/site/login")]
+        public string URLLogin {
+            get {
+                return ((string)(this["URLLogin"]));
+            }
+            set {
+                this["URLLogin"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("773")]
+        public int NameLabelPosX {
+            get {
+                return ((int)(this["NameLabelPosX"]));
+            }
+            set {
+                this["NameLabelPosX"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("782")]
+        public int RoleLabelPosX {
+            get {
+                return ((int)(this["RoleLabelPosX"]));
+            }
+            set {
+                this["RoleLabelPosX"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("/api/site/logout")]
+        public string URLLogout {
+            get {
+                return ((string)(this["URLLogout"]));
+            }
+            set {
+                this["URLLogout"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("/api/user/profile")]
+        public string URLUserProfile {
+            get {
+                return ((string)(this["URLUserProfile"]));
+            }
+            set {
+                this["URLUserProfile"] = value;
+            }
+        }
     }
 }

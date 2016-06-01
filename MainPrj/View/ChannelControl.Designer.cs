@@ -65,7 +65,7 @@
             this.tbxIncommingNumber.Location = new System.Drawing.Point(3, 3);
             this.tbxIncommingNumber.Name = "tbxIncommingNumber";
             this.tbxIncommingNumber.Size = new System.Drawing.Size(840, 35);
-            this.tbxIncommingNumber.TabIndex = 2;
+            this.tbxIncommingNumber.TabIndex = 1;
             this.tbxIncommingNumber.Text = "Số điện thoại";
             this.tbxIncommingNumber.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -109,7 +109,7 @@
             this.tbxSearchCustomer.Location = new System.Drawing.Point(610, 26);
             this.tbxSearchCustomer.Name = "tbxSearchCustomer";
             this.tbxSearchCustomer.Size = new System.Drawing.Size(224, 29);
-            this.tbxSearchCustomer.TabIndex = 4;
+            this.tbxSearchCustomer.TabIndex = 3;
             this.tbxSearchCustomer.Text = "Tìm kiếm";
             this.tbxSearchCustomer.Enter += new System.EventHandler(this.tbxSearchCustomer_Enter);
             this.tbxSearchCustomer.Leave += new System.EventHandler(this.tbxSearchCustomer_Leave);
@@ -120,7 +120,7 @@
             this.tbxCost.Name = "tbxCost";
             this.tbxCost.ReadOnly = true;
             this.tbxCost.Size = new System.Drawing.Size(173, 29);
-            this.tbxCost.TabIndex = 3;
+            this.tbxCost.TabIndex = 10;
             // 
             // tbxCustomerTel4
             // 
@@ -128,7 +128,7 @@
             this.tbxCustomerTel4.Name = "tbxCustomerTel4";
             this.tbxCustomerTel4.ReadOnly = true;
             this.tbxCustomerTel4.Size = new System.Drawing.Size(220, 29);
-            this.tbxCustomerTel4.TabIndex = 3;
+            this.tbxCustomerTel4.TabIndex = 8;
             // 
             // tbxCustomerTel2
             // 
@@ -136,7 +136,7 @@
             this.tbxCustomerTel2.Name = "tbxCustomerTel2";
             this.tbxCustomerTel2.ReadOnly = true;
             this.tbxCustomerTel2.Size = new System.Drawing.Size(220, 29);
-            this.tbxCustomerTel2.TabIndex = 3;
+            this.tbxCustomerTel2.TabIndex = 6;
             // 
             // tbxCustomerTel5
             // 
@@ -144,7 +144,7 @@
             this.tbxCustomerTel5.Name = "tbxCustomerTel5";
             this.tbxCustomerTel5.ReadOnly = true;
             this.tbxCustomerTel5.Size = new System.Drawing.Size(220, 29);
-            this.tbxCustomerTel5.TabIndex = 2;
+            this.tbxCustomerTel5.TabIndex = 9;
             // 
             // tbxCustomerTel3
             // 
@@ -152,7 +152,7 @@
             this.tbxCustomerTel3.Name = "tbxCustomerTel3";
             this.tbxCustomerTel3.ReadOnly = true;
             this.tbxCustomerTel3.Size = new System.Drawing.Size(225, 29);
-            this.tbxCustomerTel3.TabIndex = 2;
+            this.tbxCustomerTel3.TabIndex = 7;
             // 
             // tbxCustomerTel1
             // 
@@ -160,7 +160,7 @@
             this.tbxCustomerTel1.Name = "tbxCustomerTel1";
             this.tbxCustomerTel1.ReadOnly = true;
             this.tbxCustomerTel1.Size = new System.Drawing.Size(220, 29);
-            this.tbxCustomerTel1.TabIndex = 2;
+            this.tbxCustomerTel1.TabIndex = 5;
             // 
             // tbxSaleName
             // 
@@ -168,7 +168,7 @@
             this.tbxSaleName.Name = "tbxSaleName";
             this.tbxSaleName.ReadOnly = true;
             this.tbxSaleName.Size = new System.Drawing.Size(676, 29);
-            this.tbxSaleName.TabIndex = 2;
+            this.tbxSaleName.TabIndex = 16;
             // 
             // tbxCustomerType
             // 
@@ -176,7 +176,7 @@
             this.tbxCustomerType.Name = "tbxCustomerType";
             this.tbxCustomerType.ReadOnly = true;
             this.tbxCustomerType.Size = new System.Drawing.Size(676, 29);
-            this.tbxCustomerType.TabIndex = 2;
+            this.tbxCustomerType.TabIndex = 14;
             // 
             // label10
             // 
@@ -193,7 +193,7 @@
             this.tbxContact.Name = "tbxContact";
             this.tbxContact.ReadOnly = true;
             this.tbxContact.Size = new System.Drawing.Size(676, 29);
-            this.tbxContact.TabIndex = 2;
+            this.tbxContact.TabIndex = 13;
             // 
             // label6
             // 
@@ -210,7 +210,7 @@
             this.tbxAgencyNearest.Name = "tbxAgencyNearest";
             this.tbxAgencyNearest.ReadOnly = true;
             this.tbxAgencyNearest.Size = new System.Drawing.Size(676, 29);
-            this.tbxAgencyNearest.TabIndex = 2;
+            this.tbxAgencyNearest.TabIndex = 12;
             // 
             // tbxNote
             // 
@@ -218,7 +218,7 @@
             this.tbxNote.Multiline = true;
             this.tbxNote.Name = "tbxNote";
             this.tbxNote.Size = new System.Drawing.Size(676, 74);
-            this.tbxNote.TabIndex = 2;
+            this.tbxNote.TabIndex = 15;
             this.tbxNote.TextChanged += new System.EventHandler(this.tbxNote_TextChanged);
             // 
             // tbxAgency
@@ -227,7 +227,7 @@
             this.tbxAgency.Name = "tbxAgency";
             this.tbxAgency.ReadOnly = true;
             this.tbxAgency.Size = new System.Drawing.Size(676, 29);
-            this.tbxAgency.TabIndex = 2;
+            this.tbxAgency.TabIndex = 11;
             // 
             // label5
             // 
@@ -262,7 +262,7 @@
             this.tbxAddress.Name = "tbxAddress";
             this.tbxAddress.ReadOnly = true;
             this.tbxAddress.Size = new System.Drawing.Size(676, 29);
-            this.tbxAddress.TabIndex = 2;
+            this.tbxAddress.TabIndex = 4;
             // 
             // label4
             // 
