@@ -61,6 +61,16 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap add {
+            get {
+                object obj = ResourceManager.GetObject("add", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bạn có chắc chắn khi không chọn Khách hàng nào?
         ///Nhấn YES để thoát.
         ///Nhấn NO để chọn lại Khách hàng..
@@ -186,6 +196,15 @@ namespace MainPrj.Properties {
         internal static string CardDataStatus6 {
             get {
                 return ResourceManager.GetString("CardDataStatus6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to http://android.huongminhgroup.com/coordinatorhelper/autoupdate.xml.
+        /// </summary>
+        internal static string CheckAutoUpdate {
+            get {
+                return ResourceManager.GetString("CheckAutoUpdate", resourceCulture);
             }
         }
         

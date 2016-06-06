@@ -23,6 +23,9 @@ namespace MainPrj.Util
     /// </summary>
     public static class CommonProcess
     {
+        /// <summary>
+        /// Background color for avatar image.
+        /// </summary>
         private static List<string> AVATAR_BACKCOLOR = new List<string>
         {
             "3C79B2", "FF8F88", "6FB9FF", "C0CC44", "AFB28C" 
@@ -725,6 +728,13 @@ namespace MainPrj.Util
                 new RectangleF(0, 0, size, size), sf);
             graphics.Flush();
             return retVal;
+        }
+        /// <summary>
+        /// Check auto update new version.
+        /// </summary>
+        public static void CheckAutoUpdate()
+        {
+            AutoUpdaterDotNET.AutoUpdater.Start(Properties.Resources.CheckAutoUpdate);
         }
     }
 }

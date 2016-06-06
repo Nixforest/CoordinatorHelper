@@ -1,17 +1,16 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Resources;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("MainPrj")]
-[assembly: AssemblyDescription("Phần mềm Hỗ trợ cho Điều phối - Kế toán trao đổi thông tin với Khách hàng")]
+[assembly: AssemblyTitle("AutoUpdater.NET")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Southern Petroleum - NguyenPT@spj.vn")]
-[assembly: AssemblyProduct("MainPrj")]
-[assembly: AssemblyCopyright("Copyright ©  2016")]
+[assembly: AssemblyCompany("RBSoft")]
+[assembly: AssemblyProduct("AutoUpdater.NET")]
+[assembly: AssemblyCopyright("Copyright © 2012-2015 RBSoft")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -21,7 +20,7 @@ using System.Resources;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("f8f9cb2d-4092-4c79-ba6d-efaa3ff12862")]
+[assembly: Guid("a4037a6f-fdf7-46c8-a303-c3c4fcddb015")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -33,6 +32,6 @@ using System.Resources;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
-[assembly: NeutralResourcesLanguageAttribute("vi-VN")]
+[assembly: AssemblyVersion("1.3.2.0")]
+[assembly: AssemblyFileVersion("1.3.2.0")]
+[assembly: NeutralResourcesLanguageAttribute("en")]

@@ -322,6 +322,8 @@ namespace MainPrj
         /// <param name="e">EventArgs</param>
         private void MainForm_Load(object sender, EventArgs e)
         {
+            // Check if need update new version
+            CommonProcess.CheckAutoUpdate();
             // Initialize
             this.listChannelControl.Add(this.channelControlLine1);
             this.listChannelControl.Add(this.channelControlLine2);
@@ -697,19 +699,23 @@ namespace MainPrj
         /// <param name="e">EventArgs</param>
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            DialogResult result = CommonProcess.ShowInformMessage(Properties.Resources.AreYouSureToClose,
-                MessageBoxButtons.YesNo);
-            if (result.Equals(DialogResult.Yes))
-            {
-                // Write history file
-                CommonProcess.WriteHistory(this.listCalls);
-                Properties.Settings.Default.UserToken = String.Empty;
-                Properties.Settings.Default.Save();
-            }
-            else
-            {
-                e.Cancel = true;
-            }
+            //DialogResult result = CommonProcess.ShowInformMessage(Properties.Resources.AreYouSureToClose,
+            //    MessageBoxButtons.YesNo);
+            //if (result.Equals(DialogResult.Yes))
+            //{
+            //    // Write history file
+            //    CommonProcess.WriteHistory(this.listCalls);
+            //    Properties.Settings.Default.UserToken = String.Empty;
+            //    Properties.Settings.Default.Save();
+            //}
+            //else
+            //{
+            //    e.Cancel = true;
+            //}
+            // Write history file
+            CommonProcess.WriteHistory(this.listCalls);
+            Properties.Settings.Default.UserToken = String.Empty;
+            Properties.Settings.Default.Save();
         }
         /// <summary>
         /// Update status content.
@@ -821,6 +827,17 @@ namespace MainPrj
         private void btnOrderList_Click(object sender, EventArgs e)
         {
             HandleClickListOrderButton();
+        }
+
+        /// <summary>
+        /// Handle when click Support menu.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void toolStripMenuItemSupport_Click(object sender, EventArgs e)
+        {
+            AboutBox about = new AboutBox();
+            about.Show();
         }
     }
 }

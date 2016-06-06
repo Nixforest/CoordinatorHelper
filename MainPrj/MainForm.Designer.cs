@@ -43,6 +43,10 @@
             this.toolStripMenuItemLogout = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemConfig = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemSetting = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemGuideline = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuItemSupport = new System.Windows.Forms.ToolStripMenuItem();
             this.tbxLog = new System.Windows.Forms.TextBox();
             this.mainTabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -61,20 +65,20 @@
             this.channelControlLine7 = new MainPrj.View.ChannelControl();
             this.tabPage8 = new System.Windows.Forms.TabPage();
             this.channelControlLine8 = new MainPrj.View.ChannelControl();
+            this.btnSearch = new System.Windows.Forms.Button();
+            this.chbListenFromCard = new System.Windows.Forms.CheckBox();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.chbUpdatePhone = new System.Windows.Forms.CheckBox();
+            this.lblUsername = new System.Windows.Forms.Label();
+            this.lblRole = new System.Windows.Forms.Label();
+            this.pbxAvatar = new System.Windows.Forms.PictureBox();
+            this.btnOrderList = new System.Windows.Forms.Button();
+            this.btnHistory = new System.Windows.Forms.Button();
             this.btnTransferToSale = new System.Windows.Forms.Button();
             this.btnUpdateCustomer = new System.Windows.Forms.Button();
             this.btnSaveData = new System.Windows.Forms.Button();
             this.btnCreateOrder = new System.Windows.Forms.Button();
-            this.btnSearch = new System.Windows.Forms.Button();
-            this.chbListenFromCard = new System.Windows.Forms.CheckBox();
-            this.btnHistory = new System.Windows.Forms.Button();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.chbUpdatePhone = new System.Windows.Forms.CheckBox();
-            this.pbxAvatar = new System.Windows.Forms.PictureBox();
-            this.lblUsername = new System.Windows.Forms.Label();
-            this.lblRole = new System.Windows.Forms.Label();
-            this.btnOrderList = new System.Windows.Forms.Button();
             this.mainMenuStrip.SuspendLayout();
             this.mainTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -93,7 +97,8 @@
             // 
             this.mainMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItemLoginLogout,
-            this.toolStripMenuItemConfig});
+            this.toolStripMenuItemConfig,
+            this.helpToolStripMenuItem});
             this.mainMenuStrip.Location = new System.Drawing.Point(0, 0);
             this.mainMenuStrip.Name = "mainMenuStrip";
             this.mainMenuStrip.Size = new System.Drawing.Size(1596, 24);
@@ -137,9 +142,37 @@
             // toolStripMenuItemSetting
             // 
             this.toolStripMenuItemSetting.Name = "toolStripMenuItemSetting";
-            this.toolStripMenuItemSetting.Size = new System.Drawing.Size(148, 22);
+            this.toolStripMenuItemSetting.Size = new System.Drawing.Size(152, 22);
             this.toolStripMenuItemSetting.Text = "Cài đặt chung";
             this.toolStripMenuItemSetting.Click += new System.EventHandler(this.toolStripMenuItemSetting_Click);
+            // 
+            // helpToolStripMenuItem
+            // 
+            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItemGuideline,
+            this.toolStripSeparator1,
+            this.toolStripMenuItemSupport});
+            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.helpToolStripMenuItem.Text = "Help";
+            // 
+            // toolStripMenuItemGuideline
+            // 
+            this.toolStripMenuItemGuideline.Name = "toolStripMenuItemGuideline";
+            this.toolStripMenuItemGuideline.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItemGuideline.Text = "Hướng dẫn sử dụng";
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            // 
+            // toolStripMenuItemSupport
+            // 
+            this.toolStripMenuItemSupport.Name = "toolStripMenuItemSupport";
+            this.toolStripMenuItemSupport.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItemSupport.Text = "Hỗ trợ";
+            this.toolStripMenuItemSupport.Click += new System.EventHandler(this.toolStripMenuItemSupport_Click);
             // 
             // tbxLog
             // 
@@ -428,6 +461,112 @@
             this.channelControlLine8.Size = new System.Drawing.Size(1316, 482);
             this.channelControlLine8.TabIndex = 0;
             // 
+            // btnSearch
+            // 
+            this.btnSearch.Location = new System.Drawing.Point(974, 554);
+            this.btnSearch.Name = "btnSearch";
+            this.btnSearch.Size = new System.Drawing.Size(94, 34);
+            this.btnSearch.TabIndex = 1;
+            this.btnSearch.Text = "Test";
+            this.btnSearch.UseVisualStyleBackColor = true;
+            this.btnSearch.Visible = false;
+            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            // 
+            // chbListenFromCard
+            // 
+            this.chbListenFromCard.AutoSize = true;
+            this.chbListenFromCard.Location = new System.Drawing.Point(974, 594);
+            this.chbListenFromCard.Name = "chbListenFromCard";
+            this.chbListenFromCard.Size = new System.Drawing.Size(172, 28);
+            this.chbListenFromCard.TabIndex = 13;
+            this.chbListenFromCard.Text = "Listen from card?";
+            this.chbListenFromCard.UseVisualStyleBackColor = true;
+            this.chbListenFromCard.CheckedChanged += new System.EventHandler(this.chbListenFromCard_CheckedChanged);
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 851);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(1596, 22);
+            this.statusStrip1.TabIndex = 14;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel
+            // 
+            this.toolStripStatusLabel.ForeColor = System.Drawing.Color.ForestGreen;
+            this.toolStripStatusLabel.Name = "toolStripStatusLabel";
+            this.toolStripStatusLabel.Size = new System.Drawing.Size(39, 17);
+            this.toolStripStatusLabel.Text = "Status";
+            // 
+            // chbUpdatePhone
+            // 
+            this.chbUpdatePhone.AutoSize = true;
+            this.chbUpdatePhone.Location = new System.Drawing.Point(1074, 557);
+            this.chbUpdatePhone.Name = "chbUpdatePhone";
+            this.chbUpdatePhone.Size = new System.Drawing.Size(236, 28);
+            this.chbUpdatePhone.TabIndex = 13;
+            this.chbUpdatePhone.Text = "Update phone to server?";
+            this.chbUpdatePhone.UseVisualStyleBackColor = true;
+            this.chbUpdatePhone.CheckedChanged += new System.EventHandler(this.chbUpdatePhone_CheckedChanged);
+            // 
+            // lblUsername
+            // 
+            this.lblUsername.AutoSize = true;
+            this.lblUsername.ForeColor = System.Drawing.Color.Blue;
+            this.lblUsername.Location = new System.Drawing.Point(773, 557);
+            this.lblUsername.Name = "lblUsername";
+            this.lblUsername.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.lblUsername.Size = new System.Drawing.Size(90, 24);
+            this.lblUsername.TabIndex = 16;
+            this.lblUsername.Text = "Họ và tên";
+            // 
+            // lblRole
+            // 
+            this.lblRole.AutoSize = true;
+            this.lblRole.ForeColor = System.Drawing.Color.Red;
+            this.lblRole.Location = new System.Drawing.Point(782, 581);
+            this.lblRole.Name = "lblRole";
+            this.lblRole.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.lblRole.Size = new System.Drawing.Size(81, 24);
+            this.lblRole.TabIndex = 16;
+            this.lblRole.Text = "Bộ phận";
+            // 
+            // pbxAvatar
+            // 
+            this.pbxAvatar.BackColor = System.Drawing.Color.Black;
+            this.pbxAvatar.Location = new System.Drawing.Point(869, 548);
+            this.pbxAvatar.Name = "pbxAvatar";
+            this.pbxAvatar.Size = new System.Drawing.Size(64, 64);
+            this.pbxAvatar.TabIndex = 15;
+            this.pbxAvatar.TabStop = false;
+            // 
+            // btnOrderList
+            // 
+            this.btnOrderList.Enabled = false;
+            this.btnOrderList.Image = global::MainPrj.Properties.Resources.list;
+            this.btnOrderList.Location = new System.Drawing.Point(382, 618);
+            this.btnOrderList.Name = "btnOrderList";
+            this.btnOrderList.Size = new System.Drawing.Size(204, 64);
+            this.btnOrderList.TabIndex = 6;
+            this.btnOrderList.Text = "Danh sách đơn hàng (F6)";
+            this.btnOrderList.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnOrderList.UseVisualStyleBackColor = true;
+            this.btnOrderList.Click += new System.EventHandler(this.btnOrderList_Click);
+            // 
+            // btnHistory
+            // 
+            this.btnHistory.Image = global::MainPrj.Properties.Resources.history;
+            this.btnHistory.Location = new System.Drawing.Point(196, 618);
+            this.btnHistory.Name = "btnHistory";
+            this.btnHistory.Size = new System.Drawing.Size(180, 64);
+            this.btnHistory.TabIndex = 6;
+            this.btnHistory.Text = "Lịch sử cuộc gọi (F5)";
+            this.btnHistory.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnHistory.UseVisualStyleBackColor = true;
+            this.btnHistory.Click += new System.EventHandler(this.btnHistory_Click);
+            // 
             // btnTransferToSale
             // 
             this.btnTransferToSale.Enabled = false;
@@ -479,112 +618,6 @@
             this.btnCreateOrder.UseVisualStyleBackColor = true;
             this.btnCreateOrder.Click += new System.EventHandler(this.btnCreateOrder_Click);
             // 
-            // btnSearch
-            // 
-            this.btnSearch.Location = new System.Drawing.Point(974, 554);
-            this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(94, 34);
-            this.btnSearch.TabIndex = 1;
-            this.btnSearch.Text = "Test";
-            this.btnSearch.UseVisualStyleBackColor = true;
-            this.btnSearch.Visible = false;
-            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
-            // 
-            // chbListenFromCard
-            // 
-            this.chbListenFromCard.AutoSize = true;
-            this.chbListenFromCard.Location = new System.Drawing.Point(974, 594);
-            this.chbListenFromCard.Name = "chbListenFromCard";
-            this.chbListenFromCard.Size = new System.Drawing.Size(172, 28);
-            this.chbListenFromCard.TabIndex = 13;
-            this.chbListenFromCard.Text = "Listen from card?";
-            this.chbListenFromCard.UseVisualStyleBackColor = true;
-            this.chbListenFromCard.CheckedChanged += new System.EventHandler(this.chbListenFromCard_CheckedChanged);
-            // 
-            // btnHistory
-            // 
-            this.btnHistory.Image = global::MainPrj.Properties.Resources.history;
-            this.btnHistory.Location = new System.Drawing.Point(196, 618);
-            this.btnHistory.Name = "btnHistory";
-            this.btnHistory.Size = new System.Drawing.Size(180, 64);
-            this.btnHistory.TabIndex = 6;
-            this.btnHistory.Text = "Lịch sử cuộc gọi (F5)";
-            this.btnHistory.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnHistory.UseVisualStyleBackColor = true;
-            this.btnHistory.Click += new System.EventHandler(this.btnHistory_Click);
-            // 
-            // statusStrip1
-            // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabel});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 851);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1596, 22);
-            this.statusStrip1.TabIndex = 14;
-            this.statusStrip1.Text = "statusStrip1";
-            // 
-            // toolStripStatusLabel
-            // 
-            this.toolStripStatusLabel.ForeColor = System.Drawing.Color.ForestGreen;
-            this.toolStripStatusLabel.Name = "toolStripStatusLabel";
-            this.toolStripStatusLabel.Size = new System.Drawing.Size(39, 17);
-            this.toolStripStatusLabel.Text = "Status";
-            // 
-            // chbUpdatePhone
-            // 
-            this.chbUpdatePhone.AutoSize = true;
-            this.chbUpdatePhone.Location = new System.Drawing.Point(1074, 557);
-            this.chbUpdatePhone.Name = "chbUpdatePhone";
-            this.chbUpdatePhone.Size = new System.Drawing.Size(236, 28);
-            this.chbUpdatePhone.TabIndex = 13;
-            this.chbUpdatePhone.Text = "Update phone to server?";
-            this.chbUpdatePhone.UseVisualStyleBackColor = true;
-            this.chbUpdatePhone.CheckedChanged += new System.EventHandler(this.chbUpdatePhone_CheckedChanged);
-            // 
-            // pbxAvatar
-            // 
-            this.pbxAvatar.BackColor = System.Drawing.Color.Black;
-            this.pbxAvatar.Location = new System.Drawing.Point(869, 548);
-            this.pbxAvatar.Name = "pbxAvatar";
-            this.pbxAvatar.Size = new System.Drawing.Size(64, 64);
-            this.pbxAvatar.TabIndex = 15;
-            this.pbxAvatar.TabStop = false;
-            // 
-            // lblUsername
-            // 
-            this.lblUsername.AutoSize = true;
-            this.lblUsername.ForeColor = System.Drawing.Color.Blue;
-            this.lblUsername.Location = new System.Drawing.Point(773, 557);
-            this.lblUsername.Name = "lblUsername";
-            this.lblUsername.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.lblUsername.Size = new System.Drawing.Size(90, 24);
-            this.lblUsername.TabIndex = 16;
-            this.lblUsername.Text = "Họ và tên";
-            // 
-            // lblRole
-            // 
-            this.lblRole.AutoSize = true;
-            this.lblRole.ForeColor = System.Drawing.Color.Red;
-            this.lblRole.Location = new System.Drawing.Point(782, 581);
-            this.lblRole.Name = "lblRole";
-            this.lblRole.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.lblRole.Size = new System.Drawing.Size(81, 24);
-            this.lblRole.TabIndex = 16;
-            this.lblRole.Text = "Bộ phận";
-            // 
-            // btnOrderList
-            // 
-            this.btnOrderList.Enabled = false;
-            this.btnOrderList.Image = global::MainPrj.Properties.Resources.list;
-            this.btnOrderList.Location = new System.Drawing.Point(382, 618);
-            this.btnOrderList.Name = "btnOrderList";
-            this.btnOrderList.Size = new System.Drawing.Size(204, 64);
-            this.btnOrderList.TabIndex = 6;
-            this.btnOrderList.Text = "Danh sách đơn hàng (F6)";
-            this.btnOrderList.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnOrderList.UseVisualStyleBackColor = true;
-            this.btnOrderList.Click += new System.EventHandler(this.btnOrderList_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
@@ -613,7 +646,7 @@
             this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Hỗ trợ điều phối";
+            this.Text = "Hỗ trợ Điều phối - Kế toán";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
@@ -677,6 +710,10 @@
         private System.Windows.Forms.Label lblUsername;
         private System.Windows.Forms.Label lblRole;
         private System.Windows.Forms.Button btnOrderList;
+        private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemGuideline;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemSupport;
     }
 }
 

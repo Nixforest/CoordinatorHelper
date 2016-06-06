@@ -281,4 +281,10 @@ Nhấn NO để chọn lại Khách hàng.</value>
   <data name="AreYouSureToClose" xml:space="preserve">
     <value>Bạn có chắc chắn muốn thoát?</value>
   </data>
+  <data name="add" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CheckAutoUpdate" xml:space="preserve">
+    <value>http://android.huongminhgroup.com/coordinatorhelper/autoupdate.xml</value>
+  </data>
 </root>
