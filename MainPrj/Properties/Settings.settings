@@ -107,5 +107,8 @@
     <Setting Name="URLUserProfile" Type="System.String" Scope="User">
       <Value Profile="(Default)">/api/user/profile</Value>
     </Setting>
+    <Setting Name="URLGetConfig" Type="System.String" Scope="User">
+      <Value Profile="(Default)">/api/default/windowGetConfig</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

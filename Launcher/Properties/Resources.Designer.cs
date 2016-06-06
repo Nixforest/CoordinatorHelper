@@ -61,11 +61,48 @@ namespace Launcher.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap _4_16_2016_6_23_17_PM {
+            get {
+                object obj = ResourceManager.GetObject("_4_16_2016_6_23_17_PM", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to http://android.huongminhgroup.com/coordinatorhelper/autoupdate.xml.
         /// </summary>
         internal static string CheckAutoUpdate {
             get {
                 return ResourceManager.GetString("CheckAutoUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đã tải xong phiên bản mới nhất. Bạn có thể bắt đầu chương trình..
+        /// </summary>
+        internal static string DownloadFinishedMsg {
+            get {
+                return ResourceManager.GetString("DownloadFinishedMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 1.0.0.0.
+        /// </summary>
+        internal static string FirstVersion {
+            get {
+                return ResourceManager.GetString("FirstVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CoordinatorHelper.exe.
+        /// </summary>
+        internal static string MainAppName {
+            get {
+                return ResourceManager.GetString("MainAppName", resourceCulture);
             }
         }
     }

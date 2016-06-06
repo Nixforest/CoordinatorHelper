@@ -14,6 +14,14 @@ namespace MainPrj.Model
     {
         [DataMember(Name = "record", IsRequired = false)]
         protected UserLoginModel record;
+        [DataMember(Name = "user_id", IsRequired = false)]
+        protected string user_id;
+
+        public string User_id
+        {
+            get { return user_id; }
+            set { user_id = value; }
+        }
 
         public UserLoginModel Record
         {

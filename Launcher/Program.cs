@@ -15,22 +15,9 @@ namespace Launcher
         [STAThread]
         static void Main()
         {
-            //Application.EnableVisualStyles();
-            //Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new Form1());
-            AutoUpdaterDotNET.AutoUpdater.Start(Properties.Resources.CheckAutoUpdate);
-            Process mainProcess = new Process();
-            try
-            {
-                mainProcess.StartInfo.UseShellExecute = false;
-                mainProcess.StartInfo.FileName = Path.Combine(Directory.GetCurrentDirectory(), "CoordinatorHelper.exe");
-                mainProcess.StartInfo.CreateNoWindow = true;
-                mainProcess.Start();
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-            }
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new MainForm());
         }
     }
 }

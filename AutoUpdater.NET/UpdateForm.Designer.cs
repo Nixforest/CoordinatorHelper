@@ -74,8 +74,8 @@ namespace AutoUpdaterDotNET
             // buttonRemindLater
             // 
             this.buttonRemindLater.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonRemindLater.Image = global::AutoUpdaterDotNET.Properties.Resources.clock_go;
             resources.ApplyResources(this.buttonRemindLater, "buttonRemindLater");
+            this.buttonRemindLater.Image = global::AutoUpdaterDotNET.Properties.Resources.clock_go;
             this.buttonRemindLater.Name = "buttonRemindLater";
             this.buttonRemindLater.UseVisualStyleBackColor = true;
             this.buttonRemindLater.Click += new System.EventHandler(this.ButtonRemindLaterClick);

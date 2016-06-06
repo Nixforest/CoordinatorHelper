@@ -237,6 +237,61 @@ namespace MainPrj.Util
             }
             return data;
         }
+
+        public static void RequestTempData()
+        {
+            // Declare result variable
+            using (WebClient client = new WebClient())
+            {
+                string respStr = String.Empty;
+                try
+                {
+                    // Post keyword to server
+                    string value = string.Empty;
+                    value = String.Format("{{\"token\":\"{0}\"}}",
+                        Properties.Settings.Default.UserToken);
+                    byte[] response = client.UploadValues(
+                        Properties.Settings.Default.ServerURL + Properties.Settings.Default.URLGetConfig,
+                        new System.Collections.Specialized.NameValueCollection()
+                    {
+                        { "q", value}
+                    });
+                    // Get response
+                    respStr = System.Text.Encoding.UTF8.GetString(response);
+                }
+                catch (System.Net.WebException)
+                {
+                    ShowErrorMessage(Properties.Resources.InternetConnectionError);
+                    HasError = true;
+                }
+
+                if (!String.IsNullOrEmpty(respStr))
+                {
+                    DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(TempDataResponseModel));
+                    byte[] encodingBytes = null;
+                    try
+                    {
+                        // Encoding response data
+                        encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);
+                    }
+                    catch (System.Text.EncoderFallbackException)
+                    {
+                        ShowErrorMessage(Properties.Resources.EncodingError);
+                        HasError = true;
+                    }
+                    if (encodingBytes != null)
+                    {
+                        MemoryStream msU = new MemoryStream(encodingBytes);
+                        TempDataResponseModel baseResp = (TempDataResponseModel)js.ReadObject(msU);
+                        if ((baseResp != null)
+                            && (baseResp.Record != null))
+                        {
+                            DataPure.Instance.TempData = baseResp.Record;
+                        }
+                    }
+                }
+            }
+        }
         /// <summary>
         /// Get local IP address.
         /// </summary>
@@ -728,13 +783,6 @@ namespace MainPrj.Util
                 new RectangleF(0, 0, size, size), sf);
             graphics.Flush();
             return retVal;
-        }
-        /// <summary>
-        /// Check auto update new version.
-        /// </summary>
-        public static void CheckAutoUpdate()
-        {
-            AutoUpdaterDotNET.AutoUpdater.Start(Properties.Resources.CheckAutoUpdate);
         }
     }
 }

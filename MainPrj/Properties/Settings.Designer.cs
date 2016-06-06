@@ -442,5 +442,17 @@ namespace MainPrj.Properties {
                 this["URLUserProfile"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("/api/default/windowGetConfig")]
+        public string URLGetConfig {
+            get {
+                return ((string)(this["URLGetConfig"]));
+            }
+            set {
+                this["URLGetConfig"] = value;
+            }
+        }
     }
 }

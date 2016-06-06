@@ -54,6 +54,8 @@ namespace AutoUpdaterDotNET
 
         internal static bool IsWinFormsApplication;
 
+        private static string InstalledVersionStr;
+
         /// <summary>
         ///     URL of the xml file that contains information about latest version of the application.
         /// </summary>
@@ -102,16 +104,18 @@ namespace AutoUpdaterDotNET
         /// </summary>
         public static void Start()
         {
-            Start(AppCastURL);
+            Start(AppCastURL, InstalledVersionStr);
         }
 
         /// <summary>
         ///     Start checking for new version of application and display dialog to the user if update is available.
         /// </summary>
         /// <param name="appCast">URL of the xml file that contains information about latest version of the application.</param>
-        public static void Start(String appCast)
+        /// <param name="installedVersionStr">Installed version of Launcher</param>
+        public static void Start(String appCast, string installedVersionStr)
         {
             AppCastURL = appCast;
+            InstalledVersionStr = installedVersionStr;
 
             IsWinFormsApplication = Application.MessageLoop;
 
@@ -121,17 +125,17 @@ namespace AutoUpdaterDotNET
 
             backgroundWorker.RunWorkerAsync();
         }
-
+        /// <summary>
+        /// Background thread.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
         private static void BackgroundWorkerDoWork(object sender, DoWorkEventArgs e)
         {
             Assembly mainAssembly = Assembly.GetEntryAssembly();
             var companyAttribute =
                 (AssemblyCompanyAttribute) GetAttribute(mainAssembly, typeof (AssemblyCompanyAttribute));
-            // NguyenPT
-            //var titleAttribute = (AssemblyTitleAttribute) GetAttribute(mainAssembly, typeof (AssemblyTitleAttribute));
-            //AppTitle = titleAttribute != null ? titleAttribute.Title : mainAssembly.GetName().Name;
             AppTitle = mainAssembly.GetName().Name;
-            // NguyenPT
             string appCompany = companyAttribute != null ? companyAttribute.Company : "";
 
             RegistryLocation = !string.IsNullOrEmpty(appCompany)
@@ -160,7 +164,8 @@ namespace AutoUpdaterDotNET
                 }
             }
 
-            InstalledVersion = mainAssembly.GetName().Version;
+            //InstalledVersion = mainAssembly.GetName().Version;
+            InstalledVersion = new Version(InstalledVersionStr);
             WebRequest webRequest = null;
             WebResponse webResponse = null;
 
@@ -328,14 +333,14 @@ namespace AutoUpdaterDotNET
         public static void DownloadUpdate()
         {
             string[] listUrl = DownloadURL.Split('\n');
-            bool isLastURL = false;
+            string newVersion = String.Empty;
             for (int i = 0; i < listUrl.Length; i++)
             {
                 if (i == (listUrl.Length - 1))
                 {
-                    isLastURL = true;
+                    newVersion = CurrentVersion.ToString();
                 }
-                var downloadDialog = new DownloadUpdateDialog(listUrl[i], isLastURL);
+                var downloadDialog = new DownloadUpdateDialog(listUrl[i], newVersion);
                 try
                 {
                     downloadDialog.ShowDialog();

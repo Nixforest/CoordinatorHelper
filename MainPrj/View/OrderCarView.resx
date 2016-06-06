@@ -117,20 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CheckAutoUpdate" xml:space="preserve">
-    <value>http://android.huongminhgroup.com/coordinatorhelper/autoupdate.xml</value>
-  </data>
-  <data name="DownloadFinishedMsg" xml:space="preserve">
-    <value>Đã tải xong phiên bản mới nhất. Bạn có thể bắt đầu chương trình.</value>
-  </data>
-  <data name="FirstVersion" xml:space="preserve">
-    <value>1.0.0.0</value>
-  </data>
-  <data name="MainAppName" xml:space="preserve">
-    <value>CoordinatorHelper.exe</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="_4_16_2016_6_23_17_PM" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\4-16-2016 6-23-17 PM.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
 </root>

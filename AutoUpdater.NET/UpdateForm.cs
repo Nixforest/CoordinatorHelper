@@ -17,10 +17,10 @@ namespace AutoUpdaterDotNET
                 InitializeComponent();
                 var resources = new System.ComponentModel.ComponentResourceManager(typeof(UpdateForm));
                 Text = AutoUpdater.DialogTitle;
-                labelUpdate.Text = string.Format(resources.GetString("labelUpdate.Text", CultureInfo.CurrentCulture), AutoUpdater.AppTitle);
+                labelUpdate.Text = string.Format(resources.GetString("labelUpdate.Text", CultureInfo.CurrentCulture), AutoUpdater.DialogTitle);
                 labelDescription.Text =
                     string.Format(resources.GetString("labelDescription.Text", CultureInfo.CurrentCulture),
-                        AutoUpdater.AppTitle, AutoUpdater.CurrentVersion, AutoUpdater.InstalledVersion);
+                        String.Empty, AutoUpdater.CurrentVersion, AutoUpdater.InstalledVersion);
             }
         }
 
@@ -33,6 +33,7 @@ namespace AutoUpdaterDotNET
         private void UpdateFormLoad(object sender, EventArgs e)
         {
             webBrowser.Navigate(AutoUpdater.ChangeLogURL);
+            webBrowser.Refresh();
         }
 
         private void ButtonUpdateClick(object sender, EventArgs e)

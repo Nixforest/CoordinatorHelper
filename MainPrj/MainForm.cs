@@ -35,10 +35,6 @@ namespace MainPrj
         /// </summary>
         private Thread udpThread = default(Thread);
         /// <summary>
-        /// Current channel.
-        /// </summary>
-        private int currentChannel = 0;
-        /// <summary>
         /// List of tab control.
         /// </summary>
         private List<ChannelControl> listChannelControl = new List<ChannelControl>();
@@ -276,22 +272,22 @@ namespace MainPrj
             }
             if (needUpdate)
             {
-                if (this.listChannelControl[this.currentChannel].CanChangeTab())
+                if (this.listChannelControl[DataPure.Instance.CurrentChannel].CanChangeTab())
                 {
-                    if (!model.Channel.Equals(this.currentChannel))
+                    if (!model.Channel.Equals(DataPure.Instance.CurrentChannel))
                     {
-                        this.currentChannel = model.Channel;
+                        DataPure.Instance.CurrentChannel = model.Channel;
                         // Show up incomming channel
-                        if ((this.currentChannel >= 0)
-                            && (this.currentChannel < Properties.Settings.Default.ChannelNumber))
+                        if ((DataPure.Instance.CurrentChannel >= 0)
+                            && (DataPure.Instance.CurrentChannel < Properties.Settings.Default.ChannelNumber))
                         {
-                            this.mainTabControl.SelectedIndex = this.currentChannel;
+                            this.mainTabControl.SelectedIndex = DataPure.Instance.CurrentChannel;
                         }
                     }
                     if (channel != null)
                     {
                         channel.SetIncommingPhone(model.Phone);
-                        UpdateData(model.Phone, model.Status, this.currentChannel);
+                        UpdateData(model.Phone, model.Status, DataPure.Instance.CurrentChannel);
                     }
                 }
                 else
@@ -322,8 +318,6 @@ namespace MainPrj
         /// <param name="e">EventArgs</param>
         private void MainForm_Load(object sender, EventArgs e)
         {
-            // Check if need update new version
-            CommonProcess.CheckAutoUpdate();
             // Initialize
             this.listChannelControl.Add(this.channelControlLine1);
             this.listChannelControl.Add(this.channelControlLine2);
@@ -394,7 +388,7 @@ namespace MainPrj
                     break;
                 default:        // 2 or more customer has phone number is match with incomming phone
                     // Channel need update is not current channel
-                    if (!channelIdx.Equals(this.currentChannel))
+                    if (!channelIdx.Equals(DataPure.Instance.CurrentChannel))
                     {
                         // Not show selector list
                         break;
@@ -443,7 +437,7 @@ namespace MainPrj
         /// <param name="e">EventArgs</param>
         private void mainTabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.currentChannel = this.mainTabControl.SelectedIndex;
+            DataPure.Instance.CurrentChannel = this.mainTabControl.SelectedIndex;
         }
         /// <summary>
         /// Handle when click button search.
@@ -554,7 +548,7 @@ namespace MainPrj
                     ChannelControl channelControl = null;
 				    try
 				    {
-					    channelControl = this.listChannelControl.ElementAt(this.currentChannel);
+                        channelControl = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel);
 				    }
 				    catch (ArgumentOutOfRangeException)
 				    {
@@ -590,7 +584,8 @@ namespace MainPrj
         /// </summary>
         private void HandleClickSaveDataButton()
         {
-            CommonProcess.ShowInformMessageProcessing();
+            OrderCarView order = new OrderCarView();
+            order.Show();
         }
         /// <summary>
         /// Handle when click Update Customer button.
@@ -598,7 +593,7 @@ namespace MainPrj
         private void HandleClickUpdateCustomerButton()
         {
             //CommonProcess.ShowInformMessageProcessing();
-            this.listChannelControl[this.currentChannel].SaveNote();
+            this.listChannelControl[DataPure.Instance.CurrentChannel].SaveNote();
             UpdateStatus(Properties.Resources.NoteSaved);
         }
         /// <summary>
@@ -798,6 +793,7 @@ namespace MainPrj
             // Update button enable
             btnCreateOrder.Enabled = user.Role.Equals(RoleType.ROLE_ACCOUNTING_AGENT);
             btnOrderList.Enabled = user.Role.Equals(RoleType.ROLE_ACCOUNTING_AGENT);
+            CommonProcess.RequestTempData();
         }
         /// <summary>
         /// Logout handle.

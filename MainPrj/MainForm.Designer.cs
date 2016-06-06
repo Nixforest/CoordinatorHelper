@@ -142,7 +142,7 @@
             // toolStripMenuItemSetting
             // 
             this.toolStripMenuItemSetting.Name = "toolStripMenuItemSetting";
-            this.toolStripMenuItemSetting.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItemSetting.Size = new System.Drawing.Size(148, 22);
             this.toolStripMenuItemSetting.Text = "Cài đặt chung";
             this.toolStripMenuItemSetting.Click += new System.EventHandler(this.toolStripMenuItemSetting_Click);
             // 
@@ -594,7 +594,6 @@
             // 
             // btnSaveData
             // 
-            this.btnSaveData.Enabled = false;
             this.btnSaveData.Image = global::MainPrj.Properties.Resources.ordertruck;
             this.btnSaveData.Location = new System.Drawing.Point(196, 548);
             this.btnSaveData.Name = "btnSaveData";

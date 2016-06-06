@@ -6,6 +6,8 @@ using System.Net;
 using System.IO;
 using System.Diagnostics;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using System.Reflection;
 
 namespace AutoUpdaterDotNET
 {
@@ -16,14 +18,14 @@ namespace AutoUpdaterDotNET
         private string _tempPath;
 
         private WebClient _webClient;
-        private bool _isLast = false;
+        private string _newVersion = String.Empty;
 
-        public DownloadUpdateDialog(string downloadURL, bool isLast)
+        public DownloadUpdateDialog(string downloadURL, string newVersion)
         {
             InitializeComponent();
 
             _downloadURL = downloadURL;
-            _isLast = isLast;
+            _newVersion = newVersion;
         }
 
         private void DownloadUpdateDialogLoad(object sender, EventArgs e)
@@ -51,39 +53,57 @@ namespace AutoUpdaterDotNET
         {
             progressBar.Value = e.ProgressPercentage;
         }
+        [DllImport("user32.dll", EntryPoint = "FindWindow", SetLastError = true)]
+        private static extern IntPtr FindWindowByCaption(IntPtr ZeroOnly, string lpWindowName);
 
+        [DllImport("user32.dll")]
+        private static extern int PostMessage(IntPtr hWnd, uint msg, int wParam, int lParam);
         private void OnDownloadComplete(object sender, AsyncCompletedEventArgs e)
         {
-            if (!e.Cancelled && _isLast)
+            string currentFolder = Directory.GetCurrentDirectory();
+            string currentPath = Path.Combine(currentFolder, Path.GetFileName(_tempPath));
+            try
             {
-                if (AutoUpdater.IsWinFormsApplication)
-                {
-                    Application.Exit();
-                }
-                else
-                {
-                    Environment.Exit(0);
-                }
-                // Copy to current location
-                string currentFolder = Directory.GetCurrentDirectory();
-                string currentPath = Path.Combine(currentFolder, Path.GetFileName(_tempPath));
-                try
-                {  
-                    File.Copy(_tempPath, currentPath, true);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                    return;
-                }
-                var processStartInfo = new ProcessStartInfo { FileName = currentPath, UseShellExecute = true };
-                Process.Start(processStartInfo);
+                File.Copy(_tempPath, currentPath, true);
             }
-            else
+            catch (Exception ex)
             {
-                _webClient.Dispose();
-                this.Close();
+                MessageBox.Show(ex.Message);
+                return;
             }
+            if (!e.Cancelled && !String.IsNullOrEmpty(_newVersion))
+            {
+                IntPtr hWnd = FindWindowByCaption(IntPtr.Zero, Assembly.GetEntryAssembly().GetName().Name);
+                if (hWnd.ToInt32() != 0)
+                {
+                    Clipboard.SetText(_newVersion);
+                    PostMessage(hWnd, WM_USER + 1, 0, 0);
+                }
+                //if (AutoUpdater.IsWinFormsApplication)
+                //{
+                //    Application.Exit();
+                //}
+                //else
+                //{
+                //    Environment.Exit(0);
+                //}
+                //// Copy to current location
+                //string currentFolder = Directory.GetCurrentDirectory();
+                //string currentPath = Path.Combine(currentFolder, Path.GetFileName(_tempPath));
+                //try
+                //{  
+                //    File.Copy(_tempPath, currentPath, true);
+                //}
+                //catch (Exception ex)
+                //{
+                //    MessageBox.Show(ex.Message);
+                //    return;
+                //}
+                //var processStartInfo = new ProcessStartInfo { FileName = currentPath, UseShellExecute = true };
+                //Process.Start(processStartInfo);
+            }
+            _webClient.Dispose();
+            this.Close();
         }
 
         private static string GetFileName(string url)
@@ -132,5 +152,7 @@ namespace AutoUpdaterDotNET
         {
             _webClient.CancelAsync();
         }
+
+        public uint WM_USER = 0x0400;
     }
 }

@@ -277,6 +277,9 @@ Bạn đang sử dụng phiên bản {2} cũ. Bạn có muốn tải về phiên
   <data name="&gt;&gt;buttonUpdate.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
+  <data name="buttonRemindLater.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
   <data name="buttonRemindLater.Location" type="System.Drawing.Point, System.Drawing">
     <value>321, 570</value>
   </data>

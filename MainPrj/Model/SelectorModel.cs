@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace MainPrj.Model
 {
+    [DataContract]
     public class SelectorModel
     {
         /// <summary>
         /// Id.
         /// </summary>
+        [DataMember(Name = "id", IsRequired = false)]
         private string id;
 
         public string Id
@@ -20,6 +23,7 @@ namespace MainPrj.Model
         /// <summary>
         /// Name.
         /// </summary>
+        [DataMember(Name = "name", IsRequired = false)]
         private string name;
 
         public string Name
@@ -30,7 +34,7 @@ namespace MainPrj.Model
         /// <summary>
         /// Address
         /// </summary>
-        private string address;
+        private string address = string.Empty;
 
         public string Address
         {
