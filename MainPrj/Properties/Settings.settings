@@ -48,7 +48,7 @@
       <Value Profile="(Default)">history.txt</Value>
     </Setting>
     <Setting Name="CallIdFormat" Type="System.String" Scope="User">
-      <Value Profile="(Default)">yyyyMMddHHmmss</Value>
+      <Value Profile="(Default)">yyyyMMddHHmmssFFF</Value>
     </Setting>
     <Setting Name="FinishMark" Type="System.String" Scope="User">
       <Value Profile="(Default)">X</Value>

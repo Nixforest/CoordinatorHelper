@@ -92,5 +92,14 @@ namespace MainPrj.Model
             get { return label; }
             set { label = value; }
         }
+
+        public bool IsContainString(string keyword)
+        {
+            if (String.IsNullOrEmpty(keyword))
+            {
+                return true;
+            }
+            return this.label.ToLower().Contains(keyword.ToLower());
+        }
     }
 }

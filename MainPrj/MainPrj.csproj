@@ -67,7 +67,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\ListViewColumn\PromoteColumns.cs" />
+    <Compile Include="Model\ListViewColumn\ProductColumns.cs" />
     <Compile Include="Model\MaterialModel.cs" />
+    <Compile Include="Model\OrderModel.cs" />
+    <Compile Include="Model\ProductModel.cs" />
+    <Compile Include="Model\PromoteModel.cs" />
     <Compile Include="Model\Response\BaseResponseModel.cs" />
     <Compile Include="Model\CallModel.cs" />
     <Compile Include="Model\CallType.cs" />
@@ -87,8 +92,8 @@
     <Compile Include="Model\Response\UserLoginResponseModel.cs" />
     <Compile Include="Model\Response\CustomerResponseModel.cs" />
     <Compile Include="Model\CustomerModel.cs" />
-    <Compile Include="Model\HistoryColumns.cs" />
-    <Compile Include="Model\SelectorColumns.cs" />
+    <Compile Include="Model\ListViewColumn\HistoryColumns.cs" />
+    <Compile Include="Model\ListViewColumn\SelectorColumns.cs" />
     <Compile Include="Model\SelectorModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -101,10 +106,10 @@
     <Compile Include="View\AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\ChannelControl.cs">
+    <Compile Include="View\Component\ChannelControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\ChannelControl.Designer.cs">
+    <Compile Include="View\Component\ChannelControl.Designer.cs">
       <DependentUpon>ChannelControl.cs</DependentUpon>
     </Compile>
     <Compile Include="View\CustomerView.cs">
@@ -118,6 +123,9 @@
     </Compile>
     <Compile Include="View\HistoryView.Designer.cs">
       <DependentUpon>HistoryView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Component\EditableListView.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="View\LoginView.cs">
       <SubType>Form</SubType>
@@ -171,8 +179,11 @@
     <EmbeddedResource Include="View\AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="View\ChannelControl.resx">
+    <EmbeddedResource Include="View\Component\ChannelControl.resx">
       <DependentUpon>ChannelControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Component\EditableListView.resx">
+      <DependentUpon>EditableListView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\CustomerView.resx">
       <DependentUpon>CustomerView.cs</DependentUpon>

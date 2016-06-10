@@ -105,12 +105,12 @@ namespace MainPrj.Model
         public CallModel(DateTime incommingTime, int channel, CustomerModel customer,
             string phone, int status)
         {
-            this.id = incommingTime.ToString(Properties.Settings.Default.CallIdFormat);
-            this.channel = channel;
+            this.id       = incommingTime.ToString(Properties.Settings.Default.CallIdFormat);
+            this.channel  = channel;
             this.customer = customer;
-            this.phone = phone;
-            this.status = status;
-            this.type = CallType.CALLTYPE_NUM;
+            this.phone    = phone;
+            this.status   = status;
+            this.type     = CallType.CALLTYPE_NUM;
             this.isFinish = false;
         }
         
@@ -128,8 +128,8 @@ namespace MainPrj.Model
                 {
                     js.WriteObject(msU, this);
                     msU.Position = 0;
-                    var sr = new StreamReader(msU);
-                    retVal = sr.ReadToEnd();
+                    var sr       = new StreamReader(msU);
+                    retVal       = sr.ReadToEnd();
                     sr.Close();
                 }
                 catch (Exception ex)
@@ -138,6 +138,23 @@ namespace MainPrj.Model
                 }
             }
             return retVal;
+        }
+        /// <summary>
+        /// Check if keyword is contained inside object.
+        /// </summary>
+        /// <param name="keyword">Keyword</param>
+        /// <returns>True if contained, False otherwise</returns>
+        public bool IsContainString(string keyword)
+        {
+            bool result = false;
+            if (String.IsNullOrEmpty(keyword))
+            {
+                return true;
+            }
+            result |= CommonProcess.NormalizationString(this.phone).Contains(keyword.ToLower());
+            result |= CommonProcess.NormalizationString(this.customer.Name.ToLower()).Contains(keyword.ToLower());
+            result |= CommonProcess.NormalizationString(this.customer.Address.ToLower()).Contains(keyword.ToLower());
+            return result;
         }
     }
 }

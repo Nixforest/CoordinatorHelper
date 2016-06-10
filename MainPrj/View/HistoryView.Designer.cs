@@ -186,7 +186,7 @@
             this.toolStripMenuItemCopyPhone,
             this.toolStripMenuItemMarkFinish});
             this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(278, 86);
+            this.contextMenuStrip.Size = new System.Drawing.Size(278, 64);
             this.contextMenuStrip.Text = "dfsdf";
             // 
             // toolStripMenuItemCopyPhone

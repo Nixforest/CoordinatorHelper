@@ -22,14 +22,23 @@ namespace MainPrj.Model
         protected SelectorModel[] monitor_market_development;
         [DataMember(Name = "material_gas", IsRequired = false)]
         protected MaterialModel[] material_gas;
+        [DataMember(Name = "material_promotion", IsRequired = false)]
+        protected MaterialModel[] material_promotion;
 
-        protected MaterialModel[] Material_gas
+        public MaterialModel[] Material_promotion
+        {
+            get { return material_promotion; }
+            set { material_promotion = value; }
+        }
+        
+
+        public MaterialModel[] Material_gas
         {
             get { return material_gas; }
             set { material_gas = value; }
         }
 
-        protected SelectorModel[] Monitor_market_development
+        public SelectorModel[] Monitor_market_development
         {
             get { return monitor_market_development; }
             set { monitor_market_development = value; }

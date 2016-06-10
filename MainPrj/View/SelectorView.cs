@@ -145,5 +145,10 @@ namespace MainPrj.View
             }
             this.Close();
         }
+        public void SetHeaderText(SelectorColumns column, string header)
+        {
+            this.listViewSelector.Columns[(int)column].Text = header;
+
+        }
     }
 }

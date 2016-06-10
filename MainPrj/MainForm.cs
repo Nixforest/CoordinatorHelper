@@ -39,17 +39,9 @@ namespace MainPrj
         /// </summary>
         private List<ChannelControl> listChannelControl = new List<ChannelControl>();
         /// <summary>
-        /// List of calls.
-        /// </summary>
-        private List<CallModel> listCalls = new List<CallModel>();
-        /// <summary>
         /// List flag need update title of tab controls.
         /// </summary>
         private bool[] listChannelNeedUpdateTitle = new bool[Properties.Settings.Default.ChannelNumber];
-        /// <summary>
-        /// User login.
-        /// </summary>
-        private UserLoginModel user = null;
 
         /// <summary>
         /// Constructor.
@@ -427,7 +419,7 @@ namespace MainPrj
             }
 
             CallModel call = new CallModel(System.DateTime.Now, channelIdx, customer, phone, status);
-            this.listCalls.Add(call);
+            DataPure.Instance.ListCalls.Add(call);
             CommonProcess.SetChannelInformation(channel, call.Customer);
         }
         /// <summary>
@@ -438,6 +430,7 @@ namespace MainPrj
         private void mainTabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
             DataPure.Instance.CurrentChannel = this.mainTabControl.SelectedIndex;
+            DataPure.Instance.CustomerInfo = this.listChannelControl[this.mainTabControl.SelectedIndex].Data;
         }
         /// <summary>
         /// Handle when click button search.
@@ -446,26 +439,26 @@ namespace MainPrj
         /// <param name="e">EventArgs</param>
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            //string phone = this.listChannelControl.ElementAt(this.currentChannel).GetIncommingPhone();
-            //int n = 0;
-            //// Get incomming number information
-            //if (!String.IsNullOrEmpty(phone) && int.TryParse(phone, out n))
-            //{
-            //    // Insert value into current channel
-            //    try
-            //    {
-            //        ChannelControl tab = this.listChannelControl.ElementAt(this.currentChannel);
-            //        tab.SetIncommingPhone(phone);
-            //        // Request server and update data from server
-            //        UpdateData(phone, (int)CardDataStatus.CARDDATA_RINGING, this.currentChannel);
-            //    }
-            //    catch (ArgumentOutOfRangeException)
-            //    {
-            //        CommonProcess.ShowErrorMessage(Properties.Resources.ArgumentOutOfRange);
-            //    }
-            //}
-            _TestServer test = new _TestServer();
-            test.ShowDialog();
+            string phone = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel).GetIncommingPhone();
+            int n = 0;
+            // Get incomming number information
+            if (!String.IsNullOrEmpty(phone) && int.TryParse(phone, out n))
+            {
+                // Insert value into current channel
+                try
+                {
+                    ChannelControl tab = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel);
+                    tab.SetIncommingPhone(phone);
+                    // Request server and update data from server
+                    UpdateData(phone, (int)CardDataStatus.CARDDATA_RINGING, DataPure.Instance.CurrentChannel);
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    CommonProcess.ShowErrorMessage(Properties.Resources.ArgumentOutOfRange);
+                }
+            }
+            //_TestServer test = new _TestServer();
+            //test.ShowDialog();
         }
         /// <summary>
         /// Setting ON/OFF testing control.
@@ -558,7 +551,7 @@ namespace MainPrj
 				    if (channelControl != null)
 				    {
 					    channelControl.SearchCustomer();
-					    foreach (CallModel current in this.listCalls)
+                        foreach (CallModel current in DataPure.Instance.ListCalls)
 					    {
 						    if (channelControl.Data.Id.Equals(current.Customer.Id))
 						    {
@@ -576,8 +569,23 @@ namespace MainPrj
         /// </summary>
         private void HandleClickCreateOrderButton()
         {
-            OrderView order = new OrderView();
-            order.Show();
+            DataPure.Instance.CustomerInfo = this.listChannelControl[DataPure.Instance.CurrentChannel].Data;
+            RoleType role = RoleType.ROLE_ACCOUNTING_AGENT;
+            if (DataPure.Instance.User != null)
+            {
+                role = DataPure.Instance.User.Role;
+            }
+            switch (role)
+            {
+                case RoleType.ROLE_ACCOUNTING_AGENT:
+                    OrderView order = new OrderView();
+                    order.Show();
+                    break;
+                case RoleType.ROLE_DIEU_PHOI:
+                    break;
+                default:
+                    break;
+            }
         }
         /// <summary>
         /// Handle when click Save data button.
@@ -616,11 +624,11 @@ namespace MainPrj
         private void HandleClickHistoryButton()
         {
             HistoryView historyView = new HistoryView();
-            historyView.ListData.AddRange(this.listCalls);
+            historyView.ListData.AddRange(DataPure.Instance.ListCalls);
             historyView.ShowDialog();
             foreach (CallModel current in historyView.ListData)
             {
-                foreach (CallModel current2 in this.listCalls)
+                foreach (CallModel current2 in DataPure.Instance.ListCalls)
                 {
                     if (current.Id.Equals(current2.Id))
                     {
@@ -708,7 +716,7 @@ namespace MainPrj
             //    e.Cancel = true;
             //}
             // Write history file
-            CommonProcess.WriteHistory(this.listCalls);
+            CommonProcess.WriteHistory(DataPure.Instance.ListCalls);
             Properties.Settings.Default.UserToken = String.Empty;
             Properties.Settings.Default.Save();
         }
@@ -739,8 +747,8 @@ namespace MainPrj
         {
             LoginView login = new LoginView();
             login.ShowDialog();
-            user = new UserLoginModel(login.User);
-            if (!String.IsNullOrEmpty(user.First_name))
+            DataPure.Instance.User = new UserLoginModel(login.User);
+            if (!String.IsNullOrEmpty(DataPure.Instance.User.First_name))
             {
                 Login();
             }
@@ -757,7 +765,7 @@ namespace MainPrj
             {
                 CommonProcess.RequestLogout();
             }
-            user = new UserLoginModel();
+            DataPure.Instance.User = new UserLoginModel();
             pbxAvatar.Image = CommonProcess.CreateAvatar(string.Empty, pbxAvatar.Size.Height);
             Logout();
         }
@@ -768,20 +776,20 @@ namespace MainPrj
         {
             // Draw avatar
             string avatarString = string.Empty;
-            if (!String.IsNullOrEmpty(user.First_name))
+            if (!String.IsNullOrEmpty(DataPure.Instance.User.First_name))
             {
-                string[] token = user.First_name.Split(' ');
+                string[] token = DataPure.Instance.User.First_name.Split(' ');
                 foreach (string item in token)
                 {
                     avatarString += String.Format("{0}", item[0]).ToUpper();
                 }
             }
-            lblUsername.Text = user.First_name;
+            lblUsername.Text = DataPure.Instance.User.First_name;
             if (lblUsername.Right > (pbxAvatar.Left - 5))
             {
                 lblUsername.Left = (pbxAvatar.Left - 5) - lblUsername.Width;
             }
-            lblRole.Text = user.RoleStr;
+            lblRole.Text = DataPure.Instance.User.RoleStr;
             if (lblRole.Right > (pbxAvatar.Left - 5))
             {
                 lblRole.Left = (pbxAvatar.Left - 5) - lblRole.Width;
@@ -791,8 +799,8 @@ namespace MainPrj
             this.toolStripMenuItemLogin.Enabled = false;
             this.toolStripMenuItemLogout.Enabled = true;
             // Update button enable
-            btnCreateOrder.Enabled = user.Role.Equals(RoleType.ROLE_ACCOUNTING_AGENT);
-            btnOrderList.Enabled = user.Role.Equals(RoleType.ROLE_ACCOUNTING_AGENT);
+            btnCreateOrder.Enabled = DataPure.Instance.User.Role.Equals(RoleType.ROLE_ACCOUNTING_AGENT);
+            btnOrderList.Enabled = DataPure.Instance.User.Role.Equals(RoleType.ROLE_ACCOUNTING_AGENT);
             CommonProcess.RequestTempData();
         }
         /// <summary>

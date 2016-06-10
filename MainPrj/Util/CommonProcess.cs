@@ -6,6 +6,7 @@ using System.Collections.Specialized;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -237,7 +238,9 @@ namespace MainPrj.Util
             }
             return data;
         }
-
+        /// <summary>
+        /// Request temp data.
+        /// </summary>
         public static void RequestTempData()
         {
             // Declare result variable
@@ -685,6 +688,21 @@ namespace MainPrj.Util
             return result;
         }
         /// <summary>
+        /// Check if string is valid double.
+        /// </summary>
+        /// <param name="str">String to check</param>
+        /// <returns>True if string is valid double, False otherwise</returns>
+        public static bool IsValidDouble(string str)
+        {
+            bool result = false;
+            double num;
+            if (!string.IsNullOrEmpty(str) && double.TryParse(str, out num))
+            {
+                result = true;
+            }
+            return result;
+        }
+        /// <summary>
         /// Update customer phone
         /// </summary>
         /// <param name="customerId">Customer Id</param>
@@ -782,6 +800,51 @@ namespace MainPrj.Util
             graphics.DrawString(text, font, new SolidBrush(Color.WhiteSmoke),
                 new RectangleF(0, 0, size, size), sf);
             graphics.Flush();
+            return retVal;
+        }
+        /// <summary>
+        /// Search material
+        /// </summary>
+        /// <param name="keyword">Keyword</param>
+        /// <returns>List of material</returns>
+        public static List<MaterialModel> SearchMaterial(string keyword, List<MaterialModel> source)
+        {
+            List<MaterialModel> result = new List<MaterialModel>();
+            foreach (MaterialModel item in source)
+            {
+                if (item.IsContainString(keyword))
+                {
+                    result.Add(item);
+                }
+            }
+            return result;
+        }
+        public static List<MaterialModel> SearchPromote(string keyword)
+        {
+            List<MaterialModel> result = new List<MaterialModel>();
+            // Check null object
+            if (DataPure.Instance.TempData != null)
+            {
+                // Check null object
+                if (DataPure.Instance.TempData.Material_promotion != null)
+                {
+                    foreach (MaterialModel item in DataPure.Instance.TempData.Material_promotion)
+                    {
+                        if (item.IsContainString(keyword))
+                        {
+                            result.Add(item);
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+        public static string FormatMoney(double money)
+        {
+            string retVal = String.Empty;
+            NumberFormatInfo nfi = new CultureInfo("vi-VN", false).NumberFormat;
+            nfi.CurrencyDecimalDigits = 0;
+            retVal = money.ToString("C", nfi);
             return retVal;
         }
     }

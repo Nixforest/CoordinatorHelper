@@ -287,4 +287,19 @@ Nhấn NO để chọn lại Khách hàng.</value>
   <data name="CheckAutoUpdate" xml:space="preserve">
     <value>http://android.huongminhgroup.com/coordinatorhelper/autoupdate.xml</value>
   </data>
+  <data name="Detail" xml:space="preserve">
+    <value>Chi tiết</value>
+  </data>
+  <data name="IdIs" xml:space="preserve">
+    <value>Id : {0}</value>
+  </data>
+  <data name="NoneSelect" xml:space="preserve">
+    <value>(Không chọn)</value>
+  </data>
+  <data name="SelectItems" xml:space="preserve">
+    <value>Chọn sản phẩm</value>
+  </data>
+  <data name="SelectPromotes" xml:space="preserve">
+    <value>Chọn hàng khuyến mãi</value>
+  </data>
 </root>

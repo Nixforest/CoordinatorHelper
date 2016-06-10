@@ -205,7 +205,7 @@ namespace MainPrj.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("yyyyMMddHHmmss")]
+        [global::System.Configuration.DefaultSettingValueAttribute("yyyyMMddHHmmssFFF")]
         public string CallIdFormat {
             get {
                 return ((string)(this["CallIdFormat"]));

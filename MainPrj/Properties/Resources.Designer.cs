@@ -237,6 +237,15 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Chi tiết.
+        /// </summary>
+        internal static string Detail {
+            get {
+                return ResourceManager.GetString("Detail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap done_black {
@@ -341,6 +350,15 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Id : {0}.
+        /// </summary>
+        internal static string IdIs {
+            get {
+                return ResourceManager.GetString("IdIs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Có cuộc gọi đến: {0}.
         /// </summary>
         internal static string IncommingCall {
@@ -425,6 +443,15 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to (Không chọn).
+        /// </summary>
+        internal static string NoneSelect {
+            get {
+                return ResourceManager.GetString("NoneSelect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ghi chú đã được lưu lại.
         /// </summary>
         internal static string NoteSaved {
@@ -499,6 +526,15 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Chọn sản phẩm.
+        /// </summary>
+        internal static string SelectItems {
+            get {
+                return ResourceManager.GetString("SelectItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Xin vui lòng chọn Khách Hàng.
         /// </summary>
         internal static string SelectorTitleCustomer {
@@ -513,6 +549,15 @@ namespace MainPrj.Properties {
         internal static string SelectorTitleSale {
             get {
                 return ResourceManager.GetString("SelectorTitleSale", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chọn hàng khuyến mãi.
+        /// </summary>
+        internal static string SelectPromotes {
+            get {
+                return ResourceManager.GetString("SelectPromotes", resourceCulture);
             }
         }
         

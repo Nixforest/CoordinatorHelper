@@ -12,8 +12,35 @@ namespace MainPrj.Util
     public class DataPure
     {
         #region Data members
-        private int currentChannel = 0;
-        private TempDataModel tempData;
+        private int currentChannel         = 0;
+        private TempDataModel tempData     = null;
+        private UserLoginModel user        = null;
+        private List<CallModel> listCalls  = null;
+        private CustomerModel customerInfo = null;
+        /// <summary>
+        /// Customer information.
+        /// </summary>
+        public CustomerModel CustomerInfo
+        {
+            get { return customerInfo; }
+            set { customerInfo = value; }
+        }
+        /// <summary>
+        /// List of calls.
+        /// </summary>
+        public List<CallModel> ListCalls
+        {
+            get { return listCalls; }
+            set { listCalls = value; }
+        }
+        /// <summary>
+        /// User login information
+        /// </summary>
+        public UserLoginModel User
+        {
+            get { return user; }
+            set { user = value; }
+        }
         /// <summary>
         /// Temp data.
         /// </summary>
@@ -41,7 +68,10 @@ namespace MainPrj.Util
         /// <summary>
         /// Constructor.
         /// </summary>
-        private DataPure() { }
+        private DataPure()
+        {
+            this.listCalls = new List<CallModel>();
+        }
         /// <summary>
         /// Get instance
         /// </summary>

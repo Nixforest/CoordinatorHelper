@@ -19,6 +19,10 @@ namespace MainPrj.View
         /// List of data.
         /// </summary>
         private List<CallModel> listData = new List<CallModel>();
+        /// <summary>
+        /// List of data which search result.
+        /// </summary>
+        private List<CallModel> listDataSearch = new List<CallModel>();
 
         public List<CallModel> ListData
         {
@@ -127,7 +131,8 @@ namespace MainPrj.View
                                     // Add to local list
                                     listCalls.Add(callModel);
                                     // Add to member list
-                                    this.listData.Add(callModel);
+                                    //this.listData.Add(callModel);
+                                    this.listData.Insert(0, callModel);
                                 }
                             }
                             // Show to list view
@@ -163,7 +168,7 @@ namespace MainPrj.View
             if (DateTime.TryParseExact(callModel.Id, Properties.Settings.Default.CallIdFormat,
                 culture, System.Globalization.DateTimeStyles.AssumeLocal, out time))
             {
-                arr[(int)HistoryColumns.HISTORY_COLUMN_TIME] = String.Format("{0}/{1}/{2} {3:00}:{4:00}:{5:00}",
+                arr[(int)HistoryColumns.HISTORY_COLUMN_TIME] = String.Format("{0:0000}/{1:00}/{2:00} {3:00}:{4:00}:{5:00}",
                     time.Year,
                     time.Month,
                     time.Day,
@@ -292,8 +297,10 @@ namespace MainPrj.View
                     this.Close();
                     break;
                 case Keys.Enter:
-                    this.SearchByKeyword(String.Empty);
-                    this.SearchByKeyword(this.tbxSearch.Text.Trim());
+                    if (tbxSearch.Focused)
+                    {
+                        this.SearchByKeyword(this.tbxSearch.Text.Trim());
+                    }
                     break;
                 default:
                     break;
@@ -305,50 +312,23 @@ namespace MainPrj.View
         /// <param name="keyword">Keyword</param>
         private void SearchByKeyword(string keyword)
         {
+            this.listDataSearch.Clear();
             keyword = CommonProcess.NormalizationString(keyword).ToLower();
             if (!String.IsNullOrEmpty(keyword))
             {
-                foreach (ListViewItem item in this.listViewHistory.Items)
+                foreach (CallModel item in this.listData)
                 {
-                    foreach (System.Windows.Forms.ListViewItem.ListViewSubItem subItem in item.SubItems)
+                    if (item.IsContainString(keyword))
                     {
-                        string text = CommonProcess.NormalizationString(subItem.Text).ToLower();
-                        if (text.Contains(keyword))
-                        {
-                            item.UseItemStyleForSubItems = false;
-                            subItem.ForeColor = Properties.Settings.Default.ColorFoundKeywordText;
-                            subItem.BackColor = Properties.Settings.Default.ColorFoundKeywordBackground;
-                            break;
-                        }
+                        this.listDataSearch.Add(item);
                     }
                 }
             }
-            else
+            this.listViewHistory.Items.Clear();
+            for (int i = this.listDataSearch.Count - 1; i >= 0; i--)
             {
-                foreach (ListViewItem item in this.listViewHistory.Items)
-                {
-                    item.UseItemStyleForSubItems = true;
-                    item.ForeColor = Color.Black;
-                    item.BackColor = Color.White;
-                    if (item.SubItems[(int)HistoryColumns.HISTORY_COLUMN_STATUS].Text.Equals(CommonProcess.GetStatusString((int)CardDataStatus.CARDDATA_MISS)))
-                    {
-                        item.ForeColor = Properties.Settings.Default.ColorMissCallText;
-                    }
-                    string id = item.Tag.ToString();
-                    for (int i = 0; i < this.listData.Count; i++)
-                    {
-                        if (this.listData[i].Id.Equals(id))
-                        {
-                            if (this.listData[i].IsFinish)
-                            {
-                                item.ForeColor = Properties.Settings.Default.ColorFinishCallText;
-                                item.BackColor = Properties.Settings.Default.ColorFinishCallBackground;
-                            }
-                        }
-                    }
-                }
+                this.listViewHistory.Items.Add(CreateListViewItem(this.listDataSearch[i], this.listDataSearch.Count - i));
             }
-            this.listViewHistory.Refresh();
         }
         /// <summary>
         /// Handle when enter focus on Search textbox.
@@ -386,7 +366,13 @@ namespace MainPrj.View
         {
             tbxSearch.Text = Properties.Resources.SearchString;
             tbxSearch.ForeColor = SystemColors.GrayText;
-            SearchByKeyword(String.Empty);
+            //SearchByKeyword(String.Empty);
+            this.listDataSearch.Clear();
+            this.listViewHistory.Items.Clear();
+            for (int i = listData.Count - 1; i >= 0; i--)
+            {
+                this.listViewHistory.Items.Add(CreateListViewItem(listData[i], listData.Count - i));
+            }
         }
         /// <summary>
         /// Handle when click on Listview
