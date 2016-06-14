@@ -96,10 +96,10 @@
       <Value Profile="(Default)">/api/site/login</Value>
     </Setting>
     <Setting Name="NameLabelPosX" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">773</Value>
+      <Value Profile="(Default)">751</Value>
     </Setting>
     <Setting Name="RoleLabelPosX" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">782</Value>
+      <Value Profile="(Default)">760</Value>
     </Setting>
     <Setting Name="URLLogout" Type="System.String" Scope="User">
       <Value Profile="(Default)">/api/site/logout</Value>
@@ -109,6 +109,21 @@
     </Setting>
     <Setting Name="URLGetConfig" Type="System.String" Scope="User">
       <Value Profile="(Default)">/api/default/windowGetConfig</Value>
+    </Setting>
+    <Setting Name="PromoteMoney" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">20000</Value>
+    </Setting>
+    <Setting Name="AgentLabelPosX" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">786</Value>
+    </Setting>
+    <Setting Name="URLCreateOrder" Type="System.String" Scope="User">
+      <Value Profile="(Default)">/api/default/windowOrderCreate</Value>
+    </Setting>
+    <Setting Name="URLUpdateOrder" Type="System.String" Scope="User">
+      <Value Profile="(Default)">/api/default/windowOrderUpdate</Value>
+    </Setting>
+    <Setting Name="URLGetAgentInfo" Type="System.String" Scope="User">
+      <Value Profile="(Default)">/api/default/windowGetInfoAgent</Value>
     </Setting>
   </Settings>
 </SettingsFile>

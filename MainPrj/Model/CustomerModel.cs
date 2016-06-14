@@ -113,6 +113,15 @@ namespace MainPrj.Model
             get { return agencyNearest; }
             set { agencyNearest = value; }
         }
+        [DataMember(Name = "activePhone", IsRequired = false)]
+        private string activePhone;
+
+        public string ActivePhone
+        {
+            get { return activePhone; }
+            set { activePhone = value; }
+        }
+
 
         //private string note;
 
@@ -123,19 +132,41 @@ namespace MainPrj.Model
         //}
         public CustomerModel()
         {
-            this.customer_id = String.Empty;
-            this.customer_name = String.Empty;
+            this.customer_id      = String.Empty;
+            this.customer_name    = String.Empty;
             this.customer_address = String.Empty;
-            this.customer_phone = String.Empty;
-            this.customer_agent = String.Empty;
-            this.customer_type = String.Empty;
-            this.contact = String.Empty;
-            this.contact_note = String.Empty;
-            this.sale_name = String.Empty;
-            this.sale_phone = String.Empty;
-            this.sale_type = String.Empty;
-            this.agencyNearest = String.Empty;
-            //this.note = String.Empty;
+            this.customer_phone   = String.Empty;
+            this.customer_agent   = String.Empty;
+            this.customer_type    = String.Empty;
+            this.contact          = String.Empty;
+            this.contact_note     = String.Empty;
+            this.sale_name        = String.Empty;
+            this.sale_phone       = String.Empty;
+            this.sale_type        = String.Empty;
+            this.agencyNearest    = String.Empty;
+            this.activePhone      = String.Empty;
+            //this.note           = String.Empty;
+        }
+        /// <summary>
+        /// Copy constructor.
+        /// </summary>
+        /// <param name="copy">Copy object</param>
+        public CustomerModel(CustomerModel copy)
+        {
+            this.customer_id      = copy.customer_id      ;
+            this.customer_name    = copy.customer_name    ;
+            this.customer_address = copy.customer_address ;
+            this.customer_phone   = copy.customer_phone   ;
+            this.customer_agent   = copy.customer_agent   ;
+            this.customer_type    = copy.customer_type;
+            this.contact          = copy.contact          ;
+            this.contact_note     = copy.contact_note     ;
+            this.sale_name        = copy.sale_name        ;
+            this.sale_phone       = copy.sale_phone       ;
+            this.sale_type        = copy.sale_type        ;
+            this.agencyNearest    = copy.agencyNearest;
+            this.activePhone      = copy.activePhone;
+            //this.note           = copy;
         }
         /// <summary>
         /// Convert to string.

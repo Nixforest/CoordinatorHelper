@@ -13,14 +13,34 @@ namespace MainPrj.Model
         private string id;
         private string name;
         private int quantity;
+        private string materials_no;
+        private string typeId;
         /// <summary>
         /// Constructor.
         /// </summary>
         public PromoteModel()
         {
-            id = string.Empty;
-            name = string.Empty;
-            quantity = 0;
+            id           = string.Empty;
+            name         = string.Empty;
+            quantity     = 0;
+            materials_no = string.Empty;
+            typeId = string.Empty;
+        }
+        /// <summary>
+        /// Material type id.
+        /// </summary>
+        public string TypeId
+        {
+            get { return typeId; }
+            set { typeId = value; }
+        }
+        /// <summary>
+        /// Material no.
+        /// </summary>
+        public string Materials_no
+        {
+            get { return materials_no; }
+            set { materials_no = value; }
         }
         /// <summary>
         /// Quantity of promote.

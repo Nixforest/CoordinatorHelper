@@ -79,6 +79,7 @@
             this.btnUpdateCustomer = new System.Windows.Forms.Button();
             this.btnSaveData = new System.Windows.Forms.Button();
             this.btnCreateOrder = new System.Windows.Forms.Button();
+            this.lblAgent = new System.Windows.Forms.Label();
             this.mainMenuStrip.SuspendLayout();
             this.mainTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -515,7 +516,7 @@
             // 
             this.lblUsername.AutoSize = true;
             this.lblUsername.ForeColor = System.Drawing.Color.Blue;
-            this.lblUsername.Location = new System.Drawing.Point(773, 557);
+            this.lblUsername.Location = new System.Drawing.Point(751, 557);
             this.lblUsername.Name = "lblUsername";
             this.lblUsername.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.lblUsername.Size = new System.Drawing.Size(90, 24);
@@ -526,7 +527,7 @@
             // 
             this.lblRole.AutoSize = true;
             this.lblRole.ForeColor = System.Drawing.Color.Red;
-            this.lblRole.Location = new System.Drawing.Point(782, 581);
+            this.lblRole.Location = new System.Drawing.Point(760, 581);
             this.lblRole.Name = "lblRole";
             this.lblRole.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.lblRole.Size = new System.Drawing.Size(81, 24);
@@ -536,9 +537,9 @@
             // pbxAvatar
             // 
             this.pbxAvatar.BackColor = System.Drawing.Color.Black;
-            this.pbxAvatar.Location = new System.Drawing.Point(869, 548);
+            this.pbxAvatar.Location = new System.Drawing.Point(844, 548);
             this.pbxAvatar.Name = "pbxAvatar";
-            this.pbxAvatar.Size = new System.Drawing.Size(64, 64);
+            this.pbxAvatar.Size = new System.Drawing.Size(89, 89);
             this.pbxAvatar.TabIndex = 15;
             this.pbxAvatar.TabStop = false;
             // 
@@ -550,7 +551,7 @@
             this.btnOrderList.Name = "btnOrderList";
             this.btnOrderList.Size = new System.Drawing.Size(204, 64);
             this.btnOrderList.TabIndex = 6;
-            this.btnOrderList.Text = "Danh sách đơn hàng (F6)";
+            this.btnOrderList.Text = "Chi tiết bán hàng (F6)";
             this.btnOrderList.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnOrderList.UseVisualStyleBackColor = true;
             this.btnOrderList.Click += new System.EventHandler(this.btnOrderList_Click);
@@ -617,11 +618,23 @@
             this.btnCreateOrder.UseVisualStyleBackColor = true;
             this.btnCreateOrder.Click += new System.EventHandler(this.btnCreateOrder_Click);
             // 
+            // lblAgent
+            // 
+            this.lblAgent.AutoSize = true;
+            this.lblAgent.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.lblAgent.Location = new System.Drawing.Point(786, 605);
+            this.lblAgent.Name = "lblAgent";
+            this.lblAgent.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.lblAgent.Size = new System.Drawing.Size(55, 24);
+            this.lblAgent.TabIndex = 16;
+            this.lblAgent.Text = "Đại lý";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1596, 873);
+            this.Controls.Add(this.lblAgent);
             this.Controls.Add(this.lblRole);
             this.Controls.Add(this.lblUsername);
             this.Controls.Add(this.pbxAvatar);
@@ -713,6 +726,7 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemGuideline;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemSupport;
+        private System.Windows.Forms.Label lblAgent;
     }
 }
 

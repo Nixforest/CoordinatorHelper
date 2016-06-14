@@ -24,14 +24,37 @@ namespace MainPrj.Model
         protected MaterialModel[] material_gas;
         [DataMember(Name = "material_promotion", IsRequired = false)]
         protected MaterialModel[] material_promotion;
-
+        [DataMember(Name = "agent_list", IsRequired = false)]
+        protected SelectorModel[] agent_list;
+        [DataMember(Name = "material_vo", IsRequired = false)]
+        protected List<MaterialModel> material_vo;
+        /// <summary>
+        /// Gas cylinder.
+        /// </summary>
+        public List<MaterialModel> Material_vo
+        {
+            get { return material_vo; }
+            set { material_vo = value; }
+        }
+        /// <summary>
+        /// Agents list.
+        /// </summary>
+        public SelectorModel[] Agent_list
+        {
+            get { return agent_list; }
+            set { agent_list = value; }
+        }
+        /// <summary>
+        /// Promotes.
+        /// </summary>
         public MaterialModel[] Material_promotion
         {
             get { return material_promotion; }
             set { material_promotion = value; }
         }
-        
-
+        /// <summary>
+        /// Gas.
+        /// </summary>
         public MaterialModel[] Material_gas
         {
             get { return material_gas; }
@@ -60,6 +83,10 @@ namespace MainPrj.Model
         {
             get { return agent_id; }
             set { agent_id = value; }
+        }
+        public void Sort()
+        {
+            material_vo.Sort();
         }
     }
 }

@@ -7,7 +7,7 @@ using System.Text;
 namespace MainPrj.Model
 {
     [DataContract]
-    public class SelectorModel
+    public class SelectorModel : IComparable<SelectorModel>
     {
         /// <summary>
         /// Id.
@@ -40,6 +40,18 @@ namespace MainPrj.Model
         {
             get { return address; }
             set { address = value; }
+        }
+
+        public int CompareTo(SelectorModel other)
+        {
+            if (other == null)
+            {
+                return 1;
+            }
+            else
+            {
+                return this.Name.CompareTo(other.Name);
+            }
         }
     }
 }

@@ -67,6 +67,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\CylinderModel.cs" />
+    <Compile Include="Model\ListViewColumn\ListOrderColumns.cs" />
     <Compile Include="Model\ListViewColumn\PromoteColumns.cs" />
     <Compile Include="Model\ListViewColumn\ProductColumns.cs" />
     <Compile Include="Model\MaterialModel.cs" />
@@ -85,9 +87,13 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\CardDataStatus.cs" />
+    <Compile Include="Model\Response\CreateOrderResponseModel.cs" />
     <Compile Include="Model\Response\TempDataResponseModel.cs" />
     <Compile Include="Model\RoleType.cs" />
     <Compile Include="Model\TempDataModel.cs" />
+    <Compile Include="Model\Update\UpdateOrderModel.cs" />
+    <Compile Include="Model\Update\CreateOrderModel.cs" />
+    <Compile Include="Model\Update\OrderDetailModel.cs" />
     <Compile Include="Model\UserLoginModel.cs" />
     <Compile Include="Model\Response\UserLoginResponseModel.cs" />
     <Compile Include="Model\Response\CustomerResponseModel.cs" />
@@ -112,6 +118,9 @@
     <Compile Include="View\Component\ChannelControl.Designer.cs">
       <DependentUpon>ChannelControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="View\Component\WordWrapListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="View\CustomerView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -126,6 +135,12 @@
     </Compile>
     <Compile Include="View\Component\EditableListView.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="View\ListOrderView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\ListOrderView.Designer.cs">
+      <DependentUpon>ListOrderView.cs</DependentUpon>
     </Compile>
     <Compile Include="View\LoginView.cs">
       <SubType>Form</SubType>
@@ -190,6 +205,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\HistoryView.resx">
       <DependentUpon>HistoryView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\ListOrderView.resx">
+      <DependentUpon>ListOrderView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\LoginView.resx">
       <DependentUpon>LoginView.cs</DependentUpon>

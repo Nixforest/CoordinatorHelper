@@ -397,7 +397,7 @@ namespace MainPrj.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("773")]
+        [global::System.Configuration.DefaultSettingValueAttribute("751")]
         public int NameLabelPosX {
             get {
                 return ((int)(this["NameLabelPosX"]));
@@ -409,7 +409,7 @@ namespace MainPrj.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("782")]
+        [global::System.Configuration.DefaultSettingValueAttribute("760")]
         public int RoleLabelPosX {
             get {
                 return ((int)(this["RoleLabelPosX"]));
@@ -452,6 +452,66 @@ namespace MainPrj.Properties {
             }
             set {
                 this["URLGetConfig"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("20000")]
+        public double PromoteMoney {
+            get {
+                return ((double)(this["PromoteMoney"]));
+            }
+            set {
+                this["PromoteMoney"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("786")]
+        public int AgentLabelPosX {
+            get {
+                return ((int)(this["AgentLabelPosX"]));
+            }
+            set {
+                this["AgentLabelPosX"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("/api/default/windowOrderCreate")]
+        public string URLCreateOrder {
+            get {
+                return ((string)(this["URLCreateOrder"]));
+            }
+            set {
+                this["URLCreateOrder"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("/api/default/windowOrderUpdate")]
+        public string URLUpdateOrder {
+            get {
+                return ((string)(this["URLUpdateOrder"]));
+            }
+            set {
+                this["URLUpdateOrder"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("/api/default/windowGetInfoAgent")]
+        public string URLGetAgentInfo {
+            get {
+                return ((string)(this["URLGetAgentInfo"]));
+            }
+            set {
+                this["URLGetAgentInfo"] = value;
             }
         }
     }

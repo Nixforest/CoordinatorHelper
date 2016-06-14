@@ -421,5 +421,14 @@ namespace MainPrj.View
         {
             HandleFinishItem();
         }
+        /// <summary>
+        /// Handle click button CreateOrder.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void btnCreateOrder_Click(object sender, EventArgs e)
+        {
+            CommonProcess.ShowInformMessageProcessing();
+        }
     }
 }

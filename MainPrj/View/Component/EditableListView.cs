@@ -133,10 +133,12 @@ namespace MainPrj.View
             // 
             // _combobox
             // 
+            this._combobox.DisplayMember = "Text";
             this._combobox.Location = new System.Drawing.Point(0, 0);
             this._combobox.Name = "_combobox";
             this._combobox.Size = new System.Drawing.Size(121, 21);
             this._combobox.TabIndex = 0;
+            this._combobox.ValueMember = "Value";
             this._combobox.Visible = false;
             // 
             // _textbox
@@ -588,7 +590,7 @@ namespace MainPrj.View
             // No column
             arr[(int)ProductColumns.PRODUCT_TABLE_COLUMN_NO] = String.Format("{0}", index);
             // Id column
-            arr[(int)ProductColumns.PRODUCT_TABLE_COLUMN_ID] = model.Id;
+            arr[(int)ProductColumns.PRODUCT_TABLE_COLUMN_ID] = model.Materials_no;
             // Name column
             arr[(int)ProductColumns.PRODUCT_TABLE_COLUMN_NAME] = model.Name;
             // Quantity column
@@ -618,7 +620,7 @@ namespace MainPrj.View
             // No column
             arr[(int)PromoteColumns.PROMOTE_TABLE_COLUMN_NO] = String.Format("{0}", index);
             // Id column
-            arr[(int)PromoteColumns.PROMOTE_TABLE_COLUMN_ID] = model.Id;
+            arr[(int)PromoteColumns.PROMOTE_TABLE_COLUMN_ID] = model.Materials_no;
             // Name column
             arr[(int)PromoteColumns.PROMOTE_TABLE_COLUMN_NAME] = model.Name;
             // Quantity column

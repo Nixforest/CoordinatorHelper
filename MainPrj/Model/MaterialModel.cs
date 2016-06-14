@@ -10,7 +10,7 @@ namespace MainPrj.Model
     /// Material model.
     /// </summary>
     [DataContract]
-    public class MaterialModel
+    public class MaterialModel : IComparable<MaterialModel>
     {
         [DataMember(Name = "label", IsRequired = false)]
         protected string label;
@@ -100,6 +100,30 @@ namespace MainPrj.Model
                 return true;
             }
             return this.label.ToLower().Contains(keyword.ToLower());
+        }
+
+        public int CompareTo(MaterialModel other)
+        {
+            if (other == null)
+            {
+                return 1;
+            }
+            else
+            {
+                return this.Name.CompareTo(other.Name);
+            }
+        }
+        /// <summary>
+        /// Check if this is GAS.
+        /// </summary>
+        /// <returns>TRUE if material no is contain "GAS"</returns>
+        public bool IsGas()
+        {
+            if (this.materials_no.Contains("GAS"))
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

@@ -30,6 +30,13 @@ namespace MainPrj.Model
         }
         protected RoleType role;
         private string roleStr;
+        private string user_id;
+
+        public string User_id
+        {
+            get { return user_id; }
+            set { user_id = value; }
+        }
 
         public string RoleStr
         {
@@ -46,15 +53,19 @@ namespace MainPrj.Model
         public UserLoginModel()
         {
             this.first_name = String.Empty;
-            this.email = String.Empty;
-            this.role = RoleType.ROLE_ADMIN;
+            this.email      = String.Empty;
+            this.role       = RoleType.ROLE_ADMIN;
+            this.roleStr    = String.Empty;
+            this.user_id    = string.Empty;
         }
         public UserLoginModel(UserLoginModel copy)
         {
             this.first_name = copy.first_name;
-            this.email = copy.email;
-            this.role = copy.Role;
-            this.roleStr = copy.roleStr;
+            this.email      = copy.email;
+            this.role       = copy.Role;
+            this.roleStr    = copy.roleStr;
+            this.roleStr    = copy.roleStr;
+            this.user_id    = copy.user_id;
         }
     }
 }

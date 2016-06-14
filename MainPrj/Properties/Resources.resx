@@ -302,4 +302,34 @@ Nhấn NO để chọn lại Khách hàng.</value>
   <data name="SelectPromotes" xml:space="preserve">
     <value>Chọn hàng khuyến mãi</value>
   </data>
+  <data name="Agent" xml:space="preserve">
+    <value>Đại lý</value>
+  </data>
+  <data name="SelectorTitleAgent" xml:space="preserve">
+    <value>Xin vui lòng chọn Đại lý</value>
+  </data>
+  <data name="YouMustSelectAnAgent" xml:space="preserve">
+    <value>Bắt buộc phải chọn Đại lý</value>
+  </data>
+  <data name="NotLoginYet" xml:space="preserve">
+    <value>Chưa đăng nhập.</value>
+  </data>
+  <data name="NotSelectCustomer" xml:space="preserve">
+    <value>Chưa có thông tin khách hàng.</value>
+  </data>
+  <data name="NotSelectDeliverCCS" xml:space="preserve">
+    <value>Chưa chọn NV giao nhận hoặc NV CCS.</value>
+  </data>
+  <data name="NotSelectProducts" xml:space="preserve">
+    <value>Chưa chọn sản phẩm nào.</value>
+  </data>
+  <data name="DateTimeFormat" xml:space="preserve">
+    <value>dd/MM/yyyy</value>
+  </data>
+  <data name="ListOrder" xml:space="preserve">
+    <value>Danh sách đơn hàng ngày</value>
+  </data>
+  <data name="CreateOrderServerError" xml:space="preserve">
+    <value>Lỗi xảy ra khi tạo đơn hàng trên web!</value>
+  </data>
 </root>

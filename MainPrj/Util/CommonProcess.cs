@@ -1,4 +1,5 @@
 ﻿using MainPrj.Model;
+using MainPrj.Model.Update;
 using MainPrj.View;
 using System;
 using System.Collections.Generic;
@@ -70,12 +71,21 @@ namespace MainPrj.Util
                 string respStr = String.Empty;
                 try
                 {
+                    string type = "1";
+                    if (DataPure.Instance.User != null)
+                    {
+                        if (DataPure.Instance.User.Role.Equals(RoleType.ROLE_ACCOUNTING_AGENT))
+                        {
+                            type = "2";
+                        }
+                    }
                     // Post keyword to server
                     byte[] response = client.UploadValues(
                         Properties.Settings.Default.ServerURL + url,
                         new System.Collections.Specialized.NameValueCollection()
                     {
-                        { key, keyword }
+                        { key, keyword },
+                        { "window_customer_type", type }
                     });
                     // Get response
                     respStr = System.Text.Encoding.UTF8.GetString(response);
@@ -290,6 +300,62 @@ namespace MainPrj.Util
                             && (baseResp.Record != null))
                         {
                             DataPure.Instance.TempData = baseResp.Record;
+                            DataPure.Instance.TempData.Sort();
+                        }
+                    }
+                }
+            }
+        }
+        public static void RequestAgentInformation(string agentId)
+        {
+            // Declare result variable
+            using (WebClient client = new WebClient())
+            {
+                string respStr = String.Empty;
+                try
+                {
+                    // Post keyword to server
+                    string value = string.Empty;
+                    value = String.Format("{{\"token\":\"{0}\",\"agent_id\":\"{1}\"}}",
+                        Properties.Settings.Default.UserToken,
+                        agentId);
+                    byte[] response = client.UploadValues(
+                        Properties.Settings.Default.ServerURL + Properties.Settings.Default.URLGetAgentInfo,
+                        new System.Collections.Specialized.NameValueCollection()
+                    {
+                        { "q", value}
+                    });
+                    // Get response
+                    respStr = System.Text.Encoding.UTF8.GetString(response);
+                }
+                catch (System.Net.WebException)
+                {
+                    ShowErrorMessage(Properties.Resources.InternetConnectionError);
+                    HasError = true;
+                }
+
+                if (!String.IsNullOrEmpty(respStr))
+                {
+                    DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(TempDataResponseModel));
+                    byte[] encodingBytes = null;
+                    try
+                    {
+                        // Encoding response data
+                        encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);
+                    }
+                    catch (System.Text.EncoderFallbackException)
+                    {
+                        ShowErrorMessage(Properties.Resources.EncodingError);
+                        HasError = true;
+                    }
+                    if (encodingBytes != null)
+                    {
+                        MemoryStream msU = new MemoryStream(encodingBytes);
+                        TempDataResponseModel baseResp = (TempDataResponseModel)js.ReadObject(msU);
+                        if ((baseResp != null)
+                            && (baseResp.Record != null))
+                        {
+                            DataPure.Instance.TempData.Employee_maintain = baseResp.Record.Employee_maintain;
                         }
                     }
                 }
@@ -321,11 +387,14 @@ namespace MainPrj.Util
                 try
                 {
                     IPAddress[] host = Dns.GetHostAddresses(hostName);      // Get IP Addresses
-                    foreach (IPAddress item in host)
+                    if (host != null)
                     {
-                        if (item.AddressFamily == AddressFamily.InterNetwork)
+                        foreach (IPAddress item in host)
                         {
-                            return item.ToString();
+                            if (item.AddressFamily == AddressFamily.InterNetwork)
+                            {
+                                return item.ToString();
+                            }
                         }
                     }
                 }
@@ -616,7 +685,7 @@ namespace MainPrj.Util
         /// <param name="listData">List of data</param>
         public static void WriteHistory(List<CallModel> listData)
         {
-            if (listData.Count > 0)
+            if ((listData != null) && (listData.Count > 0))
             {
                 string date = listData[0].Id.Substring(0, 8);
                 string filepath = String.Format("{0}\\{1}_{2}", Properties.Settings.Default.HistoryFilePath,
@@ -736,6 +805,226 @@ namespace MainPrj.Util
                 }
             }
         }
+        public static string UpdateOrderToServer(OrderModel model)
+        {
+            string retVal = string.Empty;
+            if (!String.IsNullOrEmpty(Properties.Settings.Default.UserToken))
+            {
+                string respStr = String.Empty;
+                using (WebClient webClient = new WebClient())
+                {
+                    try
+                    {
+                        UpdateOrderModel updateModel = new UpdateOrderModel();
+                        // Create data
+                        updateModel.Token = Properties.Settings.Default.UserToken;
+                        updateModel.Id = model.WebId;
+                        updateModel.Order_detail = new List<OrderDetailModel>();
+                        foreach (ProductModel product in model.Products)
+                        {
+                            OrderDetailModel orderDetail = new OrderDetailModel();
+                            // Create data
+                            orderDetail.Materials_id = product.Id;
+                            orderDetail.Materials_type_id = product.TypeId;
+                            orderDetail.Quantity = product.Quantity.ToString();
+                            orderDetail.Price = product.Price.ToString();
+                            orderDetail.TotalPay = (product.Price * product.Quantity).ToString();
+                            orderDetail.Seri = string.Empty;
+
+                            // Add to list order detail
+                            updateModel.Order_detail.Add(orderDetail);
+                        }
+                        foreach (PromoteModel promote in model.Promotes)
+                        {
+                            OrderDetailModel orderDetail = new OrderDetailModel();
+                            // Create data
+                            orderDetail.Materials_id = promote.Id;
+                            orderDetail.Materials_type_id = promote.TypeId;
+                            orderDetail.Quantity = promote.Quantity.ToString();
+                            orderDetail.Price = String.Empty;
+                            orderDetail.TotalPay = String.Empty;
+                            orderDetail.Seri = string.Empty;
+
+                            // Add to list order detail
+                            updateModel.Order_detail.Add(orderDetail);
+                        }
+                        foreach (CylinderModel cylinder in model.Cylinders)
+                        {
+                            OrderDetailModel orderDetail = new OrderDetailModel();
+                            // Create data
+                            orderDetail.Materials_id = cylinder.Id;
+                            orderDetail.Materials_type_id = cylinder.TypeId;
+                            orderDetail.Quantity = cylinder.Quantity.ToString();
+                            orderDetail.Price = String.Empty;
+                            orderDetail.TotalPay = String.Empty;
+                            orderDetail.Seri = cylinder.Serial;
+
+                            // Add to list order detail
+                            updateModel.Order_detail.Add(orderDetail);
+                        }
+
+                        // Post keyword to server
+                        string value = string.Empty;
+                        value = updateModel.ToString();
+                        byte[] response = webClient.UploadValues(
+                            Properties.Settings.Default.ServerURL + Properties.Settings.Default.URLUpdateOrder,
+                            new System.Collections.Specialized.NameValueCollection()
+                        {
+                            { "q", value}
+                        });
+                        // Get response
+                        respStr = System.Text.Encoding.UTF8.GetString(response);
+                    }
+                    catch (WebException)
+                    {
+                        CommonProcess.ShowErrorMessage(Properties.Resources.InternetConnectionError);
+                        CommonProcess.HasError = true;
+                    }
+                }
+                if (!String.IsNullOrEmpty(respStr))
+                {
+                    DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(CreateOrderResponseModel));
+                    byte[] encodingBytes = null;
+                    try
+                    {
+                        // Encoding response data
+                        encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);
+                    }
+                    catch (System.Text.EncoderFallbackException)
+                    {
+                        ShowErrorMessage(Properties.Resources.EncodingError);
+                        HasError = true;
+                    }
+                    if (encodingBytes != null)
+                    {
+                        MemoryStream msU = new MemoryStream(encodingBytes);
+                        CreateOrderResponseModel baseResp = (CreateOrderResponseModel)js.ReadObject(msU);
+                        if ((baseResp != null)
+                            && (baseResp.Id != null))
+                        {
+                            retVal = baseResp.Id;
+                        }
+                    }
+                }
+            }
+            return retVal;
+        }
+        public static string CreateOrderToServer(OrderModel model)
+        {
+            string retVal = string.Empty;
+            if (!String.IsNullOrEmpty(Properties.Settings.Default.UserToken))
+            {
+                string respStr = String.Empty;
+                using (WebClient webClient = new WebClient())
+                {
+                    try
+                    {
+                        CreateOrderModel createModel = new CreateOrderModel();
+                        // Create data
+                        createModel.Token = Properties.Settings.Default.UserToken;
+                        createModel.Customer_id = model.Customer.Id;
+                        if (DataPure.Instance.Agent != null)
+                        {
+                            createModel.Agent_id = DataPure.Instance.Agent.Id;
+                        }
+                        else
+                        {
+                            CommonProcess.ShowErrorMessage(Properties.Resources.YouMustSelectAnAgent);
+                            CommonProcess.HasError = true;
+                            return string.Empty;
+                        }
+                        createModel.Employee_maintain_id = model.DeliverId;
+                        createModel.Monitor_market_development_id = model.CCSId;
+                        createModel.Order_detail = new List<OrderDetailModel>();
+                        foreach (ProductModel product in model.Products)
+                        {
+                            OrderDetailModel orderDetail = new OrderDetailModel();
+                            // Create data
+                            orderDetail.Materials_id      = product.Id;
+                            orderDetail.Materials_type_id = product.TypeId;
+                            orderDetail.Quantity          = product.Quantity.ToString();
+                            orderDetail.Price             = product.Price.ToString();
+                            orderDetail.TotalPay          = (product.Price * product.Quantity).ToString();
+                            orderDetail.Seri              = string.Empty;
+
+                            // Add to list order detail
+                            createModel.Order_detail.Add(orderDetail);
+                        }
+                        foreach (PromoteModel promote in model.Promotes)
+                        {
+                            OrderDetailModel orderDetail = new OrderDetailModel();
+                            // Create data
+                            orderDetail.Materials_id      = promote.Id;
+                            orderDetail.Materials_type_id = promote.TypeId;
+                            orderDetail.Quantity          = promote.Quantity.ToString();
+                            orderDetail.Price             = String.Empty;
+                            orderDetail.TotalPay          = String.Empty;
+                            orderDetail.Seri              = string.Empty;
+
+                            // Add to list order detail
+                            createModel.Order_detail.Add(orderDetail);
+                        }
+                        foreach (CylinderModel cylinder in model.Cylinders)
+                        {
+                            OrderDetailModel orderDetail = new OrderDetailModel();
+                            // Create data
+                            orderDetail.Materials_id      = cylinder.Id;
+                            orderDetail.Materials_type_id = cylinder.TypeId;
+                            orderDetail.Quantity          = cylinder.Quantity.ToString();
+                            orderDetail.Price             = String.Empty;
+                            orderDetail.TotalPay          = String.Empty;
+                            orderDetail.Seri              = cylinder.Serial;
+
+                            // Add to list order detail
+                            createModel.Order_detail.Add(orderDetail);
+                        }
+
+                        // Post keyword to server
+                        string value = string.Empty;
+                        value = createModel.ToString();
+                        byte[] response = webClient.UploadValues(
+                            Properties.Settings.Default.ServerURL + Properties.Settings.Default.URLCreateOrder,
+                            new System.Collections.Specialized.NameValueCollection()
+                        {
+                            { "q", value}
+                        });
+                        // Get response
+                        respStr = System.Text.Encoding.UTF8.GetString(response);
+                    }
+                    catch (WebException)
+                    {
+                        CommonProcess.ShowErrorMessage(Properties.Resources.InternetConnectionError);
+                        CommonProcess.HasError = true;
+                    }
+                }
+                if (!String.IsNullOrEmpty(respStr))
+                {
+                    DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(CreateOrderResponseModel));
+                    byte[] encodingBytes = null;
+                    try
+                    {
+                        // Encoding response data
+                        encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);
+                    }
+                    catch (System.Text.EncoderFallbackException)
+                    {
+                        ShowErrorMessage(Properties.Resources.EncodingError);
+                        HasError = true;
+                    }
+                    if (encodingBytes != null)
+                    {
+                        MemoryStream msU = new MemoryStream(encodingBytes);
+                        CreateOrderResponseModel baseResp = (CreateOrderResponseModel)js.ReadObject(msU);
+                        if ((baseResp != null)
+                            && (baseResp.Id != null))
+                        {
+                            retVal = baseResp.Id;
+                        }
+                    }
+                }
+            }
+            return retVal;
+        }
         /// <summary>
         /// Vietnamese strings sign.
         /// </summary>
@@ -803,22 +1092,30 @@ namespace MainPrj.Util
             return retVal;
         }
         /// <summary>
-        /// Search material
+        /// Search material.
         /// </summary>
         /// <param name="keyword">Keyword</param>
         /// <returns>List of material</returns>
         public static List<MaterialModel> SearchMaterial(string keyword, List<MaterialModel> source)
         {
             List<MaterialModel> result = new List<MaterialModel>();
-            foreach (MaterialModel item in source)
+            if (source != null)
             {
-                if (item.IsContainString(keyword))
+                foreach (MaterialModel item in source)
                 {
-                    result.Add(item);
+                    if (item.IsContainString(keyword))
+                    {
+                        result.Add(item);
+                    }
                 }
             }
             return result;
         }
+        /// <summary>
+        /// Search promote.
+        /// </summary>
+        /// <param name="keyword">Keyword</param>
+        /// <returns>List of material</returns>
         public static List<MaterialModel> SearchPromote(string keyword)
         {
             List<MaterialModel> result = new List<MaterialModel>();
@@ -839,8 +1136,17 @@ namespace MainPrj.Util
             }
             return result;
         }
+        /// <summary>
+        /// Format money.
+        /// </summary>
+        /// <param name="money">Money value</param>
+        /// <returns>String after format</returns>
         public static string FormatMoney(double money)
         {
+            if (money < 0.0)
+            {
+                money = 0.0;
+            }
             string retVal = String.Empty;
             NumberFormatInfo nfi = new CultureInfo("vi-VN", false).NumberFormat;
             nfi.CurrencyDecimalDigits = 0;

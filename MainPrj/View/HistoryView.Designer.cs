@@ -48,6 +48,7 @@
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItemCopyPhone = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemMarkFinish = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnCreateOrder = new System.Windows.Forms.Button();
             this.contextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -77,11 +78,11 @@
             this.listViewHistory.GridLines = true;
             this.listViewHistory.HideSelection = false;
             this.listViewHistory.LabelEdit = true;
-            this.listViewHistory.Location = new System.Drawing.Point(110, 46);
+            this.listViewHistory.Location = new System.Drawing.Point(12, 58);
             this.listViewHistory.MultiSelect = false;
             this.listViewHistory.Name = "listViewHistory";
             this.listViewHistory.ShowItemToolTips = true;
-            this.listViewHistory.Size = new System.Drawing.Size(1196, 541);
+            this.listViewHistory.Size = new System.Drawing.Size(1294, 529);
             this.listViewHistory.TabIndex = 1;
             this.listViewHistory.UseCompatibleStateImageBehavior = false;
             this.listViewHistory.View = System.Windows.Forms.View.Details;
@@ -131,9 +132,9 @@
             // 
             // btnOpenFile
             // 
-            this.btnOpenFile.Location = new System.Drawing.Point(12, 109);
+            this.btnOpenFile.Location = new System.Drawing.Point(283, 8);
             this.btnOpenFile.Name = "btnOpenFile";
-            this.btnOpenFile.Size = new System.Drawing.Size(82, 63);
+            this.btnOpenFile.Size = new System.Drawing.Size(102, 40);
             this.btnOpenFile.TabIndex = 2;
             this.btnOpenFile.Text = "Cũ hơn";
             this.btnOpenFile.UseVisualStyleBackColor = true;
@@ -141,9 +142,9 @@
             // 
             // btnFinish
             // 
-            this.btnFinish.Location = new System.Drawing.Point(12, 46);
+            this.btnFinish.Location = new System.Drawing.Point(156, 8);
             this.btnFinish.Name = "btnFinish";
-            this.btnFinish.Size = new System.Drawing.Size(82, 57);
+            this.btnFinish.Size = new System.Drawing.Size(121, 40);
             this.btnFinish.TabIndex = 2;
             this.btnFinish.Text = "Hoàn thành";
             this.btnFinish.UseVisualStyleBackColor = true;
@@ -152,7 +153,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 13);
+            this.label1.Location = new System.Drawing.Point(721, 15);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(92, 24);
             this.label1.TabIndex = 3;
@@ -161,7 +162,7 @@
             // tbxSearch
             // 
             this.tbxSearch.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.tbxSearch.Location = new System.Drawing.Point(110, 10);
+            this.tbxSearch.Location = new System.Drawing.Point(819, 12);
             this.tbxSearch.Name = "tbxSearch";
             this.tbxSearch.Size = new System.Drawing.Size(388, 29);
             this.tbxSearch.TabIndex = 0;
@@ -171,9 +172,9 @@
             // 
             // btnClear
             // 
-            this.btnClear.Location = new System.Drawing.Point(504, 9);
+            this.btnClear.Location = new System.Drawing.Point(1213, 7);
             this.btnClear.Name = "btnClear";
-            this.btnClear.Size = new System.Drawing.Size(93, 31);
+            this.btnClear.Size = new System.Drawing.Size(93, 40);
             this.btnClear.TabIndex = 4;
             this.btnClear.Text = "Hủy";
             this.btnClear.UseVisualStyleBackColor = true;
@@ -205,6 +206,16 @@
             this.toolStripMenuItemMarkFinish.Text = "Đánh dấu hoàn thành";
             this.toolStripMenuItemMarkFinish.Click += new System.EventHandler(this.toolStripMenuItemMarkFinish_Click);
             // 
+            // btnCreateOrder
+            // 
+            this.btnCreateOrder.Location = new System.Drawing.Point(12, 8);
+            this.btnCreateOrder.Name = "btnCreateOrder";
+            this.btnCreateOrder.Size = new System.Drawing.Size(138, 40);
+            this.btnCreateOrder.TabIndex = 2;
+            this.btnCreateOrder.Text = "Tạo đơn hàng";
+            this.btnCreateOrder.UseVisualStyleBackColor = true;
+            this.btnCreateOrder.Click += new System.EventHandler(this.btnCreateOrder_Click);
+            // 
             // HistoryView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
@@ -215,6 +226,7 @@
             this.Controls.Add(this.tbxSearch);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnFinish);
+            this.Controls.Add(this.btnCreateOrder);
             this.Controls.Add(this.btnOpenFile);
             this.Controls.Add(this.listViewHistory);
             this.Controls.Add(this.btnClose);
@@ -253,5 +265,6 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemCopyPhone;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemMarkFinish;
+        private System.Windows.Forms.Button btnCreateOrder;
     }
 }

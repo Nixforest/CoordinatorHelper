@@ -338,8 +338,9 @@ namespace MainPrj
             {
                 this.channelControlLine2.SetIncommingPhone("01869194542");
                 this.channelControlLine3.SetIncommingPhone("01674816039");
+                this.channelControlLine4.SetIncommingPhone("0988180386");
                 this.chbListenFromCard.Checked = Properties.Settings.Default.ListeningCardMode;
-                this.chbUpdatePhone.Checked = Properties.Settings.Default.UpdatePhone;
+                this.chbUpdatePhone.Checked    = Properties.Settings.Default.UpdatePhone;
             }
         }
         /// <summary>
@@ -390,9 +391,9 @@ namespace MainPrj
                     foreach (CustomerModel customerInfo in listCustomer)
                     {
                         SelectorModel selectorModel = new SelectorModel();
-                        selectorModel.Id = customerInfo.Id;
-                        selectorModel.Name = customerInfo.Name;
-                        selectorModel.Address = customerInfo.Address;
+                        selectorModel.Id            = customerInfo.Id;
+                        selectorModel.Name          = customerInfo.Name;
+                        selectorModel.Address       = customerInfo.Address;
                         listSelector.Add(selectorModel);
                     }
                     // Create SelectorView
@@ -418,6 +419,7 @@ namespace MainPrj
                     break;
             }
 
+            customer.ActivePhone = phone;
             CallModel call = new CallModel(System.DateTime.Now, channelIdx, customer, phone, status);
             DataPure.Instance.ListCalls.Add(call);
             CommonProcess.SetChannelInformation(channel, call.Customer);
@@ -466,10 +468,10 @@ namespace MainPrj
         /// <param name="onoff">Flag value</param>
         private void TurnOnOffTestingMode(bool onoff)
         {
-            btnSearch.Visible = onoff;
-            tbxLog.Visible = onoff;
+            btnSearch.Visible         = onoff;
+            tbxLog.Visible            = onoff;
             chbListenFromCard.Visible = onoff;
-            chbUpdatePhone.Visible = onoff;
+            chbUpdatePhone.Visible    = onoff;
         }
         /// <summary>
         /// Handle when click Create order button
@@ -616,7 +618,8 @@ namespace MainPrj
         /// </summary>
         private void HandleClickListOrderButton()
         {
-            CommonProcess.ShowInformMessageProcessing();
+            ListOrderView view = new ListOrderView();
+            view.Show();
         }
         /// <summary>
         /// Handle when click History button.
@@ -779,9 +782,12 @@ namespace MainPrj
             if (!String.IsNullOrEmpty(DataPure.Instance.User.First_name))
             {
                 string[] token = DataPure.Instance.User.First_name.Split(' ');
-                foreach (string item in token)
+                if (token != null)
                 {
-                    avatarString += String.Format("{0}", item[0]).ToUpper();
+                    foreach (string item in token)
+                    {
+                        avatarString += String.Format("{0}", item[0]).ToUpper();
+                    }
                 }
             }
             lblUsername.Text = DataPure.Instance.User.First_name;
@@ -794,6 +800,7 @@ namespace MainPrj
             {
                 lblRole.Left = (pbxAvatar.Left - 5) - lblRole.Width;
             }
+
             pbxAvatar.Image = CommonProcess.CreateAvatar(avatarString, pbxAvatar.Size.Height);
             // Turn off login menu
             this.toolStripMenuItemLogin.Enabled = false;
@@ -802,6 +809,75 @@ namespace MainPrj
             btnCreateOrder.Enabled = DataPure.Instance.User.Role.Equals(RoleType.ROLE_ACCOUNTING_AGENT);
             btnOrderList.Enabled = DataPure.Instance.User.Role.Equals(RoleType.ROLE_ACCOUNTING_AGENT);
             CommonProcess.RequestTempData();
+            // Select agent if user role is Accounting agent
+            if (DataPure.Instance.User.Role.Equals(RoleType.ROLE_ACCOUNTING_AGENT))
+            {
+                SelectAgent();
+            }
+            if (DataPure.Instance.Agent != null)
+            {
+                lblAgent.Text = DataPure.Instance.Agent.Name;
+                if (lblAgent.Right > (pbxAvatar.Left - 5))
+                {
+                    lblAgent.Left = (pbxAvatar.Left - 5) - lblAgent.Width;
+                }
+            }
+        }
+        /// <summary>
+        /// Select agent.
+        /// </summary>
+        private void SelectAgent()
+        {
+            // Check null object
+            if (DataPure.Instance.TempData != null)
+            {
+                if (DataPure.Instance.TempData.Agent_list != null)
+                {
+                    List<SelectorModel> listSelector = new List<SelectorModel>();
+                    foreach (SelectorModel item in DataPure.Instance.TempData.Agent_list)
+                    {
+                        listSelector.Add(new SelectorModel
+                        {
+                            Id = item.Id,
+                            Name = item.Name,
+                            Address = string.Empty,
+                        });
+                    }
+                    listSelector.Sort();
+                    SelectorView selectorView = new SelectorView();
+                    selectorView.ListData     = listSelector;
+                    selectorView.Text         = Properties.Resources.SelectorTitleAgent;
+                    selectorView.SetHeaderText(SelectorColumns.SELECTOR_COLUMN_ADDRESS, string.Empty);
+                    selectorView.SetSelection(DataPure.Instance.TempData.Agent_id);
+                    selectorView.ShowDialog();
+                    string selectorId = selectorView.SelectedId;
+                    if (!String.IsNullOrEmpty(selectorId))
+                    {
+                        if (!selectorId.Equals(DataPure.Instance.TempData.Agent_id))
+                        {
+                            CommonProcess.RequestAgentInformation(selectorId);
+                            DataPure.Instance.TempData.Agent_id = selectorId;
+                        }
+                        foreach (SelectorModel item in DataPure.Instance.TempData.Agent_list)
+                        {
+                            if (selectorId.Equals(item.Id))
+                            {
+                                DataPure.Instance.Agent = item;
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        DialogResult result = CommonProcess.ShowInformMessage(
+                            Properties.Resources.YouMustSelectAnAgent, MessageBoxButtons.RetryCancel);
+                        if (result.Equals(DialogResult.Retry))
+                        {
+                            SelectAgent();
+                        }
+                    }
+                }
+            }
         }
         /// <summary>
         /// Logout handle.
@@ -809,7 +885,7 @@ namespace MainPrj
         private void Logout()
         {
             // Turn on login menus
-            this.toolStripMenuItemLogin.Enabled = true;
+            this.toolStripMenuItemLogin.Enabled  = true;
             this.toolStripMenuItemLogout.Enabled = false;
             // Reset token
             Properties.Settings.Default.UserToken = String.Empty;
@@ -817,11 +893,14 @@ namespace MainPrj
             // Reset label content and position
             lblUsername.Text = Properties.Resources.Name;
             lblUsername.Left = Properties.Settings.Default.NameLabelPosX;
-            lblRole.Text = Properties.Resources.Role;
-            lblRole.Left = Properties.Settings.Default.RoleLabelPosX;
+            lblRole.Text     = Properties.Resources.Role;
+            lblRole.Left     = Properties.Settings.Default.RoleLabelPosX;
+            lblAgent.Text    = Properties.Resources.Agent;
+            lblAgent.Left    = Properties.Settings.Default.AgentLabelPosX;
             // Update button enable
-            btnCreateOrder.Enabled = false;
-            btnOrderList.Enabled = false;
+            btnCreateOrder.Enabled  = false;
+            btnOrderList.Enabled    = false;
+            DataPure.Instance.Agent = null;
         }
         /// <summary>
         /// Handle list order

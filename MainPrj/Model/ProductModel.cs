@@ -15,16 +15,36 @@ namespace MainPrj.Model
         private int quantity;
         private double price;
         private double money;
+        private string materials_no;
+        private string typeId;
         /// <summary>
         /// Constructor.
         /// </summary>
         public ProductModel()
         {
-            id = string.Empty;
-            name = string.Empty;
-            quantity = 0;
-            price = 0.0;
-            money = 0.0;
+            id           = string.Empty;
+            name         = string.Empty;
+            quantity     = 0;
+            price        = 0.0;
+            money        = 0.0;
+            materials_no = string.Empty;
+            typeId       = string.Empty;
+        }
+        /// <summary>
+        /// Material type id.
+        /// </summary>
+        public string TypeId
+        {
+            get { return typeId; }
+            set { typeId = value; }
+        }
+        /// <summary>
+        /// Material No.
+        /// </summary>
+        public string Materials_no
+        {
+            get { return materials_no; }
+            set { materials_no = value; }
         }
         /// <summary>
         /// Total Money.
@@ -65,6 +85,18 @@ namespace MainPrj.Model
         {
             get { return id; }
             set { id = value; }
+        }
+        /// <summary>
+        /// Check if this is GAS.
+        /// </summary>
+        /// <returns>TRUE if material no is contain "GAS"</returns>
+        public bool IsGas()
+        {
+            if (this.materials_no.Contains("GAS"))
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

@@ -17,6 +17,7 @@ namespace MainPrj.View
         /// List of data.
         /// </summary>
         private List<SelectorModel> listData = new List<SelectorModel>();
+        private string previewId = string.Empty;
         /// <summary>
         /// Selected id.
         /// </summary>
@@ -57,6 +58,7 @@ namespace MainPrj.View
                 arr[(int)SelectorColumns.SELECTOR_COLUMN_ADDRESS] = listData[i].Address;
                 arr[(int)SelectorColumns.SELECTOR_COLUMN_ID] = listData[i].Id;
                 item = new ListViewItem(arr);
+                item.Tag = listData[i].Id;
                 this.listViewSelector.Items.Add(item);
                 //this.listViewSelector.Select();
                 //if (this.listViewSelector.Items.Count > 0)
@@ -64,6 +66,18 @@ namespace MainPrj.View
                 //    this.listViewSelector.Items[0].Selected = true;
                 //    this.selectedId = this.listViewSelector.Items[0].SubItems[(int)SelectorColumns.SELECTOR_COLUMN_ID].Text;
                 //}
+            }
+            if (!String.IsNullOrEmpty(previewId))
+            {
+                foreach (ListViewItem item in this.listViewSelector.Items)
+                {
+                    if (item.Tag.ToString().Equals(previewId))
+                    {
+                        item.Selected = true;
+                        this.listViewSelector.EnsureVisible(item.Index);
+                        break;
+                    }
+                }
             }
         }
         /// <summary>
@@ -149,6 +163,10 @@ namespace MainPrj.View
         {
             this.listViewSelector.Columns[(int)column].Text = header;
 
+        }
+        public void SetSelection(string id)
+        {
+            previewId = id;
         }
     }
 }

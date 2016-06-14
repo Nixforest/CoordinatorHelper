@@ -71,6 +71,15 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Đại lý.
+        /// </summary>
+        internal static string Agent {
+            get {
+                return ResourceManager.GetString("Agent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bạn có chắc chắn khi không chọn Khách hàng nào?
         ///Nhấn YES để thoát.
         ///Nhấn NO để chọn lại Khách hàng..
@@ -219,11 +228,29 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Lỗi xảy ra khi tạo đơn hàng trên web!.
+        /// </summary>
+        internal static string CreateOrderServerError {
+            get {
+                return ResourceManager.GetString("CreateOrderServerError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bạn có muốn lưu thay đổi hay không?.
         /// </summary>
         internal static string DataNotSaveYet {
             get {
                 return ResourceManager.GetString("DataNotSaveYet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to dd/MM/yyyy.
+        /// </summary>
+        internal static string DateTimeFormat {
+            get {
+                return ResourceManager.GetString("DateTimeFormat", resourceCulture);
             }
         }
         
@@ -405,6 +432,15 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Danh sách đơn hàng ngày.
+        /// </summary>
+        internal static string ListOrder {
+            get {
+                return ResourceManager.GetString("ListOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap login {
@@ -457,6 +493,42 @@ namespace MainPrj.Properties {
         internal static string NoteSaved {
             get {
                 return ResourceManager.GetString("NoteSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chưa đăng nhập..
+        /// </summary>
+        internal static string NotLoginYet {
+            get {
+                return ResourceManager.GetString("NotLoginYet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chưa có thông tin khách hàng..
+        /// </summary>
+        internal static string NotSelectCustomer {
+            get {
+                return ResourceManager.GetString("NotSelectCustomer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chưa chọn NV giao nhận hoặc NV CCS..
+        /// </summary>
+        internal static string NotSelectDeliverCCS {
+            get {
+                return ResourceManager.GetString("NotSelectDeliverCCS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chưa chọn sản phẩm nào..
+        /// </summary>
+        internal static string NotSelectProducts {
+            get {
+                return ResourceManager.GetString("NotSelectProducts", resourceCulture);
             }
         }
         
@@ -535,6 +607,15 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Xin vui lòng chọn Đại lý.
+        /// </summary>
+        internal static string SelectorTitleAgent {
+            get {
+                return ResourceManager.GetString("SelectorTitleAgent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Xin vui lòng chọn Khách Hàng.
         /// </summary>
         internal static string SelectorTitleCustomer {
@@ -605,6 +686,15 @@ namespace MainPrj.Properties {
             get {
                 object obj = ResourceManager.GetObject("update", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bắt buộc phải chọn Đại lý.
+        /// </summary>
+        internal static string YouMustSelectAnAgent {
+            get {
+                return ResourceManager.GetString("YouMustSelectAnAgent", resourceCulture);
             }
         }
     }

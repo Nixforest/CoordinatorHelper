@@ -47,6 +47,9 @@
             this.cbxCCS = new System.Windows.Forms.ComboBox();
             this.lblDeliver = new System.Windows.Forms.Label();
             this.lblCCS = new System.Windows.Forms.Label();
+            this.tbxCustomer = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.listViewPromote = new MainPrj.View.EditableListView();
             this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -59,10 +62,7 @@
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.lblCustomerName = new System.Windows.Forms.Label();
-            this.lblCustomerAddress = new System.Windows.Forms.Label();
-            this.groupBox1.SuspendLayout();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // label1
@@ -176,7 +176,7 @@
             this.lblTotal.AutoSize = true;
             this.lblTotal.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTotal.ForeColor = System.Drawing.Color.ForestGreen;
-            this.lblTotal.Location = new System.Drawing.Point(444, 120);
+            this.lblTotal.Location = new System.Drawing.Point(601, 120);
             this.lblTotal.Name = "lblTotal";
             this.lblTotal.Size = new System.Drawing.Size(29, 31);
             this.lblTotal.TabIndex = 0;
@@ -187,7 +187,7 @@
             this.lblPromote.AutoSize = true;
             this.lblPromote.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblPromote.ForeColor = System.Drawing.Color.Red;
-            this.lblPromote.Location = new System.Drawing.Point(444, 411);
+            this.lblPromote.Location = new System.Drawing.Point(601, 411);
             this.lblPromote.Name = "lblPromote";
             this.lblPromote.Size = new System.Drawing.Size(29, 31);
             this.lblPromote.TabIndex = 0;
@@ -247,6 +247,36 @@
             this.lblCCS.TabIndex = 0;
             this.lblCCS.Text = "Id :";
             this.lblCCS.Visible = false;
+            // 
+            // tbxCustomer
+            // 
+            this.tbxCustomer.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.tbxCustomer.ForeColor = System.Drawing.SystemColors.MenuHighlight;
+            this.tbxCustomer.Location = new System.Drawing.Point(568, 15);
+            this.tbxCustomer.Multiline = true;
+            this.tbxCustomer.Name = "tbxCustomer";
+            this.tbxCustomer.ReadOnly = true;
+            this.tbxCustomer.Size = new System.Drawing.Size(393, 101);
+            this.tbxCustomer.TabIndex = 9;
+            this.tbxCustomer.TabStop = false;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(440, 125);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(95, 24);
+            this.label3.TabIndex = 0;
+            this.label3.Text = "Tổng tiền:";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(444, 416);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(151, 24);
+            this.label5.TabIndex = 0;
+            this.label5.Text = "Tổng chiết khấu:";
             // 
             // listViewPromote
             // 
@@ -340,41 +370,26 @@
             this.columnHeader6.Text = "Tiền";
             this.columnHeader6.Width = 150;
             // 
-            // groupBox1
+            // textBox1
             // 
-            this.groupBox1.Controls.Add(this.lblCustomerAddress);
-            this.groupBox1.Controls.Add(this.lblCustomerName);
-            this.groupBox1.Location = new System.Drawing.Point(450, 11);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(505, 106);
-            this.groupBox1.TabIndex = 8;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Khách hàng";
-            // 
-            // lblCustomerName
-            // 
-            this.lblCustomerName.AutoSize = true;
-            this.lblCustomerName.Location = new System.Drawing.Point(7, 29);
-            this.lblCustomerName.Name = "lblCustomerName";
-            this.lblCustomerName.Size = new System.Drawing.Size(148, 24);
-            this.lblCustomerName.TabIndex = 0;
-            this.lblCustomerName.Text = "Tên khách hàng";
-            // 
-            // lblCustomerAddress
-            // 
-            this.lblCustomerAddress.AutoSize = true;
-            this.lblCustomerAddress.Location = new System.Drawing.Point(6, 63);
-            this.lblCustomerAddress.Name = "lblCustomerAddress";
-            this.lblCustomerAddress.Size = new System.Drawing.Size(171, 24);
-            this.lblCustomerAddress.TabIndex = 0;
-            this.lblCustomerAddress.Text = "Địa chỉ khách hàng";
+            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox1.ForeColor = System.Drawing.SystemColors.MenuHighlight;
+            this.textBox1.Location = new System.Drawing.Point(448, 15);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
+            this.textBox1.Size = new System.Drawing.Size(114, 101);
+            this.textBox1.TabIndex = 9;
+            this.textBox1.TabStop = false;
+            this.textBox1.Text = "Khách hàng:\r\nĐịa chỉ:";
             // 
             // OrderView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(967, 716);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.tbxCustomer);
             this.Controls.Add(this.listViewPromote);
             this.Controls.Add(this.listViewProduct);
             this.Controls.Add(this.cbxCCS);
@@ -394,6 +409,8 @@
             this.Controls.Add(this.lblTotal);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.label1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -407,8 +424,6 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OrderView_FormClosing);
             this.Load += new System.EventHandler(this.OrderView_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.OrderView_KeyDown);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -446,8 +461,9 @@
         private System.Windows.Forms.ColumnHeader columnHeader8;
         private System.Windows.Forms.ColumnHeader columnHeader9;
         private System.Windows.Forms.ColumnHeader columnHeader10;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Label lblCustomerAddress;
-        private System.Windows.Forms.Label lblCustomerName;
+        private System.Windows.Forms.TextBox tbxCustomer;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }

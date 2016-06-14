@@ -17,6 +17,24 @@ namespace MainPrj.Util
         private UserLoginModel user        = null;
         private List<CallModel> listCalls  = null;
         private CustomerModel customerInfo = null;
+        private SelectorModel agent = null;
+        private List<OrderModel> listOrders = null;
+        /// <summary>
+        /// List of orders.
+        /// </summary>
+        public List<OrderModel> ListOrders
+        {
+            get { return listOrders; }
+            set { listOrders = value; }
+        }
+        /// <summary>
+        /// Agent.
+        /// </summary>
+        public SelectorModel Agent
+        {
+            get { return agent; }
+            set { agent = value; }
+        }
         /// <summary>
         /// Customer information.
         /// </summary>
@@ -71,6 +89,7 @@ namespace MainPrj.Util
         private DataPure()
         {
             this.listCalls = new List<CallModel>();
+            this.listOrders = new List<OrderModel>();
         }
         /// <summary>
         /// Get instance

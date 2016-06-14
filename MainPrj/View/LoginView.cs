@@ -50,6 +50,10 @@ namespace MainPrj.View
 	            {
                     user = userResp.Record;
                 }
+                if (userResp.User_id != null)
+                {
+                    user.User_id = userResp.User_id;
+                }
                 if (CommonProcess.IsValidNumber(userResp.Role_id))
                 {
                     user.Role = (RoleType)int.Parse(userResp.Role_id);
