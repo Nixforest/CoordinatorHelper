@@ -1,4 +1,5 @@
 ﻿using MainPrj.Model;
+using MainPrj.Model.Update;
 using MainPrj.Util;
 using System;
 using System.Collections.Generic;
@@ -96,6 +97,10 @@ namespace MainPrj.View
                     {
                         subModel.Products.Add(listData[i].Products[j]);
                     }
+                    else
+                    {
+                        subModel.Products.Add(new ProductModel());
+                    }
                     subModel.Cylinders.Add(listData[i].Cylinders[j]);
                     this.listViewListOrder.Items.Add(CreateListViewSubItem(subModel));
                 }
@@ -146,8 +151,26 @@ namespace MainPrj.View
                     {
                         this.SearchByKeyword(this.tbxSearch.Text.Trim());
                     }
+                    else if (listViewListOrder.Focused)
+                    {
+                        HandleFinishOrder();
+                    }
                     break;
                 default: break;
+            }
+        }
+        /// <summary>
+        /// Handle finish order.
+        /// </summary>
+        private void HandleFinishOrder()
+        {
+            if (listViewListOrder.SelectedItems.Count > 0)
+            {
+                string id = listViewListOrder.SelectedItems[0].Tag.ToString();
+                FinishOrderView view = new FinishOrderView(id);
+                view.ShowDialog();
+                LoadListView(DataPure.Instance.ListOrders);
+                UpdateTotal();
             }
         }
         /// <summary>
@@ -307,7 +330,14 @@ namespace MainPrj.View
             arr[(int)ListOrderColumns.LISTORDER_COLUMN_PHONE]             = model.Customer.ActivePhone;
             arr[(int)ListOrderColumns.LISTORDER_COLUMN_ADDRESS]           = model.Customer.Address;
             arr[(int)ListOrderColumns.LISTORDER_COLUMN_PRODUCTS]          = model.Products[0].Name;
-            arr[(int)ListOrderColumns.LISTORDER_COLUMN_PRODUCTS_QUANTITY] = model.Products[0].Quantity.ToString();
+            if (model.Products[0].Quantity != 0)
+            {
+                arr[(int)ListOrderColumns.LISTORDER_COLUMN_PRODUCTS_QUANTITY] = model.Products[0].Quantity.ToString();
+            }
+            else
+            {
+                arr[(int)ListOrderColumns.LISTORDER_COLUMN_PRODUCTS_QUANTITY] = String.Empty;
+            }
             string promoteStr = string.Empty;
             if (model.Promotes.Count != 0)
             {
@@ -322,8 +352,14 @@ namespace MainPrj.View
                 promoteStr = CommonProcess.FormatMoney(model.PromoteMoney);
             }
             arr[(int)ListOrderColumns.LISTORDER_COLUMN_PROMOTE]       = promoteStr;
-            
-            arr[(int)ListOrderColumns.LISTORDER_COLUMN_TOTALPAY]      = CommonProcess.FormatMoney(model.TotalPay);
+            if (model.IsFinished)
+            {
+                arr[(int)ListOrderColumns.LISTORDER_COLUMN_TOTALPAY] = CommonProcess.FormatMoney(model.TotalPay);
+            }
+            else
+            {
+                arr[(int)ListOrderColumns.LISTORDER_COLUMN_TOTALPAY] = String.Empty;
+            }
             string deliverStr = string.Empty;
             if (!String.IsNullOrEmpty(model.DeliverId))
             {
@@ -357,10 +393,22 @@ namespace MainPrj.View
             }
             arr[(int)ListOrderColumns.LISTORDER_COLUMN_DELIVER]           = deliverStr;
             arr[(int)ListOrderColumns.LISTORDER_COLUMN_CYLINDER]          = model.Cylinders[0].Name;
-            arr[(int)ListOrderColumns.LISTORDER_COLUMN_CYLINDER_QUANTITY] = model.Cylinders[0].Quantity.ToString();
+            if (model.Cylinders[0].Quantity != 0)
+            {
+                arr[(int)ListOrderColumns.LISTORDER_COLUMN_CYLINDER_QUANTITY] = model.Cylinders[0].Quantity.ToString();
+            }
+            else
+            {
+
+                arr[(int)ListOrderColumns.LISTORDER_COLUMN_CYLINDER_QUANTITY] = String.Empty;
+            }
             arr[(int)ListOrderColumns.LISTORDER_COLUMN_CYLINDER_SERI]     = model.Cylinders[0].Serial;
             arr[(int)ListOrderColumns.LISTORDER_COLUMN_NOTE]              = model.Note;
             item = new ListViewItem(arr);
+            if (!model.IsUpdateToServer)
+            {
+                item.Font = new Font(this.listViewListOrder.Font, FontStyle.Bold);
+            }
             // Set tag value
             item.Tag = model.Id;
             return item;
@@ -379,12 +427,27 @@ namespace MainPrj.View
             arr[(int)ListOrderColumns.LISTORDER_COLUMN_PHONE]             = String.Empty;
             arr[(int)ListOrderColumns.LISTORDER_COLUMN_ADDRESS]           = String.Empty;
             arr[(int)ListOrderColumns.LISTORDER_COLUMN_PRODUCTS]          = model.Products[0].Name;
-            arr[(int)ListOrderColumns.LISTORDER_COLUMN_PRODUCTS_QUANTITY] = model.Products[0].Quantity.ToString();
+            if (model.Products[0].Quantity != 0)
+            {
+                arr[(int)ListOrderColumns.LISTORDER_COLUMN_PRODUCTS_QUANTITY] = model.Products[0].Quantity.ToString();
+            }
+            else
+            {
+                arr[(int)ListOrderColumns.LISTORDER_COLUMN_PRODUCTS_QUANTITY] = String.Empty;
+            }
+            
             arr[(int)ListOrderColumns.LISTORDER_COLUMN_PROMOTE]           = String.Empty;
             arr[(int)ListOrderColumns.LISTORDER_COLUMN_TOTALPAY]          = String.Empty;
             arr[(int)ListOrderColumns.LISTORDER_COLUMN_DELIVER]           = String.Empty;
             arr[(int)ListOrderColumns.LISTORDER_COLUMN_CYLINDER]          = model.Cylinders[0].Name;
-            arr[(int)ListOrderColumns.LISTORDER_COLUMN_CYLINDER_QUANTITY] = model.Cylinders[0].Quantity.ToString();
+            if (model.Cylinders[0].Quantity != 0)
+            {
+                arr[(int)ListOrderColumns.LISTORDER_COLUMN_CYLINDER_QUANTITY] = model.Cylinders[0].Quantity.ToString();
+            }
+            else
+            {
+                arr[(int)ListOrderColumns.LISTORDER_COLUMN_CYLINDER_QUANTITY] = String.Empty;
+            }
             arr[(int)ListOrderColumns.LISTORDER_COLUMN_CYLINDER_SERI]     = model.Cylinders[0].Serial;
             arr[(int)ListOrderColumns.LISTORDER_COLUMN_NOTE]              = String.Empty;
             item = new ListViewItem(arr);
@@ -442,6 +505,11 @@ namespace MainPrj.View
                                 }
                             }
                         }
+                        int index = 0;
+                        if (mainIdx != -1)
+                        {
+                            index = idx - mainIdx;
+                        }
                         foreach (OrderModel item in DataPure.Instance.ListOrders)
                         {
                             if (item.Id.Equals(id))
@@ -450,24 +518,29 @@ namespace MainPrj.View
                                 {
                                     if (DataPure.Instance.TempData.Material_vo != null)
                                     {
-                                        foreach (MaterialModel material in DataPure.Instance.TempData.Material_vo)
+                                        if (!String.IsNullOrEmpty(e.DisplayText))
                                         {
-                                            if (material.Name.Equals(e.DisplayText))
+                                            foreach (MaterialModel material in DataPure.Instance.TempData.Material_vo)
                                             {
-                                                if (mainIdx != -1)
+                                                if (material.Name.Equals(e.DisplayText))
                                                 {
-                                                    item.Cylinders[idx - mainIdx].Id     = material.Id;
-                                                    item.Cylinders[idx - mainIdx].TypeId = material.Materials_type_id;
-                                                    item.Cylinders[idx - mainIdx].Name   = material.Name;
+                                                    item.Cylinders[index].Id     = material.Id;
+                                                    item.Cylinders[index].TypeId = material.Materials_type_id;
+                                                    item.Cylinders[index].Name   = material.Name;
+                                                    item.IsUpdateToServer        = false;
+                                                    break;
                                                 }
-                                                else
-                                                {
-                                                    item.Cylinders[0].Id     = material.Id;
-                                                    item.Cylinders[0].TypeId = material.Materials_type_id;
-                                                    item.Cylinders[0].Name   = material.Name;
-                                                }
-                                                break;
                                             }
+                                        }
+                                        else
+                                        {
+                                            item.Cylinders[index].Id           = string.Empty;
+                                            item.Cylinders[index].TypeId       = string.Empty;
+                                            item.Cylinders[index].Name         = string.Empty;
+                                            item.Cylinders[index].Materials_no = string.Empty;
+                                            item.Cylinders[index].Quantity     = 0;
+                                            item.Cylinders[index].Serial       = string.Empty;
+                                            item.IsUpdateToServer        = false;
                                         }
                                     }
                                 }
@@ -518,6 +591,7 @@ namespace MainPrj.View
                                 {
                                     // Update data
                                     item.Cylinders[itemIdx].Quantity = quantity;
+                                    item.IsUpdateToServer = false;
                                 }
                                 else
                                 {
@@ -566,6 +640,7 @@ namespace MainPrj.View
                                     itemIdx = 0;
                                 }
                                 item.Cylinders[itemIdx].Serial = e.DisplayText;
+                                item.IsUpdateToServer = false;
                                 break;
                             }
                         }
@@ -594,6 +669,7 @@ namespace MainPrj.View
                 default:
                     break;
             }
+            LoadListView(DataPure.Instance.ListOrders);
         }
         /// <summary>
         /// Handle click Close button
@@ -611,9 +687,13 @@ namespace MainPrj.View
         /// <param name="e">EventArgs</param>
         private void btnAddCylinder_Click(object sender, EventArgs e)
         {
-            CommonProcess.ShowInformMessageProcessing();
+            HandleFinishOrder();
         }
-
+        /// <summary>
+        /// Handle update data to server.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
         private void btnUpdateData_Click(object sender, EventArgs e)
         {
             if ((this.listViewListOrder.SelectedItems.Count > 0)
@@ -624,11 +704,91 @@ namespace MainPrj.View
                 {
                     if (item.Id.Equals(id))
                     {
-                        CommonProcess.UpdateOrderToServer(item);
+                        string retId = CommonProcess.UpdateOrderToServer(item);
+                        if (!String.IsNullOrEmpty(retId))
+                        {
+                            CommonProcess.ShowInformMessage(Properties.Resources.UpdateOrderSuccess, MessageBoxButtons.OK);
+                        }
+                        item.IsUpdateToServer = true;
+                        LoadListView(DataPure.Instance.ListOrders);
                         break;
                     }
                 }
             }
+        }
+
+        private void btnExportReport_Click(object sender, EventArgs e)
+        {
+            OrderReport report = new OrderReport();
+            Dictionary<string, OrderDetailModel> listData = new Dictionary<string, OrderDetailModel>();
+            foreach (OrderModel item in DataPure.Instance.ListOrders)
+            {
+                foreach (ProductModel product in item.Products)
+                {
+                    if (listData.Keys.Contains(product.Materials_no))
+                    {
+                        listData[product.Materials_no].Quantity += product.Quantity;
+                    }
+                    else
+                    {
+                        listData.Add(product.Materials_no,
+                           new OrderDetailModel()
+                           {
+                               Materials_id      = product.Materials_no,
+                               Materials_type_id = product.TypeId,
+                               Quantity          = product.Quantity,
+                               Price             = string.Empty,
+                               TotalPay          = string.Empty,
+                               Seri              = product.Name,
+                           });
+                    }
+                }
+                foreach (PromoteModel promote in item.Promotes)
+                {
+                    if (listData.Keys.Contains(promote.Materials_no))
+                    {
+                        listData[promote.Materials_no].Quantity += promote.Quantity;
+                    }
+                    else
+                    {
+                        listData.Add(promote.Materials_no,
+                           new OrderDetailModel()
+                           {
+                               Materials_id      = promote.Materials_no,
+                               Materials_type_id = promote.TypeId,
+                               Quantity          = promote.Quantity,
+                               Price             = string.Empty,
+                               TotalPay          = string.Empty,
+                               Seri              = promote.Name,
+                           });
+                    }
+                }
+                foreach (CylinderModel cylinder in item.Cylinders)
+                {
+                    if (!string.IsNullOrEmpty(cylinder.Id))
+                    {
+                        if (listData.Keys.Contains(cylinder.Materials_no))
+                        {
+                            listData[cylinder.Materials_no].Quantity += cylinder.Quantity;
+                        }
+                        else
+                        {
+                            listData.Add(cylinder.Materials_no,
+                               new OrderDetailModel()
+                               {
+                                   Materials_id = cylinder.Materials_no,
+                                   Materials_type_id = cylinder.TypeId,
+                                   Quantity = cylinder.Quantity,
+                                   Price = string.Empty,
+                                   TotalPay = string.Empty,
+                                   Seri = cylinder.Name,
+                               });
+                        }
+                    }
+                }
+            }
+            report.ListData = listData;
+            report.ShowDialog();
         }
     }
 }

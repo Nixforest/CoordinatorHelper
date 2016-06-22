@@ -14,18 +14,18 @@ using System.Windows.Forms;
 
 namespace MainPrj.View
 {
-    public partial class HistoryView : Form
+    public partial class HistoryView1 : Form
     {
         /// <summary>
         /// List of data.
         /// </summary>
-        private List<CallModel> listData = new List<CallModel>();
+        private Dictionary<string, CallModel> listData = new Dictionary<string, CallModel>();
         /// <summary>
         /// List of data which search result.
         /// </summary>
         private List<CallModel> listDataSearch = new List<CallModel>();
 
-        public List<CallModel> ListData
+        public Dictionary<string, CallModel> ListData
         {
             get { return listData; }
             set { listData = value; }
@@ -44,7 +44,7 @@ namespace MainPrj.View
         /// <summary>
         /// Constructor.
         /// </summary>
-        public HistoryView()
+        public HistoryView1()
         {
             InitializeComponent();
         }
@@ -55,12 +55,10 @@ namespace MainPrj.View
         /// <param name="e">EventArgs</param>
         private void HistoryView_Load(object sender, EventArgs e)
         {
-            //listData.Sort();
-            //for (int i = listData.Count - 1; i >= 0; i--)
-            //{
-            //    this.listViewHistory.Items.Add(CreateListViewItem(listData[i], listData.Count - i));
-            //}
-            ReloadListView(listData);
+            for (int i = listData.Count - 1; i >= 0; i--)
+            {
+                this.listViewHistory.Items.Add(CreateListViewItem(listData.ElementAt(i).Value, listData.Count - i));
+            }
         }
 
         /// <summary>
@@ -135,15 +133,14 @@ namespace MainPrj.View
                                     listCalls.Add(callModel);
                                     // Add to member list
                                     //this.listData.Add(callModel);
-                                    this.listData.Insert(0, callModel);
+                                    this.listData.Add(callModel.Id, callModel);
                                 }
                             }
                             // Show to list view
-                            ReloadListView(this.listData);
-                            //for (int i = listCalls.Count - 1; i >= 0; i--)
-                            //{
-                            //    this.listViewHistory.Items.Add(CreateListViewItem(listCalls[i], ++index));
-                            //}
+                            for (int i = listCalls.Count - 1; i >= 0; i--)
+                            {
+                                this.listViewHistory.Items.Add(CreateListViewItem(listCalls[i], ++index));
+                            }
                         }
                         // Close stream
                         fileStream.Close();
@@ -153,20 +150,6 @@ namespace MainPrj.View
                         CommonProcess.ShowErrorMessage(Properties.Resources.ErrorCause + ex.Message);
                     }
                 }
-            }
-        }
-        /// <summary>
-        /// Reload listview.
-        /// </summary>
-        /// <param name="list">List data</param>
-        private void ReloadListView(List<CallModel> list)
-        {
-            list.Sort();
-            this.listViewHistory.Items.Clear();
-            int index = 0;
-            foreach (CallModel item in list)
-            {
-                this.listViewHistory.Items.Add(CreateListViewItem(item, ++index));
             }
         }
         /// <summary>
@@ -235,8 +218,8 @@ namespace MainPrj.View
         /// </summary>
         private void HandleFinishItem()
         {
-            //Stopwatch timer = new Stopwatch();
-            //timer.Start();
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
             // Has a row is selected
             if (this.listViewHistory.SelectedItems.Count > 0)
             {
@@ -246,18 +229,11 @@ namespace MainPrj.View
                     // Mark finish
                     item.ForeColor = Properties.Settings.Default.ColorFinishCallText;
                     item.BackColor = Properties.Settings.Default.ColorFinishCallBackground;
-                    // Update data
-                    for (int i = 0; i < this.listData.Count; i++)
-                    {
-                        if (this.listData[i].Id.Equals(id))
-                        {
-                            this.listData[i].IsFinish = true;
-                        }
-                    }
+                    this.listData[id].IsFinish = true;
                 }
             }
-            //timer.Stop();
-            //CommonProcess.ShowInformMessage(String.Format("Time elapsed: {0}", timer.Elapsed), MessageBoxButtons.OK);
+            timer.Stop();
+            CommonProcess.ShowInformMessage(String.Format("Time elapsed: {0}", timer.Elapsed), MessageBoxButtons.OK);
         }
         /// <summary>
         /// Handle when double click on item list view
@@ -273,9 +249,9 @@ namespace MainPrj.View
                 string value = this.listViewHistory.SelectedItems[0].Tag.ToString();
                 for (int i = 0; i < this.listData.Count; i++)
                 {
-                    if (this.listData[i].Id.Equals(value))
+                    if (this.listData.ElementAt(i).Value.Id.Equals(value))
                     {
-                        callModel = this.listData[i];
+                        callModel = this.listData.ElementAt(i).Value;
                         customerView.GetChannel().SetIncommingPhone(callModel.Phone);
                         CommonProcess.SetChannelInformation(customerView.GetChannel(), callModel.Customer);
                         break;
@@ -338,7 +314,7 @@ namespace MainPrj.View
             keyword = CommonProcess.NormalizationString(keyword).ToLower();
             if (!String.IsNullOrEmpty(keyword))
             {
-                foreach (CallModel item in this.listData)
+                foreach (CallModel item in this.listData.Values)
                 {
                     if (item.IsContainString(keyword))
                     {
@@ -346,13 +322,11 @@ namespace MainPrj.View
                     }
                 }
             }
-            //listDataSearch.Sort();
-            //this.listViewHistory.Items.Clear();
-            //for (int i = this.listDataSearch.Count - 1; i >= 0; i--)
-            //{
-            //    this.listViewHistory.Items.Add(CreateListViewItem(this.listDataSearch[i], this.listDataSearch.Count - i));
-            //}
-            ReloadListView(listDataSearch);
+            this.listViewHistory.Items.Clear();
+            for (int i = this.listDataSearch.Count - 1; i >= 0; i--)
+            {
+                this.listViewHistory.Items.Add(CreateListViewItem(this.listDataSearch[i], this.listDataSearch.Count - i));
+            }
         }
         /// <summary>
         /// Handle when enter focus on Search textbox.
@@ -390,15 +364,13 @@ namespace MainPrj.View
         {
             tbxSearch.Text = Properties.Resources.SearchString;
             tbxSearch.ForeColor = SystemColors.GrayText;
-            dtpFilter.Value = System.DateTime.Now;
             //SearchByKeyword(String.Empty);
             this.listDataSearch.Clear();
-            //this.listViewHistory.Items.Clear();
-            //for (int i = listData.Count - 1; i >= 0; i--)
-            //{
-            //    this.listViewHistory.Items.Add(CreateListViewItem(listData[i], listData.Count - i));
-            //}
-            ReloadListView(listData);
+            this.listViewHistory.Items.Clear();
+            for (int i = listData.Count - 1; i >= 0; i--)
+            {
+                this.listViewHistory.Items.Add(CreateListViewItem(listData.ElementAt(i).Value, listData.Count - i));
+            }
         }
         /// <summary>
         /// Handle when click on Listview
@@ -455,11 +427,6 @@ namespace MainPrj.View
         private void btnCreateOrder_Click(object sender, EventArgs e)
         {
             CommonProcess.ShowInformMessageProcessing();
-        }
-
-        private void dtpFilter_ValueChanged(object sender, EventArgs e)
-        {
-            ReloadListView(CommonProcess.ReadHistoryByDate(dtpFilter.Value));
         }
     }
 }

@@ -17,6 +17,30 @@ namespace MainPrj.Model
     {
         [DataMember(Name = "customer_id", IsRequired = true)]
         private string customer_id;
+        [DataMember(Name = "customer_name", IsRequired = true)]
+        private string customer_name;
+        [DataMember(Name = "customer_address", IsRequired = true)]
+        private string customer_address;
+        [DataMember(Name = "customer_phone", IsRequired = true)]
+        private string customer_phone;
+        [DataMember(Name = "customer_agent", IsRequired = true)]
+        private string customer_agent;
+        [DataMember(Name = "customer_type", IsRequired = true)]
+        private string customer_type;
+        [DataMember(Name = "contact", IsRequired = false)]
+        private string contact;
+        [DataMember(Name = "contact_note", IsRequired = false)]
+        private string contact_note;
+        [DataMember(Name = "sale_name", IsRequired = true)]
+        private string sale_name;
+        [DataMember(Name = "sale_phone", IsRequired = true)]
+        private string sale_phone;
+        [DataMember(Name = "sale_type", IsRequired = true)]
+        private string sale_type;
+        [DataMember(Name = "customer_delivery_agent", IsRequired = false)]
+        private string agencyNearest;
+        [DataMember(Name = "activePhone", IsRequired = false)]
+        private string activePhone;
         /// <summary>
         /// Id.
         /// </summary>
@@ -25,96 +49,72 @@ namespace MainPrj.Model
             get { return customer_id; }
             set { customer_id = value; }
         }
-        [DataMember(Name = "customer_name", IsRequired = true)]
-        private string customer_name;
 
         public string Name
         {
             get { return customer_name; }
             set { customer_name = value; }
         }
-        [DataMember(Name = "customer_address", IsRequired = true)]
-        private string customer_address;
 
         public string Address
         {
             get { return customer_address; }
             set { customer_address = value; }
         }
-        [DataMember(Name = "customer_phone", IsRequired = true)]
-        private string customer_phone;
 
         public string PhoneList
         {
             get { return customer_phone; }
             set { customer_phone = value; }
         }
-        [DataMember(Name = "customer_agent", IsRequired = true)]
-        private string customer_agent;
 
         public string AgencyName
         {
             get { return customer_agent; }
             set { customer_agent = value; }
         }
-        [DataMember(Name = "customer_type", IsRequired = true)]
-        private string customer_type;
 
         public string CustomerType
         {
             get { return customer_type; }
             set { customer_type = value; }
         }
-        [DataMember(Name = "contact", IsRequired = false)]
-        private string contact;
 
         public string Contact
         {
             get { return contact; }
             set { contact = value; }
         }
-        [DataMember(Name = "contact_note", IsRequired = false)]
-        private string contact_note;
 
         public string Contact_note
         {
             get { return contact_note; }
             set { contact_note = value; }
         }
-        [DataMember(Name = "sale_name", IsRequired = true)]
-        private string sale_name;
 
         public string Sale_name
         {
             get { return sale_name; }
             set { sale_name = value; }
         }
-        [DataMember(Name = "sale_phone", IsRequired = true)]
-        private string sale_phone;
 
         public string Sale_phone
         {
             get { return sale_phone; }
             set { sale_phone = value; }
         }
-        [DataMember(Name = "sale_type", IsRequired = true)]
-        private string sale_type;
 
         public string Sale_type
         {
             get { return sale_type; }
             set { sale_type = value; }
         }
-        [DataMember(Name = "customer_delivery_agent", IsRequired = false)]
-        private string agencyNearest;
 
         public string AgencyNearest
         {
             get { return agencyNearest; }
             set { agencyNearest = value; }
         }
-        [DataMember(Name = "activePhone", IsRequired = false)]
-        private string activePhone;
 
         public string ActivePhone
         {

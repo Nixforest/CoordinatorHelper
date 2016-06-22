@@ -181,7 +181,7 @@ namespace MainPrj.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("D:\\")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\CoordinatorHelper")]
         public string HistoryFilePath {
             get {
                 return ((string)(this["HistoryFilePath"]));
@@ -512,6 +512,78 @@ namespace MainPrj.Properties {
             }
             set {
                 this["URLGetAgentInfo"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\CoordinatorHelper")]
+        public string OrdersFilePath {
+            get {
+                return ((string)(this["OrdersFilePath"]));
+            }
+            set {
+                this["OrdersFilePath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("orders.txt")]
+        public string OrdersFileName {
+            get {
+                return ((string)(this["OrdersFileName"]));
+            }
+            set {
+                this["OrdersFileName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("GAS 24H")]
+        public string BillBrand {
+            get {
+                return ((string)(this["BillBrand"]));
+            }
+            set {
+                this["BillBrand"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Times New Roman")]
+        public string BilllFont {
+            get {
+                return ((string)(this["BilllFont"]));
+            }
+            set {
+                this["BilllFont"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("280")]
+        public int BillSizeW {
+            get {
+                return ((int)(this["BillSizeW"]));
+            }
+            set {
+                this["BillSizeW"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("820")]
+        public int BillSizeH {
+            get {
+                return ((int)(this["BillSizeH"]));
+            }
+            set {
+                this["BillSizeH"] = value;
             }
         }
     }

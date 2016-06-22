@@ -12,12 +12,12 @@ namespace MainPrj.Util
     public class DataPure
     {
         #region Data members
-        private int currentChannel         = 0;
-        private TempDataModel tempData     = null;
-        private UserLoginModel user        = null;
-        private List<CallModel> listCalls  = null;
-        private CustomerModel customerInfo = null;
-        private SelectorModel agent = null;
+        private int currentChannel          = 0;
+        private TempDataModel tempData      = null;
+        private UserLoginModel user         = null;
+        private List<CallModel> listCalls   = null;
+        private CustomerModel customerInfo  = null;
+        private AgentModel agent            = null;
         private List<OrderModel> listOrders = null;
         /// <summary>
         /// List of orders.
@@ -30,7 +30,7 @@ namespace MainPrj.Util
         /// <summary>
         /// Agent.
         /// </summary>
-        public SelectorModel Agent
+        public AgentModel Agent
         {
             get { return agent; }
             set { agent = value; }
@@ -90,6 +90,7 @@ namespace MainPrj.Util
         {
             this.listCalls = new List<CallModel>();
             this.listOrders = new List<OrderModel>();
+            this.agent = new AgentModel();
         }
         /// <summary>
         /// Get instance

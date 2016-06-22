@@ -14,31 +14,39 @@ namespace MainPrj.Model
     {
         [DataMember(Name = "status", IsRequired = true)]
         protected string status;
-
+        [DataMember(Name = "code", IsRequired = true)]
+        protected string code;
+        [DataMember(Name = "message", IsRequired = true)]
+        protected string message;
+        [DataMember(Name = "token", IsRequired = false)]
+        protected string token;
+        /// <summary>
+        /// Response status.
+        /// </summary>
         public string Status
         {
             get { return status; }
             set { status = value; }
         }
-        [DataMember(Name = "code", IsRequired = true)]
-        protected string code;
-
+        /// <summary>
+        /// Response code.
+        /// </summary>
         public string Code
         {
             get { return code; }
             set { code = value; }
         }
-        [DataMember(Name = "message", IsRequired = true)]
-        protected string message;
-
+        /// <summary>
+        /// Response message.
+        /// </summary>
         public string Message
         {
             get { return message; }
             set { message = value; }
         }
-        [DataMember(Name = "token", IsRequired = false)]
-        protected string token;
-
+        /// <summary>
+        /// Response token.
+        /// </summary>
         public string Token
         {
             get { return token; }

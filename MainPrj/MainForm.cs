@@ -342,6 +342,8 @@ namespace MainPrj
                 this.chbListenFromCard.Checked = Properties.Settings.Default.ListeningCardMode;
                 this.chbUpdatePhone.Checked    = Properties.Settings.Default.UpdatePhone;
             }
+            CommonProcess.ReadListOrders();
+            CommonProcess.ReadHistory();
         }
         /// <summary>
         /// Update data to channel tab.
@@ -393,7 +395,7 @@ namespace MainPrj
                         SelectorModel selectorModel = new SelectorModel();
                         selectorModel.Id            = customerInfo.Id;
                         selectorModel.Name          = customerInfo.Name;
-                        selectorModel.Address       = customerInfo.Address;
+                        selectorModel.Detail        = customerInfo.Address;
                         listSelector.Add(selectorModel);
                     }
                     // Create SelectorView
@@ -562,6 +564,25 @@ namespace MainPrj
 					    }
 				    }
                     break;
+                case Keys.F7:
+                    //HistoryView1 historyView = new HistoryView1();
+                    //foreach (CallModel item in DataPure.Instance.ListCalls)
+                    //{
+                    //    historyView.ListData.Add(item.Id, item);
+                    //}
+                    //historyView.ShowDialog();
+                    //foreach (CallModel current in historyView.ListData.Values)
+                    //{
+                    //    foreach (CallModel current2 in DataPure.Instance.ListCalls)
+                    //    {
+                    //        if (current.Id.Equals(current2.Id))
+                    //        {
+                    //            current2.IsFinish = current.IsFinish;
+                    //            break;
+                    //        }
+                    //    }
+                    //}
+                    break;
                 default:
                     break;
             }
@@ -594,8 +615,9 @@ namespace MainPrj
         /// </summary>
         private void HandleClickSaveDataButton()
         {
-            OrderCarView order = new OrderCarView();
-            order.Show();
+            //OrderCarView order = new OrderCarView();
+            //order.Show();
+            CommonProcess.ShowInformMessageProcessing();
         }
         /// <summary>
         /// Handle when click Update Customer button.
@@ -719,7 +741,16 @@ namespace MainPrj
             //    e.Cancel = true;
             //}
             // Write history file
-            CommonProcess.WriteHistory(DataPure.Instance.ListCalls);
+            if (!CommonProcess.WriteHistory(DataPure.Instance.ListCalls))
+            {
+                e.Cancel = true;
+                return;
+            }
+            if (!CommonProcess.WriteListOrders())
+            {
+                e.Cancel = true;
+                return;
+            }
             Properties.Settings.Default.UserToken = String.Empty;
             Properties.Settings.Default.Save();
         }
@@ -838,9 +869,9 @@ namespace MainPrj
                     {
                         listSelector.Add(new SelectorModel
                         {
-                            Id = item.Id,
-                            Name = item.Name,
-                            Address = string.Empty,
+                            Id     = item.Id,
+                            Name   = item.Name,
+                            Detail = string.Empty,
                         });
                     }
                     listSelector.Sort();
@@ -857,13 +888,15 @@ namespace MainPrj
                         {
                             CommonProcess.RequestAgentInformation(selectorId);
                             DataPure.Instance.TempData.Agent_id = selectorId;
-                        }
-                        foreach (SelectorModel item in DataPure.Instance.TempData.Agent_list)
-                        {
-                            if (selectorId.Equals(item.Id))
+                            foreach (SelectorModel item in DataPure.Instance.TempData.Agent_list)
                             {
-                                DataPure.Instance.Agent = item;
-                                break;
+                                if (selectorId.Equals(item.Id))
+                                {
+                                    DataPure.Instance.Agent = new AgentModel(item);
+                                    DataPure.Instance.Agent.Phone = DataPure.Instance.TempData.Agent_phone;
+                                    DataPure.Instance.Agent.Address = DataPure.Instance.TempData.Agent_address;
+                                    break;
+                                }
                             }
                         }
                     }

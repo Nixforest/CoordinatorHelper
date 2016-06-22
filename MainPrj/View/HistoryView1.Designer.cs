@@ -1,6 +1,6 @@
 ﻿namespace MainPrj.View
 {
-    partial class HistoryView
+    partial class HistoryView1
     {
         /// <summary>
         /// Required designer variable.
@@ -49,7 +49,6 @@
             this.toolStripMenuItemCopyPhone = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemMarkFinish = new System.Windows.Forms.ToolStripMenuItem();
             this.btnCreateOrder = new System.Windows.Forms.Button();
-            this.dtpFilter = new System.Windows.Forms.DateTimePicker();
             this.contextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -59,7 +58,7 @@
             this.btnClose.Location = new System.Drawing.Point(1190, 591);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(116, 36);
-            this.btnClose.TabIndex = 7;
+            this.btnClose.TabIndex = 0;
             this.btnClose.Text = "Đóng";
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
@@ -84,7 +83,7 @@
             this.listViewHistory.Name = "listViewHistory";
             this.listViewHistory.ShowItemToolTips = true;
             this.listViewHistory.Size = new System.Drawing.Size(1294, 529);
-            this.listViewHistory.TabIndex = 6;
+            this.listViewHistory.TabIndex = 1;
             this.listViewHistory.UseCompatibleStateImageBehavior = false;
             this.listViewHistory.View = System.Windows.Forms.View.Details;
             this.listViewHistory.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.listViewHistory_ItemSelectionChanged);
@@ -139,7 +138,6 @@
             this.btnOpenFile.TabIndex = 2;
             this.btnOpenFile.Text = "Cũ hơn";
             this.btnOpenFile.UseVisualStyleBackColor = true;
-            this.btnOpenFile.Visible = false;
             this.btnOpenFile.Click += new System.EventHandler(this.btnOpenFile_Click);
             // 
             // btnFinish
@@ -147,7 +145,7 @@
             this.btnFinish.Location = new System.Drawing.Point(156, 8);
             this.btnFinish.Name = "btnFinish";
             this.btnFinish.Size = new System.Drawing.Size(121, 40);
-            this.btnFinish.TabIndex = 1;
+            this.btnFinish.TabIndex = 2;
             this.btnFinish.Text = "Hoàn thành";
             this.btnFinish.UseVisualStyleBackColor = true;
             this.btnFinish.Click += new System.EventHandler(this.btnFinish_Click);
@@ -155,7 +153,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(702, 15);
+            this.label1.Location = new System.Drawing.Point(721, 15);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(92, 24);
             this.label1.TabIndex = 3;
@@ -164,10 +162,10 @@
             // tbxSearch
             // 
             this.tbxSearch.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.tbxSearch.Location = new System.Drawing.Point(936, 12);
+            this.tbxSearch.Location = new System.Drawing.Point(819, 12);
             this.tbxSearch.Name = "tbxSearch";
-            this.tbxSearch.Size = new System.Drawing.Size(271, 29);
-            this.tbxSearch.TabIndex = 4;
+            this.tbxSearch.Size = new System.Drawing.Size(388, 29);
+            this.tbxSearch.TabIndex = 0;
             this.tbxSearch.Text = "Tìm kiếm";
             this.tbxSearch.Enter += new System.EventHandler(this.tbxSearch_Enter);
             this.tbxSearch.Leave += new System.EventHandler(this.tbxSearch_Leave);
@@ -177,7 +175,7 @@
             this.btnClear.Location = new System.Drawing.Point(1213, 7);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(93, 40);
-            this.btnClear.TabIndex = 5;
+            this.btnClear.TabIndex = 4;
             this.btnClear.Text = "Hủy";
             this.btnClear.UseVisualStyleBackColor = true;
             this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
@@ -213,20 +211,10 @@
             this.btnCreateOrder.Location = new System.Drawing.Point(12, 8);
             this.btnCreateOrder.Name = "btnCreateOrder";
             this.btnCreateOrder.Size = new System.Drawing.Size(138, 40);
-            this.btnCreateOrder.TabIndex = 0;
+            this.btnCreateOrder.TabIndex = 2;
             this.btnCreateOrder.Text = "Tạo đơn hàng";
             this.btnCreateOrder.UseVisualStyleBackColor = true;
             this.btnCreateOrder.Click += new System.EventHandler(this.btnCreateOrder_Click);
-            // 
-            // dtpFilter
-            // 
-            this.dtpFilter.CustomFormat = "dd/MM/yyyy";
-            this.dtpFilter.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpFilter.Location = new System.Drawing.Point(800, 12);
-            this.dtpFilter.Name = "dtpFilter";
-            this.dtpFilter.Size = new System.Drawing.Size(130, 29);
-            this.dtpFilter.TabIndex = 3;
-            this.dtpFilter.ValueChanged += new System.EventHandler(this.dtpFilter_ValueChanged);
             // 
             // HistoryView
             // 
@@ -234,7 +222,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
             this.ClientSize = new System.Drawing.Size(1318, 639);
-            this.Controls.Add(this.dtpFilter);
             this.Controls.Add(this.btnClear);
             this.Controls.Add(this.tbxSearch);
             this.Controls.Add(this.label1);
@@ -279,6 +266,5 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemCopyPhone;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemMarkFinish;
         private System.Windows.Forms.Button btnCreateOrder;
-        private System.Windows.Forms.DateTimePicker dtpFilter;
     }
 }

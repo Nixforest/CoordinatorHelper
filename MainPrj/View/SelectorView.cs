@@ -53,10 +53,10 @@ namespace MainPrj.View
                 ListViewItem item;
                 string[] arr = new string[(int)SelectorColumns.SELECTOR_COLUMN_NUM];
 
-                arr[(int)SelectorColumns.SELECTOR_COLUMN_NO] = String.Format("{0}", i + 1);
-                arr[(int)SelectorColumns.SELECTOR_COLUMN_NAME] = listData[i].Name;
-                arr[(int)SelectorColumns.SELECTOR_COLUMN_ADDRESS] = listData[i].Address;
-                arr[(int)SelectorColumns.SELECTOR_COLUMN_ID] = listData[i].Id;
+                arr[(int)SelectorColumns.SELECTOR_COLUMN_NO]      = String.Format("{0}", i + 1);
+                arr[(int)SelectorColumns.SELECTOR_COLUMN_NAME]    = listData[i].Name;
+                arr[(int)SelectorColumns.SELECTOR_COLUMN_ADDRESS] = listData[i].Detail;
+                arr[(int)SelectorColumns.SELECTOR_COLUMN_ID]      = listData[i].Id;
                 item = new ListViewItem(arr);
                 item.Tag = listData[i].Id;
                 this.listViewSelector.Items.Add(item);

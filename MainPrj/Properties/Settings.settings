@@ -42,7 +42,7 @@
       <Value Profile="(Default)">customer_id</Value>
     </Setting>
     <Setting Name="HistoryFilePath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">D:\</Value>
+      <Value Profile="(Default)">C:\CoordinatorHelper</Value>
     </Setting>
     <Setting Name="HistoryFileName" Type="System.String" Scope="User">
       <Value Profile="(Default)">history.txt</Value>
@@ -124,6 +124,24 @@
     </Setting>
     <Setting Name="URLGetAgentInfo" Type="System.String" Scope="User">
       <Value Profile="(Default)">/api/default/windowGetInfoAgent</Value>
+    </Setting>
+    <Setting Name="OrdersFilePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\CoordinatorHelper</Value>
+    </Setting>
+    <Setting Name="OrdersFileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">orders.txt</Value>
+    </Setting>
+    <Setting Name="BillBrand" Type="System.String" Scope="User">
+      <Value Profile="(Default)">GAS 24H</Value>
+    </Setting>
+    <Setting Name="BilllFont" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Times New Roman</Value>
+    </Setting>
+    <Setting Name="BillSizeW" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">280</Value>
+    </Setting>
+    <Setting Name="BillSizeH" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">820</Value>
     </Setting>
   </Settings>
 </SettingsFile>

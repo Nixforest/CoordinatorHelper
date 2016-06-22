@@ -56,6 +56,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -67,6 +68,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\AgentModel.cs" />
+    <Compile Include="Model\BaseModel.cs" />
+    <Compile Include="Model\BillPrintModel.cs" />
     <Compile Include="Model\CylinderModel.cs" />
     <Compile Include="Model\ListViewColumn\ListOrderColumns.cs" />
     <Compile Include="Model\ListViewColumn\PromoteColumns.cs" />
@@ -87,7 +91,7 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\CardDataStatus.cs" />
-    <Compile Include="Model\Response\CreateOrderResponseModel.cs" />
+    <Compile Include="Model\Response\OrderResponseModel.cs" />
     <Compile Include="Model\Response\TempDataResponseModel.cs" />
     <Compile Include="Model\RoleType.cs" />
     <Compile Include="Model\TempDataModel.cs" />
@@ -121,11 +125,23 @@
     <Compile Include="View\Component\WordWrapListView.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="View\HistoryView1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\HistoryView1.Designer.cs">
+      <DependentUpon>HistoryView1.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\CustomerView.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="View\CustomerView.Designer.cs">
       <DependentUpon>CustomerView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\FinishOrderView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\FinishOrderView.Designer.cs">
+      <DependentUpon>FinishOrderView.cs</DependentUpon>
     </Compile>
     <Compile Include="View\HistoryView.cs">
       <SubType>Form</SubType>
@@ -153,6 +169,18 @@
     </Compile>
     <Compile Include="View\OrderCarView.Designer.cs">
       <DependentUpon>OrderCarView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\OrderPrintView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\OrderPrintView.Designer.cs">
+      <DependentUpon>OrderPrintView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\OrderReport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\OrderReport.Designer.cs">
+      <DependentUpon>OrderReport.cs</DependentUpon>
     </Compile>
     <Compile Include="View\OrderView.cs">
       <SubType>Form</SubType>
@@ -200,8 +228,14 @@
     <EmbeddedResource Include="View\Component\EditableListView.resx">
       <DependentUpon>EditableListView.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="View\HistoryView1.resx">
+      <DependentUpon>HistoryView1.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\CustomerView.resx">
       <DependentUpon>CustomerView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\FinishOrderView.resx">
+      <DependentUpon>FinishOrderView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\HistoryView.resx">
       <DependentUpon>HistoryView.cs</DependentUpon>
@@ -214,6 +248,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\OrderCarView.resx">
       <DependentUpon>OrderCarView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\OrderPrintView.resx">
+      <DependentUpon>OrderPrintView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\OrderReport.resx">
+      <DependentUpon>OrderReport.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\OrderView.resx">
       <DependentUpon>OrderView.cs</DependentUpon>
@@ -310,7 +350,15 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Properties\upload_tray.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\money_icon_gray.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\report.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,7 +1,10 @@
 ﻿using MainPrj.Util;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
 using System.Text;
 
 namespace MainPrj.Model
@@ -9,39 +12,76 @@ namespace MainPrj.Model
     /// <summary>
     /// Order model.
     /// </summary>
+    [DataContract]
     public class OrderModel
     {
+        [DataMember(Name = "id", IsRequired = false)]
         private string id;
+        [DataMember(Name = "creatorId", IsRequired = false)]
         private string creatorId;
+        [DataMember(Name = "deliverId", IsRequired = false)]
         private string deliverId;
+        [DataMember(Name = "ccsId", IsRequired = false)]
         private string ccsId;
+        [DataMember(Name = "products", IsRequired = false)]
         private List<ProductModel> products;
+        [DataMember(Name = "promotes", IsRequired = false)]
         private List<PromoteModel> promotes;
+        [DataMember(Name = "totalMoney", IsRequired = false)]
         private double totalMoney;
+        [DataMember(Name = "promoteMoney", IsRequired = false)]
         private double promoteMoney;
+        [DataMember(Name = "totalPay", IsRequired = false)]
         private double totalPay;
+        [DataMember(Name = "customer", IsRequired = false)]
         private CustomerModel customer;
-        private List<CylinderModel> cylinder;
+        [DataMember(Name = "cylinder", IsRequired = false)]
+        private List<CylinderModel> cylinders;
+        [DataMember(Name = "note", IsRequired = false)]
         private string note;
+        [DataMember(Name = "webId", IsRequired = false)]
         private string webId;
+        [DataMember(Name = "isUpdateToServer", IsRequired = false)]
+        private bool isUpdateToServer;
+        [DataMember(Name = "isFinished", IsRequired = false)]
+        private bool isFinished;
+
         /// <summary>
         /// Constructor.
         /// </summary>
         public OrderModel()
         {
-            id           = string.Empty;
-            creatorId    = string.Empty;
-            deliverId    = string.Empty;
-            ccsId        = string.Empty;
-            products     = new List<ProductModel>();
-            promotes     = new List<PromoteModel>();
-            totalMoney   = 0.0;
-            promoteMoney = 0.0;
-            totalPay     = 0.0;
-            customer     = new CustomerModel();
-            cylinder     = new List<CylinderModel>();
-            note         = string.Empty;
-            webId        = string.Empty;
+            id               = string.Empty;
+            creatorId        = string.Empty;
+            deliverId        = string.Empty;
+            ccsId            = string.Empty;
+            products         = new List<ProductModel>();
+            promotes         = new List<PromoteModel>();
+            totalMoney       = 0.0;
+            promoteMoney     = 0.0;
+            totalPay         = 0.0;
+            customer         = new CustomerModel();
+            cylinders        = new List<CylinderModel>();
+            note             = string.Empty;
+            webId            = string.Empty;
+            isUpdateToServer = true;
+            isFinished       = false;
+        }
+        /// <summary>
+        /// Flag check if this order is finished.
+        /// </summary>
+        public bool IsFinished
+        {
+            get { return isFinished; }
+            set { isFinished = value; }
+        }
+        /// <summary>
+        /// Flag check if object is updated to server.
+        /// </summary>
+        public bool IsUpdateToServer
+        {
+            get { return isUpdateToServer; }
+            set { isUpdateToServer = value; }
         }
         /// <summary>
         /// Id get from server when create order.
@@ -64,8 +104,8 @@ namespace MainPrj.Model
         /// </summary>
         public List<CylinderModel> Cylinders
         {
-            get { return cylinder; }
-            set { cylinder = value; }
+            get { return cylinders; }
+            set { cylinders = value; }
         }
         /// <summary>
         /// Customer.
@@ -159,10 +199,33 @@ namespace MainPrj.Model
             {
                 return true;
             }
-            result |= CommonProcess.NormalizationString(this.Customer.ActivePhone).Contains(keyword.ToLower());
-            result |= CommonProcess.NormalizationString(this.Customer.Name).Contains(keyword.ToLower());
-            result |= CommonProcess.NormalizationString(this.Customer.Address).Contains(keyword.ToLower());
+            result |= CommonProcess.NormalizationString(this.Customer.ActivePhone).ToLower().Contains(keyword);
+            result |= CommonProcess.NormalizationString(this.Customer.Name).ToLower().Contains(keyword);
+            result |= CommonProcess.NormalizationString(this.Customer.Address).ToLower().Contains(keyword);
             return result;
+        }
+        /// <summary>
+        /// Convert to string.
+        /// </summary>
+        /// <returns>String object</returns>
+        public override string ToString()
+        {
+            string retVal = string.Empty;
+            MemoryStream ms = new MemoryStream();
+            DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(OrderModel));
+            try
+            {
+                js.WriteObject(ms, this);
+                ms.Position = 0;
+                var sr      = new StreamReader(ms);
+                retVal      = sr.ReadToEnd();
+                sr.Close();
+            }
+            catch (Exception ex)
+            {
+                CommonProcess.ShowErrorMessage(Properties.Resources.ErrorCause + ex.Message);
+            }
+            return retVal;
         }
     }
 }

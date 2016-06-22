@@ -237,6 +237,15 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tạo đơn hàng thành công!.
+        /// </summary>
+        internal static string CreateOrderSuccess {
+            get {
+                return ResourceManager.GetString("CreateOrderSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bạn có muốn lưu thay đổi hay không?.
         /// </summary>
         internal static string DataNotSaveYet {
@@ -461,6 +470,16 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap money_icon_gray {
+            get {
+                object obj = ResourceManager.GetObject("money_icon_gray", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Họ và tên.
         /// </summary>
         internal static string Name {
@@ -571,6 +590,16 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap report {
+            get {
+                object obj = ResourceManager.GetObject("report", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bộ phận.
         /// </summary>
         internal static string Role {
@@ -621,6 +650,15 @@ namespace MainPrj.Properties {
         internal static string SelectorTitleCustomer {
             get {
                 return ResourceManager.GetString("SelectorTitleCustomer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Xin vui lòng chọn vỏ.
+        /// </summary>
+        internal static string SelectorTitleCylinder {
+            get {
+                return ResourceManager.GetString("SelectorTitleCylinder", resourceCulture);
             }
         }
         
@@ -685,6 +723,25 @@ namespace MainPrj.Properties {
         internal static System.Drawing.Bitmap update {
             get {
                 object obj = ResourceManager.GetObject("update", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cập nhật đơn hàng thành công!.
+        /// </summary>
+        internal static string UpdateOrderSuccess {
+            get {
+                return ResourceManager.GetString("UpdateOrderSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap upload_tray {
+            get {
+                object obj = ResourceManager.GetObject("upload_tray", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

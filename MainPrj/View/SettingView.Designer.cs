@@ -89,6 +89,9 @@
             this.btnSearchResult = new System.Windows.Forms.Button();
             this.btnSearchResultText = new System.Windows.Forms.Button();
             this.btnSearchResultBackground = new System.Windows.Forms.Button();
+            this.btnPrinterSetting = new System.Windows.Forms.Button();
+            this.label27 = new System.Windows.Forms.Label();
+            this.tbxBrand = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.nUDMainPort)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -648,6 +651,34 @@
             this.btnSearchResultBackground.UseVisualStyleBackColor = true;
             this.btnSearchResultBackground.Click += new System.EventHandler(this.btnSearchResultBackground_Click);
             // 
+            // btnPrinterSetting
+            // 
+            this.btnPrinterSetting.Location = new System.Drawing.Point(12, 514);
+            this.btnPrinterSetting.Name = "btnPrinterSetting";
+            this.btnPrinterSetting.Size = new System.Drawing.Size(75, 23);
+            this.btnPrinterSetting.TabIndex = 2;
+            this.btnPrinterSetting.Text = "Máy in";
+            this.btnPrinterSetting.UseVisualStyleBackColor = true;
+            this.btnPrinterSetting.Click += new System.EventHandler(this.btnPrinterSetting_Click);
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Location = new System.Drawing.Point(10, 412);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(124, 13);
+            this.label27.TabIndex = 0;
+            this.label27.Text = "Thương hiệu in hóa đơn:";
+            // 
+            // tbxBrand
+            // 
+            this.tbxBrand.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.tbxBrand.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbxBrand.Location = new System.Drawing.Point(150, 409);
+            this.tbxBrand.Name = "tbxBrand";
+            this.tbxBrand.Size = new System.Drawing.Size(229, 20);
+            this.tbxBrand.TabIndex = 1;
+            // 
             // SettingView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -672,6 +703,7 @@
             this.Controls.Add(this.btnOpenFile);
             this.Controls.Add(this.label17);
             this.Controls.Add(this.label25);
+            this.Controls.Add(this.btnPrinterSetting);
             this.Controls.Add(this.btnAdvance);
             this.Controls.Add(this.label16);
             this.Controls.Add(this.nUDPhoneCutLen);
@@ -687,6 +719,8 @@
             this.Controls.Add(this.label19);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.label14);
+            this.Controls.Add(this.tbxBrand);
+            this.Controls.Add(this.label27);
             this.Controls.Add(this.tbxCallIdFormat);
             this.Controls.Add(this.label13);
             this.Controls.Add(this.tbxHistoryFilename);
@@ -774,5 +808,8 @@
         private System.Windows.Forms.Button btnSearchResult;
         private System.Windows.Forms.Button btnSearchResultText;
         private System.Windows.Forms.Button btnSearchResultBackground;
+        private System.Windows.Forms.Button btnPrinterSetting;
+        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.TextBox tbxBrand;
     }
 }

@@ -13,14 +13,26 @@ namespace MainPrj.Model
     /// Model of call data.
     /// </summary>
     [DataContract]
-    public class CallModel
+    public class CallModel : IComparable<CallModel>
     {
+        [DataMember(Name = "id", IsRequired = false)]
+        private string id;
+        [DataMember(Name = "channel", IsRequired = false)]
+        private int channel;
+        [DataMember(Name = "customer", IsRequired = false)]
+        private CustomerModel customer;
+        [DataMember(Name = "phone", IsRequired = false)]
+        private string phone;
+        [DataMember(Name = "status", IsRequired = false)]
+        private int status;
+        [DataMember(Name = "type", IsRequired = false)]
+        private CallType type;
+        [DataMember(Name = "isFinish", IsRequired = false)]
+        private bool isFinish = false;
+
         /// <summary>
         /// Id of model.
         /// </summary>
-        [DataMember(Name = "id", IsRequired = false)]
-        private string id;
-
         public string Id
         {
             get { return id; }
@@ -29,9 +41,6 @@ namespace MainPrj.Model
         /// <summary>
         /// Channel.
         /// </summary>
-        [DataMember(Name = "channel", IsRequired = false)]
-        private int channel;
-
         public int Channel
         {
             get { return channel; }
@@ -40,9 +49,6 @@ namespace MainPrj.Model
         /// <summary>
         /// Customer information.
         /// </summary>
-        [DataMember(Name = "customer", IsRequired = false)]
-        private CustomerModel customer;
-
         public CustomerModel Customer
         {
             get { return customer; }
@@ -51,9 +57,6 @@ namespace MainPrj.Model
         /// <summary>
         /// Incomming phone.
         /// </summary>
-        [DataMember(Name = "phone", IsRequired = false)]
-        private string phone;
-
         public string Phone
         {
             get { return phone; }
@@ -62,9 +65,6 @@ namespace MainPrj.Model
         /// <summary>
         /// Status of call.
         /// </summary>
-        [DataMember(Name = "status", IsRequired = false)]
-        private int status;
-
         public int Status
         {
             get { return status; }
@@ -73,9 +73,6 @@ namespace MainPrj.Model
         /// <summary>
         /// Type of call.
         /// </summary>
-        [DataMember(Name = "type", IsRequired = false)]
-        private CallType type;
-
         public CallType Type
         {
             get { return type; }
@@ -84,9 +81,6 @@ namespace MainPrj.Model
         /// <summary>
         /// Call is handled.
         /// </summary>
-        [DataMember(Name = "isFinish", IsRequired = false)]
-        private bool isFinish = false;
-
         public bool IsFinish
         {
             get { return isFinish; }
@@ -155,6 +149,22 @@ namespace MainPrj.Model
             result |= CommonProcess.NormalizationString(this.customer.Name.ToLower()).Contains(keyword.ToLower());
             result |= CommonProcess.NormalizationString(this.customer.Address.ToLower()).Contains(keyword.ToLower());
             return result;
+        }
+        /// <summary>
+        /// Compare delegate
+        /// </summary>
+        /// <param name="other">Compared object</param>
+        /// <returns>Id compare result</returns>
+        public int CompareTo(CallModel other)
+        {
+            if (other == null)
+            {
+                return 1;
+            }
+            else
+            {
+                return other.Id.CompareTo(this.Id);
+            }
         }
     }
 }

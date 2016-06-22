@@ -5,7 +5,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Printing;
 using System.Globalization;
+using System.IO;
+using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -28,6 +31,7 @@ namespace MainPrj.View
         private double totalPay = 0.0;
         double total = 0.0;
         double totalPromote = 0.0;
+        private SerialPort port = new SerialPort();
         /// <summary>
         /// Constructor.
         /// </summary>
@@ -384,9 +388,9 @@ namespace MainPrj.View
             {
                 listSelector.Add(new SelectorModel
                 {
-                    Id = item.Materials_no,
-                    Name = item.Name,
-                    Address = item.Label
+                    Id     = item.Materials_no,
+                    Name   = item.Name,
+                    Detail = item.Label
                 });
             }
             // Create SelectorView
@@ -478,9 +482,9 @@ namespace MainPrj.View
             {
                 listSelector.Add(new SelectorModel
                 {
-                    Id = item.Materials_no,
-                    Name = item.Name,
-                    Address = item.Label
+                    Id     = item.Materials_no,
+                    Name   = item.Name,
+                    Detail = item.Label
                 });
             }
             // Create SelectorView
@@ -540,10 +544,18 @@ namespace MainPrj.View
         /// <param name="e">EventArgs</param>
         private void btnCreateOrder_Click(object sender, EventArgs e)
         {
+            CreateOrder();
+        }
+        /// <summary>
+        /// Create order.
+        /// </summary>
+        /// <returns>True if create order is success, False otherwise</returns>
+        private bool CreateOrder()
+        {
             if (ValidateData())
             {
                 OrderModel model = new OrderModel();
-                model.CreatorId  = DataPure.Instance.User.User_id;
+                model.CreatorId = DataPure.Instance.User.User_id;
                 if (cbxDeliver.SelectedValue != null)
                 {
                     model.DeliverId = cbxDeliver.SelectedValue.ToString();
@@ -552,28 +564,38 @@ namespace MainPrj.View
                 {
                     model.CCSId = cbxCCS.SelectedValue.ToString();
                 }
-                model.Customer   = new CustomerModel(DataPure.Instance.CustomerInfo);
+                model.Customer = new CustomerModel(DataPure.Instance.CustomerInfo);
                 model.Products.AddRange(products);
                 foreach (ProductModel item in products)
                 {
                     model.Cylinders.Add(new CylinderModel());
                 }
                 model.Promotes.AddRange(promotes);
-                model.TotalPay     = totalPay;
-                model.TotalMoney   = total;
+                model.TotalPay = totalPay;
+                model.TotalMoney = total;
                 model.PromoteMoney = totalPromote;
-                model.Id           = System.DateTime.Now.ToString(Properties.Settings.Default.CallIdFormat);
+                model.Id = System.DateTime.Now.ToString(Properties.Settings.Default.CallIdFormat);
                 string ret = CommonProcess.CreateOrderToServer(model);
                 if (CommonProcess.HasError)
                 {
                     CommonProcess.HasError = false;
                     CommonProcess.ShowErrorMessage(Properties.Resources.CreateOrderServerError);
-                    return;
+                    return false;
+                }
+                else
+                {
+                    if (!String.IsNullOrEmpty(ret))
+                    {
+                        // Create order success
+                        CommonProcess.ShowInformMessage(Properties.Resources.CreateOrderSuccess, MessageBoxButtons.OK);
+                    }
                 }
                 model.WebId = ret;
                 DataPure.Instance.ListOrders.Add(model);
                 this.Close();
+                return true;
             }
+            return false;
         }
         /// <summary>
         /// Validate inputted data.
@@ -697,6 +719,32 @@ namespace MainPrj.View
             {
                 this.tbxPromote.Text      = string.Empty;
                 this.tbxPromote.ForeColor = Color.Black;
+            }
+        }
+        /// <summary>
+        /// Handle when click Create order and Print.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void btnCreatePrint_Click(object sender, EventArgs e)
+        {
+            if (CreateOrder())
+            {
+                // Print
+                BillPrintModel printModel = new BillPrintModel();
+                printModel.Brand = Properties.Settings.Default.BillBrand;
+                printModel.Phone = DataPure.Instance.Agent.Phone;
+                printModel.CustomerName = DataPure.Instance.CustomerInfo != null ?
+                    String.Format("{0}-{1}", DataPure.Instance.CustomerInfo.Name,
+                    DataPure.Instance.CustomerInfo.ActivePhone) : String.Empty;
+                printModel.CustomerAddress = DataPure.Instance.CustomerInfo != null ? DataPure.Instance.CustomerInfo.Address : String.Empty;
+                printModel.AgentAddress    = DataPure.Instance.Agent.Address;
+                printModel.Products.AddRange(products);
+                printModel.Promotes.AddRange(promotes);
+                printModel.TotalMoney   = this.total;
+                printModel.TotalPromote = this.totalPromote;
+                printModel.TotalPay     = this.totalPay;
+                printModel.Print();
             }
         }
     }

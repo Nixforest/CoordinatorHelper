@@ -36,6 +36,17 @@ namespace MainPrj.View
             this.btnClose = new System.Windows.Forms.Button();
             this.btnUpdateData = new System.Windows.Forms.Button();
             this.btnAddCylinder = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.lblTotalGas = new System.Windows.Forms.Label();
+            this.lblGasStove = new System.Windows.Forms.Label();
+            this.lblVan = new System.Windows.Forms.Label();
+            this.lblCylinder = new System.Windows.Forms.Label();
+            this.lblTotalPay = new System.Windows.Forms.Label();
+            this.btnExportReport = new System.Windows.Forms.Button();
             this.listViewListOrder = new MainPrj.View.EditableListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -50,16 +61,6 @@ namespace MainPrj.View
             this.columnHeader12 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader13 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader14 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.lblTotalGas = new System.Windows.Forms.Label();
-            this.lblGasStove = new System.Windows.Forms.Label();
-            this.lblVan = new System.Windows.Forms.Label();
-            this.lblCylinder = new System.Windows.Forms.Label();
-            this.lblTotalPay = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnClear
@@ -67,7 +68,7 @@ namespace MainPrj.View
             this.btnClear.Location = new System.Drawing.Point(1213, 6);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(93, 39);
-            this.btnClear.TabIndex = 9;
+            this.btnClear.TabIndex = 4;
             this.btnClear.Text = "Hủy";
             this.btnClear.UseVisualStyleBackColor = true;
             this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
@@ -78,7 +79,7 @@ namespace MainPrj.View
             this.tbxSearch.Location = new System.Drawing.Point(819, 10);
             this.tbxSearch.Name = "tbxSearch";
             this.tbxSearch.Size = new System.Drawing.Size(388, 29);
-            this.tbxSearch.TabIndex = 5;
+            this.tbxSearch.TabIndex = 3;
             this.tbxSearch.Text = "Tìm kiếm";
             this.tbxSearch.Enter += new System.EventHandler(this.tbxSearch_Enter);
             this.tbxSearch.Leave += new System.EventHandler(this.tbxSearch_Leave);
@@ -105,121 +106,27 @@ namespace MainPrj.View
             // 
             // btnUpdateData
             // 
+            this.btnUpdateData.Image = global::MainPrj.Properties.Resources.upload_tray;
             this.btnUpdateData.Location = new System.Drawing.Point(16, 6);
             this.btnUpdateData.Name = "btnUpdateData";
-            this.btnUpdateData.Size = new System.Drawing.Size(97, 39);
-            this.btnUpdateData.TabIndex = 10;
+            this.btnUpdateData.Size = new System.Drawing.Size(124, 39);
+            this.btnUpdateData.TabIndex = 0;
             this.btnUpdateData.Text = "Cập nhật";
+            this.btnUpdateData.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnUpdateData.UseVisualStyleBackColor = true;
             this.btnUpdateData.Click += new System.EventHandler(this.btnUpdateData_Click);
             // 
             // btnAddCylinder
             // 
-            this.btnAddCylinder.Location = new System.Drawing.Point(119, 6);
+            this.btnAddCylinder.Image = global::MainPrj.Properties.Resources.money_icon_gray;
+            this.btnAddCylinder.Location = new System.Drawing.Point(146, 6);
             this.btnAddCylinder.Name = "btnAddCylinder";
-            this.btnAddCylinder.Size = new System.Drawing.Size(97, 39);
-            this.btnAddCylinder.TabIndex = 10;
-            this.btnAddCylinder.Text = "Thêm vỏ";
+            this.btnAddCylinder.Size = new System.Drawing.Size(121, 39);
+            this.btnAddCylinder.TabIndex = 1;
+            this.btnAddCylinder.Text = "Thu tiền";
+            this.btnAddCylinder.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnAddCylinder.UseVisualStyleBackColor = true;
             this.btnAddCylinder.Click += new System.EventHandler(this.btnAddCylinder_Click);
-            // 
-            // listViewListOrder
-            // 
-            this.listViewListOrder.AllowColumnReorder = true;
-            this.listViewListOrder.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader2,
-            this.columnHeader3,
-            this.columnHeader4,
-            this.columnHeader5,
-            this.columnHeader6,
-            this.columnHeader7,
-            this.columnHeader9,
-            this.columnHeader10,
-            this.columnHeader11,
-            this.columnHeader12,
-            this.columnHeader13,
-            this.columnHeader14});
-            this.listViewListOrder.ColumnTypes = ((System.Collections.Generic.List<System.Type>)(resources.GetObject("listViewListOrder.ColumnTypes")));
-            this.listViewListOrder.DoubleClickActivation = true;
-            this.listViewListOrder.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.listViewListOrder.FullRowSelect = true;
-            this.listViewListOrder.GridLines = true;
-            this.listViewListOrder.HideSelection = false;
-            this.listViewListOrder.LabelEdit = true;
-            this.listViewListOrder.Location = new System.Drawing.Point(16, 51);
-            this.listViewListOrder.MultiSelect = false;
-            this.listViewListOrder.Name = "listViewListOrder";
-            this.listViewListOrder.ShowItemToolTips = true;
-            this.listViewListOrder.Size = new System.Drawing.Size(1290, 532);
-            this.listViewListOrder.TabIndex = 7;
-            this.listViewListOrder.UseCompatibleStateImageBehavior = false;
-            this.listViewListOrder.View = System.Windows.Forms.View.Details;
-            this.listViewListOrder.SubItemEndEditing += new MainPrj.View.SubItemEndEditingEventHandler(this.listViewListOrder_SubItemEndEditing);
-            // 
-            // columnHeader1
-            // 
-            this.columnHeader1.Text = "STT";
-            this.columnHeader1.Width = 25;
-            // 
-            // columnHeader2
-            // 
-            this.columnHeader2.Text = "TÊN KH";
-            this.columnHeader2.Width = 150;
-            // 
-            // columnHeader3
-            // 
-            this.columnHeader3.Text = "SỐ ĐT";
-            this.columnHeader3.Width = 90;
-            // 
-            // columnHeader4
-            // 
-            this.columnHeader4.Text = "ĐỊA CHỈ";
-            this.columnHeader4.Width = 200;
-            // 
-            // columnHeader5
-            // 
-            this.columnHeader5.Text = "X.BÁN";
-            this.columnHeader5.Width = 170;
-            // 
-            // columnHeader6
-            // 
-            this.columnHeader6.Text = "SL";
-            this.columnHeader6.Width = 40;
-            // 
-            // columnHeader7
-            // 
-            this.columnHeader7.Text = "Q.TẶNG";
-            this.columnHeader7.Width = 110;
-            // 
-            // columnHeader9
-            // 
-            this.columnHeader9.Text = "THU TIỀN";
-            this.columnHeader9.Width = 80;
-            // 
-            // columnHeader10
-            // 
-            this.columnHeader10.Text = "NVGH";
-            this.columnHeader10.Width = 130;
-            // 
-            // columnHeader11
-            // 
-            this.columnHeader11.Text = "VỎ";
-            this.columnHeader11.Width = 100;
-            // 
-            // columnHeader12
-            // 
-            this.columnHeader12.Text = "SL";
-            this.columnHeader12.Width = 40;
-            // 
-            // columnHeader13
-            // 
-            this.columnHeader13.Text = "SERI";
-            // 
-            // columnHeader14
-            // 
-            this.columnHeader14.Text = "GHI CHÚ";
-            this.columnHeader14.Width = 90;
             // 
             // label2
             // 
@@ -321,6 +228,115 @@ namespace MainPrj.View
             this.lblTotalPay.TabIndex = 11;
             this.lblTotalPay.Text = "0";
             // 
+            // btnExportReport
+            // 
+            this.btnExportReport.Image = global::MainPrj.Properties.Resources.report;
+            this.btnExportReport.Location = new System.Drawing.Point(273, 6);
+            this.btnExportReport.Name = "btnExportReport";
+            this.btnExportReport.Size = new System.Drawing.Size(166, 39);
+            this.btnExportReport.TabIndex = 2;
+            this.btnExportReport.Text = "Xuất báo cáo";
+            this.btnExportReport.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnExportReport.UseVisualStyleBackColor = true;
+            this.btnExportReport.Click += new System.EventHandler(this.btnExportReport_Click);
+            // 
+            // listViewListOrder
+            // 
+            this.listViewListOrder.AllowColumnReorder = true;
+            this.listViewListOrder.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1,
+            this.columnHeader2,
+            this.columnHeader3,
+            this.columnHeader4,
+            this.columnHeader5,
+            this.columnHeader6,
+            this.columnHeader7,
+            this.columnHeader9,
+            this.columnHeader10,
+            this.columnHeader11,
+            this.columnHeader12,
+            this.columnHeader13,
+            this.columnHeader14});
+            this.listViewListOrder.ColumnTypes = ((System.Collections.Generic.List<System.Type>)(resources.GetObject("listViewListOrder.ColumnTypes")));
+            this.listViewListOrder.DoubleClickActivation = true;
+            this.listViewListOrder.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.listViewListOrder.FullRowSelect = true;
+            this.listViewListOrder.GridLines = true;
+            this.listViewListOrder.HideSelection = false;
+            this.listViewListOrder.Location = new System.Drawing.Point(16, 51);
+            this.listViewListOrder.MultiSelect = false;
+            this.listViewListOrder.Name = "listViewListOrder";
+            this.listViewListOrder.ShowItemToolTips = true;
+            this.listViewListOrder.Size = new System.Drawing.Size(1290, 532);
+            this.listViewListOrder.TabIndex = 5;
+            this.listViewListOrder.UseCompatibleStateImageBehavior = false;
+            this.listViewListOrder.View = System.Windows.Forms.View.Details;
+            this.listViewListOrder.SubItemEndEditing += new MainPrj.View.SubItemEndEditingEventHandler(this.listViewListOrder_SubItemEndEditing);
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "STT";
+            this.columnHeader1.Width = 25;
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "TÊN KH";
+            this.columnHeader2.Width = 150;
+            // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "SỐ ĐT";
+            this.columnHeader3.Width = 90;
+            // 
+            // columnHeader4
+            // 
+            this.columnHeader4.Text = "ĐỊA CHỈ";
+            this.columnHeader4.Width = 200;
+            // 
+            // columnHeader5
+            // 
+            this.columnHeader5.Text = "X.BÁN";
+            this.columnHeader5.Width = 170;
+            // 
+            // columnHeader6
+            // 
+            this.columnHeader6.Text = "SL";
+            this.columnHeader6.Width = 40;
+            // 
+            // columnHeader7
+            // 
+            this.columnHeader7.Text = "Q.TẶNG";
+            this.columnHeader7.Width = 110;
+            // 
+            // columnHeader9
+            // 
+            this.columnHeader9.Text = "THU TIỀN";
+            this.columnHeader9.Width = 80;
+            // 
+            // columnHeader10
+            // 
+            this.columnHeader10.Text = "NVGH";
+            this.columnHeader10.Width = 130;
+            // 
+            // columnHeader11
+            // 
+            this.columnHeader11.Text = "VỎ";
+            this.columnHeader11.Width = 100;
+            // 
+            // columnHeader12
+            // 
+            this.columnHeader12.Text = "SL";
+            this.columnHeader12.Width = 40;
+            // 
+            // columnHeader13
+            // 
+            this.columnHeader13.Text = "SERI";
+            // 
+            // columnHeader14
+            // 
+            this.columnHeader14.Text = "GHI CHÚ";
+            this.columnHeader14.Width = 90;
+            // 
             // ListOrderView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
@@ -336,6 +352,7 @@ namespace MainPrj.View
             this.Controls.Add(this.lblGasStove);
             this.Controls.Add(this.lblTotalGas);
             this.Controls.Add(this.label2);
+            this.Controls.Add(this.btnExportReport);
             this.Controls.Add(this.btnAddCylinder);
             this.Controls.Add(this.btnUpdateData);
             this.Controls.Add(this.btnClear);
@@ -388,5 +405,6 @@ namespace MainPrj.View
         private System.Windows.Forms.Label lblVan;
         private System.Windows.Forms.Label lblCylinder;
         private System.Windows.Forms.Label lblTotalPay;
+        private System.Windows.Forms.Button btnExportReport;
     }
 }

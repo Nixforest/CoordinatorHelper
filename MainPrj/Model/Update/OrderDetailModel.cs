@@ -20,7 +20,7 @@ namespace MainPrj.Model.Update
         [DataMember(Name = "materials_type_id", IsRequired = false)]
         protected string materials_type_id;
         [DataMember(Name = "qty", IsRequired = false)]
-        protected string qty;
+        protected int qty;
         [DataMember(Name = "price", IsRequired = false)]
         protected string price;
         [DataMember(Name = "amount", IsRequired = false)]
@@ -58,7 +58,7 @@ namespace MainPrj.Model.Update
         /// <summary>
         /// Quantity.
         /// </summary>
-        public string Quantity
+        public int Quantity
         {
             get { return qty; }
             set { qty = value; }
@@ -103,6 +103,52 @@ namespace MainPrj.Model.Update
                 CommonProcess.ShowErrorMessage(Properties.Resources.ErrorCause + ex.Message);
             }
             return retVal;
+        }
+        public bool IsGas()
+        {
+            if (materials_type_id.Equals("4")
+                || materials_type_id.Equals("11")
+                || materials_type_id.Equals("19")
+                || materials_type_id.Equals("7"))
+            {
+                return true;
+            }
+            return false;
+        }
+        public bool IsGasStove()
+        {
+            if (materials_type_id.Equals("5"))
+            {
+                return true;
+            }
+            return false;
+        }
+        public bool IsVan()
+        {
+            if (materials_type_id.Equals("3"))
+            {
+                return true;
+            }
+            return false;
+        }
+        public bool IsPromote()
+        {
+            if (materials_type_id.Equals("6"))
+            {
+                return true;
+            }
+            return false;
+        }
+        public bool IsCylinder()
+        {
+            if (materials_type_id.Equals("1")
+                || materials_type_id.Equals("12")
+                || materials_type_id.Equals("10")
+                || materials_type_id.Equals("14"))
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

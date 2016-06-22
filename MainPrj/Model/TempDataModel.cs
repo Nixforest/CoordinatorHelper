@@ -16,6 +16,10 @@ namespace MainPrj.Model
         protected string agent_id;
         [DataMember(Name = "agent_name", IsRequired = false)]
         protected string agent_name;
+        [DataMember(Name = "agent_phone", IsRequired = false)]
+        protected string agent_phone;
+        [DataMember(Name = "agent_address", IsRequired = false)]
+        protected string agent_address;
         [DataMember(Name = "employee_maintain", IsRequired = false)]
         protected SelectorModel[] employee_maintain;
         [DataMember(Name = "monitor_market_development", IsRequired = false)]
@@ -28,6 +32,22 @@ namespace MainPrj.Model
         protected SelectorModel[] agent_list;
         [DataMember(Name = "material_vo", IsRequired = false)]
         protected List<MaterialModel> material_vo;
+        /// <summary>
+        /// Agent address.
+        /// </summary>
+        public string Agent_address
+        {
+            get { return agent_address; }
+            set { agent_address = value; }
+        }
+        /// <summary>
+        /// Agent's phone.
+        /// </summary>
+        public string Agent_phone
+        {
+            get { return agent_phone; }
+            set { agent_phone = value; }
+        }
         /// <summary>
         /// Gas cylinder.
         /// </summary>

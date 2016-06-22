@@ -63,6 +63,7 @@
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.btnCreatePrint = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -383,6 +384,16 @@
             this.textBox1.TabStop = false;
             this.textBox1.Text = "Khách hàng:\r\nĐịa chỉ:";
             // 
+            // btnCreatePrint
+            // 
+            this.btnCreatePrint.Location = new System.Drawing.Point(589, 662);
+            this.btnCreatePrint.Name = "btnCreatePrint";
+            this.btnCreatePrint.Size = new System.Drawing.Size(156, 46);
+            this.btnCreatePrint.TabIndex = 6;
+            this.btnCreatePrint.Text = "Tạo và in phiếu";
+            this.btnCreatePrint.UseVisualStyleBackColor = true;
+            this.btnCreatePrint.Click += new System.EventHandler(this.btnCreatePrint_Click);
+            // 
             // OrderView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
@@ -395,6 +406,7 @@
             this.Controls.Add(this.cbxCCS);
             this.Controls.Add(this.cbxDeliver);
             this.Controls.Add(this.btnCancel);
+            this.Controls.Add(this.btnCreatePrint);
             this.Controls.Add(this.btnCreateOrder);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.tbxPromote);
@@ -465,5 +477,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button btnCreatePrint;
     }
 }

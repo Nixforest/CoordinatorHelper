@@ -259,9 +259,9 @@ namespace MainPrj.View
                 {
                     listSelector.Add(new SelectorModel
                     {
-                        Id = customer.Id,
-                        Name = customer.Name,
-                        Address = customer.Address
+                        Id     = customer.Id,
+                        Name   = customer.Name,
+                        Detail = customer.Address
                     });
                 }
                 SelectorView selectorView = new SelectorView();

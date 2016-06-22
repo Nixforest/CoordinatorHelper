@@ -1,6 +1,10 @@
-﻿using System;
+﻿using MainPrj.Util;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
 using System.Text;
 
 namespace MainPrj.Model
@@ -8,14 +12,22 @@ namespace MainPrj.Model
     /// <summary>
     /// Product model.
     /// </summary>
+    [DataContract]
     public class ProductModel
     {
+        [DataMember(Name = "id", IsRequired = false)]
         private string id;
+        [DataMember(Name = "name", IsRequired = false)]
         private string name;
+        [DataMember(Name = "quantity", IsRequired = false)]
         private int quantity;
+        [DataMember(Name = "price", IsRequired = false)]
         private double price;
+        [DataMember(Name = "money", IsRequired = false)]
         private double money;
+        [DataMember(Name = "materials_no", IsRequired = false)]
         private string materials_no;
+        [DataMember(Name = "typeId", IsRequired = false)]
         private string typeId;
         /// <summary>
         /// Constructor.
@@ -97,6 +109,29 @@ namespace MainPrj.Model
                 return true;
             }
             return false;
+        }
+        /// <summary>
+        /// Convert to string.
+        /// </summary>
+        /// <returns>String object</returns>
+        public override string ToString()
+        {
+            string retVal = string.Empty;
+            MemoryStream ms = new MemoryStream();
+            DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(ProductModel));
+            try
+            {
+                js.WriteObject(ms, this);
+                ms.Position = 0;
+                var sr      = new StreamReader(ms);
+                retVal      = sr.ReadToEnd();
+                sr.Close();
+            }
+            catch (Exception ex)
+            {
+                CommonProcess.ShowErrorMessage(Properties.Resources.ErrorCause + ex.Message);
+            }
+            return retVal;
         }
     }
 }

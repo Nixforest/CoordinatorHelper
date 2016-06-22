@@ -301,14 +301,22 @@ namespace MainPrj.Util
                         {
                             DataPure.Instance.TempData = baseResp.Record;
                             DataPure.Instance.TempData.Sort();
+
+                            DataPure.Instance.Agent = new AgentModel(DataPure.Instance.TempData.Agent_id,
+                                DataPure.Instance.TempData.Agent_name, string.Empty,
+                                DataPure.Instance.TempData.Agent_phone,
+                                DataPure.Instance.TempData.Agent_address);
                         }
                     }
                 }
             }
         }
+        /// <summary>
+        /// Request agent information from server.
+        /// </summary>
+        /// <param name="agentId">Agent Id</param>
         public static void RequestAgentInformation(string agentId)
         {
-            // Declare result variable
             using (WebClient client = new WebClient())
             {
                 string respStr = String.Empty;
@@ -356,6 +364,8 @@ namespace MainPrj.Util
                             && (baseResp.Record != null))
                         {
                             DataPure.Instance.TempData.Employee_maintain = baseResp.Record.Employee_maintain;
+                            DataPure.Instance.TempData.Agent_phone       = baseResp.Record.Agent_phone;
+                            DataPure.Instance.TempData.Agent_address     = baseResp.Record.Agent_address;
                         }
                     }
                 }
@@ -535,6 +545,11 @@ namespace MainPrj.Util
             }
             return retVal;
         }
+        /// <summary>
+        /// Get role string.
+        /// </summary>
+        /// <param name="type">Role type</param>
+        /// <returns>Role string</returns>
         public static string GetRoleString(RoleType type)
         {
             string retVal = string.Empty;
@@ -683,7 +698,7 @@ namespace MainPrj.Util
         /// Handle write file.
         /// </summary>
         /// <param name="listData">List of data</param>
-        public static void WriteHistory(List<CallModel> listData)
+        public static bool WriteHistory(List<CallModel> listData)
         {
             if ((listData != null) && (listData.Count > 0))
             {
@@ -693,7 +708,7 @@ namespace MainPrj.Util
 
                 try
                 {
-                    using (StreamWriter sw = new StreamWriter(File.Open(filepath, System.IO.FileMode.Append)))
+                    using (StreamWriter sw = new StreamWriter(File.Open(filepath, System.IO.FileMode.Create)))
                     {
                         // Write file
                         foreach (CallModel item in listData)
@@ -706,10 +721,216 @@ namespace MainPrj.Util
                 catch (Exception ex)
                 {
                     ShowErrorMessage(Properties.Resources.ErrorCause + ex.Message);
+                    return false;
                 }
+            }
+            return true;
+        }
+        /// <summary>
+        /// Read history.
+        /// </summary>
+        public static void ReadHistory()
+        {
+            string date = System.DateTime.Now.ToString(Properties.Settings.Default.CallIdFormat).Substring(0, 8);
 
+            string filepath = String.Format("{0}\\{1}_{2}", Properties.Settings.Default.HistoryFilePath,
+                date, Properties.Settings.Default.HistoryFileName);
+            try
+            {
+                DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(CallModel));
+                string line = string.Empty;
+                byte[] encodingBytes = null;
+                using (StreamReader sr = new StreamReader(File.Open(filepath, System.IO.FileMode.OpenOrCreate)))
+                {
+                    while (true)
+                    {
+                        line = sr.ReadLine();
+                        if (!String.IsNullOrEmpty(line))
+                        {
+                            try
+                            {
+                                // Encoding response data
+                                encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(line);
+                            }
+                            catch (System.Text.EncoderFallbackException)
+                            {
+                                ShowErrorMessage(Properties.Resources.EncodingError);
+                                HasError = true;
+                            }
+                            if (encodingBytes != null)
+                            {
+                                MemoryStream msU = new MemoryStream(encodingBytes);
+                                CallModel model = (CallModel)js.ReadObject(msU);
+                                if (model != null)
+                                {
+                                    DataPure.Instance.ListCalls.Add(model);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+            catch (DirectoryNotFoundException)
+            {
+                HasError = false;
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage(Properties.Resources.ErrorCause + ex.Message);
+                HasError = true;
             }
         }
+        public static List<CallModel> ReadHistoryByDate(DateTime dateValue)
+        {
+            List<CallModel> result = new List<CallModel>();
+            string date = dateValue.ToString(Properties.Settings.Default.CallIdFormat).Substring(0, 8);
+
+            string filepath = String.Format("{0}\\{1}_{2}", Properties.Settings.Default.HistoryFilePath,
+                date, Properties.Settings.Default.HistoryFileName);
+            try
+            {
+                DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(CallModel));
+                string line = string.Empty;
+                byte[] encodingBytes = null;
+                using (StreamReader sr = new StreamReader(File.Open(filepath, System.IO.FileMode.OpenOrCreate)))
+                {
+                    while (true)
+                    {
+                        line = sr.ReadLine();
+                        if (!String.IsNullOrEmpty(line))
+                        {
+                            try
+                            {
+                                // Encoding response data
+                                encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(line);
+                            }
+                            catch (System.Text.EncoderFallbackException)
+                            {
+                                ShowErrorMessage(Properties.Resources.EncodingError);
+                                HasError = true;
+                            }
+                            if (encodingBytes != null)
+                            {
+                                MemoryStream msU = new MemoryStream(encodingBytes);
+                                CallModel model = (CallModel)js.ReadObject(msU);
+                                if (model != null)
+                                {
+                                    result.Add(model);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+            catch (DirectoryNotFoundException)
+            {
+                HasError = false;
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage(Properties.Resources.ErrorCause + ex.Message);
+                HasError = true;
+            }
+            return result;
+        }
+        /// <summary>
+        /// Write list orders fle.
+        /// </summary>
+        public static bool WriteListOrders()
+        {
+            if (DataPure.Instance.ListOrders.Count > 0)
+            {
+                string date = DataPure.Instance.ListOrders[0].Id.Substring(0, 8);
+
+                string filepath = String.Format("{0}\\{1}_{2}", Properties.Settings.Default.OrdersFilePath,
+                    date, Properties.Settings.Default.OrdersFileName);
+                try
+                {
+                    using (StreamWriter sw = new StreamWriter(File.Open(filepath, System.IO.FileMode.Create)))
+                    {
+                        // Write file
+                        foreach (OrderModel item in DataPure.Instance.ListOrders)
+                        {
+                            sw.WriteLine(item.ToString());
+                        }
+                        sw.Close();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ShowErrorMessage(Properties.Resources.ErrorCause + ex.Message);
+                    return false;
+                }
+            }
+            return true;
+        }
+        /// <summary>
+        /// Read data list orders
+        /// </summary>
+        public static void ReadListOrders()
+        {
+            string date = System.DateTime.Now.ToString(Properties.Settings.Default.CallIdFormat).Substring(0, 8);
+
+            string filepath = String.Format("{0}\\{1}_{2}", Properties.Settings.Default.OrdersFilePath,
+                date, Properties.Settings.Default.OrdersFileName);
+            try
+            {
+                DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(OrderModel));
+                string line = string.Empty;
+                byte[] encodingBytes = null;
+                using (StreamReader sr = new StreamReader(File.Open(filepath, System.IO.FileMode.OpenOrCreate)))
+                {
+                    while (true)
+                    {
+                        line = sr.ReadLine();
+                        if (!String.IsNullOrEmpty(line))
+                        {
+                            try
+                            {
+                                // Encoding response data
+                                encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(line);
+                            }
+                            catch (System.Text.EncoderFallbackException)
+                            {
+                                ShowErrorMessage(Properties.Resources.EncodingError);
+                                HasError = true;
+                            }
+                            if (encodingBytes != null)
+                            {
+                                MemoryStream msU = new MemoryStream(encodingBytes);
+                                OrderModel model = (OrderModel)js.ReadObject(msU);
+                                if (model != null)
+                                {
+                                    DataPure.Instance.ListOrders.Add(model);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+            catch (DirectoryNotFoundException)
+            {
+                HasError = false;
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage(Properties.Resources.ErrorCause + ex.Message);
+                HasError = true;
+            }
+        }
+        //public static void 
         /// <summary>
         /// Set data to channel tab.
         /// </summary>
@@ -772,7 +993,7 @@ namespace MainPrj.Util
             return result;
         }
         /// <summary>
-        /// Update customer phone
+        /// Update customer phone.
         /// </summary>
         /// <param name="customerId">Customer Id</param>
         /// <param name="phone">Phone to update</param>
@@ -824,12 +1045,12 @@ namespace MainPrj.Util
                         {
                             OrderDetailModel orderDetail = new OrderDetailModel();
                             // Create data
-                            orderDetail.Materials_id = product.Id;
+                            orderDetail.Materials_id      = product.Id;
                             orderDetail.Materials_type_id = product.TypeId;
-                            orderDetail.Quantity = product.Quantity.ToString();
-                            orderDetail.Price = product.Price.ToString();
-                            orderDetail.TotalPay = (product.Price * product.Quantity).ToString();
-                            orderDetail.Seri = string.Empty;
+                            orderDetail.Quantity          = product.Quantity;
+                            orderDetail.Price             = product.Price.ToString();
+                            orderDetail.TotalPay          = (product.Price * product.Quantity).ToString();
+                            orderDetail.Seri              = string.Empty;
 
                             // Add to list order detail
                             updateModel.Order_detail.Add(orderDetail);
@@ -838,12 +1059,12 @@ namespace MainPrj.Util
                         {
                             OrderDetailModel orderDetail = new OrderDetailModel();
                             // Create data
-                            orderDetail.Materials_id = promote.Id;
+                            orderDetail.Materials_id      = promote.Id;
                             orderDetail.Materials_type_id = promote.TypeId;
-                            orderDetail.Quantity = promote.Quantity.ToString();
-                            orderDetail.Price = String.Empty;
-                            orderDetail.TotalPay = String.Empty;
-                            orderDetail.Seri = string.Empty;
+                            orderDetail.Quantity          = promote.Quantity;
+                            orderDetail.Price             = String.Empty;
+                            orderDetail.TotalPay          = String.Empty;
+                            orderDetail.Seri              = string.Empty;
 
                             // Add to list order detail
                             updateModel.Order_detail.Add(orderDetail);
@@ -852,12 +1073,12 @@ namespace MainPrj.Util
                         {
                             OrderDetailModel orderDetail = new OrderDetailModel();
                             // Create data
-                            orderDetail.Materials_id = cylinder.Id;
+                            orderDetail.Materials_id      = cylinder.Id;
                             orderDetail.Materials_type_id = cylinder.TypeId;
-                            orderDetail.Quantity = cylinder.Quantity.ToString();
-                            orderDetail.Price = String.Empty;
-                            orderDetail.TotalPay = String.Empty;
-                            orderDetail.Seri = cylinder.Serial;
+                            orderDetail.Quantity          = cylinder.Quantity;
+                            orderDetail.Price             = String.Empty;
+                            orderDetail.TotalPay          = String.Empty;
+                            orderDetail.Seri              = cylinder.Serial;
 
                             // Add to list order detail
                             updateModel.Order_detail.Add(orderDetail);
@@ -883,7 +1104,7 @@ namespace MainPrj.Util
                 }
                 if (!String.IsNullOrEmpty(respStr))
                 {
-                    DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(CreateOrderResponseModel));
+                    DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(OrderResponseModel));
                     byte[] encodingBytes = null;
                     try
                     {
@@ -898,7 +1119,7 @@ namespace MainPrj.Util
                     if (encodingBytes != null)
                     {
                         MemoryStream msU = new MemoryStream(encodingBytes);
-                        CreateOrderResponseModel baseResp = (CreateOrderResponseModel)js.ReadObject(msU);
+                        OrderResponseModel baseResp = (OrderResponseModel)js.ReadObject(msU);
                         if ((baseResp != null)
                             && (baseResp.Id != null))
                         {
@@ -942,7 +1163,7 @@ namespace MainPrj.Util
                             // Create data
                             orderDetail.Materials_id      = product.Id;
                             orderDetail.Materials_type_id = product.TypeId;
-                            orderDetail.Quantity          = product.Quantity.ToString();
+                            orderDetail.Quantity          = product.Quantity;
                             orderDetail.Price             = product.Price.ToString();
                             orderDetail.TotalPay          = (product.Price * product.Quantity).ToString();
                             orderDetail.Seri              = string.Empty;
@@ -956,7 +1177,7 @@ namespace MainPrj.Util
                             // Create data
                             orderDetail.Materials_id      = promote.Id;
                             orderDetail.Materials_type_id = promote.TypeId;
-                            orderDetail.Quantity          = promote.Quantity.ToString();
+                            orderDetail.Quantity          = promote.Quantity;
                             orderDetail.Price             = String.Empty;
                             orderDetail.TotalPay          = String.Empty;
                             orderDetail.Seri              = string.Empty;
@@ -970,7 +1191,7 @@ namespace MainPrj.Util
                             // Create data
                             orderDetail.Materials_id      = cylinder.Id;
                             orderDetail.Materials_type_id = cylinder.TypeId;
-                            orderDetail.Quantity          = cylinder.Quantity.ToString();
+                            orderDetail.Quantity          = cylinder.Quantity;
                             orderDetail.Price             = String.Empty;
                             orderDetail.TotalPay          = String.Empty;
                             orderDetail.Seri              = cylinder.Serial;
@@ -999,7 +1220,7 @@ namespace MainPrj.Util
                 }
                 if (!String.IsNullOrEmpty(respStr))
                 {
-                    DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(CreateOrderResponseModel));
+                    DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(OrderResponseModel));
                     byte[] encodingBytes = null;
                     try
                     {
@@ -1014,7 +1235,7 @@ namespace MainPrj.Util
                     if (encodingBytes != null)
                     {
                         MemoryStream msU = new MemoryStream(encodingBytes);
-                        CreateOrderResponseModel baseResp = (CreateOrderResponseModel)js.ReadObject(msU);
+                        OrderResponseModel baseResp = (OrderResponseModel)js.ReadObject(msU);
                         if ((baseResp != null)
                             && (baseResp.Id != null))
                         {
