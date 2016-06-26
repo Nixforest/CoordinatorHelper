@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MainPrj.Model.Address;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -32,6 +33,27 @@ namespace MainPrj.Model
         protected SelectorModel[] agent_list;
         [DataMember(Name = "material_vo", IsRequired = false)]
         protected List<MaterialModel> material_vo;
+        [DataMember(Name = "list_province", IsRequired = false)]
+        protected List<CityModel> list_province;
+        [DataMember(Name = "list_street", IsRequired = false)]
+        protected List<StreetModel> list_street;
+        /// <summary>
+        /// List of streets.
+        /// </summary>
+        public List<StreetModel> List_street
+        {
+            get { return list_street; }
+            set { list_street = value; }
+        }
+
+        /// <summary>
+        /// List of cities.
+        /// </summary>
+        public List<CityModel> List_province
+        {
+            get { return list_province; }
+            set { list_province = value; }
+        }
         /// <summary>
         /// Agent address.
         /// </summary>

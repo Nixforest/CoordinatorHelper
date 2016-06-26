@@ -5,7 +5,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Windows.Forms;
 
@@ -34,40 +36,95 @@ namespace MainPrj.View
         /// <param name="e">EventArgs</param>
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            UserLoginResponseModel userResp = CommonProcess.RequestLogin(
+            CommonProcess.RequestLogin(
                 tbxUsername.Text.Trim(),
-                tbxPassword.Text.Trim());
-            if (userResp.Status.Equals("1"))
+                tbxPassword.Text.Trim(), loginProgressChanged, loginCompleted);
+        }
+        /// <summary>
+        /// Handle when login request is completed.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">UploadValuesCompletedEventArgs</param>
+        private void loginCompleted(object sender, System.Net.UploadValuesCompletedEventArgs e)
+        {
+            toolStripStatusLabel.Text = Properties.Resources.LoginSuccess;
+            toolStripProgressBar.Value = 0;
+            byte[] response = e.Result;
+            string respStr = String.Empty;
+            respStr = System.Text.Encoding.UTF8.GetString(response);
+            if (!String.IsNullOrEmpty(respStr))
             {
-                // Login success
-                if (!String.IsNullOrEmpty(userResp.Token))
+                DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(UserLoginResponseModel));
+                byte[] encodingBytes = null;
+                try
                 {
-                    // Save token
-                    Properties.Settings.Default.UserToken = userResp.Token;
-                    Properties.Settings.Default.Save();
+                    // Encoding response data
+                    encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);
                 }
-                if (userResp.Record != null)
-	            {
-                    user = userResp.Record;
-                }
-                if (userResp.User_id != null)
+                catch (System.Text.EncoderFallbackException)
                 {
-                    user.User_id = userResp.User_id;
+                    CommonProcess.ShowErrorMessage(Properties.Resources.EncodingError);
                 }
-                if (CommonProcess.IsValidNumber(userResp.Role_id))
+                if (encodingBytes != null)
                 {
-                    user.Role = (RoleType)int.Parse(userResp.Role_id);
+                    MemoryStream msU = new MemoryStream(encodingBytes);
+                    UserLoginResponseModel baseResp = (UserLoginResponseModel)js.ReadObject(msU);
+                    if (baseResp != null)
+                    {
+                        if (!String.IsNullOrEmpty(baseResp.Token))
+                        {
+                            Properties.Settings.Default.UserToken = baseResp.Token;
+                            Properties.Settings.Default.Save();
+                        }
+                        UserLoginResponseModel userResp = baseResp;
+                        if (userResp.Status.Equals("1"))
+                        {
+                            // Login success
+                            if (!String.IsNullOrEmpty(userResp.Token))
+                            {
+                                // Save token
+                                Properties.Settings.Default.UserToken = userResp.Token;
+                                Properties.Settings.Default.Save();
+                            }
+                            if (userResp.Record != null)
+                            {
+                                user = userResp.Record;
+                            }
+                            if (userResp.User_id != null)
+                            {
+                                user.User_id = userResp.User_id;
+                            }
+                            if (CommonProcess.IsValidNumber(userResp.Role_id))
+                            {
+                                user.Role = (RoleType)int.Parse(userResp.Role_id);
+                            }
+                            if (!String.IsNullOrEmpty(userResp.Role_name))
+                            {
+                                user.RoleStr = userResp.Role_name;
+                            }
+                            this.Close();
+                        }
+                        else
+                        {
+                            CommonProcess.ShowErrorMessage(userResp.Message);
+                        }
+                    }
                 }
-                if (!String.IsNullOrEmpty(userResp.Role_name))
-                {
-                    user.RoleStr = userResp.Role_name;
-                }
-                this.Close();
             }
-            else
+        }
+        /// <summary>
+        /// Handle when login request is processing.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">UploadProgressChangedEventArgs</param>
+        private void loginProgressChanged(object sender, System.Net.UploadProgressChangedEventArgs e)
+        {
+            if ((e.ProgressPercentage <= 50)
+                && (e.ProgressPercentage >= 0))
             {
-                CommonProcess.ShowErrorMessage(userResp.Message);
+                toolStripProgressBar.Value = e.ProgressPercentage * 2;
             }
+            toolStripStatusLabel.Text = Properties.Resources.RequestingLogin;
         }
         /// <summary>
         /// Handle click Show password.

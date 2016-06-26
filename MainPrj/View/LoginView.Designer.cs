@@ -37,7 +37,11 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.chbShowPass = new System.Windows.Forms.CheckBox();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
+            this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -125,6 +129,27 @@
             this.chbShowPass.UseVisualStyleBackColor = true;
             this.chbShowPass.CheckedChanged += new System.EventHandler(this.chbShowPass_CheckedChanged);
             // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripProgressBar,
+            this.toolStripStatusLabel});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 238);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(525, 22);
+            this.statusStrip1.TabIndex = 6;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripProgressBar
+            // 
+            this.toolStripProgressBar.Name = "toolStripProgressBar";
+            this.toolStripProgressBar.Size = new System.Drawing.Size(100, 16);
+            // 
+            // toolStripStatusLabel
+            // 
+            this.toolStripStatusLabel.Name = "toolStripStatusLabel";
+            this.toolStripStatusLabel.Size = new System.Drawing.Size(0, 17);
+            // 
             // LoginView
             // 
             this.AcceptButton = this.btnLogin;
@@ -132,7 +157,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(525, 238);
+            this.ClientSize = new System.Drawing.Size(525, 260);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.chbShowPass);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.btnCancel);
@@ -151,6 +177,8 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Đăng nhập";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -166,5 +194,8 @@
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.CheckBox chbShowPass;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel;
     }
 }

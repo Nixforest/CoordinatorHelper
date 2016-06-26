@@ -104,7 +104,26 @@ namespace MainPrj.Model
         /// <returns>TRUE if material no is contain "GAS"</returns>
         public bool IsGas()
         {
-            if (this.materials_no.Contains("GAS"))
+            if (TypeId.Equals("4")
+                || TypeId.Equals("11")
+                || TypeId.Equals("19")
+                || TypeId.Equals("7"))
+            {
+                return true;
+            }
+            return false;
+        }
+        public bool IsGasStove()
+        {
+            if (TypeId.Equals("5"))
+            {
+                return true;
+            }
+            return false;
+        }
+        public bool IsVan()
+        {
+            if (TypeId.Equals("3"))
             {
                 return true;
             }

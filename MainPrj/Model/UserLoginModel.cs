@@ -14,23 +14,23 @@ namespace MainPrj.Model
     {
         [DataMember(Name = "first_name", IsRequired = false)]
         protected string first_name;
+        [DataMember(Name = "email", IsRequired = false)]
+        protected string email;
+        protected RoleType role;
+        private string roleStr;
+        private string user_id;
 
         public string First_name
         {
             get { return first_name; }
             set { first_name = value; }
         }
-        [DataMember(Name = "email", IsRequired = false)]
-        protected string email;
 
         public string Email
         {
             get { return email; }
             set { email = value; }
         }
-        protected RoleType role;
-        private string roleStr;
-        private string user_id;
 
         public string User_id
         {

@@ -68,6 +68,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\Address\StreetModel.cs" />
+    <Compile Include="Model\Address\CityModel.cs" />
+    <Compile Include="Model\Address\DistrictModel.cs" />
+    <Compile Include="Model\Address\WardModel.cs" />
     <Compile Include="Model\AgentModel.cs" />
     <Compile Include="Model\BaseModel.cs" />
     <Compile Include="Model\BillPrintModel.cs" />
@@ -358,6 +362,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\report.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\new.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\about.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\help.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\config.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\download-icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

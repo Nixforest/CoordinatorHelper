@@ -43,6 +43,8 @@
             this.toolStripMenuItemLogout = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemConfig = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemSetting = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuItemUpdateData = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemGuideline = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -75,11 +77,12 @@
             this.pbxAvatar = new System.Windows.Forms.PictureBox();
             this.btnOrderList = new System.Windows.Forms.Button();
             this.btnHistory = new System.Windows.Forms.Button();
-            this.btnTransferToSale = new System.Windows.Forms.Button();
+            this.btnCreateCustomer = new System.Windows.Forms.Button();
             this.btnUpdateCustomer = new System.Windows.Forms.Button();
             this.btnSaveData = new System.Windows.Forms.Button();
             this.btnCreateOrder = new System.Windows.Forms.Button();
             this.lblAgent = new System.Windows.Forms.Label();
+            this.toolStripProgressBarReqServer = new System.Windows.Forms.ToolStripProgressBar();
             this.mainMenuStrip.SuspendLayout();
             this.mainTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -135,17 +138,33 @@
             // toolStripMenuItemConfig
             // 
             this.toolStripMenuItemConfig.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItemSetting});
+            this.toolStripMenuItemSetting,
+            this.toolStripSeparator2,
+            this.toolStripMenuItemUpdateData});
             this.toolStripMenuItemConfig.Name = "toolStripMenuItemConfig";
-            this.toolStripMenuItemConfig.Size = new System.Drawing.Size(56, 20);
-            this.toolStripMenuItemConfig.Text = "Cài đặt";
+            this.toolStripMenuItemConfig.Size = new System.Drawing.Size(72, 20);
+            this.toolStripMenuItemConfig.Text = "Tùy chỉnh";
             // 
             // toolStripMenuItemSetting
             // 
+            this.toolStripMenuItemSetting.Image = global::MainPrj.Properties.Resources.config;
             this.toolStripMenuItemSetting.Name = "toolStripMenuItemSetting";
-            this.toolStripMenuItemSetting.Size = new System.Drawing.Size(148, 22);
+            this.toolStripMenuItemSetting.Size = new System.Drawing.Size(161, 22);
             this.toolStripMenuItemSetting.Text = "Cài đặt chung";
             this.toolStripMenuItemSetting.Click += new System.EventHandler(this.toolStripMenuItemSetting_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(158, 6);
+            // 
+            // toolStripMenuItemUpdateData
+            // 
+            this.toolStripMenuItemUpdateData.Image = global::MainPrj.Properties.Resources.download_icon;
+            this.toolStripMenuItemUpdateData.Name = "toolStripMenuItemUpdateData";
+            this.toolStripMenuItemUpdateData.Size = new System.Drawing.Size(161, 22);
+            this.toolStripMenuItemUpdateData.Text = "Cập nhật dữ liệu";
+            this.toolStripMenuItemUpdateData.Click += new System.EventHandler(this.toolStripMenuItemUpdateData_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -159,9 +178,11 @@
             // 
             // toolStripMenuItemGuideline
             // 
+            this.toolStripMenuItemGuideline.Image = global::MainPrj.Properties.Resources.help;
             this.toolStripMenuItemGuideline.Name = "toolStripMenuItemGuideline";
             this.toolStripMenuItemGuideline.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItemGuideline.Text = "Hướng dẫn sử dụng";
+            this.toolStripMenuItemGuideline.Click += new System.EventHandler(this.toolStripMenuItemGuideline_Click);
             // 
             // toolStripSeparator1
             // 
@@ -170,6 +191,7 @@
             // 
             // toolStripMenuItemSupport
             // 
+            this.toolStripMenuItemSupport.Image = global::MainPrj.Properties.Resources.about;
             this.toolStripMenuItemSupport.Name = "toolStripMenuItemSupport";
             this.toolStripMenuItemSupport.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItemSupport.Text = "Hỗ trợ";
@@ -217,6 +239,7 @@
             // 
             // channelControlLine1
             // 
+            customerModel1.ActivePhone = "";
             customerModel1.Address = "";
             customerModel1.AgencyName = "";
             customerModel1.AgencyNearest = "";
@@ -250,6 +273,7 @@
             // 
             // channelControlLine2
             // 
+            customerModel2.ActivePhone = "";
             customerModel2.Address = "";
             customerModel2.AgencyName = "";
             customerModel2.AgencyNearest = "";
@@ -282,6 +306,7 @@
             // 
             // channelControlLine3
             // 
+            customerModel3.ActivePhone = "";
             customerModel3.Address = "";
             customerModel3.AgencyName = "";
             customerModel3.AgencyNearest = "";
@@ -314,6 +339,7 @@
             // 
             // channelControlLine4
             // 
+            customerModel4.ActivePhone = "";
             customerModel4.Address = "";
             customerModel4.AgencyName = "";
             customerModel4.AgencyNearest = "";
@@ -346,6 +372,7 @@
             // 
             // channelControlLine5
             // 
+            customerModel5.ActivePhone = "";
             customerModel5.Address = "";
             customerModel5.AgencyName = "";
             customerModel5.AgencyNearest = "";
@@ -378,6 +405,7 @@
             // 
             // channelControlLine6
             // 
+            customerModel6.ActivePhone = "";
             customerModel6.Address = "";
             customerModel6.AgencyName = "";
             customerModel6.AgencyNearest = "";
@@ -410,6 +438,7 @@
             // 
             // channelControlLine7
             // 
+            customerModel7.ActivePhone = "";
             customerModel7.Address = "";
             customerModel7.AgencyName = "";
             customerModel7.AgencyNearest = "";
@@ -442,6 +471,7 @@
             // 
             // channelControlLine8
             // 
+            customerModel8.ActivePhone = "";
             customerModel8.Address = "";
             customerModel8.AgencyName = "";
             customerModel8.AgencyNearest = "";
@@ -487,6 +517,7 @@
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripProgressBarReqServer,
             this.toolStripStatusLabel});
             this.statusStrip1.Location = new System.Drawing.Point(0, 851);
             this.statusStrip1.Name = "statusStrip1";
@@ -568,18 +599,18 @@
             this.btnHistory.UseVisualStyleBackColor = true;
             this.btnHistory.Click += new System.EventHandler(this.btnHistory_Click);
             // 
-            // btnTransferToSale
+            // btnCreateCustomer
             // 
-            this.btnTransferToSale.Enabled = false;
-            this.btnTransferToSale.Image = global::MainPrj.Properties.Resources.transfer;
-            this.btnTransferToSale.Location = new System.Drawing.Point(10, 618);
-            this.btnTransferToSale.Name = "btnTransferToSale";
-            this.btnTransferToSale.Size = new System.Drawing.Size(180, 64);
-            this.btnTransferToSale.TabIndex = 5;
-            this.btnTransferToSale.Text = "Chuyển cho Sale (F4)";
-            this.btnTransferToSale.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnTransferToSale.UseVisualStyleBackColor = true;
-            this.btnTransferToSale.Click += new System.EventHandler(this.btnTransferToSale_Click);
+            this.btnCreateCustomer.Enabled = false;
+            this.btnCreateCustomer.Image = global::MainPrj.Properties.Resources._new;
+            this.btnCreateCustomer.Location = new System.Drawing.Point(10, 618);
+            this.btnCreateCustomer.Name = "btnCreateCustomer";
+            this.btnCreateCustomer.Size = new System.Drawing.Size(180, 64);
+            this.btnCreateCustomer.TabIndex = 5;
+            this.btnCreateCustomer.Text = "Tạo Khách Hàng (F4)";
+            this.btnCreateCustomer.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnCreateCustomer.UseVisualStyleBackColor = true;
+            this.btnCreateCustomer.Click += new System.EventHandler(this.btnCreateCustomer_Click);
             // 
             // btnUpdateCustomer
             // 
@@ -629,6 +660,11 @@
             this.lblAgent.TabIndex = 16;
             this.lblAgent.Text = "Đại lý";
             // 
+            // toolStripProgressBarReqServer
+            // 
+            this.toolStripProgressBarReqServer.Name = "toolStripProgressBarReqServer";
+            this.toolStripProgressBarReqServer.Size = new System.Drawing.Size(100, 16);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
@@ -644,7 +680,7 @@
             this.Controls.Add(this.chbListenFromCard);
             this.Controls.Add(this.btnOrderList);
             this.Controls.Add(this.btnHistory);
-            this.Controls.Add(this.btnTransferToSale);
+            this.Controls.Add(this.btnCreateCustomer);
             this.Controls.Add(this.mainTabControl);
             this.Controls.Add(this.btnUpdateCustomer);
             this.Controls.Add(this.btnSaveData);
@@ -706,7 +742,7 @@
         private System.Windows.Forms.TabPage tabPage8;
         private View.ChannelControl channelControlLine8;
         private System.Windows.Forms.Button btnSearch;
-        private System.Windows.Forms.Button btnTransferToSale;
+        private System.Windows.Forms.Button btnCreateCustomer;
         private System.Windows.Forms.Button btnUpdateCustomer;
         private System.Windows.Forms.Button btnSaveData;
         private System.Windows.Forms.Button btnCreateOrder;
@@ -727,6 +763,9 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemSupport;
         private System.Windows.Forms.Label lblAgent;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemUpdateData;
+        private System.Windows.Forms.ToolStripProgressBar toolStripProgressBarReqServer;
     }
 }
 

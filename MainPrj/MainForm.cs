@@ -506,13 +506,13 @@ namespace MainPrj
         }
 
         /// <summary>
-        /// Handle when click Transfer to Sale button
+        /// Handle when click Create customer button
         /// </summary>
         /// <param name="sender">Sender</param>
         /// <param name="e">EventArgs</param>
-        private void btnTransferToSale_Click(object sender, EventArgs e)
+        private void btnCreateCustomer_Click(object sender, EventArgs e)
         {
-            HandleClickTransferToSaleButton();
+            HandleClickCreateCustomerButton();
         }
         /// <summary>
         /// Handle when press key on main form.
@@ -533,7 +533,7 @@ namespace MainPrj
                     HandleClickUpdateCustomerButton();
                     break;
                 case Keys.F4:
-                    HandleClickTransferToSaleButton();
+                    HandleClickCreateCustomerButton();
                     break;
                 case Keys.F5:
                     HandleClickHistoryButton();
@@ -593,21 +593,30 @@ namespace MainPrj
         private void HandleClickCreateOrderButton()
         {
             DataPure.Instance.CustomerInfo = this.listChannelControl[DataPure.Instance.CurrentChannel].Data;
-            RoleType role = RoleType.ROLE_ACCOUNTING_AGENT;
-            if (DataPure.Instance.User != null)
+            // Check if customer name is empty
+            if ((DataPure.Instance.CustomerInfo != null)
+                && (!String.IsNullOrEmpty(DataPure.Instance.CustomerInfo.Name)))
             {
-                role = DataPure.Instance.User.Role;
+                RoleType role = RoleType.ROLE_ACCOUNTING_AGENT;
+                if (DataPure.Instance.User != null)
+                {
+                    role = DataPure.Instance.User.Role;
+                }
+                switch (role)
+                {
+                    case RoleType.ROLE_ACCOUNTING_AGENT:
+                        OrderView order = new OrderView();
+                        order.Show();
+                        break;
+                    case RoleType.ROLE_DIEU_PHOI:
+                        break;
+                    default:
+                        break;
+                }
             }
-            switch (role)
+            else
             {
-                case RoleType.ROLE_ACCOUNTING_AGENT:
-                    OrderView order = new OrderView();
-                    order.Show();
-                    break;
-                case RoleType.ROLE_DIEU_PHOI:
-                    break;
-                default:
-                    break;
+                CommonProcess.ShowErrorMessage(Properties.Resources.MissCustomerInfor);
             }
         }
         /// <summary>
@@ -631,10 +640,56 @@ namespace MainPrj
         /// <summary>
         /// Handle when click Transfer To Sale button.
         /// </summary>
-        private void HandleClickTransferToSaleButton()
+        private void HandleClickCreateCustomerButton()
         {
-            CommonProcess.ShowInformMessageProcessing();
+            ChannelControl channelControl = null;
+            try
+            {
+                channelControl = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                CommonProcess.ShowErrorMessage(Properties.Resources.ArgumentOutOfRange);
+                return;
+            }
+            if (channelControl != null)
+            {
+                if (String.IsNullOrEmpty(channelControl.Data.Name))
+                {
+                    List<String> customerInfo = channelControl.GetNewCustomerInfo();
+                    CommonProcess.RequestCreateNewCustomer(customerInfo[0],
+                        channelControl.GetIncommingPhone(),
+                        customerInfo[1],
+                        customerInfo[2],
+                        customerInfo[3],
+                        customerInfo[4],
+                        customerInfo[5],
+                        createCustomerProgressChanged,
+                        createCustomerCompleted);
+                }
+            }
         }
+
+        private void createCustomerProgressChanged(object sender, UploadProgressChangedEventArgs e)
+        {
+            if ((e.ProgressPercentage <= 50)
+                && (e.ProgressPercentage >= 0))
+            {
+                toolStripProgressBarReqServer.Value = e.ProgressPercentage * 2;
+            }
+            toolStripStatusLabel.Text = Properties.Resources.RequestingCreateCustomer;
+        }
+        private void createCustomerCompleted(object sender, UploadValuesCompletedEventArgs e)
+        {
+            byte[] response = e.Result;
+            string respStr = String.Empty;
+            respStr = System.Text.Encoding.UTF8.GetString(response);
+            if (!String.IsNullOrEmpty(respStr))
+            {
+                CommonProcess.ShowInformMessage("Tạo KH thành công!");
+            }
+        }
+
         /// <summary>
         /// Handle when click List order button.
         /// </summary>
@@ -821,36 +876,118 @@ namespace MainPrj
                     }
                 }
             }
-            lblUsername.Text = DataPure.Instance.User.First_name;
-            if (lblUsername.Right > (pbxAvatar.Left - 5))
-            {
-                lblUsername.Left = (pbxAvatar.Left - 5) - lblUsername.Width;
-            }
-            lblRole.Text = DataPure.Instance.User.RoleStr;
-            if (lblRole.Right > (pbxAvatar.Left - 5))
-            {
-                lblRole.Left = (pbxAvatar.Left - 5) - lblRole.Width;
-            }
-
-            pbxAvatar.Image = CommonProcess.CreateAvatar(avatarString, pbxAvatar.Size.Height);
             // Turn off login menu
             this.toolStripMenuItemLogin.Enabled = false;
             this.toolStripMenuItemLogout.Enabled = true;
             // Update button enable
-            btnCreateOrder.Enabled = DataPure.Instance.User.Role.Equals(RoleType.ROLE_ACCOUNTING_AGENT);
-            btnOrderList.Enabled = DataPure.Instance.User.Role.Equals(RoleType.ROLE_ACCOUNTING_AGENT);
-            CommonProcess.RequestTempData();
+            btnCreateOrder.Enabled    = DataPure.Instance.User.Role.Equals(RoleType.ROLE_ACCOUNTING_AGENT);
+            btnOrderList.Enabled      = DataPure.Instance.User.Role.Equals(RoleType.ROLE_ACCOUNTING_AGENT);
+            btnCreateCustomer.Enabled = DataPure.Instance.User.Role.Equals(RoleType.ROLE_ACCOUNTING_AGENT);
+            CommonProcess.RequestTempData(reqTempDataProgressChanged, reqTempDataCompleted);
+            pbxAvatar.Image = CommonProcess.CreateAvatar(avatarString, pbxAvatar.Size.Height);
+        }
+
+        private void reqTempDataCompleted(object sender, UploadValuesCompletedEventArgs e)
+        {
+            toolStripStatusLabel.Text = Properties.Resources.RequestTempDataSuccess;
+            toolStripProgressBarReqServer.Value = 0;
+            byte[] response = e.Result;
+            string respStr = String.Empty;
+            respStr = System.Text.Encoding.UTF8.GetString(response);
+            bool isNotFirstTime = false;
+
+            if (!String.IsNullOrEmpty(respStr))
+            {
+                DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(TempDataResponseModel));
+                byte[] encodingBytes = null;
+                try
+                {
+                    // Encoding response data
+                    encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);
+                }
+                catch (System.Text.EncoderFallbackException)
+                {
+                    CommonProcess.ShowErrorMessage(Properties.Resources.EncodingError);
+                }
+                if (encodingBytes != null)
+                {
+                    MemoryStream msU = new MemoryStream(encodingBytes);
+                    TempDataResponseModel baseResp = (TempDataResponseModel)js.ReadObject(msU);
+                    if ((baseResp != null)
+                        && (baseResp.Record != null))
+                    {
+                        List<SelectorModel> listEmployee = null;
+                        if (isNotFirstTime)
+                        {
+                            listEmployee = new List<SelectorModel>(DataPure.Instance.TempData.Employee_maintain);
+                        }
+                        DataPure.Instance.TempData = baseResp.Record;
+                        DataPure.Instance.TempData.Sort();
+                        if (isNotFirstTime)
+                        {
+                            if (listEmployee != null)
+                            {
+                                DataPure.Instance.TempData.Employee_maintain = listEmployee.ToArray();
+                            }
+                        }
+                        else
+                        {
+                            DataPure.Instance.Agent = new AgentModel(DataPure.Instance.TempData.Agent_id,
+                                DataPure.Instance.TempData.Agent_name, string.Empty,
+                                DataPure.Instance.TempData.Agent_phone,
+                                DataPure.Instance.TempData.Agent_address);
+                        }
+                    }
+                }
+            }
             // Select agent if user role is Accounting agent
             if (DataPure.Instance.User.Role.Equals(RoleType.ROLE_ACCOUNTING_AGENT))
             {
                 SelectAgent();
             }
+            ReLocateLabel();
+            // Update address data
+            if (DataPure.Instance.User.Role.Equals(RoleType.ROLE_ACCOUNTING_AGENT))
+            {
+                foreach (ChannelControl item in this.listChannelControl)
+                {
+                    item.SetCity(DataPure.Instance.TempData.List_province);
+                    item.SetStreet(DataPure.Instance.TempData.List_street);
+                }
+            }
+        }
+
+        private void reqTempDataProgressChanged(object sender, UploadProgressChangedEventArgs e)
+        {
+            if ((e.ProgressPercentage <= 50)
+                && (e.ProgressPercentage >= 0))
+            {
+                toolStripProgressBarReqServer.Value = e.ProgressPercentage * 2;
+            }
+            toolStripStatusLabel.Text = Properties.Resources.RequestingTempData;
+        }
+        /// <summary>
+        /// Re-locate label.
+        /// </summary>
+        private void ReLocateLabel()
+        {
+            int leftBound = pbxAvatar.Left - 5;
+            lblUsername.Text = DataPure.Instance.User.First_name;
+            if (lblUsername.Right > leftBound)
+            {
+                lblUsername.Left = leftBound - lblUsername.Width;
+            }
+            lblRole.Text = DataPure.Instance.User.RoleStr;
+            if (lblRole.Right > leftBound)
+            {
+                lblRole.Left = leftBound - lblRole.Width;
+            }
             if (DataPure.Instance.Agent != null)
             {
                 lblAgent.Text = DataPure.Instance.Agent.Name;
-                if (lblAgent.Right > (pbxAvatar.Left - 5))
+                if (lblAgent.Right > leftBound)
                 {
-                    lblAgent.Left = (pbxAvatar.Left - 5) - lblAgent.Width;
+                    lblAgent.Left = leftBound - lblAgent.Width;
                 }
             }
         }
@@ -931,8 +1068,9 @@ namespace MainPrj
             lblAgent.Text    = Properties.Resources.Agent;
             lblAgent.Left    = Properties.Settings.Default.AgentLabelPosX;
             // Update button enable
-            btnCreateOrder.Enabled  = false;
-            btnOrderList.Enabled    = false;
+            btnCreateOrder.Enabled    = false;
+            btnOrderList.Enabled      = false;
+            btnCreateCustomer.Enabled = false;
             DataPure.Instance.Agent = null;
         }
         /// <summary>
@@ -954,6 +1092,20 @@ namespace MainPrj
         {
             AboutBox about = new AboutBox();
             about.Show();
+        }
+        /// <summary>
+        /// Handle when click Guideline menu.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void toolStripMenuItemGuideline_Click(object sender, EventArgs e)
+        {
+            CommonProcess.ShowInformMessageProcessing();
+        }
+
+        private void toolStripMenuItemUpdateData_Click(object sender, EventArgs e)
+        {
+            //CommonProcess.RequestTempData(true);
         }
     }
 }

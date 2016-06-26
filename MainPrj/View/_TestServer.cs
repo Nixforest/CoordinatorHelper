@@ -20,7 +20,7 @@ namespace MainPrj.View
 
         private void btnSendReq_Click(object sender, EventArgs e)
         {
-            CommonProcess.RequestLogin("chuongtq", "chuong1992");
+            //CommonProcess.RequestLogin("chuongtq", "chuong1992");
         }
     }
 }

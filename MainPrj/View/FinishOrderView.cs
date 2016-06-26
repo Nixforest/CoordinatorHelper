@@ -14,6 +14,16 @@ namespace MainPrj.View
     public partial class FinishOrderView : Form
     {
         private string id = string.Empty;
+        private string deliverId = string.Empty;
+        /// <summary>
+        /// Deliver id.
+        /// </summary>
+        public string DeliverId
+        {
+            get { return deliverId; }
+            set { deliverId = value; }
+        }
+
         /// <summary>
         /// Order's id.
         /// </summary>
@@ -55,6 +65,11 @@ namespace MainPrj.View
                         }
                         item.IsFinished       = true;
                         item.IsUpdateToServer = false;
+                        if (cbxDeliver.SelectedValue != null)
+                        {
+                            item.DeliverId = cbxDeliver.SelectedValue.ToString();
+                        }
+                        
                         break;
                     }
                 }
@@ -82,6 +97,7 @@ namespace MainPrj.View
                             }
                         }
                         lblTotalPay.Text = CommonProcess.FormatMoney(item.TotalPay);
+                        this.deliverId = item.DeliverId;
                         //cylinders.AddRange(item.Cylinders);
                         break;
                     }
@@ -112,6 +128,27 @@ namespace MainPrj.View
             this.listViewCylinder.Combobox.Items.Clear();
             this.listViewCylinder.Combobox.Items.AddRange(itemsQuantity.ToArray());
             this.listViewCylinder.SubItemEndEditing += new SubItemEndEditingEventHandler(listViewCylinder_SubItemEndEditing);
+
+            // Check null object
+            if (DataPure.Instance.User != null)
+            {
+                // Check null object
+                if (DataPure.Instance.TempData != null)
+                {
+                    // Deliver
+                    List<object> items = new List<object>();
+                    // Check null object
+                    if (DataPure.Instance.TempData.Employee_maintain != null)
+                    {
+                        foreach (SelectorModel item in DataPure.Instance.TempData.Employee_maintain)
+                        {
+                            items.Add(new { Text = item.Name, Value = item.Id });
+                        }
+                    }
+                    cbxDeliver.DataSource = items;
+                    cbxDeliver.SelectedValue = this.DeliverId;
+                }
+            }
         }
         /// <summary>
         /// Create listview item.

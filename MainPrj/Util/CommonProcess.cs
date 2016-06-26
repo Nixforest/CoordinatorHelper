@@ -188,12 +188,15 @@ namespace MainPrj.Util
         /// <param name="username">Username</param>
         /// <param name="password">password</param>
         /// <returns>UserLoginResponseModel</returns>
-        public static UserLoginResponseModel RequestLogin(string username, string password)
+        public static UserLoginResponseModel RequestLogin(string username, string password,
+            UploadProgressChangedEventHandler progressChanged, UploadValuesCompletedEventHandler completedHandler)
         {
             // Declare result variable
             UserLoginResponseModel data = new UserLoginResponseModel();
             using (WebClient client = new WebClient())
             {
+                client.UploadProgressChanged += new UploadProgressChangedEventHandler(progressChanged);
+                client.UploadValuesCompleted += new UploadValuesCompletedEventHandler(completedHandler);
                 string respStr = String.Empty;
                 try
                 {
@@ -201,49 +204,19 @@ namespace MainPrj.Util
                     string value = string.Empty;
                     value = String.Format("{{\"username\":\"{0}\",\"password\":\"{1}\",\"gcm_device_token\":\"{2}\",\"apns_device_token\":\"{3}\",\"type\":\"2\"}}",
                         username, password, "1", "1");
-                    byte[] response = client.UploadValues(
-                        Properties.Settings.Default.ServerURL + Properties.Settings.Default.URLLogin,
+                    client.UploadValuesAsync(
+                        new Uri(Properties.Settings.Default.ServerURL + Properties.Settings.Default.URLLogin),
                         new System.Collections.Specialized.NameValueCollection()
                     {
                         { "q", value}
                     });
                     // Get response
-                    respStr = System.Text.Encoding.UTF8.GetString(response);
+                    //respStr = System.Text.Encoding.UTF8.GetString(response);
                 }
                 catch (System.Net.WebException)
                 {
                     ShowErrorMessage(Properties.Resources.InternetConnectionError);
                     HasError = true;
-                }
-
-                if (!String.IsNullOrEmpty(respStr))
-                {
-                    DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(UserLoginResponseModel));
-                    byte[] encodingBytes = null;
-                    try
-                    {
-                        // Encoding response data
-                        encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);
-                    }
-                    catch (System.Text.EncoderFallbackException)
-                    {
-                        ShowErrorMessage(Properties.Resources.EncodingError);
-                        HasError = true;
-                    }
-                    if (encodingBytes != null)
-                    {
-                        MemoryStream msU = new MemoryStream(encodingBytes);
-                        UserLoginResponseModel baseResp = (UserLoginResponseModel)js.ReadObject(msU);
-                        if (baseResp != null)
-                        {
-                            data = baseResp;
-                        }
-                        if (!String.IsNullOrEmpty(baseResp.Token))
-                        {
-                            Properties.Settings.Default.UserToken = baseResp.Token;
-                            Properties.Settings.Default.Save();
-                        }
-                    }
                 }
             }
             return data;
@@ -251,11 +224,14 @@ namespace MainPrj.Util
         /// <summary>
         /// Request temp data.
         /// </summary>
-        public static void RequestTempData()
+        public static void RequestTempData(UploadProgressChangedEventHandler progressChanged,
+            UploadValuesCompletedEventHandler completedHandler, bool isNotFirstTime = false)
         {
             // Declare result variable
             using (WebClient client = new WebClient())
             {
+                client.UploadProgressChanged += new UploadProgressChangedEventHandler(progressChanged);
+                client.UploadValuesCompleted += new UploadValuesCompletedEventHandler(completedHandler);
                 string respStr = String.Empty;
                 try
                 {
@@ -263,51 +239,50 @@ namespace MainPrj.Util
                     string value = string.Empty;
                     value = String.Format("{{\"token\":\"{0}\"}}",
                         Properties.Settings.Default.UserToken);
-                    byte[] response = client.UploadValues(
-                        Properties.Settings.Default.ServerURL + Properties.Settings.Default.URLGetConfig,
+                    client.UploadValuesAsync(
+                        new Uri(Properties.Settings.Default.ServerURL + Properties.Settings.Default.URLGetConfig),
                         new System.Collections.Specialized.NameValueCollection()
                     {
                         { "q", value}
                     });
                     // Get response
-                    respStr = System.Text.Encoding.UTF8.GetString(response);
+                    //respStr = System.Text.Encoding.UTF8.GetString(response);
                 }
                 catch (System.Net.WebException)
                 {
                     ShowErrorMessage(Properties.Resources.InternetConnectionError);
                     HasError = true;
                 }
-
-                if (!String.IsNullOrEmpty(respStr))
+            }
+        }
+        public static void RequestCreateNewCustomer(string name, string phone, string cityId, string districtId,
+            string wardId, string streetId, string addressDetail, UploadProgressChangedEventHandler progressChanged,
+            UploadValuesCompletedEventHandler completedHandler)
+        {
+            using (WebClient client = new WebClient())
+            {
+                client.UploadProgressChanged += new UploadProgressChangedEventHandler(progressChanged);
+                client.UploadValuesCompleted += new UploadValuesCompletedEventHandler(completedHandler);
+                string respStr = String.Empty;
+                try
                 {
-                    DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(TempDataResponseModel));
-                    byte[] encodingBytes = null;
-                    try
+                    // Post keyword to server
+                    string value = string.Empty;
+                    value = String.Format("{{\"token\":\"{0}\", \"agent_id\":\"{1}\", \"first_name\":\"{2}\", \"phone\":\"{3}\", \"province_id\":\"{4}\", \"district_id\":\"{5}\", \"ward_id\":\"{6}\", \"street_id\":\"{7}\", \"house_numbers\":\"{8}\"}}",
+                        Properties.Settings.Default.UserToken,
+                        DataPure.Instance.Agent.Id,
+                        name, phone, cityId, districtId, wardId, streetId, addressDetail);
+                    client.UploadValuesAsync(
+                        new Uri(Properties.Settings.Default.ServerURL + Properties.Settings.Default.URLCreateCustomer),
+                        new System.Collections.Specialized.NameValueCollection()
                     {
-                        // Encoding response data
-                        encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);
-                    }
-                    catch (System.Text.EncoderFallbackException)
-                    {
-                        ShowErrorMessage(Properties.Resources.EncodingError);
-                        HasError = true;
-                    }
-                    if (encodingBytes != null)
-                    {
-                        MemoryStream msU = new MemoryStream(encodingBytes);
-                        TempDataResponseModel baseResp = (TempDataResponseModel)js.ReadObject(msU);
-                        if ((baseResp != null)
-                            && (baseResp.Record != null))
-                        {
-                            DataPure.Instance.TempData = baseResp.Record;
-                            DataPure.Instance.TempData.Sort();
-
-                            DataPure.Instance.Agent = new AgentModel(DataPure.Instance.TempData.Agent_id,
-                                DataPure.Instance.TempData.Agent_name, string.Empty,
-                                DataPure.Instance.TempData.Agent_phone,
-                                DataPure.Instance.TempData.Agent_address);
-                        }
-                    }
+                        { "q", value}
+                    });
+                }
+                catch (System.Net.WebException)
+                {
+                    ShowErrorMessage(Properties.Resources.InternetConnectionError);
+                    HasError = true;
                 }
             }
         }

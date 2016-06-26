@@ -143,5 +143,8 @@
     <Setting Name="BillSizeH" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">820</Value>
     </Setting>
+    <Setting Name="URLCreateCustomer" Type="System.String" Scope="User">
+      <Value Profile="(Default)">/api/default/windowCustomerCreate</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

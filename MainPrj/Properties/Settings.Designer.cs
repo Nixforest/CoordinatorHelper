@@ -586,5 +586,17 @@ namespace MainPrj.Properties {
                 this["BillSizeH"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("/api/default/windowCustomerCreate")]
+        public string URLCreateCustomer {
+            get {
+                return ((string)(this["URLCreateCustomer"]));
+            }
+            set {
+                this["URLCreateCustomer"] = value;
+            }
+        }
     }
 }

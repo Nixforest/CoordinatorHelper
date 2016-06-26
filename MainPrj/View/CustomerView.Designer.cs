@@ -30,12 +30,24 @@
         {
             MainPrj.Model.CustomerModel customerModel1 = new MainPrj.Model.CustomerModel();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CustomerView));
-            this.channelControl = new MainPrj.View.ChannelControl();
             this.btnClose = new System.Windows.Forms.Button();
+            this.channelControl = new MainPrj.View.ChannelControl();
             this.SuspendLayout();
+            // 
+            // btnClose
+            // 
+            this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnClose.Location = new System.Drawing.Point(773, 501);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(88, 37);
+            this.btnClose.TabIndex = 1;
+            this.btnClose.Text = "Đóng";
+            this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // channelControl
             // 
+            customerModel1.ActivePhone = "";
             customerModel1.Address = "";
             customerModel1.AgencyName = "";
             customerModel1.AgencyNearest = "";
@@ -55,17 +67,6 @@
             this.channelControl.Name = "channelControl";
             this.channelControl.Size = new System.Drawing.Size(849, 474);
             this.channelControl.TabIndex = 0;
-            // 
-            // btnClose
-            // 
-            this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnClose.Location = new System.Drawing.Point(773, 501);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(88, 37);
-            this.btnClose.TabIndex = 1;
-            this.btnClose.Text = "Đóng";
-            this.btnClose.UseVisualStyleBackColor = true;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // CustomerView
             // 

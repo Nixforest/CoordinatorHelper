@@ -63,6 +63,26 @@ namespace MainPrj.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap _new {
+            get {
+                object obj = ResourceManager.GetObject("_new", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap about {
+            get {
+                object obj = ResourceManager.GetObject("about", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap add {
             get {
                 object obj = ResourceManager.GetObject("add", resourceCulture);
@@ -220,6 +240,16 @@ namespace MainPrj.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap config {
+            get {
+                object obj = ResourceManager.GetObject("config", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap copy {
             get {
                 object obj = ResourceManager.GetObject("copy", resourceCulture);
@@ -311,6 +341,16 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap download_icon {
+            get {
+                object obj = ResourceManager.GetObject("download-icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Có lỗi xảy ra khi mã hóa dữ liệu trả về..
         /// </summary>
         internal static string EncodingError {
@@ -372,6 +412,16 @@ namespace MainPrj.Properties {
         internal static string FunctionProcessing {
             get {
                 return ResourceManager.GetString("FunctionProcessing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap help {
+            get {
+                object obj = ResourceManager.GetObject("help", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -460,12 +510,30 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Đăng nhập thành công!.
+        /// </summary>
+        internal static string LoginSuccess {
+            get {
+                return ResourceManager.GetString("LoginSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon main {
             get {
                 object obj = ResourceManager.GetObject("main", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chưa có thông tin Khách hàng, cần phải tạo Khách hàng trước!.
+        /// </summary>
+        internal static string MissCustomerInfor {
+            get {
+                return ResourceManager.GetString("MissCustomerInfor", resourceCulture);
             }
         }
         
@@ -596,6 +664,42 @@ namespace MainPrj.Properties {
             get {
                 object obj = ResourceManager.GetObject("report", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đang gửi yêu cầu tạo mới Khách hàng....
+        /// </summary>
+        internal static string RequestingCreateCustomer {
+            get {
+                return ResourceManager.GetString("RequestingCreateCustomer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đang gửi yêu cầu đăng nhập....
+        /// </summary>
+        internal static string RequestingLogin {
+            get {
+                return ResourceManager.GetString("RequestingLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đang gửi yêu cầu cập nhật data....
+        /// </summary>
+        internal static string RequestingTempData {
+            get {
+                return ResourceManager.GetString("RequestingTempData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cập nhật data hoàn thành!.
+        /// </summary>
+        internal static string RequestTempDataSuccess {
+            get {
+                return ResourceManager.GetString("RequestTempDataSuccess", resourceCulture);
             }
         }
         

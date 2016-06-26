@@ -47,6 +47,14 @@ namespace MainPrj.View
                     {
                         totalGas += product.Quantity;
                     }
+                    else if (product.IsGasStove())
+                    {
+                        totalGasStove += product.Quantity;
+                    }
+                    else if (product.IsVan())
+                    {
+                        totalVan += product.Quantity;
+                    }
                 }
 
                 // Total Cylinder
@@ -776,12 +784,12 @@ namespace MainPrj.View
                             listData.Add(cylinder.Materials_no,
                                new OrderDetailModel()
                                {
-                                   Materials_id = cylinder.Materials_no,
+                                   Materials_id      = cylinder.Materials_no,
                                    Materials_type_id = cylinder.TypeId,
-                                   Quantity = cylinder.Quantity,
-                                   Price = string.Empty,
-                                   TotalPay = string.Empty,
-                                   Seri = cylinder.Name,
+                                   Quantity          = cylinder.Quantity,
+                                   Price             = string.Empty,
+                                   TotalPay          = string.Empty,
+                                   Seri              = cylinder.Name,
                                });
                         }
                     }

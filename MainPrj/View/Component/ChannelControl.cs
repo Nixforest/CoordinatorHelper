@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using MainPrj.Util;
 using MainPrj.Model;
+using MainPrj.Model.Address;
 
 namespace MainPrj.View
 {
@@ -63,7 +64,52 @@ namespace MainPrj.View
         /// <param name="address">Address</param>
         public void SetAddress(string address)
         {
-            this.tbxAddress.Text = address;
+            //this.tbxAddress.Text = address;
+            string[] listAddress = address.Split(',');
+            if (listAddress.Count() == 5)
+            {
+                cbxCity.Text         = listAddress[4];
+                cbxDistrict.Text     = listAddress[3];
+                cbxWard.Text         = listAddress[2];
+                cbxStreet.Text       = listAddress[1];
+                tbxAddress.Text      = listAddress[0];
+            }
+        }
+        /// <summary>
+        /// Set data for City combobox.
+        /// </summary>
+        /// <param name="cities">List of cities</param>
+        public void SetCity(List<CityModel> cities)
+        {
+            if (cities != null)
+            {
+                List<object> items = new List<object>();
+                items.Add(new { Text = string.Empty, Value = string.Empty });
+                foreach (CityModel item in cities)
+                {
+                    items.Add(new { Text = item.Name, Value = item.Id });
+                }
+                cbxCity.DataSource = items;
+                cbxCity.SelectedIndex = 0;
+            }
+        }
+        /// <summary>
+        /// Set data for Street combobox.
+        /// </summary>
+        /// <param name="streets">List of streets</param>
+        public void SetStreet(List<StreetModel> streets)
+        {
+            if (streets != null)
+            {
+                List<object> items = new List<object>();
+                items.Add(new { Text = string.Empty, Value = string.Empty });
+                foreach (StreetModel item in streets)
+                {
+                    items.Add(new { Text = item.Name, Value = item.Id });
+                }
+                cbxStreet.DataSource = items;
+                cbxStreet.SelectedIndex = 0;
+            }
         }
         /// <summary>
         /// Set list of phone number
@@ -166,20 +212,24 @@ namespace MainPrj.View
         /// </summary>
         public void ClearData()
         {
-            this.tbxCustomerName.Text = String.Empty;
-            this.tbxAddress.Text = String.Empty;
-            this.tbxCustomerTel1.Text = String.Empty;
-            this.tbxCustomerTel2.Text = String.Empty;
-            this.tbxCustomerTel3.Text = String.Empty;
-            this.tbxCustomerTel4.Text = String.Empty;
-            this.tbxCustomerTel5.Text = String.Empty;
-            this.tbxCost.Text = String.Empty;
-            this.tbxAgency.Text = String.Empty;
+            this.tbxCustomerName.Text  = String.Empty;
+            this.tbxAddress.Text       = String.Empty;
+            this.cbxCity.Text          = String.Empty;
+            this.cbxDistrict.Text      = String.Empty;
+            this.cbxWard.Text          = String.Empty;
+            this.cbxStreet.Text        = String.Empty;
+            this.tbxCustomerTel1.Text  = String.Empty;
+            this.tbxCustomerTel2.Text  = String.Empty;
+            this.tbxCustomerTel3.Text  = String.Empty;
+            this.tbxCustomerTel4.Text  = String.Empty;
+            this.tbxCustomerTel5.Text  = String.Empty;
+            this.tbxCost.Text          = String.Empty;
+            this.tbxAgency.Text        = String.Empty;
             this.tbxAgencyNearest.Text = String.Empty;
-            this.tbxContact.Text = String.Empty;
-            this.tbxCustomerType.Text = String.Empty;
-            this.tbxNote.Text = String.Empty;
-            this.tbxSaleName.Text = String.Empty;
+            this.tbxContact.Text       = String.Empty;
+            this.tbxCustomerType.Text  = String.Empty;
+            this.tbxNote.Text          = String.Empty;
+            this.tbxSaleName.Text      = String.Empty;
         }
         /// <summary>
         /// Handle when change text value.
@@ -239,6 +289,22 @@ namespace MainPrj.View
                 this.tbxSearchCustomer.Text = Properties.Resources.SearchString;
                 this.tbxSearchCustomer.ForeColor = SystemColors.GrayText;
             }
+        }
+        /// <summary>
+        /// Gets a value indicating whether the Search textbox has input focus.
+        /// </summary>
+        /// <returns>True if Search textbox has input focus, False otherwise</returns>
+        public bool IsSearchTextBoxFocused()
+        {
+            return this.tbxSearchCustomer.Focused;
+        }
+        /// <summary>
+        /// Gets a value indicating whether the Street combobox has input focus.
+        /// </summary>
+        /// <returns>True if Street combobox has input focus, False otherwise</returns>
+        public bool IsStreetComboBoxFocused()
+        {
+            return this.cbxStreet.Focused;
         }
         /// <summary>
         /// Search customer.
@@ -331,10 +397,112 @@ namespace MainPrj.View
         /// <summary>
         ///  Check can change tab.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>True if can change tab, False otherwise</returns>
         public bool CanChangeTab()
         {
             return !this.tbxSearchCustomer.Focused && !this.tbxNote.Focused;
+        }
+        /// <summary>
+        /// Handle when change city.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void cbxCity_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if ((DataPure.Instance.TempData != null)
+                && (DataPure.Instance.TempData.List_province != null))
+            {
+                foreach (CityModel item in DataPure.Instance.TempData.List_province)
+                {
+                    if (cbxCity.SelectedValue.ToString().Equals(item.Id))
+                    {
+                        if (item.Data != null)
+                        {
+                            List<object> items = new List<object>();
+                            items.Add(new { Text = string.Empty, Value = string.Empty });
+                            foreach (DistrictModel district in item.Data)
+                            {
+                                items.Add(new { Text = district.Name, Value = district.Id });
+                            }
+                            cbxDistrict.DataSource = items;
+                        }
+
+                        break;
+                    }
+                }
+            }
+            if (cbxDistrict.Items.Count > 0)
+            {
+                cbxDistrict.SelectedIndex = 0;
+            }
+        }
+        /// <summary>
+        /// Get customer information to create new.
+        /// </summary>
+        /// <returns>
+        /// List of data:
+        /// - Customer name
+        /// - Detail address
+        /// - City Id
+        /// - District Id
+        /// - Ward Id
+        /// - Street Id
+        /// </returns>
+        public List<String> GetNewCustomerInfo()
+        {
+            List<String> retVal = new List<string>();
+            retVal.Add(tbxCustomerName.Text.Trim());
+            retVal.Add(cbxCity.SelectedValue.ToString());
+            retVal.Add(cbxDistrict.SelectedValue.ToString());
+            retVal.Add(cbxWard.SelectedValue.ToString());
+            retVal.Add(cbxStreet.SelectedValue.ToString());
+            retVal.Add(tbxAddress.Text.Trim());
+            return retVal;
+        }
+
+        /// <summary>
+        /// Handle when change district.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void cbxDistrict_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if ((DataPure.Instance.TempData != null)
+                && (DataPure.Instance.TempData.List_province != null))
+            {
+                foreach (CityModel item in DataPure.Instance.TempData.List_province)
+                {
+                    if (cbxCity.SelectedValue.ToString().Equals(item.Id))
+                    {
+                        if (item.Data != null)
+                        {
+                            foreach (DistrictModel district in item.Data)
+                            {
+                                if (cbxDistrict.SelectedValue.ToString().Equals(district.Id))
+                                {
+                                    if (district.Data != null)
+                                    {
+                                        List<object> items = new List<object>();
+                                        items.Add(new { Text = string.Empty, Value = string.Empty });
+                                        foreach (WardModel ward in district.Data)
+                                        {
+                                            items.Add(new { Text = ward.Name, Value = ward.Id });
+                                        }
+                                        cbxWard.DataSource = items;
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+
+                        break;
+                    }
+                }
+            }
+            if (cbxWard.Items.Count > 0)
+            {
+                cbxWard.SelectedIndex = 0;
+            }
         }
     }
 }

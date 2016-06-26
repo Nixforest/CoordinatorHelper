@@ -32,14 +32,16 @@
             this.tbxSearch = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.btnFinish = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.lblTotalPay = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.cbxDeliver = new System.Windows.Forms.ComboBox();
             this.listViewCylinder = new MainPrj.View.EditableListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.label2 = new System.Windows.Forms.Label();
-            this.lblTotalPay = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // tbxSearch
@@ -47,7 +49,7 @@
             this.tbxSearch.ForeColor = System.Drawing.SystemColors.GrayText;
             this.tbxSearch.Location = new System.Drawing.Point(90, 6);
             this.tbxSearch.Name = "tbxSearch";
-            this.tbxSearch.Size = new System.Drawing.Size(388, 29);
+            this.tbxSearch.Size = new System.Drawing.Size(137, 29);
             this.tbxSearch.TabIndex = 0;
             this.tbxSearch.Text = "Tìm kiếm";
             this.tbxSearch.Enter += new System.EventHandler(this.tbxSearch_Enter);
@@ -68,11 +70,50 @@
             this.btnFinish.Location = new System.Drawing.Point(483, 236);
             this.btnFinish.Name = "btnFinish";
             this.btnFinish.Size = new System.Drawing.Size(141, 151);
-            this.btnFinish.TabIndex = 2;
+            this.btnFinish.TabIndex = 3;
             this.btnFinish.Text = "Đã thu tiền";
             this.btnFinish.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.btnFinish.UseVisualStyleBackColor = true;
             this.btnFinish.Click += new System.EventHandler(this.btnFinish_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(12, 243);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(111, 24);
+            this.label2.TabIndex = 10;
+            this.label2.Text = "Thanh toán:";
+            // 
+            // lblTotalPay
+            // 
+            this.lblTotalPay.AutoSize = true;
+            this.lblTotalPay.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTotalPay.ForeColor = System.Drawing.Color.Blue;
+            this.lblTotalPay.Location = new System.Drawing.Point(129, 236);
+            this.lblTotalPay.Name = "lblTotalPay";
+            this.lblTotalPay.Size = new System.Drawing.Size(29, 31);
+            this.lblTotalPay.TabIndex = 10;
+            this.lblTotalPay.Text = "0";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(233, 9);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(131, 24);
+            this.label3.TabIndex = 11;
+            this.label3.Text = "NV giao nhận:";
+            // 
+            // cbxDeliver
+            // 
+            this.cbxDeliver.DisplayMember = "Text";
+            this.cbxDeliver.FormattingEnabled = true;
+            this.cbxDeliver.Location = new System.Drawing.Point(370, 6);
+            this.cbxDeliver.Name = "cbxDeliver";
+            this.cbxDeliver.Size = new System.Drawing.Size(254, 32);
+            this.cbxDeliver.TabIndex = 1;
+            this.cbxDeliver.ValueMember = "Value";
             // 
             // listViewCylinder
             // 
@@ -89,7 +130,7 @@
             this.listViewCylinder.Location = new System.Drawing.Point(16, 41);
             this.listViewCylinder.Name = "listViewCylinder";
             this.listViewCylinder.Size = new System.Drawing.Size(608, 189);
-            this.listViewCylinder.TabIndex = 1;
+            this.listViewCylinder.TabIndex = 2;
             this.listViewCylinder.UseCompatibleStateImageBehavior = false;
             this.listViewCylinder.View = System.Windows.Forms.View.Details;
             this.listViewCylinder.SubItemEndEditing += new MainPrj.View.SubItemEndEditingEventHandler(this.listViewCylinder_SubItemEndEditing);
@@ -118,31 +159,13 @@
             this.columnHeader5.Text = "Serial";
             this.columnHeader5.Width = 90;
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 243);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(111, 24);
-            this.label2.TabIndex = 10;
-            this.label2.Text = "Thanh toán:";
-            // 
-            // lblTotalPay
-            // 
-            this.lblTotalPay.AutoSize = true;
-            this.lblTotalPay.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTotalPay.ForeColor = System.Drawing.Color.Blue;
-            this.lblTotalPay.Location = new System.Drawing.Point(129, 236);
-            this.lblTotalPay.Name = "lblTotalPay";
-            this.lblTotalPay.Size = new System.Drawing.Size(29, 31);
-            this.lblTotalPay.TabIndex = 10;
-            this.lblTotalPay.Text = "0";
-            // 
             // FinishOrderView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(636, 394);
+            this.Controls.Add(this.cbxDeliver);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.btnFinish);
             this.Controls.Add(this.tbxSearch);
             this.Controls.Add(this.lblTotalPay);
@@ -176,5 +199,7 @@
         private System.Windows.Forms.Button btnFinish;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label lblTotalPay;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox cbxDeliver;
     }
 }
