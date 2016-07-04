@@ -63,16 +63,22 @@ namespace MainPrj.View
                                 item.Cylinders.Add(new CylinderModel());
                             }
                         }
-                        item.IsFinished       = true;
+                        item.Status           = OrderStatus.ORDERSTATUS_PAID;
                         item.IsUpdateToServer = false;
                         if (cbxDeliver.SelectedValue != null)
                         {
                             item.DeliverId = cbxDeliver.SelectedValue.ToString();
                         }
-                        
+                        // Update to server
+                        string retId = CommonProcess.UpdateOrderToServer(item);
+                        if (!String.IsNullOrEmpty(retId))
+                        {
+                            item.IsUpdateToServer = true;
+                        }
                         break;
                     }
                 }
+
                 this.Close();
             }
         }

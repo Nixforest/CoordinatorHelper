@@ -31,7 +31,12 @@
             MainPrj.Model.CustomerModel customerModel1 = new MainPrj.Model.CustomerModel();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CustomerView));
             this.btnClose = new System.Windows.Forms.Button();
+            this.btnCreateCustomer = new System.Windows.Forms.Button();
             this.channelControl = new MainPrj.View.ChannelControl();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
+            this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnClose
@@ -44,6 +49,16 @@
             this.btnClose.Text = "Đóng";
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            // 
+            // btnCreateCustomer
+            // 
+            this.btnCreateCustomer.Location = new System.Drawing.Point(585, 501);
+            this.btnCreateCustomer.Name = "btnCreateCustomer";
+            this.btnCreateCustomer.Size = new System.Drawing.Size(182, 37);
+            this.btnCreateCustomer.TabIndex = 2;
+            this.btnCreateCustomer.Text = "Tạo Khách Hàng";
+            this.btnCreateCustomer.UseVisualStyleBackColor = true;
+            this.btnCreateCustomer.Click += new System.EventHandler(this.btnCreateCustomer_Click);
             // 
             // channelControl
             // 
@@ -68,12 +83,35 @@
             this.channelControl.Size = new System.Drawing.Size(849, 474);
             this.channelControl.TabIndex = 0;
             // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripProgressBar,
+            this.toolStripStatusLabel});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 545);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(873, 22);
+            this.statusStrip1.TabIndex = 3;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripProgressBar
+            // 
+            this.toolStripProgressBar.Name = "toolStripProgressBar";
+            this.toolStripProgressBar.Size = new System.Drawing.Size(100, 16);
+            // 
+            // toolStripStatusLabel
+            // 
+            this.toolStripStatusLabel.Name = "toolStripStatusLabel";
+            this.toolStripStatusLabel.Size = new System.Drawing.Size(0, 17);
+            // 
             // CustomerView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
-            this.ClientSize = new System.Drawing.Size(873, 550);
+            this.ClientSize = new System.Drawing.Size(873, 567);
+            this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.btnCreateCustomer);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.channelControl);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -86,8 +124,12 @@
             this.Name = "CustomerView";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Cập nhật thông tin Khách hàng";
+            this.Load += new System.EventHandler(this.CustomerView_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CustomerView_KeyDown);
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -95,5 +137,9 @@
 
         private ChannelControl channelControl;
         private System.Windows.Forms.Button btnClose;
+        private System.Windows.Forms.Button btnCreateCustomer;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel;
     }
 }

@@ -63,16 +63,6 @@ namespace MainPrj.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap _new {
-            get {
-                object obj = ResourceManager.GetObject("_new", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap about {
             get {
                 object obj = ResourceManager.GetObject("about", resourceCulture);
@@ -96,6 +86,24 @@ namespace MainPrj.Properties {
         internal static string Agent {
             get {
                 return ResourceManager.GetString("Agent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phân tích dữ liệu hoàn thành!.
+        /// </summary>
+        internal static string AnalyzeTempDataDone {
+            get {
+                return ResourceManager.GetString("AnalyzeTempDataDone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đang phân tích dữ liệu!.
+        /// </summary>
+        internal static string AnalyzingTempData {
+            get {
+                return ResourceManager.GetString("AnalyzingTempData", resourceCulture);
             }
         }
         
@@ -161,6 +169,16 @@ namespace MainPrj.Properties {
         internal static string Cancel {
             get {
                 return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap cancel_order {
+            get {
+                object obj = ResourceManager.GetObject("cancel_order", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -258,6 +276,24 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Có lỗi xảy ra khi tạo Khách Hàng mới!.
+        /// </summary>
+        internal static string CreateCustomerFailed {
+            get {
+                return ResourceManager.GetString("CreateCustomerFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tạo Khách Hàng mới thành công!.
+        /// </summary>
+        internal static string CreateCustomerSuccess {
+            get {
+                return ResourceManager.GetString("CreateCustomerSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Lỗi xảy ra khi tạo đơn hàng trên web!.
         /// </summary>
         internal static string CreateOrderServerError {
@@ -345,7 +381,7 @@ namespace MainPrj.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap download_icon {
             get {
-                object obj = ResourceManager.GetObject("download-icon", resourceCulture);
+                object obj = ResourceManager.GetObject("download_icon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -557,6 +593,16 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap new_Customer {
+            get {
+                object obj = ResourceManager.GetObject("new_Customer", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Số điện thoại mới!.
         /// </summary>
         internal static string NewIncommingPhone {
@@ -664,6 +710,24 @@ namespace MainPrj.Properties {
             get {
                 object obj = ResourceManager.GetObject("report", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cập nhật thông tin Đại Lý thành công!.
+        /// </summary>
+        internal static string RequestAgentInfoSuccess {
+            get {
+                return ResourceManager.GetString("RequestAgentInfoSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đang gửi yêu cầu thông tin Đại Lý....
+        /// </summary>
+        internal static string RequestingAgentInformation {
+            get {
+                return ResourceManager.GetString("RequestingAgentInformation", resourceCulture);
             }
         }
         

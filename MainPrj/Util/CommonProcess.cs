@@ -182,11 +182,13 @@ namespace MainPrj.Util
             }
         }
         /// <summary>
-        /// Request login
+        /// Request login.
         /// </summary>
         /// <param name="url">Server url</param>
         /// <param name="username">Username</param>
         /// <param name="password">password</param>
+        /// <param name="progressChanged">Event handler when progress changed</param>
+        /// <param name="completedHandler">Event handler when finish upload</param>
         /// <returns>UserLoginResponseModel</returns>
         public static UserLoginResponseModel RequestLogin(string username, string password,
             UploadProgressChangedEventHandler progressChanged, UploadValuesCompletedEventHandler completedHandler)
@@ -224,8 +226,11 @@ namespace MainPrj.Util
         /// <summary>
         /// Request temp data.
         /// </summary>
+        /// <param name="progressChanged">Event handler when progress changed</param>
+        /// <param name="completedHandler">Event handler when finish upload</param>
+        /// <param name="isNotFirstTime"></param>
         public static void RequestTempData(UploadProgressChangedEventHandler progressChanged,
-            UploadValuesCompletedEventHandler completedHandler, bool isNotFirstTime = false)
+            UploadValuesCompletedEventHandler completedHandler)
         {
             // Declare result variable
             using (WebClient client = new WebClient())
@@ -255,6 +260,18 @@ namespace MainPrj.Util
                 }
             }
         }
+        /// <summary>
+        /// Request create new customer.
+        /// </summary>
+        /// <param name="name">Name</param>
+        /// <param name="phone">Phone</param>
+        /// <param name="cityId">Id of city</param>
+        /// <param name="districtId">Id of district</param>
+        /// <param name="wardId">Id of ward</param>
+        /// <param name="streetId">Id of street</param>
+        /// <param name="addressDetail">Detail of address</param>
+        /// <param name="progressChanged">Event handler when progress changed</param>
+        /// <param name="completedHandler">Event handler when finish upload</param>
         public static void RequestCreateNewCustomer(string name, string phone, string cityId, string districtId,
             string wardId, string streetId, string addressDetail, UploadProgressChangedEventHandler progressChanged,
             UploadValuesCompletedEventHandler completedHandler)
@@ -263,7 +280,6 @@ namespace MainPrj.Util
             {
                 client.UploadProgressChanged += new UploadProgressChangedEventHandler(progressChanged);
                 client.UploadValuesCompleted += new UploadValuesCompletedEventHandler(completedHandler);
-                string respStr = String.Empty;
                 try
                 {
                     // Post keyword to server
@@ -341,6 +357,8 @@ namespace MainPrj.Util
                             DataPure.Instance.TempData.Employee_maintain = baseResp.Record.Employee_maintain;
                             DataPure.Instance.TempData.Agent_phone       = baseResp.Record.Agent_phone;
                             DataPure.Instance.TempData.Agent_address     = baseResp.Record.Agent_address;
+                            DataPure.Instance.TempData.Agent_province    = baseResp.Record.Agent_province;
+                            DataPure.Instance.TempData.Agent_district    = baseResp.Record.Agent_district;
                         }
                     }
                 }
@@ -1001,6 +1019,11 @@ namespace MainPrj.Util
                 }
             }
         }
+        /// <summary>
+        /// Update customer to server.
+        /// </summary>
+        /// <param name="model">Model</param>
+        /// <returns>Order id</returns>
         public static string UpdateOrderToServer(OrderModel model)
         {
             string retVal = string.Empty;
@@ -1013,8 +1036,10 @@ namespace MainPrj.Util
                     {
                         UpdateOrderModel updateModel = new UpdateOrderModel();
                         // Create data
-                        updateModel.Token = Properties.Settings.Default.UserToken;
-                        updateModel.Id = model.WebId;
+                        updateModel.Token        = Properties.Settings.Default.UserToken;
+                        updateModel.Id           = model.WebId;
+                        updateModel.Note         = model.Note;
+                        updateModel.Status       = (int)model.Status;
                         updateModel.Order_detail = new List<OrderDetailModel>();
                         foreach (ProductModel product in model.Products)
                         {
@@ -1105,6 +1130,11 @@ namespace MainPrj.Util
             }
             return retVal;
         }
+        /// <summary>
+        /// Create order to server.
+        /// </summary>
+        /// <param name="model">Model</param>
+        /// <returns>Order id</returns>
         public static string CreateOrderToServer(OrderModel model)
         {
             string retVal = string.Empty;
@@ -1117,8 +1147,10 @@ namespace MainPrj.Util
                     {
                         CreateOrderModel createModel = new CreateOrderModel();
                         // Create data
-                        createModel.Token = Properties.Settings.Default.UserToken;
+                        createModel.Token       = Properties.Settings.Default.UserToken;
                         createModel.Customer_id = model.Customer.Id;
+                        createModel.Note        = model.Note;
+                        createModel.Status      = (int)model.Status;
                         if (DataPure.Instance.Agent != null)
                         {
                             createModel.Agent_id = DataPure.Instance.Agent.Id;

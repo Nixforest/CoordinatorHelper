@@ -1,4 +1,5 @@
 ﻿using MainPrj.Model;
+using MainPrj.Model.Address;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -75,7 +76,57 @@ namespace MainPrj.Util
         {
             get { return currentChannel; }
             set { currentChannel = value; }
-        } 
+        }
+        /// <summary>
+        /// Get User role.
+        /// </summary>
+        /// <returns>User role, if data is invalid, return RoleType.ROLETYPE_NUM</returns>
+        public RoleType GetUserRole()
+        {
+            if (this.user != null)
+            {
+                return this.user.Role;
+            }
+            return RoleType.ROLETYPE_NUM;
+        }
+        /// <summary>
+        /// Check if user is in Accounting Agent Role.
+        /// </summary>
+        /// <returns>True if User is Accounting Agent, False otherwise</returns>
+        public bool IsAccountingAgentRole()
+        {
+            return GetUserRole().Equals(RoleType.ROLE_ACCOUNTING_AGENT);
+        }
+        /// <summary>
+        /// Get list of cities.
+        /// </summary>
+        /// <returns>Return list of cities in TempData</returns>
+        public List<CityModel> GetListCities()
+        {
+            if (tempData != null && (tempData.List_province != null))
+            {
+                return tempData.List_province;
+            }
+            else
+            {
+                return new List<CityModel>();
+            }
+        }
+        /// <summary>
+        /// Get list of streets.
+        /// </summary>
+        /// <returns>Return list of streets in TempData</returns>
+        public List<StreetModel> GetListStreets()
+        {
+            if ((tempData != null) && (tempData.List_street != null))
+            {
+                return tempData.List_street;
+            }
+            else
+            {
+                return new List<StreetModel>();
+            }
+        }
         #endregion
 
         #region Singleton Instance
@@ -88,9 +139,10 @@ namespace MainPrj.Util
         /// </summary>
         private DataPure()
         {
-            this.listCalls = new List<CallModel>();
+            this.listCalls  = new List<CallModel>();
             this.listOrders = new List<OrderModel>();
-            this.agent = new AgentModel();
+            this.agent      = new AgentModel();
+            this.tempData   = new TempDataModel();
         }
         /// <summary>
         /// Get instance

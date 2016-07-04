@@ -61,6 +61,7 @@ namespace MainPrj.View
             this.columnHeader12 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader13 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader14 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.btnCancelOrder = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnClear
@@ -258,7 +259,7 @@ namespace MainPrj.View
             this.columnHeader13,
             this.columnHeader14});
             this.listViewListOrder.ColumnTypes = ((System.Collections.Generic.List<System.Type>)(resources.GetObject("listViewListOrder.ColumnTypes")));
-            this.listViewListOrder.DoubleClickActivation = true;
+            this.listViewListOrder.DoubleClickActivation = false;
             this.listViewListOrder.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listViewListOrder.FullRowSelect = true;
             this.listViewListOrder.GridLines = true;
@@ -272,6 +273,7 @@ namespace MainPrj.View
             this.listViewListOrder.UseCompatibleStateImageBehavior = false;
             this.listViewListOrder.View = System.Windows.Forms.View.Details;
             this.listViewListOrder.SubItemEndEditing += new MainPrj.View.SubItemEndEditingEventHandler(this.listViewListOrder_SubItemEndEditing);
+            this.listViewListOrder.DoubleClick += new System.EventHandler(this.listViewListOrder_DoubleClick);
             // 
             // columnHeader1
             // 
@@ -337,6 +339,18 @@ namespace MainPrj.View
             this.columnHeader14.Text = "GHI CHÚ";
             this.columnHeader14.Width = 90;
             // 
+            // btnCancelOrder
+            // 
+            this.btnCancelOrder.Image = global::MainPrj.Properties.Resources.cancel_order;
+            this.btnCancelOrder.Location = new System.Drawing.Point(445, 6);
+            this.btnCancelOrder.Name = "btnCancelOrder";
+            this.btnCancelOrder.Size = new System.Drawing.Size(186, 39);
+            this.btnCancelOrder.TabIndex = 2;
+            this.btnCancelOrder.Text = "Hủy đơn hàng";
+            this.btnCancelOrder.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnCancelOrder.UseVisualStyleBackColor = true;
+            this.btnCancelOrder.Click += new System.EventHandler(this.btnCancelOrder_Click);
+            // 
             // ListOrderView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
@@ -352,6 +366,7 @@ namespace MainPrj.View
             this.Controls.Add(this.lblGasStove);
             this.Controls.Add(this.lblTotalGas);
             this.Controls.Add(this.label2);
+            this.Controls.Add(this.btnCancelOrder);
             this.Controls.Add(this.btnExportReport);
             this.Controls.Add(this.btnAddCylinder);
             this.Controls.Add(this.btnUpdateData);
@@ -406,5 +421,6 @@ namespace MainPrj.View
         private System.Windows.Forms.Label lblCylinder;
         private System.Windows.Forms.Label lblTotalPay;
         private System.Windows.Forms.Button btnExportReport;
+        private System.Windows.Forms.Button btnCancelOrder;
     }
 }

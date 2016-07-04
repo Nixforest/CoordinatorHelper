@@ -37,6 +37,26 @@ namespace MainPrj.Model
         protected List<CityModel> list_province;
         [DataMember(Name = "list_street", IsRequired = false)]
         protected List<StreetModel> list_street;
+        [DataMember(Name = "agent_province", IsRequired = false)]
+        protected string agent_province;
+        [DataMember(Name = "agent_district", IsRequired = false)]
+        protected string agent_district;
+        /// <summary>
+        /// District of agent.
+        /// </summary>
+        public string Agent_district
+        {
+            get { return agent_district; }
+            set { agent_district = value; }
+        }
+        /// <summary>
+        /// Provice of agent.
+        /// </summary>
+        public string Agent_province
+        {
+            get { return agent_province; }
+            set { agent_province = value; }
+        }
         /// <summary>
         /// List of streets.
         /// </summary>

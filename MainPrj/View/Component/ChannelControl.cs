@@ -64,15 +64,36 @@ namespace MainPrj.View
         /// <param name="address">Address</param>
         public void SetAddress(string address)
         {
+            //this.SetCity(DataPure.Instance.GetListCities());
+            //this.SetStreet(DataPure.Instance.GetListStreets());
             //this.tbxAddress.Text = address;
             string[] listAddress = address.Split(',');
             if (listAddress.Count() == 5)
             {
-                cbxCity.Text         = listAddress[4];
-                cbxDistrict.Text     = listAddress[3];
+                if (!String.IsNullOrEmpty(listAddress[4]))
+                {
+                    cbxCity.Text = listAddress[4];
+                }
+                if (!String.IsNullOrEmpty(listAddress[3]))
+                {
+                    cbxDistrict.Text = listAddress[3];
+                }
                 cbxWard.Text         = listAddress[2];
                 cbxStreet.Text       = listAddress[1];
                 tbxAddress.Text      = listAddress[0];
+            }
+            else if (listAddress.Count() == 4)
+            {
+                if (!String.IsNullOrEmpty(listAddress[3]))
+                {
+                    cbxCity.Text = listAddress[3];
+                }
+                if (!String.IsNullOrEmpty(listAddress[2]))
+                {
+                    cbxDistrict.Text = listAddress[2];
+                }
+                cbxWard.Text = listAddress[1];
+                cbxStreet.Text = listAddress[0];
             }
         }
         /// <summary>
@@ -91,7 +112,30 @@ namespace MainPrj.View
                 }
                 cbxCity.DataSource = items;
                 cbxCity.SelectedIndex = 0;
+                if (DataPure.Instance.Agent != null)
+                {
+                    if (!String.IsNullOrEmpty(DataPure.Instance.Agent.Agent_province))
+                    {
+                        cbxCity.SelectedValue = DataPure.Instance.Agent.Agent_province;
+                    }
+                    if (!String.IsNullOrEmpty(DataPure.Instance.Agent.Agent_district))
+                    {
+                        cbxDistrict.SelectedValue = DataPure.Instance.Agent.Agent_district;
+                    }
+                }
             }
+        }
+        public void SetCity(string city)
+        {
+            cbxCity.SelectedText = city;
+        }
+        /// <summary>
+        /// Get city string.
+        /// </summary>
+        /// <returns>Return city</returns>
+        public string GetCity()
+        {
+            return cbxCity.SelectedText != null ? cbxCity.SelectedText : string.Empty;
         }
         /// <summary>
         /// Set data for Street combobox.
@@ -105,11 +149,24 @@ namespace MainPrj.View
                 items.Add(new { Text = string.Empty, Value = string.Empty });
                 foreach (StreetModel item in streets)
                 {
-                    items.Add(new { Text = item.Name, Value = item.Id });
+                    string removeSign = CommonProcess.NormalizationString(item.Name);
+                    items.Add(new { Text = String.Format("{0} - {1}", removeSign, item.Name), Value = item.Id });
                 }
                 cbxStreet.DataSource = items;
                 cbxStreet.SelectedIndex = 0;
             }
+        }
+        public void SetStreet(string street)
+        {
+            cbxStreet.SelectedText = street;
+        }
+        /// <summary>
+        /// Get street string.
+        /// </summary>
+        /// <returns>Return street</returns>
+        public string GetStreet()
+        {
+            return cbxStreet.SelectedText != null ? cbxStreet.SelectedText : string.Empty;
         }
         /// <summary>
         /// Set list of phone number
@@ -214,8 +271,8 @@ namespace MainPrj.View
         {
             this.tbxCustomerName.Text  = String.Empty;
             this.tbxAddress.Text       = String.Empty;
-            this.cbxCity.Text          = String.Empty;
-            this.cbxDistrict.Text      = String.Empty;
+            //this.cbxCity.Text          = String.Empty;
+            //this.cbxDistrict.Text      = String.Empty;
             this.cbxWard.Text          = String.Empty;
             this.cbxStreet.Text        = String.Empty;
             this.tbxCustomerTel1.Text  = String.Empty;
@@ -452,10 +509,39 @@ namespace MainPrj.View
         {
             List<String> retVal = new List<string>();
             retVal.Add(tbxCustomerName.Text.Trim());
-            retVal.Add(cbxCity.SelectedValue.ToString());
-            retVal.Add(cbxDistrict.SelectedValue.ToString());
-            retVal.Add(cbxWard.SelectedValue.ToString());
-            retVal.Add(cbxStreet.SelectedValue.ToString());
+            string defaultVal = "0";
+            if (cbxCity.SelectedValue != null)
+            {
+                retVal.Add(cbxCity.SelectedValue.ToString());
+            }
+            else
+            {
+                retVal.Add(defaultVal);
+            }
+            if (cbxDistrict.SelectedValue != null)
+            {
+                retVal.Add(cbxDistrict.SelectedValue.ToString());
+            }
+            else
+            {
+                retVal.Add(defaultVal);
+            }
+            if (cbxWard.SelectedValue != null)
+            {
+                retVal.Add(cbxWard.SelectedValue.ToString());
+            }
+            else
+            {
+                retVal.Add(defaultVal);
+            }
+            if (cbxStreet.SelectedValue != null)
+            {
+                retVal.Add(cbxStreet.SelectedValue.ToString());
+            }
+            else
+            {
+                retVal.Add(defaultVal);
+            }
             retVal.Add(tbxAddress.Text.Trim());
             return retVal;
         }

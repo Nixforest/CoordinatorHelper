@@ -75,6 +75,7 @@
     <Compile Include="Model\AgentModel.cs" />
     <Compile Include="Model\BaseModel.cs" />
     <Compile Include="Model\BillPrintModel.cs" />
+    <Compile Include="Model\OrderStatus.cs" />
     <Compile Include="Model\CylinderModel.cs" />
     <Compile Include="Model\ListViewColumn\ListOrderColumns.cs" />
     <Compile Include="Model\ListViewColumn\PromoteColumns.cs" />
@@ -128,6 +129,12 @@
     </Compile>
     <Compile Include="View\Component\WordWrapListView.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="View\CancelOrderView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\CancelOrderView.Designer.cs">
+      <DependentUpon>CancelOrderView.cs</DependentUpon>
     </Compile>
     <Compile Include="View\HistoryView1.cs">
       <SubType>Form</SubType>
@@ -232,6 +239,9 @@
     <EmbeddedResource Include="View\Component\EditableListView.resx">
       <DependentUpon>EditableListView.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="View\CancelOrderView.resx">
+      <DependentUpon>CancelOrderView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\HistoryView1.resx">
       <DependentUpon>HistoryView1.cs</DependentUpon>
     </EmbeddedResource>
@@ -272,6 +282,7 @@
     <EmbeddedResource Include="View\_TestServer.resx">
       <DependentUpon>_TestServer.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="ClassDiagram1.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -377,6 +388,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\download-icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\cancel_order.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\new_Customer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\download_icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

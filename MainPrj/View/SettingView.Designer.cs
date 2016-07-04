@@ -92,6 +92,7 @@
             this.btnPrinterSetting = new System.Windows.Forms.Button();
             this.label27 = new System.Windows.Forms.Label();
             this.tbxBrand = new System.Windows.Forms.TextBox();
+            this.cbxTabColorChanged = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.nUDMainPort)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -679,6 +680,16 @@
             this.tbxBrand.Size = new System.Drawing.Size(229, 20);
             this.tbxBrand.TabIndex = 1;
             // 
+            // cbxTabColorChanged
+            // 
+            this.cbxTabColorChanged.AutoSize = true;
+            this.cbxTabColorChanged.Location = new System.Drawing.Point(202, 92);
+            this.cbxTabColorChanged.Name = "cbxTabColorChanged";
+            this.cbxTabColorChanged.Size = new System.Drawing.Size(115, 17);
+            this.cbxTabColorChanged.TabIndex = 6;
+            this.cbxTabColorChanged.Text = "Thay đổi màu tab?";
+            this.cbxTabColorChanged.UseVisualStyleBackColor = true;
+            // 
             // SettingView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -695,6 +706,7 @@
             this.Controls.Add(this.btnTabIncommingTextColor);
             this.Controls.Add(this.btnTabActiveBackgroundColor);
             this.Controls.Add(this.btnMissCallTextColor);
+            this.Controls.Add(this.cbxTabColorChanged);
             this.Controls.Add(this.chbTestingMode);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnSave);
@@ -811,5 +823,6 @@
         private System.Windows.Forms.Button btnPrinterSetting;
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.TextBox tbxBrand;
+        private System.Windows.Forms.CheckBox cbxTabColorChanged;
     }
 }

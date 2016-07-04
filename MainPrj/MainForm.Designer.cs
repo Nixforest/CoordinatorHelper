@@ -602,7 +602,7 @@
             // btnCreateCustomer
             // 
             this.btnCreateCustomer.Enabled = false;
-            this.btnCreateCustomer.Image = global::MainPrj.Properties.Resources._new;
+            this.btnCreateCustomer.Image = global::MainPrj.Properties.Resources.new_Customer;
             this.btnCreateCustomer.Location = new System.Drawing.Point(10, 618);
             this.btnCreateCustomer.Name = "btnCreateCustomer";
             this.btnCreateCustomer.Size = new System.Drawing.Size(180, 64);

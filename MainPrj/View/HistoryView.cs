@@ -16,26 +16,29 @@ namespace MainPrj.View
 {
     public partial class HistoryView : Form
     {
-        /// <summary>
-        /// List of data.
-        /// </summary>
-        private List<CallModel> listData = new List<CallModel>();
+        private List<CallModel> listTodayData = new List<CallModel>();
+        private string selectedId = String.Empty;
         /// <summary>
         /// List of data which search result.
         /// </summary>
-        private List<CallModel> listDataSearch = new List<CallModel>();
-
-        public List<CallModel> ListData
-        {
-            get { return listData; }
-            set { listData = value; }
-        }
+        private List<CallModel> listCurrentData = new List<CallModel>();
+        /// <summary>
+        /// Point of right click.
+        /// </summary>
         private Point rightClick;
+
+        /// <summary>
+        /// List of data.
+        /// </summary>
+        public List<CallModel> ListTodayData
+        {
+            get { return listTodayData; }
+            set { listTodayData = value; }
+        }
+
         /// <summary>
         /// Selected id.
         /// </summary>
-        private string selectedId = String.Empty;
-
         public string SelectedId
         {
             get { return selectedId; }
@@ -55,12 +58,14 @@ namespace MainPrj.View
         /// <param name="e">EventArgs</param>
         private void HistoryView_Load(object sender, EventArgs e)
         {
+            btnCreateOrder.Enabled = DataPure.Instance.IsAccountingAgentRole();
             //listData.Sort();
             //for (int i = listData.Count - 1; i >= 0; i--)
             //{
             //    this.listViewHistory.Items.Add(CreateListViewItem(listData[i], listData.Count - i));
             //}
-            ReloadListView(listData);
+            this.listCurrentData.AddRange(this.listTodayData);
+            ReloadListView(this.listCurrentData);
         }
 
         /// <summary>
@@ -135,11 +140,11 @@ namespace MainPrj.View
                                     listCalls.Add(callModel);
                                     // Add to member list
                                     //this.listData.Add(callModel);
-                                    this.listData.Insert(0, callModel);
+                                    this.listTodayData.Insert(0, callModel);
                                 }
                             }
                             // Show to list view
-                            ReloadListView(this.listData);
+                            ReloadListView(this.listTodayData);
                             //for (int i = listCalls.Count - 1; i >= 0; i--)
                             //{
                             //    this.listViewHistory.Items.Add(CreateListViewItem(listCalls[i], ++index));
@@ -247,11 +252,11 @@ namespace MainPrj.View
                     item.ForeColor = Properties.Settings.Default.ColorFinishCallText;
                     item.BackColor = Properties.Settings.Default.ColorFinishCallBackground;
                     // Update data
-                    for (int i = 0; i < this.listData.Count; i++)
+                    for (int i = 0; i < this.listTodayData.Count; i++)
                     {
-                        if (this.listData[i].Id.Equals(id))
+                        if (this.listTodayData[i].Id.Equals(id))
                         {
-                            this.listData[i].IsFinish = true;
+                            this.listTodayData[i].IsFinish = true;
                         }
                     }
                 }
@@ -271,12 +276,14 @@ namespace MainPrj.View
             if (this.listViewHistory.SelectedItems.Count > 0)
             {
                 string value = this.listViewHistory.SelectedItems[0].Tag.ToString();
-                for (int i = 0; i < this.listData.Count; i++)
+                for (int i = 0; i < this.listCurrentData.Count; i++)
                 {
-                    if (this.listData[i].Id.Equals(value))
+                    if (this.listCurrentData[i].Id.Equals(value))
                     {
-                        callModel = this.listData[i];
+                        callModel = this.listCurrentData[i];
                         customerView.GetChannel().SetIncommingPhone(callModel.Phone);
+                        customerView.GetChannel().SetCity(DataPure.Instance.TempData.List_province);
+                        customerView.GetChannel().SetStreet(DataPure.Instance.TempData.List_street);
                         CommonProcess.SetChannelInformation(customerView.GetChannel(), callModel.Customer);
                         break;
                     }
@@ -334,17 +341,30 @@ namespace MainPrj.View
         /// <param name="keyword">Keyword</param>
         private void SearchByKeyword(string keyword)
         {
-            this.listDataSearch.Clear();
+            this.listCurrentData.Clear();
             keyword = CommonProcess.NormalizationString(keyword).ToLower();
+            
+            List<CallModel> listResult = new List<CallModel>();
+            int dayNum = (dtpFilterTo.Value - dtpFilterFrom.Value).Days;
+            DateTime from = dtpFilterFrom.Value;
+            for (int i = 0; i <= dayNum; i++)
+            {
+                from = dtpFilterFrom.Value;
+                listResult.AddRange(CommonProcess.ReadHistoryByDate(from.AddDays(i)));
+            }
             if (!String.IsNullOrEmpty(keyword))
             {
-                foreach (CallModel item in this.listData)
+                foreach (CallModel item in listResult)
                 {
                     if (item.IsContainString(keyword))
                     {
-                        this.listDataSearch.Add(item);
+                        this.listCurrentData.Add(item);
                     }
                 }
+            }
+            else
+            {
+                this.listCurrentData.AddRange(listResult);
             }
             //listDataSearch.Sort();
             //this.listViewHistory.Items.Clear();
@@ -352,7 +372,7 @@ namespace MainPrj.View
             //{
             //    this.listViewHistory.Items.Add(CreateListViewItem(this.listDataSearch[i], this.listDataSearch.Count - i));
             //}
-            ReloadListView(listDataSearch);
+            ReloadListView(listCurrentData);
         }
         /// <summary>
         /// Handle when enter focus on Search textbox.
@@ -390,15 +410,22 @@ namespace MainPrj.View
         {
             tbxSearch.Text = Properties.Resources.SearchString;
             tbxSearch.ForeColor = SystemColors.GrayText;
-            dtpFilter.Value = System.DateTime.Now;
+            //dtpFilterFrom.Value = System.DateTime.Now;
             //SearchByKeyword(String.Empty);
-            this.listDataSearch.Clear();
+            this.listCurrentData.Clear();
             //this.listViewHistory.Items.Clear();
             //for (int i = listData.Count - 1; i >= 0; i--)
             //{
             //    this.listViewHistory.Items.Add(CreateListViewItem(listData[i], listData.Count - i));
             //}
-            ReloadListView(listData);
+            int dayNum = (dtpFilterTo.Value - dtpFilterFrom.Value).Days;
+            DateTime from = dtpFilterFrom.Value;
+            for (int i = 0; i <= dayNum; i++)
+            {
+                from = dtpFilterFrom.Value;
+                this.listCurrentData.AddRange(CommonProcess.ReadHistoryByDate(from.AddDays(i)));
+            }
+            ReloadListView(this.listCurrentData);
         }
         /// <summary>
         /// Handle when click on Listview
@@ -456,10 +483,43 @@ namespace MainPrj.View
         {
             CommonProcess.ShowInformMessageProcessing();
         }
-
-        private void dtpFilter_ValueChanged(object sender, EventArgs e)
+        /// <summary>
+        /// Handle when change From value.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void dtpFilterFrom_ValueChanged(object sender, EventArgs e)
         {
-            ReloadListView(CommonProcess.ReadHistoryByDate(dtpFilter.Value));
+            // Check if From value is greater than To value
+            if (dtpFilterFrom.Value > dtpFilterTo.Value)
+            {
+                dtpFilterTo.Value = dtpFilterFrom.Value;
+            }
+            string keyword = this.tbxSearch.Text.Trim();
+            if (this.tbxSearch.Text.Equals(Properties.Resources.SearchString))
+            {
+                keyword = string.Empty;
+            }
+            this.SearchByKeyword(keyword);
+        }
+        /// <summary>
+        /// Handle when change To value.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void dtpFilterTo_ValueChanged(object sender, EventArgs e)
+        {
+            // Check if From value is greater than To value
+            if (dtpFilterFrom.Value > dtpFilterTo.Value)
+            {
+                dtpFilterFrom.Value = dtpFilterTo.Value;
+            }
+            string keyword = this.tbxSearch.Text.Trim();
+            if (this.tbxSearch.Text.Equals(Properties.Resources.SearchString))
+            {
+                keyword = string.Empty;
+            }
+            this.SearchByKeyword(keyword);
         }
     }
 }

@@ -43,8 +43,8 @@ namespace MainPrj.Model
         private string webId;
         [DataMember(Name = "isUpdateToServer", IsRequired = false)]
         private bool isUpdateToServer;
-        [DataMember(Name = "isFinished", IsRequired = false)]
-        private bool isFinished;
+        [DataMember(Name = "status", IsRequired = false)]
+        private OrderStatus status;
 
         /// <summary>
         /// Constructor.
@@ -65,15 +65,15 @@ namespace MainPrj.Model
             note             = string.Empty;
             webId            = string.Empty;
             isUpdateToServer = true;
-            isFinished       = false;
+            status           = OrderStatus.ORDERSTATUS_NEW;
         }
         /// <summary>
         /// Flag check if this order is finished.
         /// </summary>
-        public bool IsFinished
+        public OrderStatus Status
         {
-            get { return isFinished; }
-            set { isFinished = value; }
+            get { return status; }
+            set { status = value; }
         }
         /// <summary>
         /// Flag check if object is updated to server.

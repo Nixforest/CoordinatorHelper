@@ -9,7 +9,7 @@ using System.Resources;
 [assembly: AssemblyTitle("MainPrj")]
 [assembly: AssemblyDescription("Phần mềm Hỗ trợ cho Điều phối - Kế toán trao đổi thông tin với Khách hàng")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Southern Petroleum - NguyenPT@spj.vn")]
+[assembly: AssemblyCompany("Southern Petroleum - NGUYENPT@SPJ.VN")]
 [assembly: AssemblyProduct("MainPrj")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
@@ -33,6 +33,6 @@ using System.Resources;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.3.0")]
-[assembly: AssemblyFileVersion("1.0.3.0")]
+[assembly: AssemblyVersion("1.0.4.0")]
+[assembly: AssemblyFileVersion("1.0.4.0")]
 [assembly: NeutralResourcesLanguageAttribute("vi-VN")]

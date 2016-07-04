@@ -136,17 +136,18 @@ namespace MainPrj.Model
             pdoc.DefaultPageSettings.PaperSize.Height = Properties.Settings.Default.BillSizeH;
             pdoc.DefaultPageSettings.PaperSize.Width  = Properties.Settings.Default.BillSizeW;
             pdoc.PrintPage += new PrintPageEventHandler(pdoc_PrintPage);
-            DialogResult result = pd.ShowDialog();
-            if (result == DialogResult.OK)
-            {
-                PrintPreviewDialog pp = new PrintPreviewDialog();
-                pp.Document = pdoc;
-                result = pp.ShowDialog();
-                if (result == DialogResult.OK)
-                {
-                    pdoc.Print();
-                }
-            }
+            //DialogResult result = pd.ShowDialog();
+            //if (result == DialogResult.OK)
+            //{
+            //    PrintPreviewDialog pp = new PrintPreviewDialog();
+            //    pp.Document = pdoc;
+            //    result = pp.ShowDialog();
+            //    if (result == DialogResult.OK)
+            //    {
+            //        pdoc.Print();
+            //    }
+            //}
+            pdoc.Print();
         }
         /// <summary>
         /// Handle print bill.

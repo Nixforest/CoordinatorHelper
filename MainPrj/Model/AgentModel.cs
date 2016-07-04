@@ -13,6 +13,26 @@ namespace MainPrj.Model
         private string phone;
         [DataMember(Name = "address", IsRequired = false)]
         private string address;
+        [DataMember(Name = "agent_province", IsRequired = false)]
+        protected string agent_province;
+        [DataMember(Name = "agent_district", IsRequired = false)]
+        protected string agent_district;
+        /// <summary>
+        /// District of agent.
+        /// </summary>
+        public string Agent_district
+        {
+            get { return agent_district; }
+            set { agent_district = value; }
+        }
+        /// <summary>
+        /// Provice of agent.
+        /// </summary>
+        public string Agent_province
+        {
+            get { return agent_province; }
+            set { agent_province = value; }
+        }
         /// <summary>
         /// Address.
         /// </summary>
@@ -34,11 +54,13 @@ namespace MainPrj.Model
         /// </summary>
         public AgentModel()
         {
-            this.Id      = string.Empty;
-            this.Name    = string.Empty;
-            this.Detail  = string.Empty;
-            this.phone   = string.Empty;
-            this.address = string.Empty;
+            this.Id             = string.Empty;
+            this.Name           = string.Empty;
+            this.Detail         = string.Empty;
+            this.phone          = string.Empty;
+            this.address        = string.Empty;
+            this.agent_province = string.Empty;
+            this.agent_district = string.Empty;
         }
         /// <summary>
         /// Copy constructor.
@@ -46,23 +68,28 @@ namespace MainPrj.Model
         /// <param name="model">Model to copy</param>
         public AgentModel(BaseModel model)
         {
-            this.Id      = model.Id;
-            this.Name    = model.Name;
-            this.Detail  = model.Detail;
-            this.phone   = string.Empty;
-            this.address = string.Empty;
+            this.Id             = model.Id;
+            this.Name           = model.Name;
+            this.Detail         = model.Detail;
+            this.phone          = string.Empty;
+            this.address        = string.Empty;
+            this.agent_province = string.Empty;
+            this.agent_district = string.Empty;
         }
 
         /// <summary>
         /// Constructor.
         /// </summary>
-        public AgentModel(string id, string name, string detail, string phone, string address)
+        public AgentModel(string id, string name, string detail, string phone, string address,
+            string agent_province, string agent_district)
         {
-            this.Id      = id;
-            this.Name    = name;
-            this.Detail  = detail;
-            this.phone   = phone;
-            this.address = address;
+            this.Id             = id;
+            this.Name           = name;
+            this.Detail         = detail;
+            this.phone          = phone;
+            this.address        = address;
+            this.agent_province = agent_province;
+            this.agent_district = agent_district;
         }
     }
 }

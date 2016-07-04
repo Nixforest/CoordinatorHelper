@@ -598,5 +598,17 @@ namespace MainPrj.Properties {
                 this["URLCreateCustomer"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IsTabColorChange {
+            get {
+                return ((bool)(this["IsTabColorChange"]));
+            }
+            set {
+                this["IsTabColorChange"] = value;
+            }
+        }
     }
 }

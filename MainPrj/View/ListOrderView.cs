@@ -40,6 +40,10 @@ namespace MainPrj.View
 
             foreach (OrderModel item in DataPure.Instance.ListOrders)
             {
+                if (item.Status.Equals(OrderStatus.ORDERSTATUS_CANCEL))
+                {
+                    continue;
+                }
                 // Total gas
                 foreach (ProductModel product in item.Products)
                 {
@@ -247,9 +251,12 @@ namespace MainPrj.View
                 null,               // Total pay
                 //typeof(TextBox),    
                 null,               // Deliver
-                typeof(ComboBox),   // Cylinder
-                typeof(ComboBox),   // Cylinder quantity
-                typeof(TextBox),    // Cylinder seri
+                //typeof(ComboBox),   // Cylinder
+                //typeof(ComboBox),   // Cylinder quantity
+                //typeof(TextBox),    // Cylinder seri
+                null,
+                null,
+                null,
                 typeof(TextBox),    // Note
             };
             this.listViewListOrder.SubItemBeginEditing += new SubItemEventHandler(listViewListOrder_BeginEditing);
@@ -360,9 +367,13 @@ namespace MainPrj.View
                 promoteStr = CommonProcess.FormatMoney(model.PromoteMoney);
             }
             arr[(int)ListOrderColumns.LISTORDER_COLUMN_PROMOTE]       = promoteStr;
-            if (model.IsFinished)
+            if (model.Status.Equals(OrderStatus.ORDERSTATUS_PAID))
             {
                 arr[(int)ListOrderColumns.LISTORDER_COLUMN_TOTALPAY] = CommonProcess.FormatMoney(model.TotalPay);
+            }
+            else if (model.Status.Equals(OrderStatus.ORDERSTATUS_CANCEL))
+            {
+                arr[(int)ListOrderColumns.LISTORDER_COLUMN_TOTALPAY] = Properties.Resources.Cancel;
             }
             else
             {
@@ -666,7 +677,15 @@ namespace MainPrj.View
                             {
                                 if (item.Id.Equals(id))
                                 {
-                                    item.Note = e.DisplayText;
+                                    if (!item.Note.Equals(e.DisplayText.Trim()))
+                                    {
+                                        item.Note = e.DisplayText;
+                                        string retId = CommonProcess.UpdateOrderToServer(item);
+                                        if (!String.IsNullOrEmpty(retId))
+                                        {
+                                            item.IsUpdateToServer = true;
+                                        }
+                                    }
                                     break;
                                 }
                             }
@@ -704,33 +723,63 @@ namespace MainPrj.View
         /// <param name="e">EventArgs</param>
         private void btnUpdateData_Click(object sender, EventArgs e)
         {
-            if ((this.listViewListOrder.SelectedItems.Count > 0)
-                && (!String.IsNullOrEmpty(this.listViewListOrder.SelectedItems[0].Tag.ToString())))
+            foreach (ListViewItem lvItem in this.listViewListOrder.Items)
             {
-                string id = this.listViewListOrder.SelectedItems[0].Tag.ToString();
-                foreach (OrderModel item in DataPure.Instance.ListOrders)
+                if (!String.IsNullOrEmpty(lvItem.Tag.ToString()))
                 {
-                    if (item.Id.Equals(id))
+                    string id = lvItem.Tag.ToString();
+                    foreach (OrderModel item in DataPure.Instance.ListOrders)
                     {
-                        string retId = CommonProcess.UpdateOrderToServer(item);
-                        if (!String.IsNullOrEmpty(retId))
+                        if (item.Id.Equals(id) && !item.IsUpdateToServer)
                         {
-                            CommonProcess.ShowInformMessage(Properties.Resources.UpdateOrderSuccess, MessageBoxButtons.OK);
+                            string retId = CommonProcess.UpdateOrderToServer(item);
+                            if (!String.IsNullOrEmpty(retId))
+                            {
+                                item.IsUpdateToServer = true;
+                                //CommonProcess.ShowInformMessage(Properties.Resources.UpdateOrderSuccess, MessageBoxButtons.OK);
+                            }
                         }
-                        item.IsUpdateToServer = true;
-                        LoadListView(DataPure.Instance.ListOrders);
-                        break;
                     }
                 }
             }
+            CommonProcess.ShowInformMessage(Properties.Resources.UpdateOrderSuccess, MessageBoxButtons.OK);
+            LoadListView(DataPure.Instance.ListOrders);
+            //if ((this.listViewListOrder.SelectedItems.Count > 0)
+            //    && (!String.IsNullOrEmpty(this.listViewListOrder.SelectedItems[0].Tag.ToString())))
+            //{
+            //    string id = this.listViewListOrder.SelectedItems[0].Tag.ToString();
+            //    foreach (OrderModel item in DataPure.Instance.ListOrders)
+            //    {
+            //        if (item.Id.Equals(id))
+            //        {
+            //            string retId = CommonProcess.UpdateOrderToServer(item);
+            //            if (!String.IsNullOrEmpty(retId))
+            //            {
+            //                CommonProcess.ShowInformMessage(Properties.Resources.UpdateOrderSuccess, MessageBoxButtons.OK);
+            //            }
+            //            item.IsUpdateToServer = true;
+            //            LoadListView(DataPure.Instance.ListOrders);
+            //            break;
+            //        }
+            //    }
+            //}
         }
 
+        /// <summary>
+        /// Handle when click Export Report button.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
         private void btnExportReport_Click(object sender, EventArgs e)
         {
             OrderReport report = new OrderReport();
             Dictionary<string, OrderDetailModel> listData = new Dictionary<string, OrderDetailModel>();
             foreach (OrderModel item in DataPure.Instance.ListOrders)
             {
+                if (item.Status.Equals(OrderStatus.ORDERSTATUS_CANCEL))
+                {
+                    continue;
+                }
                 foreach (ProductModel product in item.Products)
                 {
                     if (listData.Keys.Contains(product.Materials_no))
@@ -797,6 +846,27 @@ namespace MainPrj.View
             }
             report.ListData = listData;
             report.ShowDialog();
+        }
+        /// <summary>
+        /// Handle when click Cancel Order button
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void btnCancelOrder_Click(object sender, EventArgs e)
+        {
+            if (listViewListOrder.SelectedItems.Count > 0)
+            {
+                string id = listViewListOrder.SelectedItems[0].Tag.ToString();
+                CancelOrderView view = new CancelOrderView(id);
+                view.ShowDialog();
+                LoadListView(DataPure.Instance.ListOrders);
+                UpdateTotal();
+            }
+        }
+
+        private void listViewListOrder_DoubleClick(object sender, EventArgs e)
+        {
+            HandleFinishOrder();
         }
     }
 }

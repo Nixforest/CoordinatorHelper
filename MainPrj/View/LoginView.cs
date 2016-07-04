@@ -36,6 +36,7 @@ namespace MainPrj.View
         /// <param name="e">EventArgs</param>
         private void btnLogin_Click(object sender, EventArgs e)
         {
+            toolStripStatusLabel.Text = Properties.Resources.RequestingLogin;
             CommonProcess.RequestLogin(
                 tbxUsername.Text.Trim(),
                 tbxPassword.Text.Trim(), loginProgressChanged, loginCompleted);
@@ -47,66 +48,77 @@ namespace MainPrj.View
         /// <param name="e">UploadValuesCompletedEventArgs</param>
         private void loginCompleted(object sender, System.Net.UploadValuesCompletedEventArgs e)
         {
-            toolStripStatusLabel.Text = Properties.Resources.LoginSuccess;
-            toolStripProgressBar.Value = 0;
-            byte[] response = e.Result;
-            string respStr = String.Empty;
-            respStr = System.Text.Encoding.UTF8.GetString(response);
-            if (!String.IsNullOrEmpty(respStr))
+            if (e.Cancelled)
             {
-                DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(UserLoginResponseModel));
-                byte[] encodingBytes = null;
-                try
+                toolStripStatusLabel.Text = Properties.Resources.ErrorCause + "Hủy";
+            }
+            else if (e.Error != null)
+            {
+                toolStripStatusLabel.Text = Properties.Resources.ErrorCause + e.Error.Message;
+            }
+            else
+            {
+                toolStripStatusLabel.Text = Properties.Resources.LoginSuccess;
+                toolStripProgressBar.Value = 0;
+                byte[] response = e.Result;
+                string respStr = String.Empty;
+                respStr = System.Text.Encoding.UTF8.GetString(response);
+                if (!String.IsNullOrEmpty(respStr))
                 {
-                    // Encoding response data
-                    encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);
-                }
-                catch (System.Text.EncoderFallbackException)
-                {
-                    CommonProcess.ShowErrorMessage(Properties.Resources.EncodingError);
-                }
-                if (encodingBytes != null)
-                {
-                    MemoryStream msU = new MemoryStream(encodingBytes);
-                    UserLoginResponseModel baseResp = (UserLoginResponseModel)js.ReadObject(msU);
-                    if (baseResp != null)
+                    DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(UserLoginResponseModel));
+                    byte[] encodingBytes = null;
+                    try
                     {
-                        if (!String.IsNullOrEmpty(baseResp.Token))
+                        // Encoding response data
+                        encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);
+                    }
+                    catch (System.Text.EncoderFallbackException)
+                    {
+                        CommonProcess.ShowErrorMessage(Properties.Resources.EncodingError);
+                    }
+                    if (encodingBytes != null)
+                    {
+                        MemoryStream msU = new MemoryStream(encodingBytes);
+                        UserLoginResponseModel baseResp = (UserLoginResponseModel)js.ReadObject(msU);
+                        if (baseResp != null)
                         {
-                            Properties.Settings.Default.UserToken = baseResp.Token;
-                            Properties.Settings.Default.Save();
-                        }
-                        UserLoginResponseModel userResp = baseResp;
-                        if (userResp.Status.Equals("1"))
-                        {
-                            // Login success
-                            if (!String.IsNullOrEmpty(userResp.Token))
+                            if (!String.IsNullOrEmpty(baseResp.Token))
                             {
-                                // Save token
-                                Properties.Settings.Default.UserToken = userResp.Token;
+                                Properties.Settings.Default.UserToken = baseResp.Token;
                                 Properties.Settings.Default.Save();
                             }
-                            if (userResp.Record != null)
+                            UserLoginResponseModel userResp = baseResp;
+                            if (userResp.Status.Equals("1"))
                             {
-                                user = userResp.Record;
+                                // Login success
+                                if (!String.IsNullOrEmpty(userResp.Token))
+                                {
+                                    // Save token
+                                    Properties.Settings.Default.UserToken = userResp.Token;
+                                    Properties.Settings.Default.Save();
+                                }
+                                if (userResp.Record != null)
+                                {
+                                    user = userResp.Record;
+                                }
+                                if (userResp.User_id != null)
+                                {
+                                    user.User_id = userResp.User_id;
+                                }
+                                if (CommonProcess.IsValidNumber(userResp.Role_id))
+                                {
+                                    user.Role = (RoleType)int.Parse(userResp.Role_id);
+                                }
+                                if (!String.IsNullOrEmpty(userResp.Role_name))
+                                {
+                                    user.RoleStr = userResp.Role_name;
+                                }
+                                this.Close();
                             }
-                            if (userResp.User_id != null)
+                            else
                             {
-                                user.User_id = userResp.User_id;
+                                CommonProcess.ShowErrorMessage(userResp.Message);
                             }
-                            if (CommonProcess.IsValidNumber(userResp.Role_id))
-                            {
-                                user.Role = (RoleType)int.Parse(userResp.Role_id);
-                            }
-                            if (!String.IsNullOrEmpty(userResp.Role_name))
-                            {
-                                user.RoleStr = userResp.Role_name;
-                            }
-                            this.Close();
-                        }
-                        else
-                        {
-                            CommonProcess.ShowErrorMessage(userResp.Message);
                         }
                     }
                 }

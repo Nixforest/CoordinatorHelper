@@ -735,8 +735,8 @@ namespace MainPrj.View
                 printModel.Brand = Properties.Settings.Default.BillBrand;
                 printModel.Phone = DataPure.Instance.Agent.Phone;
                 printModel.CustomerName = DataPure.Instance.CustomerInfo != null ?
-                    String.Format("{0}-{1}", DataPure.Instance.CustomerInfo.Name,
-                    DataPure.Instance.CustomerInfo.ActivePhone) : String.Empty;
+                    String.Format("{0}-{1}", DataPure.Instance.CustomerInfo.ActivePhone,
+                    DataPure.Instance.CustomerInfo.Name) : String.Empty;
                 printModel.CustomerAddress = DataPure.Instance.CustomerInfo != null ? DataPure.Instance.CustomerInfo.Address : String.Empty;
                 printModel.AgentAddress    = DataPure.Instance.Agent.Address;
                 printModel.Products.AddRange(products);

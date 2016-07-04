@@ -43,31 +43,32 @@ namespace MainPrj.View
         /// <param name="e">EventArgs</param>
         private void btnSave_Click(object sender, EventArgs e)
         {
-            Properties.Settings.Default.UdpMainPort                 = (int)nUDMainPort.Value;
-            Properties.Settings.Default.ServerURL                   = tbxServerURL.Text;
-            Properties.Settings.Default.URLGetCustomerByPhone       = tbxURLGetCustomerByPhone.Text;
-            Properties.Settings.Default.PhoneListToken              = tbxPhoneSeparator.Text;
-            Properties.Settings.Default.PhoneKey                    = tbxKeyIncommingPhone.Text;
-            Properties.Settings.Default.TestingMode                 = chbTestingMode.Checked;
-            Properties.Settings.Default.URLGetCustomerByKeyword     = tbxURLGetCustomerByKeyword.Text;
-            Properties.Settings.Default.KeywordKey                  = tbxKeyKeyword.Text;
-            Properties.Settings.Default.URLUpdateCustomerPhone      = tbxURLUpdateCustomerPhone.Text;
-            Properties.Settings.Default.CustomerIdKey               = tbxKeyCustomerId.Text;
-            Properties.Settings.Default.HistoryFilePath             = tbxHistoryFilepath.Text;
-            Properties.Settings.Default.HistoryFileName             = tbxHistoryFilename.Text;
-            Properties.Settings.Default.CallIdFormat                = tbxCallIdFormat.Text;
-            Properties.Settings.Default.ColorMissCallText           = this.btnMissCallTextColor.BackColor;
-            Properties.Settings.Default.ColorFinishCallText         = this.btnFinishCallColor.ForeColor;
-            Properties.Settings.Default.ColorFinishCallBackground   = this.btnFinishCallColor.BackColor;
-            Properties.Settings.Default.TimeAutoCloseMsgBox         = (double)(this.nUDTimeAutoCloseMsgBox.Value * 1000);
-            Properties.Settings.Default.ColorTabActiveBackground    = this.btnTabActiveBackgroundColor.BackColor;
-            Properties.Settings.Default.ColorIncommingCallText      = this.btnTabIncommingTextColor.BackColor;
-            Properties.Settings.Default.ColorHandleCallText         = this.btnTabHandleCallTextColor.BackColor;
-            Properties.Settings.Default.ColorFinishCallTabText      = this.btnTabFinishCallTextColor.BackColor;
-            Properties.Settings.Default.PhoneCutLength              = (int)this.nUDPhoneCutLen.Value;
-            Properties.Settings.Default.ColorFoundKeywordText       = this.btnSearchResultText.BackColor;
-            Properties.Settings.Default.ColorFoundKeywordBackground = this.btnSearchResultBackground.BackColor;
+            Properties.Settings.Default.UdpMainPort                     = (int)nUDMainPort.Value;
+            Properties.Settings.Default.ServerURL                       = tbxServerURL.Text;
+            Properties.Settings.Default.URLGetCustomerByPhone           = tbxURLGetCustomerByPhone.Text;
+            Properties.Settings.Default.PhoneListToken                  = tbxPhoneSeparator.Text;
+            Properties.Settings.Default.PhoneKey                        = tbxKeyIncommingPhone.Text;
+            Properties.Settings.Default.TestingMode                     = chbTestingMode.Checked;
+            Properties.Settings.Default.URLGetCustomerByKeyword         = tbxURLGetCustomerByKeyword.Text;
+            Properties.Settings.Default.KeywordKey                      = tbxKeyKeyword.Text;
+            Properties.Settings.Default.URLUpdateCustomerPhone          = tbxURLUpdateCustomerPhone.Text;
+            Properties.Settings.Default.CustomerIdKey                   = tbxKeyCustomerId.Text;
+            Properties.Settings.Default.HistoryFilePath                 = tbxHistoryFilepath.Text;
+            Properties.Settings.Default.HistoryFileName                 = tbxHistoryFilename.Text;
+            Properties.Settings.Default.CallIdFormat                    = tbxCallIdFormat.Text;
+            Properties.Settings.Default.ColorMissCallText               = this.btnMissCallTextColor.BackColor;
+            Properties.Settings.Default.ColorFinishCallText             = this.btnFinishCallColor.ForeColor;
+            Properties.Settings.Default.ColorFinishCallBackground       = this.btnFinishCallColor.BackColor;
+            Properties.Settings.Default.TimeAutoCloseMsgBox             = (double)(this.nUDTimeAutoCloseMsgBox.Value * 1000);
+            Properties.Settings.Default.ColorTabActiveBackground        = this.btnTabActiveBackgroundColor.BackColor;
+            Properties.Settings.Default.ColorIncommingCallText          = this.btnTabIncommingTextColor.BackColor;
+            Properties.Settings.Default.ColorHandleCallText             = this.btnTabHandleCallTextColor.BackColor;
+            Properties.Settings.Default.ColorFinishCallTabText          = this.btnTabFinishCallTextColor.BackColor;
+            Properties.Settings.Default.PhoneCutLength                  = (int)this.nUDPhoneCutLen.Value;
+            Properties.Settings.Default.ColorFoundKeywordText           = this.btnSearchResultText.BackColor;
+            Properties.Settings.Default.ColorFoundKeywordBackground     = this.btnSearchResultBackground.BackColor;
             Properties.Settings.Default.BillBrand                       = this.tbxBrand.Text;
+            Properties.Settings.Default.IsTabColorChange                = this.cbxTabColorChanged.Checked;
             // Save setting
             Properties.Settings.Default.Save();
             // Close form
@@ -121,6 +122,7 @@ namespace MainPrj.View
             this.btnSearchResultBackground.BackColor   = Properties.Settings.Default.ColorFoundKeywordBackground;
             this.nUDPhoneCutLen.Value                  = Properties.Settings.Default.PhoneCutLength;
             this.tbxBrand.Text                         = Properties.Settings.Default.BillBrand;
+            this.cbxTabColorChanged.Checked            = Properties.Settings.Default.IsTabColorChange;
         }
         /// <summary>
         /// Handle when click on button Open file.

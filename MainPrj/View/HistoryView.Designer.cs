@@ -49,7 +49,9 @@
             this.toolStripMenuItemCopyPhone = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemMarkFinish = new System.Windows.Forms.ToolStripMenuItem();
             this.btnCreateOrder = new System.Windows.Forms.Button();
-            this.dtpFilter = new System.Windows.Forms.DateTimePicker();
+            this.dtpFilterFrom = new System.Windows.Forms.DateTimePicker();
+            this.dtpFilterTo = new System.Windows.Forms.DateTimePicker();
+            this.label2 = new System.Windows.Forms.Label();
             this.contextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -155,7 +157,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(702, 15);
+            this.label1.Location = new System.Drawing.Point(540, 15);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(92, 24);
             this.label1.TabIndex = 3;
@@ -218,15 +220,34 @@
             this.btnCreateOrder.UseVisualStyleBackColor = true;
             this.btnCreateOrder.Click += new System.EventHandler(this.btnCreateOrder_Click);
             // 
-            // dtpFilter
+            // dtpFilterFrom
             // 
-            this.dtpFilter.CustomFormat = "dd/MM/yyyy";
-            this.dtpFilter.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpFilter.Location = new System.Drawing.Point(800, 12);
-            this.dtpFilter.Name = "dtpFilter";
-            this.dtpFilter.Size = new System.Drawing.Size(130, 29);
-            this.dtpFilter.TabIndex = 3;
-            this.dtpFilter.ValueChanged += new System.EventHandler(this.dtpFilter_ValueChanged);
+            this.dtpFilterFrom.CustomFormat = "dd/MM/yyyy";
+            this.dtpFilterFrom.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpFilterFrom.Location = new System.Drawing.Point(634, 12);
+            this.dtpFilterFrom.Name = "dtpFilterFrom";
+            this.dtpFilterFrom.Size = new System.Drawing.Size(130, 29);
+            this.dtpFilterFrom.TabIndex = 3;
+            this.dtpFilterFrom.ValueChanged += new System.EventHandler(this.dtpFilterFrom_ValueChanged);
+            // 
+            // dtpFilterTo
+            // 
+            this.dtpFilterTo.CustomFormat = "dd/MM/yyyy";
+            this.dtpFilterTo.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpFilterTo.Location = new System.Drawing.Point(799, 12);
+            this.dtpFilterTo.Name = "dtpFilterTo";
+            this.dtpFilterTo.Size = new System.Drawing.Size(130, 29);
+            this.dtpFilterTo.TabIndex = 3;
+            this.dtpFilterTo.ValueChanged += new System.EventHandler(this.dtpFilterTo_ValueChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(767, 14);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(29, 24);
+            this.label2.TabIndex = 8;
+            this.label2.Text = "→";
             // 
             // HistoryView
             // 
@@ -234,7 +255,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
             this.ClientSize = new System.Drawing.Size(1318, 639);
-            this.Controls.Add(this.dtpFilter);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.dtpFilterTo);
+            this.Controls.Add(this.dtpFilterFrom);
             this.Controls.Add(this.btnClear);
             this.Controls.Add(this.tbxSearch);
             this.Controls.Add(this.label1);
@@ -279,6 +302,8 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemCopyPhone;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemMarkFinish;
         private System.Windows.Forms.Button btnCreateOrder;
-        private System.Windows.Forms.DateTimePicker dtpFilter;
+        private System.Windows.Forms.DateTimePicker dtpFilterFrom;
+        private System.Windows.Forms.DateTimePicker dtpFilterTo;
+        private System.Windows.Forms.Label label2;
     }
 }

@@ -178,7 +178,7 @@
             this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "FinishOrderView";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Thêm vỏ";
+            this.Text = "Hoàn tất đơn hàng";
             this.Load += new System.EventHandler(this.FinishOrderView_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FinishOrderView_KeyDown);
             this.ResumeLayout(false);

@@ -289,7 +289,7 @@
             this.columnHeader9,
             this.columnHeader10});
             this.listViewPromote.ColumnTypes = ((System.Collections.Generic.List<System.Type>)(resources.GetObject("listViewPromote.ColumnTypes")));
-            this.listViewPromote.DoubleClickActivation = true;
+            this.listViewPromote.DoubleClickActivation = false;
             this.listViewPromote.FullRowSelect = true;
             this.listViewPromote.GridLines = true;
             this.listViewPromote.Location = new System.Drawing.Point(12, 448);
@@ -330,7 +330,7 @@
             this.columnHeader5,
             this.columnHeader6});
             this.listViewProduct.ColumnTypes = ((System.Collections.Generic.List<System.Type>)(resources.GetObject("listViewProduct.ColumnTypes")));
-            this.listViewProduct.DoubleClickActivation = true;
+            this.listViewProduct.DoubleClickActivation = false;
             this.listViewProduct.FullRowSelect = true;
             this.listViewProduct.GridLines = true;
             this.listViewProduct.HideSelection = false;

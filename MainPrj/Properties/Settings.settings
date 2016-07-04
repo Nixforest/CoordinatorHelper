@@ -146,5 +146,8 @@
     <Setting Name="URLCreateCustomer" Type="System.String" Scope="User">
       <Value Profile="(Default)">/api/default/windowCustomerCreate</Value>
     </Setting>
+    <Setting Name="IsTabColorChange" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

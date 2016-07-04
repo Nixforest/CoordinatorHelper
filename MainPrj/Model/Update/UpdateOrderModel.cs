@@ -21,6 +21,26 @@ namespace MainPrj.Model.Update
         protected string id;
         [DataMember(Name = "order_detail", IsRequired = false)]
         protected List<OrderDetailModel> order_detail;
+        [DataMember(Name = "note", IsRequired = false)]
+        protected string note;
+        [DataMember(Name = "status", IsRequired = false)]
+        protected int status;
+        /// <summary>
+        /// Status of order.
+        /// </summary>
+        public int Status
+        {
+            get { return status; }
+            set { status = value; }
+        }
+        /// <summary>
+        /// Note of order.
+        /// </summary>
+        public string Note
+        {
+            get { return note; }
+            set { note = value; }
+        }
         /// <summary>
         /// Order details.
         /// </summary>
