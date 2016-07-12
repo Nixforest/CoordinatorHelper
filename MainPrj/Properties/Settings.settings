@@ -41,7 +41,7 @@
     <Setting Name="CustomerIdKey" Type="System.String" Scope="User">
       <Value Profile="(Default)">customer_id</Value>
     </Setting>
-    <Setting Name="HistoryFilePath" Type="System.String" Scope="User">
+    <Setting Name="SettingFilePath" Type="System.String" Scope="User">
       <Value Profile="(Default)">C:\CoordinatorHelper</Value>
     </Setting>
     <Setting Name="HistoryFileName" Type="System.String" Scope="User">
@@ -125,9 +125,6 @@
     <Setting Name="URLGetAgentInfo" Type="System.String" Scope="User">
       <Value Profile="(Default)">/api/default/windowGetInfoAgent</Value>
     </Setting>
-    <Setting Name="OrdersFilePath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">C:\CoordinatorHelper</Value>
-    </Setting>
     <Setting Name="OrdersFileName" Type="System.String" Scope="User">
       <Value Profile="(Default)">orders.txt</Value>
     </Setting>
@@ -148,6 +145,18 @@
     </Setting>
     <Setting Name="IsTabColorChange" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="ImageSize" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">55</Value>
+    </Setting>
+    <Setting Name="SettingProductFileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">products.txt</Value>
+    </Setting>
+    <Setting Name="SettingPromoteFileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">promotes.txt</Value>
+    </Setting>
+    <Setting Name="ImageFontSize" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">18</Value>
     </Setting>
   </Settings>
 </SettingsFile>

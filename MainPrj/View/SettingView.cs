@@ -24,19 +24,6 @@ namespace MainPrj.View
         }
 
         /// <summary>
-        /// Handle when click Advance button.
-        /// </summary>
-        /// <param name="sender">Sender</param>
-        /// <param name="e">EventArgs</param>
-        private void btnAdvance_Click(object sender, EventArgs e)
-        {
-            // Turn on control
-            nUDMainPort.ReadOnly = false;
-            nUDMainPort.Enabled = true;
-            chbTestingMode.Visible = true;
-        }
-
-        /// <summary>
         /// Handle when click on Save button.
         /// </summary>
         /// <param name="sender">Sender</param>
@@ -53,7 +40,7 @@ namespace MainPrj.View
             Properties.Settings.Default.KeywordKey                      = tbxKeyKeyword.Text;
             Properties.Settings.Default.URLUpdateCustomerPhone          = tbxURLUpdateCustomerPhone.Text;
             Properties.Settings.Default.CustomerIdKey                   = tbxKeyCustomerId.Text;
-            Properties.Settings.Default.HistoryFilePath                 = tbxHistoryFilepath.Text;
+            Properties.Settings.Default.SettingFilePath                 = tbxHistoryFilepath.Text;
             Properties.Settings.Default.HistoryFileName                 = tbxHistoryFilename.Text;
             Properties.Settings.Default.CallIdFormat                    = tbxCallIdFormat.Text;
             Properties.Settings.Default.ColorMissCallText               = this.btnMissCallTextColor.BackColor;
@@ -103,7 +90,7 @@ namespace MainPrj.View
             tbxURLUpdateCustomerPhone.Text             = Properties.Settings.Default.URLUpdateCustomerPhone;
             tbxKeyCustomerId.Text                      = Properties.Settings.Default.CustomerIdKey;
             tbxIP.Text                                 = CommonProcess.GetLocalIPAddress();
-            tbxHistoryFilepath.Text                    = Properties.Settings.Default.HistoryFilePath;
+            tbxHistoryFilepath.Text                    = Properties.Settings.Default.SettingFilePath;
             tbxHistoryFilename.Text                    = Properties.Settings.Default.HistoryFileName;
             tbxCallIdFormat.Text                       = Properties.Settings.Default.CallIdFormat;
             this.btnMissCallTextColor.BackColor        = Properties.Settings.Default.ColorMissCallText;
@@ -243,6 +230,19 @@ namespace MainPrj.View
                             name, status, isDefault, isNetworkPrinter) + "\n";
             }
             CommonProcess.ShowInformMessage(msg, MessageBoxButtons.OK);
+        }
+
+        /// <summary>
+        /// Handle when click Advance button.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void btnAccess_Click(object sender, EventArgs e)
+        {
+            // Turn on control
+            nUDMainPort.ReadOnly   = false;
+            nUDMainPort.Enabled    = true;
+            chbTestingMode.Visible = true;
         }
     }
 }

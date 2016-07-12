@@ -26,6 +26,19 @@ namespace MainPrj.Util
     public static class CommonProcess
     {
         /// <summary>
+        /// Material color.
+        /// </summary>
+        public static Dictionary<string, Color> MATERIAL_COLOR = new Dictionary<string, Color>()
+        {
+            { "xám", Color.Gray },
+            { "đỏ", Color.Red },
+            { "xanh", Color.Blue },
+            { "vàng", Color.YellowGreen },
+            { "ngọc", Color.Purple },
+            { "cam", Color.Orange },
+            { "đậm", Color.PaleGreen },
+        };
+        /// <summary>
         /// Background color for avatar image.
         /// </summary>
         private static List<string> AVATAR_BACKCOLOR = new List<string>
@@ -74,7 +87,7 @@ namespace MainPrj.Util
                     string type = "1";
                     if (DataPure.Instance.User != null)
                     {
-                        if (DataPure.Instance.User.Role.Equals(RoleType.ROLE_ACCOUNTING_AGENT))
+                        if (DataPure.Instance.IsAccountingAgentRole())
                         {
                             type = "2";
                         }
@@ -696,7 +709,7 @@ namespace MainPrj.Util
             if ((listData != null) && (listData.Count > 0))
             {
                 string date = listData[0].Id.Substring(0, 8);
-                string filepath = String.Format("{0}\\{1}_{2}", Properties.Settings.Default.HistoryFilePath,
+                string filepath = String.Format("{0}\\{1}_{2}", Properties.Settings.Default.SettingFilePath,
                     date, Properties.Settings.Default.HistoryFileName);
 
                 try
@@ -726,7 +739,7 @@ namespace MainPrj.Util
         {
             string date = System.DateTime.Now.ToString(Properties.Settings.Default.CallIdFormat).Substring(0, 8);
 
-            string filepath = String.Format("{0}\\{1}_{2}", Properties.Settings.Default.HistoryFilePath,
+            string filepath = String.Format("{0}\\{1}_{2}", Properties.Settings.Default.SettingFilePath,
                 date, Properties.Settings.Default.HistoryFileName);
             try
             {
@@ -782,7 +795,7 @@ namespace MainPrj.Util
             List<CallModel> result = new List<CallModel>();
             string date = dateValue.ToString(Properties.Settings.Default.CallIdFormat).Substring(0, 8);
 
-            string filepath = String.Format("{0}\\{1}_{2}", Properties.Settings.Default.HistoryFilePath,
+            string filepath = String.Format("{0}\\{1}_{2}", Properties.Settings.Default.SettingFilePath,
                 date, Properties.Settings.Default.HistoryFileName);
             try
             {
@@ -843,7 +856,7 @@ namespace MainPrj.Util
             {
                 string date = DataPure.Instance.ListOrders[0].Id.Substring(0, 8);
 
-                string filepath = String.Format("{0}\\{1}_{2}", Properties.Settings.Default.OrdersFilePath,
+                string filepath = String.Format("{0}\\{1}_{2}", Properties.Settings.Default.SettingFilePath,
                     date, Properties.Settings.Default.OrdersFileName);
                 try
                 {
@@ -872,7 +885,7 @@ namespace MainPrj.Util
         {
             string date = System.DateTime.Now.ToString(Properties.Settings.Default.CallIdFormat).Substring(0, 8);
 
-            string filepath = String.Format("{0}\\{1}_{2}", Properties.Settings.Default.OrdersFilePath,
+            string filepath = String.Format("{0}\\{1}_{2}", Properties.Settings.Default.SettingFilePath,
                 date, Properties.Settings.Default.OrdersFileName);
             try
             {
@@ -903,6 +916,184 @@ namespace MainPrj.Util
                                 if (model != null)
                                 {
                                     DataPure.Instance.ListOrders.Add(model);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+            catch (DirectoryNotFoundException)
+            {
+                HasError = false;
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage(Properties.Resources.ErrorCause + ex.Message);
+                HasError = true;
+            }
+        }
+        /// <summary>
+        /// Write setting.
+        /// </summary>
+        public static bool WriteSetting()
+        {
+            // Recent material
+            if (DataPure.Instance.ListRecentProductsImg.Count > 0)
+            {
+                string filepath = String.Format("{0}\\{1}", Properties.Settings.Default.SettingFilePath,
+                    Properties.Settings.Default.SettingProductFileName);
+                try
+                {
+                    using (StreamWriter sw = new StreamWriter(File.Open(filepath, System.IO.FileMode.Create)))
+                    {
+                        // Write file
+                        foreach (MaterialBitmap item in DataPure.Instance.ListRecentProductsImg.Values)
+                        {
+                            sw.WriteLine(item.ToString());
+                        }
+                        sw.Close();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ShowErrorMessage(Properties.Resources.ErrorCause + ex.Message);
+                    return false;
+                }
+            }
+            return true;
+        }
+        /// <summary>
+        /// Read setting.
+        /// </summary>
+        public static void ReadSetting()
+        {
+            // Recent material
+            string filepath = String.Format("{0}\\{1}", Properties.Settings.Default.SettingFilePath,
+                Properties.Settings.Default.SettingProductFileName);
+            try
+            {
+                DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(MaterialBitmap));
+                string line = string.Empty;
+                byte[] encodingBytes = null;
+                using (StreamReader sr = new StreamReader(File.Open(filepath, System.IO.FileMode.OpenOrCreate)))
+                {
+                    while (true)
+                    {
+                        line = sr.ReadLine();
+                        if (!String.IsNullOrEmpty(line))
+                        {
+                            try
+                            {
+                                // Encoding response data
+                                encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(line);
+                            }
+                            catch (System.Text.EncoderFallbackException)
+                            {
+                                ShowErrorMessage(Properties.Resources.EncodingError);
+                                HasError = true;
+                            }
+                            if (encodingBytes != null)
+                            {
+                                MemoryStream msU = new MemoryStream(encodingBytes);
+                                MaterialBitmap model = (MaterialBitmap)js.ReadObject(msU);
+                                if (model != null)
+                                {
+                                    model.Bitmap = CreateAvatar(model.Text, Properties.Settings.Default.ImageSize,
+                                        model.Color, Properties.Settings.Default.ImageFontSize);
+                                    DataPure.Instance.ListRecentProductsImg.Add(model.Model.Materials_no, model);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+            catch (DirectoryNotFoundException)
+            {
+                HasError = false;
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage(Properties.Resources.ErrorCause + ex.Message);
+                HasError = true;
+            }
+        }
+        /// <summary>
+        /// Write setting.
+        /// </summary>
+        public static bool WriteSettingPromote()
+        {
+            // Recent material
+            if (DataPure.Instance.ListRecentPromotesImg.Count > 0)
+            {
+                string filepath = String.Format("{0}\\{1}", Properties.Settings.Default.SettingFilePath,
+                    Properties.Settings.Default.SettingPromoteFileName);
+                try
+                {
+                    using (StreamWriter sw = new StreamWriter(File.Open(filepath, System.IO.FileMode.Create)))
+                    {
+                        // Write file
+                        foreach (MaterialBitmap item in DataPure.Instance.ListRecentPromotesImg.Values)
+                        {
+                            sw.WriteLine(item.ToString());
+                        }
+                        sw.Close();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ShowErrorMessage(Properties.Resources.ErrorCause + ex.Message);
+                    return false;
+                }
+            }
+            return true;
+        }
+        /// <summary>
+        /// Read setting.
+        /// </summary>
+        public static void ReadSettingPromote()
+        {
+            // Recent material
+            string filepath = String.Format("{0}\\{1}", Properties.Settings.Default.SettingFilePath,
+                Properties.Settings.Default.SettingPromoteFileName);
+            try
+            {
+                DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(MaterialBitmap));
+                string line = string.Empty;
+                byte[] encodingBytes = null;
+                using (StreamReader sr = new StreamReader(File.Open(filepath, System.IO.FileMode.OpenOrCreate)))
+                {
+                    while (true)
+                    {
+                        line = sr.ReadLine();
+                        if (!String.IsNullOrEmpty(line))
+                        {
+                            try
+                            {
+                                // Encoding response data
+                                encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(line);
+                            }
+                            catch (System.Text.EncoderFallbackException)
+                            {
+                                ShowErrorMessage(Properties.Resources.EncodingError);
+                                HasError = true;
+                            }
+                            if (encodingBytes != null)
+                            {
+                                MemoryStream msU = new MemoryStream(encodingBytes);
+                                MaterialBitmap model = (MaterialBitmap)js.ReadObject(msU);
+                                if (model != null)
+                                {
+                                    model.Bitmap = CreateAvatar(model.Text, Properties.Settings.Default.ImageSize,
+                                        model.Color, Properties.Settings.Default.ImageFontSize);
+                                    DataPure.Instance.ListRecentPromotesImg.Add(model.Model.Materials_no, model);
                                 }
                             }
                         }
@@ -1296,7 +1487,7 @@ namespace MainPrj.Util
         /// <param name="text">Text</param>
         /// <param name="size">size of avatar</param>
         /// <returns>Bitmap object</returns>
-        public static Bitmap CreateAvatar(string text, int size)
+        public static Bitmap CreateAvatar(string text, int size, int fontSize = 24)
         {
             Bitmap retVal = new Bitmap(size, size);
             if (AVATAR_BACKCOLOR.Count == 0)
@@ -1305,19 +1496,29 @@ namespace MainPrj.Util
             }
             var randomIdx = new Random().Next(0, AVATAR_BACKCOLOR.Count - 1);
             var bgColor = AVATAR_BACKCOLOR[randomIdx];
+            return CreateAvatar(retVal, text, size,
+                (Color)new ColorConverter().ConvertFromString("#" + bgColor), fontSize);
+        }
+        public static Bitmap CreateAvatar(string text, int size, Color color, int fontSize = 24)
+        {
+            Bitmap retVal = new Bitmap(size, size);
+            return CreateAvatar(retVal, text, size, color, fontSize);
+        }
+        public static Bitmap CreateAvatar(Bitmap bitmap, string text, int size, Color color, int fontSize = 24)
+        {
             var sf = new StringFormat();
             sf.Alignment = StringAlignment.Center;
             sf.LineAlignment = StringAlignment.Center;
-            var font = new Font("Calibri", 24, FontStyle.Bold, GraphicsUnit.Pixel);
-            var graphics = Graphics.FromImage(retVal);
+            var font = new Font("Calibri", fontSize, FontStyle.Bold, GraphicsUnit.Pixel);
+            var graphics = Graphics.FromImage(bitmap);
 
-            graphics.Clear((Color)new ColorConverter().ConvertFromString("#" + bgColor));
+            graphics.Clear(color);
             graphics.SmoothingMode = SmoothingMode.AntiAlias;
             graphics.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
             graphics.DrawString(text, font, new SolidBrush(Color.WhiteSmoke),
                 new RectangleF(0, 0, size, size), sf);
             graphics.Flush();
-            return retVal;
+            return bitmap;
         }
         /// <summary>
         /// Search material.
@@ -1380,6 +1581,75 @@ namespace MainPrj.Util
             nfi.CurrencyDecimalDigits = 0;
             retVal = money.ToString("C", nfi);
             return retVal;
+        }
+        /// <summary>
+        /// Clone Dictionary.
+        /// </summary>
+        /// <typeparam name="TKey"></typeparam>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="original"></param>
+        /// <returns></returns>
+        public static Dictionary<TKey, TValue> CloneDictionary<TKey, TValue>(
+            Dictionary<TKey, TValue> original) where TValue : ICloneable
+        {
+            Dictionary<TKey, TValue> ret = new Dictionary<TKey, TValue>(original.Count, original.Comparer);
+            foreach (KeyValuePair<TKey, TValue> entry in original)
+            {
+                ret.Add(entry.Key, (TValue)entry.Value.Clone());
+            }
+            return ret;
+        }
+        [DllImport("user32.dll")]
+        public static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+
+        public static int MakeLong(short lowPart, short highPart)
+        {
+            return (int)(((ushort)lowPart) | (uint)(highPart << 16));
+        }
+
+        public static void ListView_SetSpacing(ListView listview, short cx, short cy)
+        {
+            const int LVM_FIRST = 0x1000;
+            const int LVM_SETICONSPACING = LVM_FIRST + 53;
+            // http://msdn.microsoft.com/en-us/library/bb761176(VS.85).aspx
+            // minimum spacing = 4
+            SendMessage(listview.Handle, LVM_SETICONSPACING,
+            IntPtr.Zero, (IntPtr)MakeLong(cx, cy));
+
+            // http://msdn.microsoft.com/en-us/library/bb775085(VS.85).aspx
+            // DOESN'T WORK!
+            // can't find ListView_SetIconSpacing in dll comctl32.dll
+            //ListView_SetIconSpacing(listView.Handle, 5, 5);
+        }
+        public static void GetAgentExt()
+        {
+            using (WebClient client = new WebClient())
+            {
+                string respStr = String.Empty;
+                try
+                {
+                    // Post keyword to server
+                    byte[] response = client.UploadValues(
+                        Properties.Settings.Default.ServerURL + "/api/spj/getAgent",
+                        new System.Collections.Specialized.NameValueCollection()
+                    {
+                        { "key", "dc36cc6fb2db91e515372db1821b6275" },
+                        { "phone", "01684331552" }
+                    });
+                    // Get response
+                    respStr = System.Text.Encoding.UTF8.GetString(response);
+                }
+                catch (System.Net.WebException)
+                {
+                    ShowErrorMessage(Properties.Resources.InternetConnectionError);
+                    HasError = true;
+                }
+
+                if (!String.IsNullOrEmpty(respStr))
+                {
+                    Console.WriteLine(respStr);
+                }
+            }
         }
     }
 }

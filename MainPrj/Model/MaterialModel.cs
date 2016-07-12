@@ -1,7 +1,10 @@
-﻿using System;
+﻿using MainPrj.Util;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
 using System.Text;
 
 namespace MainPrj.Model
@@ -124,6 +127,29 @@ namespace MainPrj.Model
                 return true;
             }
             return false;
+        }
+        /// <summary>
+        /// Convert to string.
+        /// </summary>
+        /// <returns>String object</returns>
+        public override string ToString()
+        {
+            string retVal = string.Empty;
+            MemoryStream ms = new MemoryStream();
+            DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(MaterialModel));
+            try
+            {
+                js.WriteObject(ms, this);
+                ms.Position = 0;
+                var sr      = new StreamReader(ms);
+                retVal      = sr.ReadToEnd();
+                sr.Close();
+            }
+            catch (Exception ex)
+            {
+                CommonProcess.ShowErrorMessage(Properties.Resources.ErrorCause + ex.Message);
+            }
+            return retVal;
         }
     }
 }

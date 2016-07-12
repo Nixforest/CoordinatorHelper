@@ -31,7 +31,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingView));
             this.label1 = new System.Windows.Forms.Label();
             this.nUDMainPort = new System.Windows.Forms.NumericUpDown();
-            this.btnAdvance = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -93,6 +92,7 @@
             this.label27 = new System.Windows.Forms.Label();
             this.tbxBrand = new System.Windows.Forms.TextBox();
             this.cbxTabColorChanged = new System.Windows.Forms.CheckBox();
+            this.btnAccess = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.nUDMainPort)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -123,18 +123,9 @@
             this.nUDMainPort.Size = new System.Drawing.Size(203, 20);
             this.nUDMainPort.TabIndex = 1;
             // 
-            // btnAdvance
-            // 
-            this.btnAdvance.Location = new System.Drawing.Point(662, 600);
-            this.btnAdvance.Name = "btnAdvance";
-            this.btnAdvance.Size = new System.Drawing.Size(75, 23);
-            this.btnAdvance.TabIndex = 2;
-            this.btnAdvance.Text = "Nâng cao";
-            this.btnAdvance.UseVisualStyleBackColor = true;
-            this.btnAdvance.Click += new System.EventHandler(this.btnAdvance_Click);
-            // 
             // btnCancel
             // 
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.Location = new System.Drawing.Point(824, 600);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
@@ -477,6 +468,7 @@
             // 
             // btnFinishCallBackColor
             // 
+            this.btnFinishCallBackColor.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnFinishCallBackColor.Location = new System.Drawing.Point(257, 146);
             this.btnFinishCallBackColor.Name = "btnFinishCallBackColor";
             this.btnFinishCallBackColor.Size = new System.Drawing.Size(23, 23);
@@ -690,11 +682,22 @@
             this.cbxTabColorChanged.Text = "Thay đổi màu tab?";
             this.cbxTabColorChanged.UseVisualStyleBackColor = true;
             // 
+            // btnAccess
+            // 
+            this.btnAccess.Location = new System.Drawing.Point(662, 600);
+            this.btnAccess.Name = "btnAccess";
+            this.btnAccess.Size = new System.Drawing.Size(75, 23);
+            this.btnAccess.TabIndex = 8;
+            this.btnAccess.Text = "Nâng cao";
+            this.btnAccess.UseVisualStyleBackColor = true;
+            this.btnAccess.Click += new System.EventHandler(this.btnAccess_Click);
+            // 
             // SettingView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(906, 635);
+            this.Controls.Add(this.btnAccess);
             this.Controls.Add(this.btnSearchResultBackground);
             this.Controls.Add(this.btnSearchResultText);
             this.Controls.Add(this.btnFinishCallBackColor);
@@ -716,7 +719,6 @@
             this.Controls.Add(this.label17);
             this.Controls.Add(this.label25);
             this.Controls.Add(this.btnPrinterSetting);
-            this.Controls.Add(this.btnAdvance);
             this.Controls.Add(this.label16);
             this.Controls.Add(this.nUDPhoneCutLen);
             this.Controls.Add(this.nUDTimeAutoCloseMsgBox);
@@ -762,7 +764,6 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.NumericUpDown nUDMainPort;
-        private System.Windows.Forms.Button btnAdvance;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.GroupBox groupBox1;
@@ -824,5 +825,6 @@
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.TextBox tbxBrand;
         private System.Windows.Forms.CheckBox cbxTabColorChanged;
+        private System.Windows.Forms.Button btnAccess;
     }
 }

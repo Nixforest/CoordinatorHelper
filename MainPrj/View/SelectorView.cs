@@ -74,6 +74,7 @@ namespace MainPrj.View
                     if (item.Tag.ToString().Equals(previewId))
                     {
                         item.Selected = true;
+                        item.Focused = true;
                         this.listViewSelector.EnsureVisible(item.Index);
                         break;
                     }

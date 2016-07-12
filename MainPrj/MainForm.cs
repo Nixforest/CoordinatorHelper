@@ -305,7 +305,12 @@ namespace MainPrj
         private void toolStripMenuItemSetting_Click(object sender, EventArgs e)
         {
             SettingView setting = new SettingView();
-            setting.ShowDialog();
+            DialogResult result = setting.ShowDialog();
+            //if (result.Equals(DialogResult.OK))
+            {
+                // For test
+                TurnOnOffTestingMode(Properties.Settings.Default.TestingMode);
+            }
         }
         /// <summary>
         /// Handle when loading form
@@ -338,16 +343,10 @@ namespace MainPrj
 
             // For test
             TurnOnOffTestingMode(Properties.Settings.Default.TestingMode);
-            if (Properties.Settings.Default.TestingMode)
-            {
-                this.channelControlLine2.SetIncommingPhone("01869194542");
-                this.channelControlLine3.SetIncommingPhone("01674816039");
-                this.channelControlLine4.SetIncommingPhone("0988180386");
-                this.chbListenFromCard.Checked = Properties.Settings.Default.ListeningCardMode;
-                this.chbUpdatePhone.Checked    = Properties.Settings.Default.UpdatePhone;
-            }
             CommonProcess.ReadListOrders();
             CommonProcess.ReadHistory();
+            CommonProcess.ReadSetting();
+            CommonProcess.ReadSettingPromote();
         }
         /// <summary>
         /// Update data to channel tab.
@@ -451,27 +450,205 @@ namespace MainPrj
         /// <param name="e">EventArgs</param>
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            string phone = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel).GetIncommingPhone();
-            int n = 0;
-            // Get incomming number information
-            if (!String.IsNullOrEmpty(phone) && int.TryParse(phone, out n))
-            {
-                // Insert value into current channel
-                try
-                {
-                    ChannelControl tab = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel);
-                    tab.SetIncommingPhone(phone);
-                    // Request server and update data from server
-                    UpdateData(phone, (int)CardDataStatus.CARDDATA_RINGING, DataPure.Instance.CurrentChannel);
-                }
-                catch (ArgumentOutOfRangeException)
-                {
-                    CommonProcess.ShowErrorMessage(Properties.Resources.ArgumentOutOfRange);
-                }
-            }
+            #region Test get customer information
+            //string phone = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel).GetIncommingPhone();
+            //int n = 0;
+            //// Get incomming number information
+            //if (!String.IsNullOrEmpty(phone) && int.TryParse(phone, out n))
+            //{
+            //    // Insert value into current channel
+            //    try
+            //    {
+            //        ChannelControl tab = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel);
+            //        tab.SetIncommingPhone(phone);
+            //        // Request server and update data from server
+            //        UpdateData(phone, (int)CardDataStatus.CARDDATA_RINGING, DataPure.Instance.CurrentChannel);
+            //    }
+            //    catch (ArgumentOutOfRangeException)
+            //    {
+            //        CommonProcess.ShowErrorMessage(Properties.Resources.ArgumentOutOfRange);
+            //    }
+            //} 
+            #endregion
             //_TestServer test = new _TestServer();
             //test.ShowDialog();
+            //CommonProcess.GetAgentExt();
+
+            #region Obtaining the device list
+            //IList<LivePacketDevice> allDevices = LivePacketDevice.AllLocalMachine;
+            //if (allDevices.Count == 0)
+            //{
+            //    CommonProcess.ShowInformMessage("No interfaces found! Make sure WinPcap is installed.", MessageBoxButtons.OK);
+            //}
+            //string msg = string.Empty;
+            //for (int i = 0; i < allDevices.Count; i++)
+            //{
+            //    LivePacketDevice device = allDevices[i];
+            //    msg = String.Format("{0}{1}. {2}", msg, (i + 1), device.Name);
+            //    if (device.Description != null)
+            //    {
+            //        msg = String.Format("{0} ({1})\n", msg, device.Description);
+            //    }
+            //    else
+            //    {
+            //        msg = String.Format("{0} (No description available)\n", msg);
+            //    }
+            //}
+            //CommonProcess.ShowInformMessage(msg, MessageBoxButtons.OK);
+            #endregion
+            #region Obtaining advanced information about installed devices
+            //IList<LivePacketDevice> allDevices = LivePacketDevice.AllLocalMachine;
+            //string msg = string.Empty;
+            //for (int i = 0; i < allDevices.Count; i++)
+            //{
+            //    msg += DevicePrint(allDevices[i]) + "\n";
+            //}
+            //CommonProcess.ShowInformMessage(msg, MessageBoxButtons.OK);
+            #endregion
+            #region Opening an adapter and capturing the packets
+            //IList<LivePacketDevice> allDevices = LivePacketDevice.AllLocalMachine;
+            //if (allDevices.Count == 0)
+            //{
+            //    Console.WriteLine("No interfaces found! Make sure WinPcap is installed.");
+            //    return;
+            //}
+            //for (int i = 0; i < allDevices.Count; i++)
+            //{
+            //    LivePacketDevice device = allDevices[i];
+            //    Console.WriteLine(String.Format("{0}. {1}", (i + 1), device.Name));
+            //    if (device.Description != null)
+            //    {
+            //        Console.WriteLine(String.Format("({0})", device.Description));
+            //    }
+            //    else
+            //    {
+            //        Console.WriteLine(String.Format("(No description available)"));
+            //    }
+            //}
+            //int deviceIndex = 2;
+            ////do
+            ////{
+            ////    Console.WriteLine("Enter the interface number (1-" + allDevices.Count + "): ");
+            ////    string deviceIndexString = Console.ReadLine();
+            ////    if (!int.TryParse(deviceIndexString, out deviceIndex)
+            ////        || (deviceIndex < 1) || (deviceIndex > allDevices.Count))
+            ////    {
+            ////        deviceIndex = 0;
+            ////    }
+            ////} while (deviceIndex == 0);
+
+            //// Take the selected adapter
+            //PacketDevice selectedDevice = allDevices[deviceIndex - 1];
+
+            //using (PacketCommunicator communicator = selectedDevice.Open(65536, PacketDeviceOpenAttributes.Promiscuous, 1000))
+            //{
+            //    Console.WriteLine("Listening on " + selectedDevice.Description + "...");
+            //    communicator.ReceivePackets(0, PacketHandler);
+            //}
+            #endregion
+            #region Capturing the packets without the callback
+            //IList<LivePacketDevice> allDevices = LivePacketDevice.AllLocalMachine;
+            //if (allDevices.Count == 0)
+            //{
+            //    Console.WriteLine("No interfaces found! Make sure WinPcap is installed.");
+            //    return;
+            //}
+            //for (int i = 0; i < allDevices.Count; i++)
+            //{
+            //    LivePacketDevice device = allDevices[i];
+            //    Console.WriteLine(String.Format("{0}. {1}", (i + 1), device.Name));
+            //    if (device.Description != null)
+            //    {
+            //        Console.WriteLine(String.Format("({0})", device.Description));
+            //    }
+            //    else
+            //    {
+            //        Console.WriteLine(String.Format("(No description available)"));
+            //    }
+            //}
+            //int deviceIndex = 2;
+            ////do
+            ////{
+            ////    Console.WriteLine("Enter the interface number (1-" + allDevices.Count + "): ");
+            ////    string deviceIndexString = Console.ReadLine();
+            ////    if (!int.TryParse(deviceIndexString, out deviceIndex)
+            ////        || (deviceIndex < 1) || (deviceIndex > allDevices.Count))
+            ////    {
+            ////        deviceIndex = 0;
+            ////    }
+            ////} while (deviceIndex == 0);
+
+            //// Take the selected adapter
+            //PacketDevice selectedDevice = allDevices[deviceIndex - 1];
+            //PacketCommunicator communicator = selectedDevice.Open(65536, PacketDeviceOpenAttributes.Promiscuous, 1000);
+            //BerkeleyPacketFilter filter = communicator.CreateFilter("sip");
+            //communicator.SetFilter(filter);
+            ////using (communicator = selectedDevice.Open(65536, PacketDeviceOpenAttributes.Promiscuous, 1000))
+            //{
+            //    Console.WriteLine("Listening on " + selectedDevice.Description + "...");
+            //    Packet packet;
+            //    do
+            //    {
+            //        PacketCommunicatorReceiveResult result = communicator.ReceivePacket(out packet);
+            //        switch (result)
+            //        {
+            //            case PacketCommunicatorReceiveResult.BreakLoop:
+            //                break;
+            //            case PacketCommunicatorReceiveResult.Eof:
+            //                break;
+            //            case PacketCommunicatorReceiveResult.None:
+            //                break;
+            //            case PacketCommunicatorReceiveResult.Ok:
+            //                Console.WriteLine(packet.Timestamp.ToString("yyyyMMdd hh:mm:ss.fff") + " length: " + packet.Length);
+            //                break;
+            //            case PacketCommunicatorReceiveResult.Timeout:
+            //                continue;
+            //            default:
+            //                throw new InvalidOperationException("The result " + result + " should never be reached here.");
+            //        }
+            //    } while (true);
+            //}
+            #endregion
         }
+        #region Opening an adapter and capturing the packets
+        //private void PacketHandler(Packet packet)
+        //{
+        //    Console.WriteLine(packet.Timestamp.ToString("yyyyMMdd hh:mm:ss.fff") + " length: " + packet.Length);
+        //}
+        #endregion
+
+        #region Obtaining advanced information about installed devices
+        //private string DevicePrint(IPacketDevice device)
+        //{
+        //    string msg = string.Empty;
+        //    msg = String.Format("{0}\n", device.Name);
+        //    if (device.Description != null)
+        //    {
+        //        msg += "\tDescription: " + device.Description + "\n";
+        //    }
+        //    msg += "\tLoopback: " + (((device.Attributes & DeviceAttributes.Loopback) == DeviceAttributes.Loopback) ? "yes" : "no") + "\n";
+        //    foreach (DeviceAddress address in device.Addresses)
+        //    {
+        //        if (address.Address != null)
+        //        {
+        //            msg += "\tAddress: " + address.Address + "\n";
+        //        }
+        //        if (address.Netmask != null)
+        //        {
+        //            msg += "\tNetmask: \n\t" + address.Netmask + "\n";
+        //        }
+        //        if (address.Broadcast != null)
+        //        {
+        //            msg += "\tBroadcast: \n\t" + address.Broadcast + "\n";
+        //        }
+        //        if (address.Destination != null)
+        //        {
+        //            msg += "\tDestination: \n\t" + address.Destination + "\n";
+        //        }
+        //    }
+        //    return msg;
+        //}
+        #endregion
         /// <summary>
         /// Setting ON/OFF testing control.
         /// </summary>
@@ -482,6 +659,15 @@ namespace MainPrj
             tbxLog.Visible            = onoff;
             chbListenFromCard.Visible = onoff;
             chbUpdatePhone.Visible    = onoff;
+
+            if (onoff)
+            {
+                this.channelControlLine2.SetIncommingPhone("01869194542");
+                this.channelControlLine3.SetIncommingPhone("01674816039");
+                this.channelControlLine4.SetIncommingPhone("0988180386");
+                this.chbListenFromCard.Checked = Properties.Settings.Default.ListeningCardMode;
+                this.chbUpdatePhone.Checked = Properties.Settings.Default.UpdatePhone;
+            }
         }
         /// <summary>
         /// Handle when click Create order button
@@ -613,10 +799,28 @@ namespace MainPrj
                 switch (role)
                 {
                     case RoleType.ROLE_ACCOUNTING_AGENT:
-                        OrderView order = new OrderView();
-                        order.Show();
+                        OrderView order = new OrderView(DataPure.Instance.CustomerInfo);
+                        order.ShowDialog();
                         break;
                     case RoleType.ROLE_DIEU_PHOI:
+                        List<SelectorModel> listSelector = new List<SelectorModel>();
+                        foreach (SelectorModel item in DataPure.Instance.GetListAgents())
+                        {
+                            listSelector.Add((SelectorModel)item.Clone());
+                        }
+                        listSelector.Sort();
+                        
+                        SelectorView selectorView = new SelectorView();
+                        // Set data
+                        selectorView.ListData     = listSelector;
+                        // Set title
+                        selectorView.Text         = Properties.Resources.SelectorTitleAgent;
+                        // Set header text
+                        selectorView.SetHeaderText(SelectorColumns.SELECTOR_COLUMN_ADDRESS, string.Empty);
+                        // Set default selection
+                        selectorView.SetSelection(DataPure.Instance.CustomerInfo.Agent_id);
+                        // Show dialog
+                        selectorView.ShowDialog();
                         break;
                     default:
                         break;
@@ -956,11 +1160,21 @@ namespace MainPrj
             this.toolStripMenuItemLogin.Enabled = false;
             this.toolStripMenuItemLogout.Enabled = true;
             // Update button enable
-            btnCreateOrder.Enabled    = DataPure.Instance.IsAccountingAgentRole();
-            btnOrderList.Enabled      = DataPure.Instance.IsAccountingAgentRole();
-            btnCreateCustomer.Enabled = DataPure.Instance.IsAccountingAgentRole();
+            btnCreateOrder.Enabled       = DataPure.Instance.IsAccountingAgentRole() || DataPure.Instance.IsCoordinatorRole();
+            btnOrderList.Enabled         = DataPure.Instance.IsAccountingAgentRole();
+            btnCreateCustomer.Enabled    = DataPure.Instance.IsAccountingAgentRole();
+            coordinatorOrderView.Enabled = DataPure.Instance.IsCoordinatorRole();
             CommonProcess.RequestTempData(reqTempDataProgressChanged, reqTempDataCompleted);
             pbxAvatar.Image = CommonProcess.CreateAvatar(avatarString, pbxAvatar.Size.Height);
+
+            Properties.Settings.Default.IsTabColorChange = DataPure.Instance.IsCoordinatorRole();
+            // Save setting
+            Properties.Settings.Default.Save();
+            if (Properties.Settings.Default.IsTabColorChange)
+            {
+                this.mainTabControl.DrawMode = TabDrawMode.OwnerDrawFixed;
+                this.mainTabControl.DrawItem += mainTabControl_DrawItem;
+            }
         }
         /// <summary>
         /// Request temp data completed event handler.
@@ -1032,7 +1246,7 @@ namespace MainPrj
                         // Update data
                         if (isNotFirstTime)
                         {
-                            listEmployee = new List<SelectorModel>(DataPure.Instance.TempData.Employee_maintain);
+                            listEmployee = new List<SelectorModel>(DataPure.Instance.GetListDelivers());
                         }
                         DataPure.Instance.TempData = baseResp.Record;
                         timer.Stop();
@@ -1044,7 +1258,7 @@ namespace MainPrj
                         {
                             if (listEmployee != null)
                             {
-                                DataPure.Instance.TempData.Employee_maintain = listEmployee.ToArray();
+                                DataPure.Instance.TempData.Employee_maintain = listEmployee;
                             }
                         }
                         else
@@ -1066,14 +1280,14 @@ namespace MainPrj
             if (!isNotFirstTime)
             {
                 // Select agent if user role is Accounting agent
-                if (DataPure.Instance.User.Role.Equals(RoleType.ROLE_ACCOUNTING_AGENT))
+                if (DataPure.Instance.IsAccountingAgentRole())
                 {
                     SelectAgent();
                 }
                 ReLocateLabel();
             }
             // Update address data
-            if (DataPure.Instance.User.Role.Equals(RoleType.ROLE_ACCOUNTING_AGENT))
+            if (DataPure.Instance.IsAccountingAgentRole())
             {
                 if (DataPure.Instance.TempData != null)
                 {
@@ -1223,10 +1437,11 @@ namespace MainPrj
             lblAgent.Text    = Properties.Resources.Agent;
             lblAgent.Left    = Properties.Settings.Default.AgentLabelPosX;
             // Update button enable
-            btnCreateOrder.Enabled    = false;
-            btnOrderList.Enabled      = false;
-            btnCreateCustomer.Enabled = false;
-            DataPure.Instance.Agent = null;
+            btnCreateOrder.Enabled       = false;
+            btnOrderList.Enabled         = false;
+            btnCreateCustomer.Enabled    = false;
+            DataPure.Instance.Agent      = null;
+            coordinatorOrderView.Enabled = false;
         }
         /// <summary>
         /// Handle list order
@@ -1287,6 +1502,16 @@ namespace MainPrj
                 toolStripProgressBarReqServer.Value = 0;
                 reqTempDataCompleted(e, true);
             }
+        }
+        /// <summary>
+        /// Handle when click on 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void toolStripMenuItemWareHouse_Click(object sender, EventArgs e)
+        {
+            WareHouseView view = new WareHouseView();
+            view.ShowDialog();
         }
     }
 }

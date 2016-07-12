@@ -41,6 +41,16 @@ namespace MainPrj.Model
         private string agencyNearest;
         [DataMember(Name = "activePhone", IsRequired = false)]
         private string activePhone;
+        [DataMember(Name = "agent_id", IsRequired = false)]
+        private string agent_id;
+        /// <summary>
+        /// Agent id.
+        /// </summary>
+        public string Agent_id
+        {
+            get { return agent_id; }
+            set { agent_id = value; }
+        }
         /// <summary>
         /// Id.
         /// </summary>

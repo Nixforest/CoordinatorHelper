@@ -75,6 +75,7 @@
     <Compile Include="Model\AgentModel.cs" />
     <Compile Include="Model\BaseModel.cs" />
     <Compile Include="Model\BillPrintModel.cs" />
+    <Compile Include="Model\MaterialBitmap.cs" />
     <Compile Include="Model\OrderStatus.cs" />
     <Compile Include="Model\CylinderModel.cs" />
     <Compile Include="Model\ListViewColumn\ListOrderColumns.cs" />
@@ -126,6 +127,12 @@
     </Compile>
     <Compile Include="View\Component\ChannelControl.Designer.cs">
       <DependentUpon>ChannelControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Component\CoordinatorOrderView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Component\CoordinatorOrderView.Designer.cs">
+      <DependentUpon>CoordinatorOrderView.cs</DependentUpon>
     </Compile>
     <Compile Include="View\Component\WordWrapListView.cs">
       <SubType>Component</SubType>
@@ -211,6 +218,12 @@
     <Compile Include="View\SettingView.Designer.cs">
       <DependentUpon>SettingView.cs</DependentUpon>
     </Compile>
+    <Compile Include="View\WareHouseView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\WareHouseView.Designer.cs">
+      <DependentUpon>WareHouseView.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\_TestServer.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -235,6 +248,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\Component\ChannelControl.resx">
       <DependentUpon>ChannelControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Component\CoordinatorOrderView.resx">
+      <DependentUpon>CoordinatorOrderView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\Component\EditableListView.resx">
       <DependentUpon>EditableListView.cs</DependentUpon>
@@ -278,6 +294,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\SettingView.resx">
       <DependentUpon>SettingView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\WareHouseView.resx">
+      <DependentUpon>WareHouseView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\_TestServer.resx">
       <DependentUpon>_TestServer.cs</DependentUpon>
@@ -397,6 +416,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\download_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\warehouse.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

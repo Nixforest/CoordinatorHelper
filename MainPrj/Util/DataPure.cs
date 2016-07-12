@@ -2,6 +2,7 @@
 using MainPrj.Model.Address;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 
@@ -13,13 +14,31 @@ namespace MainPrj.Util
     public class DataPure
     {
         #region Data members
-        private int currentChannel          = 0;
-        private TempDataModel tempData      = null;
-        private UserLoginModel user         = null;
-        private List<CallModel> listCalls   = null;
-        private CustomerModel customerInfo  = null;
-        private AgentModel agent            = null;
-        private List<OrderModel> listOrders = null;
+        private int currentChannel                                       = 0;
+        private TempDataModel tempData                                   = null;
+        private UserLoginModel user                                      = null;
+        private List<CallModel> listCalls                                = null;
+        private CustomerModel customerInfo                               = null;
+        private AgentModel agent                                         = null;
+        private List<OrderModel> listOrders                              = null;
+        private Dictionary<string, MaterialBitmap> listRecentProductsImg = null;
+        private Dictionary<string, MaterialBitmap> listRecentPromotesImg = null;
+        /// <summary>
+        /// List of recent promtes (BITMAP.)
+        /// </summary>
+        public Dictionary<string, MaterialBitmap> ListRecentPromotesImg
+        {
+            get { return listRecentPromotesImg; }
+            set { listRecentPromotesImg = value; }
+        }
+        /// <summary>
+        /// List of recent products (BITMAP).
+        /// </summary>
+        public Dictionary<string, MaterialBitmap> ListRecentProductsImg
+        {
+            get { return listRecentProductsImg; }
+            set { listRecentProductsImg = value; }
+        }
         /// <summary>
         /// List of orders.
         /// </summary>
@@ -65,7 +84,14 @@ namespace MainPrj.Util
         /// </summary>
         public TempDataModel TempData
         {
-            get { return tempData; }
+            get
+            {
+                if (tempData != null)
+                {
+                    return tempData;
+                }
+                return new TempDataModel();
+            }
             set { tempData = value; }
         }
 
@@ -98,6 +124,14 @@ namespace MainPrj.Util
             return GetUserRole().Equals(RoleType.ROLE_ACCOUNTING_AGENT);
         }
         /// <summary>
+        /// Check if user is in Coordinator Role.
+        /// </summary>
+        /// <returns>True if User is Coordinator, False otherwise</returns>
+        public bool IsCoordinatorRole()
+        {
+            return GetUserRole().Equals(RoleType.ROLE_DIEU_PHOI);
+        }
+        /// <summary>
         /// Get list of cities.
         /// </summary>
         /// <returns>Return list of cities in TempData</returns>
@@ -107,10 +141,7 @@ namespace MainPrj.Util
             {
                 return tempData.List_province;
             }
-            else
-            {
-                return new List<CityModel>();
-            }
+            return new List<CityModel>();
         }
         /// <summary>
         /// Get list of streets.
@@ -122,10 +153,65 @@ namespace MainPrj.Util
             {
                 return tempData.List_street;
             }
-            else
+            return new List<StreetModel>();
+        }
+        /// <summary>
+        /// Get list of delivers.
+        /// </summary>
+        /// <returns></returns>
+        public List<SelectorModel> GetListDelivers()
+        {
+            if ((tempData != null) && (tempData.Employee_maintain != null))
             {
-                return new List<StreetModel>();
+                return tempData.Employee_maintain.ToList();
             }
+            return new List<SelectorModel>();
+        }
+        /// <summary>
+        /// Get list of all materials gas.
+        /// </summary>
+        /// <returns>List of all materials gas</returns>
+        public Dictionary<string, MaterialModel> GetListMaterialGas()
+        {
+            if ((tempData != null) && (tempData.Material_gas != null))
+            {
+                Dictionary<string, MaterialModel> result = new Dictionary<string, MaterialModel>();
+                foreach (MaterialModel item in tempData.Material_gas)
+                {
+                    result.Add(item.Materials_no, item);
+                }
+                return result;
+            }
+            return new Dictionary<string, MaterialModel>();
+        }
+        /// <summary>
+        /// Get list of all materials promote.
+        /// </summary>
+        /// <returns>List of all materials promote</returns>
+        public Dictionary<string, MaterialModel> GetListMaterialPromote()
+        {
+            if ((tempData != null) && (tempData.Material_promotion != null))
+            {
+                Dictionary<string, MaterialModel> result = new Dictionary<string, MaterialModel>();
+                foreach (MaterialModel item in tempData.Material_promotion)
+                {
+                    result.Add(item.Materials_no, item);
+                }
+                return result;
+            }
+            return new Dictionary<string, MaterialModel>();
+        }
+        /// <summary>
+        /// Get list of agents.
+        /// </summary>
+        /// <returns>List of all agents</returns>
+        public List<SelectorModel> GetListAgents()
+        {
+            if ((tempData != null) && (tempData.Agent_list != null))
+            {
+                return tempData.Agent_list;
+            }
+            return new List<SelectorModel>();
         }
         #endregion
 
@@ -139,10 +225,12 @@ namespace MainPrj.Util
         /// </summary>
         private DataPure()
         {
-            this.listCalls  = new List<CallModel>();
-            this.listOrders = new List<OrderModel>();
-            this.agent      = new AgentModel();
-            this.tempData   = new TempDataModel();
+            this.listCalls             = new List<CallModel>();
+            this.listOrders            = new List<OrderModel>();
+            this.agent                 = new AgentModel();
+            this.tempData              = new TempDataModel();
+            this.listRecentProductsImg = new Dictionary<string, MaterialBitmap>();
+            this.listRecentPromotesImg = new Dictionary<string, MaterialBitmap>();
         }
         /// <summary>
         /// Get instance

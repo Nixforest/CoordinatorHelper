@@ -32,12 +32,24 @@ namespace MainPrj.View
         double total = 0.0;
         double totalPromote = 0.0;
         private SerialPort port = new SerialPort();
+        private ImageList _listProductImg = new ImageList();
+        private ImageList _listPromoteImg = new ImageList();
+        private CustomerModel customerInfo = null;
+        /// <summary>
+        /// Customer information.
+        /// </summary>
+        public CustomerModel CustomerInfo
+        {
+            get { return customerInfo; }
+            set { customerInfo = value; }
+        }
         /// <summary>
         /// Constructor.
         /// </summary>
-        public OrderView()
+        public OrderView(CustomerModel customer)
         {
             InitializeComponent();
+            customerInfo = customer;
         }
         /// <summary>
         /// Handle click Cancel button.
@@ -67,9 +79,9 @@ namespace MainPrj.View
         {
             // Customer information
             tbxCustomer.Text = String.Format("{0} - {1}\r\n{2}",
-                DataPure.Instance.CustomerInfo != null ? DataPure.Instance.CustomerInfo.Name : String.Empty,
-                DataPure.Instance.CustomerInfo != null ? DataPure.Instance.CustomerInfo.ActivePhone : String.Empty,
-                DataPure.Instance.CustomerInfo != null ? DataPure.Instance.CustomerInfo.Address : String.Empty);
+                CustomerInfo != null ? CustomerInfo.Name : String.Empty,
+                CustomerInfo != null ? CustomerInfo.ActivePhone : String.Empty,
+                CustomerInfo != null ? CustomerInfo.Address : String.Empty);
 
             lblPromote.Text = CommonProcess.FormatMoney(Properties.Settings.Default.PromoteMoney);
             // Check null object
@@ -133,6 +145,70 @@ namespace MainPrj.View
             {
                 this.listViewProduct.Combobox.Items.Add(i);
                 this.listViewPromote.Combobox.Items.Add(i);
+            }
+            int size = Properties.Settings.Default.ImageSize;
+            this._listProductImg.ImageSize = new Size(size, size);
+            this._listProductImg.ColorDepth = ColorDepth.Depth24Bit;
+            CommonProcess.ListView_SetSpacing(this.listViewRecentProduct, (short)(size + 12), (short)(size + 12));
+            this.listViewRecentProduct.LargeImageList = this._listProductImg;
+            foreach (string item in DataPure.Instance.ListRecentProductsImg.Keys)
+            {
+                AddProductSelected(DataPure.Instance.ListRecentProductsImg[item]);
+            }
+
+            this._listPromoteImg.ImageSize = new Size(size, size);
+            this._listPromoteImg.ColorDepth = ColorDepth.Depth24Bit;
+            CommonProcess.ListView_SetSpacing(this.listViewRecentPromote, (short)(size + 12), (short)(size + 12));
+            this.listViewRecentPromote.LargeImageList = this._listPromoteImg;
+            foreach (string item in DataPure.Instance.ListRecentPromotesImg.Keys)
+            {
+                AddPromoteSelected(DataPure.Instance.ListRecentPromotesImg[item]);
+            }
+        }
+
+        /// <summary>
+        /// Add promote to listview.
+        /// </summary>
+        /// <param name="model">Model</param>
+        private void AddPromoteSelected(MaterialBitmap model)
+        {
+            if (model != null)
+            {
+                MaterialBitmap bitmap = DataPure.Instance.ListRecentPromotesImg[model.Model.Materials_no];
+                if (bitmap.Bitmap == null)
+                {
+                    bitmap.Bitmap = CommonProcess.CreateAvatar(bitmap.Text,
+                        Properties.Settings.Default.ImageSize, model.Color, Properties.Settings.Default.ImageFontSize);
+                    bitmap.Color = model.Color;
+                }
+                this._listPromoteImg.Images.Add(bitmap.Bitmap);
+                ListViewItem lvi = new ListViewItem(string.Empty);
+                lvi.ImageIndex = this._listPromoteImg.Images.Count - 1;
+                lvi.Tag = bitmap;
+                this.listViewRecentPromote.Items.Add(lvi);
+            }
+        }
+
+        /// <summary>
+        /// Add products to listview.
+        /// </summary>
+        /// <param name="model">Model</param>
+        private void AddProductSelected(MaterialBitmap model)
+        {
+            if (model != null)
+            {
+                MaterialBitmap bitmap = DataPure.Instance.ListRecentProductsImg[model.Model.Materials_no];
+                if (bitmap.Bitmap == null)
+                {
+                    bitmap.Bitmap = CommonProcess.CreateAvatar(bitmap.Text,
+                        Properties.Settings.Default.ImageSize, model.Color, Properties.Settings.Default.ImageFontSize);
+                    bitmap.Color = model.Color;
+                }
+                this._listProductImg.Images.Add(bitmap.Bitmap);
+                ListViewItem lvi = new ListViewItem(string.Empty);
+                lvi.ImageIndex = this._listProductImg.Images.Count - 1;
+                lvi.Tag = bitmap;
+                this.listViewRecentProduct.Items.Add(lvi);
             }
         }
         /// <summary>
@@ -564,7 +640,7 @@ namespace MainPrj.View
                 {
                     model.CCSId = cbxCCS.SelectedValue.ToString();
                 }
-                model.Customer = new CustomerModel(DataPure.Instance.CustomerInfo);
+                model.Customer = new CustomerModel(CustomerInfo);
                 model.Products.AddRange(products);
                 foreach (ProductModel item in products)
                 {
@@ -611,8 +687,8 @@ namespace MainPrj.View
                 return false;
             }
             // Check customer infor is not null
-            if ((DataPure.Instance.CustomerInfo == null)
-                || (String.IsNullOrEmpty(DataPure.Instance.CustomerInfo.Id)))
+            if ((CustomerInfo == null)
+                || (String.IsNullOrEmpty(CustomerInfo.Id)))
             {
                 CommonProcess.ShowErrorMessage(Properties.Resources.NotSelectCustomer);
                 return false;
@@ -734,10 +810,10 @@ namespace MainPrj.View
                 BillPrintModel printModel = new BillPrintModel();
                 printModel.Brand = Properties.Settings.Default.BillBrand;
                 printModel.Phone = DataPure.Instance.Agent.Phone;
-                printModel.CustomerName = DataPure.Instance.CustomerInfo != null ?
-                    String.Format("{0}-{1}", DataPure.Instance.CustomerInfo.ActivePhone,
-                    DataPure.Instance.CustomerInfo.Name) : String.Empty;
-                printModel.CustomerAddress = DataPure.Instance.CustomerInfo != null ? DataPure.Instance.CustomerInfo.Address : String.Empty;
+                printModel.CustomerName = CustomerInfo != null ?
+                    String.Format("{0}-{1}", CustomerInfo.ActivePhone,
+                    CustomerInfo.Name) : String.Empty;
+                printModel.CustomerAddress = CustomerInfo != null ? CustomerInfo.Address : String.Empty;
                 printModel.AgentAddress    = DataPure.Instance.Agent.Address;
                 printModel.Products.AddRange(products);
                 printModel.Promotes.AddRange(promotes);
@@ -745,6 +821,85 @@ namespace MainPrj.View
                 printModel.TotalPromote = this.totalPromote;
                 printModel.TotalPay     = this.totalPay;
                 printModel.Print();
+            }
+        }
+
+        private void listViewRecentProduct_DoubleClick(object sender, EventArgs e)
+        {
+            if (this.listViewRecentProduct.SelectedItems.Count > 0)
+            {
+                MaterialBitmap item = (MaterialBitmap) this.listViewRecentProduct.SelectedItems[0].Tag;
+                AddProduct(item.Model);
+
+                UpdateMoney();
+            }
+        }
+        private void AddProduct(MaterialModel item)
+        {
+            double price = 0.0;
+            if (CommonProcess.IsValidDouble(item.Price))
+            {
+                price = double.Parse(item.Price);
+            }
+            ProductModel model = new ProductModel
+            {
+                Id = item.Id,
+                Name = item.Name,
+                Quantity = 1,
+                Price = price,
+                Money = price,
+                Materials_no = item.Materials_no,
+                TypeId = item.Materials_type_id,
+            };
+            foreach (ProductModel product in products)
+            {
+                if (product.Id.Equals(model.Id))
+                {
+                    product.Quantity += 1;
+                    model = null;
+                    break;
+                }
+            }
+            if (model != null)
+            {
+                products.Add(model);
+            }
+            ReloadListProduct();
+        }
+        private void AddPromote(MaterialModel item)
+        {
+            PromoteModel model = new PromoteModel
+            {
+                Id           = item.Id,
+                Name         = item.Name,
+                Quantity     = 1,
+                Materials_no = item.Materials_no,
+                TypeId       = item.Materials_type_id,
+            };
+            foreach (PromoteModel promote in promotes)
+            {
+                if (promote.Id.Equals(model.Id))
+                {
+                    promote.Quantity += 1;
+                    model = null;
+                    break;
+                }
+            }
+            if (model != null)
+            {
+                promotes.Add(model);
+            }
+            ReloadListPromotes();
+        }
+
+        private void listViewRecentPromote_DoubleClick(object sender, EventArgs e)
+        {
+            if (this.listViewRecentPromote.SelectedItems.Count > 0)
+            {
+                MaterialBitmap item = (MaterialBitmap)this.listViewRecentPromote.SelectedItems[0].Tag;
+                AddPromote(item.Model);
+
+                UpdateMoney();
             }
         }
     }

@@ -343,14 +343,38 @@ namespace MainPrj.View
         {
             this.listCurrentData.Clear();
             keyword = CommonProcess.NormalizationString(keyword).ToLower();
-            
+            // Result when search with keyword
             List<CallModel> listResult = new List<CallModel>();
+            // Get number of days
             int dayNum = (dtpFilterTo.Value - dtpFilterFrom.Value).Days;
+            // Get From value
             DateTime from = dtpFilterFrom.Value;
+            // Loop for all dates
             for (int i = 0; i <= dayNum; i++)
             {
-                from = dtpFilterFrom.Value;
-                listResult.AddRange(CommonProcess.ReadHistoryByDate(from.AddDays(i)));
+                from = dtpFilterFrom.Value.AddDays(i);
+                DateTime today = System.DateTime.Now;
+                if ((from.Year == today.Year) && (from.Month == today.Month) && (from.Day == today.Day))
+                {
+                    if (!String.IsNullOrEmpty(keyword))
+                    {
+                        foreach (CallModel item in this.listTodayData)
+                        {
+                            if (item.IsContainString(keyword))
+                            {
+                                listResult.Add(item);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        listResult.AddRange(this.listTodayData);
+                    }
+                }
+                else
+                {
+                    listResult.AddRange(CommonProcess.ReadHistoryByDate(from));
+                }
             }
             if (!String.IsNullOrEmpty(keyword))
             {
@@ -481,7 +505,41 @@ namespace MainPrj.View
         /// <param name="e">EventArgs</param>
         private void btnCreateOrder_Click(object sender, EventArgs e)
         {
-            CommonProcess.ShowInformMessageProcessing();
+            if (this.listViewHistory.SelectedItems.Count > 0)
+            {
+                string id = this.listViewHistory.SelectedItems[0].Tag.ToString();
+                foreach (CallModel callModel in this.listCurrentData)
+                {
+                    if (callModel.Id.Equals(id))
+                    {
+                        DataPure.Instance.CustomerInfo = callModel.Customer;
+                        // Check if customer name is empty
+                        if ((DataPure.Instance.CustomerInfo != null)
+                            && (!String.IsNullOrEmpty(DataPure.Instance.CustomerInfo.Name)))
+                        {
+                            RoleType role = DataPure.Instance.GetUserRole();
+
+                            switch (role)
+                            {
+                                case RoleType.ROLE_ACCOUNTING_AGENT:
+                                    OrderView order = new OrderView(DataPure.Instance.CustomerInfo);
+                                    order.ShowDialog();
+                                    break;
+                                case RoleType.ROLE_DIEU_PHOI:
+                                    
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            CommonProcess.ShowErrorMessage(Properties.Resources.MissCustomerInfor);
+                        }
+                        break;
+                    }
+                }
+            }
         }
         /// <summary>
         /// Handle when change From value.

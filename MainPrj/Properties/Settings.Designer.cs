@@ -182,12 +182,12 @@ namespace MainPrj.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("C:\\CoordinatorHelper")]
-        public string HistoryFilePath {
+        public string SettingFilePath {
             get {
-                return ((string)(this["HistoryFilePath"]));
+                return ((string)(this["SettingFilePath"]));
             }
             set {
-                this["HistoryFilePath"] = value;
+                this["SettingFilePath"] = value;
             }
         }
         
@@ -517,18 +517,6 @@ namespace MainPrj.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\CoordinatorHelper")]
-        public string OrdersFilePath {
-            get {
-                return ((string)(this["OrdersFilePath"]));
-            }
-            set {
-                this["OrdersFilePath"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("orders.txt")]
         public string OrdersFileName {
             get {
@@ -608,6 +596,54 @@ namespace MainPrj.Properties {
             }
             set {
                 this["IsTabColorChange"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("55")]
+        public int ImageSize {
+            get {
+                return ((int)(this["ImageSize"]));
+            }
+            set {
+                this["ImageSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("products.txt")]
+        public string SettingProductFileName {
+            get {
+                return ((string)(this["SettingProductFileName"]));
+            }
+            set {
+                this["SettingProductFileName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("promotes.txt")]
+        public string SettingPromoteFileName {
+            get {
+                return ((string)(this["SettingPromoteFileName"]));
+            }
+            set {
+                this["SettingPromoteFileName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("18")]
+        public int ImageFontSize {
+            get {
+                return ((int)(this["ImageFontSize"]));
+            }
+            set {
+                this["ImageFontSize"] = value;
             }
         }
     }

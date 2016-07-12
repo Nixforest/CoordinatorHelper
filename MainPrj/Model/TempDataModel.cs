@@ -22,15 +22,15 @@ namespace MainPrj.Model
         [DataMember(Name = "agent_address", IsRequired = false)]
         protected string agent_address;
         [DataMember(Name = "employee_maintain", IsRequired = false)]
-        protected SelectorModel[] employee_maintain;
+        protected List<SelectorModel> employee_maintain;
         [DataMember(Name = "monitor_market_development", IsRequired = false)]
-        protected SelectorModel[] monitor_market_development;
+        protected List<SelectorModel> monitor_market_development;
         [DataMember(Name = "material_gas", IsRequired = false)]
-        protected MaterialModel[] material_gas;
+        protected List<MaterialModel> material_gas;
         [DataMember(Name = "material_promotion", IsRequired = false)]
-        protected MaterialModel[] material_promotion;
+        protected List<MaterialModel> material_promotion;
         [DataMember(Name = "agent_list", IsRequired = false)]
-        protected SelectorModel[] agent_list;
+        protected List<SelectorModel> agent_list;
         [DataMember(Name = "material_vo", IsRequired = false)]
         protected List<MaterialModel> material_vo;
         [DataMember(Name = "list_province", IsRequired = false)]
@@ -101,7 +101,7 @@ namespace MainPrj.Model
         /// <summary>
         /// Agents list.
         /// </summary>
-        public SelectorModel[] Agent_list
+        public List<SelectorModel> Agent_list
         {
             get { return agent_list; }
             set { agent_list = value; }
@@ -109,7 +109,7 @@ namespace MainPrj.Model
         /// <summary>
         /// Promotes.
         /// </summary>
-        public MaterialModel[] Material_promotion
+        public List<MaterialModel> Material_promotion
         {
             get { return material_promotion; }
             set { material_promotion = value; }
@@ -117,19 +117,19 @@ namespace MainPrj.Model
         /// <summary>
         /// Gas.
         /// </summary>
-        public MaterialModel[] Material_gas
+        public List<MaterialModel> Material_gas
         {
             get { return material_gas; }
             set { material_gas = value; }
         }
 
-        public SelectorModel[] Monitor_market_development
+        public List<SelectorModel> Monitor_market_development
         {
             get { return monitor_market_development; }
             set { monitor_market_development = value; }
         }
 
-        public SelectorModel[] Employee_maintain
+        public List<SelectorModel> Employee_maintain
         {
             get { return employee_maintain; }
             set { employee_maintain = value; }
@@ -148,7 +148,30 @@ namespace MainPrj.Model
         }
         public void Sort()
         {
-            material_vo.Sort();
+            if (material_vo != null)
+            {
+                material_vo.Sort();
+            }
+        }
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
+        public TempDataModel()
+        {
+            this.agent_address              = string.Empty;
+            this.agent_district             = string.Empty;
+            this.agent_id                   = string.Empty;
+            this.agent_list                 = new List<SelectorModel>();
+            this.agent_name                 = string.Empty;
+            this.agent_phone                = string.Empty;
+            this.agent_province             = string.Empty;
+            this.employee_maintain          = new List<SelectorModel>();
+            this.list_province              = new List<CityModel>();
+            this.list_street                = new List<StreetModel>();
+            this.material_gas               = new List<MaterialModel>();
+            this.material_promotion         = new List<MaterialModel>();
+            this.material_vo                = new List<MaterialModel>();
+            this.monitor_market_development = new List<SelectorModel>();
         }
     }
 }

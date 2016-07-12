@@ -50,6 +50,10 @@
             this.tbxCustomer = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.btnCreatePrint = new System.Windows.Forms.Button();
+            this.listViewRecentProduct = new System.Windows.Forms.ListView();
+            this.listViewRecentPromote = new System.Windows.Forms.ListView();
             this.listViewPromote = new MainPrj.View.EditableListView();
             this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -62,8 +66,6 @@
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.btnCreatePrint = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -117,7 +119,7 @@
             // tbxPromote
             // 
             this.tbxPromote.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.tbxPromote.Location = new System.Drawing.Point(149, 413);
+            this.tbxPromote.Location = new System.Drawing.Point(149, 398);
             this.tbxPromote.Name = "tbxPromote";
             this.tbxPromote.Size = new System.Drawing.Size(289, 29);
             this.tbxPromote.TabIndex = 3;
@@ -157,7 +159,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(12, 416);
+            this.label7.Location = new System.Drawing.Point(12, 401);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(126, 24);
             this.label7.TabIndex = 0;
@@ -188,7 +190,7 @@
             this.lblPromote.AutoSize = true;
             this.lblPromote.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblPromote.ForeColor = System.Drawing.Color.Red;
-            this.lblPromote.Location = new System.Drawing.Point(601, 411);
+            this.lblPromote.Location = new System.Drawing.Point(601, 396);
             this.lblPromote.Name = "lblPromote";
             this.lblPromote.Size = new System.Drawing.Size(29, 31);
             this.lblPromote.TabIndex = 0;
@@ -273,11 +275,58 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(444, 416);
+            this.label5.Location = new System.Drawing.Point(444, 401);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(151, 24);
             this.label5.TabIndex = 0;
             this.label5.Text = "Tổng chiết khấu:";
+            // 
+            // textBox1
+            // 
+            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox1.ForeColor = System.Drawing.SystemColors.MenuHighlight;
+            this.textBox1.Location = new System.Drawing.Point(448, 15);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
+            this.textBox1.Size = new System.Drawing.Size(114, 101);
+            this.textBox1.TabIndex = 9;
+            this.textBox1.TabStop = false;
+            this.textBox1.Text = "Khách hàng:\r\nĐịa chỉ:";
+            // 
+            // btnCreatePrint
+            // 
+            this.btnCreatePrint.Location = new System.Drawing.Point(589, 662);
+            this.btnCreatePrint.Name = "btnCreatePrint";
+            this.btnCreatePrint.Size = new System.Drawing.Size(156, 46);
+            this.btnCreatePrint.TabIndex = 6;
+            this.btnCreatePrint.Text = "Tạo và in phiếu";
+            this.btnCreatePrint.UseVisualStyleBackColor = true;
+            this.btnCreatePrint.Click += new System.EventHandler(this.btnCreatePrint_Click);
+            // 
+            // listViewRecentProduct
+            // 
+            this.listViewRecentProduct.Alignment = System.Windows.Forms.ListViewAlignment.Left;
+            this.listViewRecentProduct.BackColor = System.Drawing.SystemColors.Control;
+            this.listViewRecentProduct.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.listViewRecentProduct.Location = new System.Drawing.Point(12, 157);
+            this.listViewRecentProduct.Name = "listViewRecentProduct";
+            this.listViewRecentProduct.Size = new System.Drawing.Size(949, 88);
+            this.listViewRecentProduct.TabIndex = 10;
+            this.listViewRecentProduct.UseCompatibleStateImageBehavior = false;
+            this.listViewRecentProduct.DoubleClick += new System.EventHandler(this.listViewRecentProduct_DoubleClick);
+            // 
+            // listViewRecentPromote
+            // 
+            this.listViewRecentPromote.BackColor = System.Drawing.SystemColors.Control;
+            this.listViewRecentPromote.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.listViewRecentPromote.Location = new System.Drawing.Point(12, 433);
+            this.listViewRecentPromote.Name = "listViewRecentPromote";
+            this.listViewRecentPromote.Scrollable = false;
+            this.listViewRecentPromote.Size = new System.Drawing.Size(949, 88);
+            this.listViewRecentPromote.TabIndex = 11;
+            this.listViewRecentPromote.UseCompatibleStateImageBehavior = false;
+            this.listViewRecentPromote.DoubleClick += new System.EventHandler(this.listViewRecentPromote_DoubleClick);
             // 
             // listViewPromote
             // 
@@ -292,9 +341,9 @@
             this.listViewPromote.DoubleClickActivation = false;
             this.listViewPromote.FullRowSelect = true;
             this.listViewPromote.GridLines = true;
-            this.listViewPromote.Location = new System.Drawing.Point(12, 448);
+            this.listViewPromote.Location = new System.Drawing.Point(12, 529);
             this.listViewPromote.Name = "listViewPromote";
-            this.listViewPromote.Size = new System.Drawing.Size(949, 204);
+            this.listViewPromote.Size = new System.Drawing.Size(949, 127);
             this.listViewPromote.TabIndex = 5;
             this.listViewPromote.UseCompatibleStateImageBehavior = false;
             this.listViewPromote.View = System.Windows.Forms.View.Details;
@@ -334,10 +383,10 @@
             this.listViewProduct.FullRowSelect = true;
             this.listViewProduct.GridLines = true;
             this.listViewProduct.HideSelection = false;
-            this.listViewProduct.Location = new System.Drawing.Point(12, 157);
+            this.listViewProduct.Location = new System.Drawing.Point(12, 251);
             this.listViewProduct.Name = "listViewProduct";
             this.listViewProduct.ShowItemToolTips = true;
-            this.listViewProduct.Size = new System.Drawing.Size(949, 250);
+            this.listViewProduct.Size = new System.Drawing.Size(949, 141);
             this.listViewProduct.TabIndex = 4;
             this.listViewProduct.UseCompatibleStateImageBehavior = false;
             this.listViewProduct.View = System.Windows.Forms.View.Details;
@@ -371,34 +420,13 @@
             this.columnHeader6.Text = "Tiền";
             this.columnHeader6.Width = 150;
             // 
-            // textBox1
-            // 
-            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox1.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.textBox1.Location = new System.Drawing.Point(448, 15);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(114, 101);
-            this.textBox1.TabIndex = 9;
-            this.textBox1.TabStop = false;
-            this.textBox1.Text = "Khách hàng:\r\nĐịa chỉ:";
-            // 
-            // btnCreatePrint
-            // 
-            this.btnCreatePrint.Location = new System.Drawing.Point(589, 662);
-            this.btnCreatePrint.Name = "btnCreatePrint";
-            this.btnCreatePrint.Size = new System.Drawing.Size(156, 46);
-            this.btnCreatePrint.TabIndex = 6;
-            this.btnCreatePrint.Text = "Tạo và in phiếu";
-            this.btnCreatePrint.UseVisualStyleBackColor = true;
-            this.btnCreatePrint.Click += new System.EventHandler(this.btnCreatePrint_Click);
-            // 
             // OrderView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(967, 716);
+            this.Controls.Add(this.listViewRecentPromote);
+            this.Controls.Add(this.listViewRecentProduct);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.tbxCustomer);
             this.Controls.Add(this.listViewPromote);
@@ -478,5 +506,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button btnCreatePrint;
+        private System.Windows.Forms.ListView listViewRecentProduct;
+        private System.Windows.Forms.ListView listViewRecentPromote;
     }
 }
