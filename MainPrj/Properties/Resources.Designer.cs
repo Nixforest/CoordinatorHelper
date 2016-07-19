@@ -621,6 +621,15 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Không tồn tại thiết bị nào nhận thông tin SIP packet từ mạng..
+        /// </summary>
+        internal static string NotDeviceAvailable {
+            get {
+                return ResourceManager.GetString("NotDeviceAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ghi chú đã được lưu lại.
         /// </summary>
         internal static string NoteSaved {

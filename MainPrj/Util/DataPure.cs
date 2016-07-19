@@ -1,5 +1,6 @@
 ﻿using MainPrj.Model;
 using MainPrj.Model.Address;
+using PcapDotNet.Core;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -23,6 +24,17 @@ namespace MainPrj.Util
         private List<OrderModel> listOrders                              = null;
         private Dictionary<string, MaterialBitmap> listRecentProductsImg = null;
         private Dictionary<string, MaterialBitmap> listRecentPromotesImg = null;
+        #region SIP handling
+        private PacketDevice netDevice = null;
+        /// <summary>
+        /// Net layer device.
+        /// </summary>
+        public PacketDevice NetDevice
+        {
+            get { return netDevice; }
+            set { netDevice = value; }
+        } 
+        #endregion
         /// <summary>
         /// List of recent promtes (BITMAP.)
         /// </summary>
@@ -212,6 +224,25 @@ namespace MainPrj.Util
                 return tempData.Agent_list;
             }
             return new List<SelectorModel>();
+        }
+        /// <summary>
+        /// Get name of agent by Agent id.
+        /// </summary>
+        /// <param name="agentId">Agent id</param>
+        /// <returns>If agent id is exist, return name of agent, or return empty string otherwise</returns>
+        public string GetAgentNameById(string agentId)
+        {
+            if ((tempData != null) && (tempData.Agent_list != null))
+            {
+                foreach (SelectorModel item in tempData.Agent_list)
+                {
+                    if (item.Id.Equals(agentId))
+                    {
+                        return item.Name;
+                    }
+                }
+            }
+            return string.Empty;
         }
         #endregion
 

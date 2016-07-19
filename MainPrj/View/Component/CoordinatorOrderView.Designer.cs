@@ -29,25 +29,26 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.rbtnYellow = new System.Windows.Forms.RadioButton();
+            this.rbtnRed = new System.Windows.Forms.RadioButton();
+            this.rbtnGrey = new System.Windows.Forms.RadioButton();
+            this.rbtnOrange = new System.Windows.Forms.RadioButton();
+            this.rbtnBlue = new System.Windows.Forms.RadioButton();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.rbtnSmall = new System.Windows.Forms.RadioButton();
+            this.rbtnLarge = new System.Windows.Forms.RadioButton();
             this.tbxNote = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.nUDQuantity = new System.Windows.Forms.NumericUpDown();
-            this.rbtnSmall = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.radioButton3 = new System.Windows.Forms.RadioButton();
-            this.radioButton4 = new System.Windows.Forms.RadioButton();
-            this.radioButton5 = new System.Windows.Forms.RadioButton();
-            this.radioButton6 = new System.Windows.Forms.RadioButton();
-            this.radioButton7 = new System.Windows.Forms.RadioButton();
-            this.radioButton8 = new System.Windows.Forms.RadioButton();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.rbtnNoColor = new System.Windows.Forms.RadioButton();
+            this.rbtnLarge50 = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nUDQuantity)).BeginInit();
-            this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nUDQuantity)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -66,13 +67,113 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Đặt hàng";
             // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.rbtnYellow);
+            this.groupBox3.Controls.Add(this.rbtnRed);
+            this.groupBox3.Controls.Add(this.rbtnNoColor);
+            this.groupBox3.Controls.Add(this.rbtnGrey);
+            this.groupBox3.Controls.Add(this.rbtnOrange);
+            this.groupBox3.Controls.Add(this.rbtnBlue);
+            this.groupBox3.Location = new System.Drawing.Point(10, 134);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(286, 85);
+            this.groupBox3.TabIndex = 6;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Màu";
+            // 
+            // rbtnYellow
+            // 
+            this.rbtnYellow.AutoSize = true;
+            this.rbtnYellow.Location = new System.Drawing.Point(7, 50);
+            this.rbtnYellow.Name = "rbtnYellow";
+            this.rbtnYellow.Size = new System.Drawing.Size(77, 29);
+            this.rbtnYellow.TabIndex = 7;
+            this.rbtnYellow.Text = "Vàng";
+            this.rbtnYellow.UseVisualStyleBackColor = true;
+            // 
+            // rbtnRed
+            // 
+            this.rbtnRed.AutoSize = true;
+            this.rbtnRed.Location = new System.Drawing.Point(136, 23);
+            this.rbtnRed.Name = "rbtnRed";
+            this.rbtnRed.Size = new System.Drawing.Size(55, 29);
+            this.rbtnRed.TabIndex = 5;
+            this.rbtnRed.Text = "Đỏ";
+            this.rbtnRed.UseVisualStyleBackColor = true;
+            // 
+            // rbtnGrey
+            // 
+            this.rbtnGrey.AutoSize = true;
+            this.rbtnGrey.Location = new System.Drawing.Point(136, 50);
+            this.rbtnGrey.Name = "rbtnGrey";
+            this.rbtnGrey.Size = new System.Drawing.Size(71, 29);
+            this.rbtnGrey.TabIndex = 8;
+            this.rbtnGrey.Text = "Xám";
+            this.rbtnGrey.UseVisualStyleBackColor = true;
+            // 
+            // rbtnOrange
+            // 
+            this.rbtnOrange.AutoSize = true;
+            this.rbtnOrange.Location = new System.Drawing.Point(208, 50);
+            this.rbtnOrange.Name = "rbtnOrange";
+            this.rbtnOrange.Size = new System.Drawing.Size(72, 29);
+            this.rbtnOrange.TabIndex = 9;
+            this.rbtnOrange.Text = "Cam";
+            this.rbtnOrange.UseVisualStyleBackColor = true;
+            // 
+            // rbtnBlue
+            // 
+            this.rbtnBlue.AutoSize = true;
+            this.rbtnBlue.Location = new System.Drawing.Point(208, 23);
+            this.rbtnBlue.Name = "rbtnBlue";
+            this.rbtnBlue.Size = new System.Drawing.Size(77, 29);
+            this.rbtnBlue.TabIndex = 6;
+            this.rbtnBlue.Text = "Xanh";
+            this.rbtnBlue.UseVisualStyleBackColor = true;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.rbtnSmall);
+            this.groupBox2.Controls.Add(this.rbtnLarge50);
+            this.groupBox2.Controls.Add(this.rbtnLarge);
+            this.groupBox2.Location = new System.Drawing.Point(11, 65);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(285, 68);
+            this.groupBox2.TabIndex = 5;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Loại gas";
+            // 
+            // rbtnSmall
+            // 
+            this.rbtnSmall.AutoSize = true;
+            this.rbtnSmall.Checked = true;
+            this.rbtnSmall.Location = new System.Drawing.Point(6, 29);
+            this.rbtnSmall.Name = "rbtnSmall";
+            this.rbtnSmall.Size = new System.Drawing.Size(66, 29);
+            this.rbtnSmall.TabIndex = 1;
+            this.rbtnSmall.TabStop = true;
+            this.rbtnSmall.Text = "Nhỏ";
+            this.rbtnSmall.UseVisualStyleBackColor = true;
+            // 
+            // rbtnLarge
+            // 
+            this.rbtnLarge.AutoSize = true;
+            this.rbtnLarge.Location = new System.Drawing.Point(84, 29);
+            this.rbtnLarge.Name = "rbtnLarge";
+            this.rbtnLarge.Size = new System.Drawing.Size(63, 29);
+            this.rbtnLarge.TabIndex = 2;
+            this.rbtnLarge.TabStop = true;
+            this.rbtnLarge.Text = "Lớn";
+            this.rbtnLarge.UseVisualStyleBackColor = true;
+            // 
             // tbxNote
             // 
             this.tbxNote.Location = new System.Drawing.Point(104, 226);
             this.tbxNote.Multiline = true;
             this.tbxNote.Name = "tbxNote";
             this.tbxNote.Size = new System.Drawing.Size(192, 36);
-            this.tbxNote.TabIndex = 3;
+            this.tbxNote.TabIndex = 10;
             // 
             // label4
             // 
@@ -118,116 +219,27 @@
             0,
             0});
             // 
-            // rbtnSmall
+            // rbtnNoColor
             // 
-            this.rbtnSmall.AutoSize = true;
-            this.rbtnSmall.Checked = true;
-            this.rbtnSmall.Location = new System.Drawing.Point(6, 29);
-            this.rbtnSmall.Name = "rbtnSmall";
-            this.rbtnSmall.Size = new System.Drawing.Size(66, 29);
-            this.rbtnSmall.TabIndex = 4;
-            this.rbtnSmall.TabStop = true;
-            this.rbtnSmall.Text = "Nhỏ";
-            this.rbtnSmall.UseVisualStyleBackColor = true;
+            this.rbtnNoColor.AutoSize = true;
+            this.rbtnNoColor.Checked = true;
+            this.rbtnNoColor.Location = new System.Drawing.Point(6, 23);
+            this.rbtnNoColor.Name = "rbtnNoColor";
+            this.rbtnNoColor.Size = new System.Drawing.Size(131, 29);
+            this.rbtnNoColor.TabIndex = 4;
+            this.rbtnNoColor.Text = "Không màu";
+            this.rbtnNoColor.UseVisualStyleBackColor = true;
             // 
-            // radioButton2
+            // rbtnLarge50
             // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(84, 29);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(63, 29);
-            this.radioButton2.TabIndex = 4;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "Lớn";
-            this.radioButton2.UseVisualStyleBackColor = true;
-            // 
-            // radioButton3
-            // 
-            this.radioButton3.AutoSize = true;
-            this.radioButton3.Location = new System.Drawing.Point(84, 24);
-            this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(55, 29);
-            this.radioButton3.TabIndex = 4;
-            this.radioButton3.Text = "Đỏ";
-            this.radioButton3.UseVisualStyleBackColor = true;
-            // 
-            // radioButton4
-            // 
-            this.radioButton4.AutoSize = true;
-            this.radioButton4.Checked = true;
-            this.radioButton4.Location = new System.Drawing.Point(7, 24);
-            this.radioButton4.Name = "radioButton4";
-            this.radioButton4.Size = new System.Drawing.Size(71, 29);
-            this.radioButton4.TabIndex = 4;
-            this.radioButton4.TabStop = true;
-            this.radioButton4.Text = "Xám";
-            this.radioButton4.UseVisualStyleBackColor = true;
-            // 
-            // radioButton5
-            // 
-            this.radioButton5.AutoSize = true;
-            this.radioButton5.Location = new System.Drawing.Point(7, 53);
-            this.radioButton5.Name = "radioButton5";
-            this.radioButton5.Size = new System.Drawing.Size(77, 29);
-            this.radioButton5.TabIndex = 4;
-            this.radioButton5.Text = "Xanh";
-            this.radioButton5.UseVisualStyleBackColor = true;
-            // 
-            // radioButton6
-            // 
-            this.radioButton6.AutoSize = true;
-            this.radioButton6.Location = new System.Drawing.Point(84, 53);
-            this.radioButton6.Name = "radioButton6";
-            this.radioButton6.Size = new System.Drawing.Size(77, 29);
-            this.radioButton6.TabIndex = 4;
-            this.radioButton6.Text = "Vàng";
-            this.radioButton6.UseVisualStyleBackColor = true;
-            // 
-            // radioButton7
-            // 
-            this.radioButton7.AutoSize = true;
-            this.radioButton7.Location = new System.Drawing.Point(167, 24);
-            this.radioButton7.Name = "radioButton7";
-            this.radioButton7.Size = new System.Drawing.Size(72, 29);
-            this.radioButton7.TabIndex = 4;
-            this.radioButton7.Text = "Cam";
-            this.radioButton7.UseVisualStyleBackColor = true;
-            // 
-            // radioButton8
-            // 
-            this.radioButton8.AutoSize = true;
-            this.radioButton8.Location = new System.Drawing.Point(167, 53);
-            this.radioButton8.Name = "radioButton8";
-            this.radioButton8.Size = new System.Drawing.Size(71, 29);
-            this.radioButton8.TabIndex = 4;
-            this.radioButton8.Text = "Đậm";
-            this.radioButton8.UseVisualStyleBackColor = true;
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.rbtnSmall);
-            this.groupBox2.Controls.Add(this.radioButton2);
-            this.groupBox2.Location = new System.Drawing.Point(11, 65);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(285, 68);
-            this.groupBox2.TabIndex = 5;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Loại gas";
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.radioButton6);
-            this.groupBox3.Controls.Add(this.radioButton3);
-            this.groupBox3.Controls.Add(this.radioButton8);
-            this.groupBox3.Controls.Add(this.radioButton4);
-            this.groupBox3.Controls.Add(this.radioButton7);
-            this.groupBox3.Controls.Add(this.radioButton5);
-            this.groupBox3.Location = new System.Drawing.Point(10, 134);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(286, 85);
-            this.groupBox3.TabIndex = 6;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Màu";
+            this.rbtnLarge50.AutoSize = true;
+            this.rbtnLarge50.Location = new System.Drawing.Point(153, 29);
+            this.rbtnLarge50.Name = "rbtnLarge50";
+            this.rbtnLarge50.Size = new System.Drawing.Size(125, 29);
+            this.rbtnLarge50.TabIndex = 3;
+            this.rbtnLarge50.TabStop = true;
+            this.rbtnLarge50.Text = "Lớn (50kg)";
+            this.rbtnLarge50.UseVisualStyleBackColor = true;
             // 
             // CoordinatorOrderView
             // 
@@ -241,11 +253,11 @@
             this.Size = new System.Drawing.Size(315, 274);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nUDQuantity)).EndInit();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nUDQuantity)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -258,16 +270,17 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.NumericUpDown nUDQuantity;
-        private System.Windows.Forms.RadioButton radioButton8;
-        private System.Windows.Forms.RadioButton radioButton6;
-        private System.Windows.Forms.RadioButton radioButton5;
-        private System.Windows.Forms.RadioButton radioButton7;
-        private System.Windows.Forms.RadioButton radioButton4;
-        private System.Windows.Forms.RadioButton radioButton3;
-        private System.Windows.Forms.RadioButton radioButton2;
+        private System.Windows.Forms.RadioButton rbtnYellow;
+        private System.Windows.Forms.RadioButton rbtnBlue;
+        private System.Windows.Forms.RadioButton rbtnOrange;
+        private System.Windows.Forms.RadioButton rbtnGrey;
+        private System.Windows.Forms.RadioButton rbtnRed;
+        private System.Windows.Forms.RadioButton rbtnLarge;
         private System.Windows.Forms.RadioButton rbtnSmall;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.RadioButton rbtnNoColor;
+        private System.Windows.Forms.RadioButton rbtnLarge50;
 
     }
 }

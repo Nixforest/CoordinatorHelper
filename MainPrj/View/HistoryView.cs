@@ -58,7 +58,7 @@ namespace MainPrj.View
         /// <param name="e">EventArgs</param>
         private void HistoryView_Load(object sender, EventArgs e)
         {
-            btnCreateOrder.Enabled = DataPure.Instance.IsAccountingAgentRole();
+            btnCreateOrder.Enabled = DataPure.Instance.IsAccountingAgentRole() || DataPure.Instance.IsCoordinatorRole();
             //listData.Sort();
             //for (int i = listData.Count - 1; i >= 0; i--)
             //{
@@ -526,7 +526,13 @@ namespace MainPrj.View
                                     order.ShowDialog();
                                     break;
                                 case RoleType.ROLE_DIEU_PHOI:
-                                    
+                                    OrderCoordinatorView view = new OrderCoordinatorView();
+                                    DialogResult result = view.ShowDialog();
+                                    if (result.Equals(DialogResult.OK))
+                                    {
+                                        string note = view.Note;
+                                        SelectAgent(note);
+                                    }
                                     break;
                                 default:
                                     break;
@@ -538,6 +544,59 @@ namespace MainPrj.View
                         }
                         break;
                     }
+                }
+            }
+        }
+        private void SelectAgent(string note)
+        {
+            List<SelectorModel> listSelector = new List<SelectorModel>();
+            foreach (SelectorModel item in DataPure.Instance.GetListAgents())
+            {
+                listSelector.Add((SelectorModel)item.Clone());
+            }
+            listSelector.Sort();
+
+            SelectorView selectorView = new SelectorView();
+            // Set data
+            selectorView.ListData = listSelector;
+            // Set title
+            selectorView.Text = Properties.Resources.SelectorTitleAgent;
+            // Set header text
+            selectorView.SetHeaderText(SelectorColumns.SELECTOR_COLUMN_ADDRESS, string.Empty);
+            // Set default selection
+            selectorView.SetSelection(DataPure.Instance.CustomerInfo.Agent_id);
+            // Show dialog
+            selectorView.ShowDialog();
+            string selectorId = selectorView.SelectedId;
+            if (!String.IsNullOrEmpty(selectorId))
+            {
+                DialogResult result = CommonProcess.ShowInformMessage(
+                    String.Format("Bạn đang tạo đơn hàng cho Khách hàng {0}:\n\t{1}\n\ttại {2}.\nBạn chắn chắn không?",
+                        DataPure.Instance.CustomerInfo.Name, note, DataPure.Instance.GetAgentNameById(selectorId)),
+                    MessageBoxButtons.OKCancel);
+                if (result.Equals(DialogResult.OK))
+                {
+                    string id = CommonProcess.RequestCreateOrderCoordinator(selectorId, DataPure.Instance.CustomerInfo.Id, note);
+                    if (CommonProcess.HasError)
+                    {
+                        CommonProcess.HasError = false;
+                        CommonProcess.ShowInformMessage(Properties.Resources.CreateOrderServerError, MessageBoxButtons.OK);
+                        return;
+                    }
+                    if (!String.IsNullOrEmpty(id))
+                    {
+                        CommonProcess.ShowInformMessage(Properties.Resources.CreateOrderSuccess, MessageBoxButtons.OK);
+                    }
+                }
+            }
+            else
+            {
+                // User not choose any agent
+                DialogResult result = CommonProcess.ShowInformMessage(
+                    Properties.Resources.YouMustSelectAnAgent, MessageBoxButtons.RetryCancel);
+                if (result.Equals(DialogResult.Retry))
+                {
+                    SelectAgent(note);
                 }
             }
         }

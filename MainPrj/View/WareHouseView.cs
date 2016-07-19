@@ -135,7 +135,7 @@ namespace MainPrj.View
                 if (bitmap.Bitmap == null)
                 {
                     bitmap.Bitmap = CommonProcess.CreateAvatar(bitmap.Text,
-                        Properties.Settings.Default.ImageSize, color);
+                        Properties.Settings.Default.ImageSize, color, Properties.Settings.Default.ImageFontSize);
                     bitmap.Color = color;
                 }
                 this._listProductImg.Images.Add(bitmap.Bitmap);
@@ -166,7 +166,7 @@ namespace MainPrj.View
                 if (bitmap.Bitmap == null)
                 {
                     bitmap.Bitmap = CommonProcess.CreateAvatar(bitmap.Text,
-                        Properties.Settings.Default.ImageSize, color);
+                        Properties.Settings.Default.ImageSize, color, Properties.Settings.Default.ImageFontSize);
                     bitmap.Color = color;
                 }
                 this._listPromoteImg.Images.Add(bitmap.Bitmap);
@@ -284,7 +284,7 @@ namespace MainPrj.View
                 ListViewItem item     = this.listViewSelectedProduct.SelectedItems[0];
                 MaterialBitmap bitmap = (MaterialBitmap)item.Tag;
                 bitmap.Text           = e.Label;
-                bitmap.Bitmap = CommonProcess.CreateAvatar(e.Label, Properties.Settings.Default.ImageSize, bitmap.Color);
+                bitmap.Bitmap = CommonProcess.CreateAvatar(e.Label, Properties.Settings.Default.ImageSize, bitmap.Color, Properties.Settings.Default.ImageFontSize);
                 _listProductImg.Images[item.ImageIndex] = bitmap.Bitmap;
             }
         }
@@ -312,7 +312,7 @@ namespace MainPrj.View
                     ListViewItem item     = this.listViewSelectedProduct.SelectedItems[0];
                     MaterialBitmap bitmap = (MaterialBitmap)item.Tag;
                     bitmap.Color          = this.colorDialog.Color;
-                    bitmap.Bitmap = CommonProcess.CreateAvatar(bitmap.Text, Properties.Settings.Default.ImageSize, bitmap.Color);
+                    bitmap.Bitmap = CommonProcess.CreateAvatar(bitmap.Text, Properties.Settings.Default.ImageSize, bitmap.Color, Properties.Settings.Default.ImageFontSize);
                     _listProductImg.Images[item.ImageIndex] = bitmap.Bitmap;
                 }
             }
@@ -459,7 +459,7 @@ namespace MainPrj.View
                 ListViewItem item = this.listViewSelectedPromote.SelectedItems[0];
                 MaterialBitmap bitmap = (MaterialBitmap)item.Tag;
                 bitmap.Text = e.Label;
-                bitmap.Bitmap = CommonProcess.CreateAvatar(e.Label, Properties.Settings.Default.ImageSize, bitmap.Color);
+                bitmap.Bitmap = CommonProcess.CreateAvatar(e.Label, Properties.Settings.Default.ImageSize, bitmap.Color, Properties.Settings.Default.ImageFontSize);
                 _listPromoteImg.Images[item.ImageIndex] = bitmap.Bitmap;
             }
         }

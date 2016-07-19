@@ -1,6 +1,10 @@
 ﻿using MainPrj.Model;
 using MainPrj.Util;
 using MainPrj.View;
+using PcapDotNet.Core;
+using PcapDotNet.Packets;
+using PcapDotNet.Packets.IpV4;
+using PcapDotNet.Packets.Transport;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -16,6 +20,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -27,6 +32,7 @@ namespace MainPrj
     /// </summary>
     public partial class MainForm : Form
     {
+        #region Properties
         /// <summary>
         /// Main Udp client.
         /// </summary>
@@ -36,14 +42,24 @@ namespace MainPrj
         /// </summary>
         private Thread udpThread = default(Thread);
         /// <summary>
+        /// SIP thread.
+        /// </summary>
+        private Thread sipThread = default(Thread);
+        /// <summary>
+        /// Thread listenning data from web.
+        /// </summary>
+        private Thread listenThread = default(Thread);
+        /// <summary>
         /// List of tab control.
         /// </summary>
         private List<ChannelControl> listChannelControl = new List<ChannelControl>();
         /// <summary>
         /// List flag need update title of tab controls.
         /// </summary>
-        private bool[] listChannelNeedUpdateTitle = new bool[Properties.Settings.Default.ChannelNumber];
+        private bool[] listChannelNeedUpdateTitle = new bool[Properties.Settings.Default.ChannelNumber]; 
+        #endregion
 
+        #region Methods
         /// <summary>
         /// Constructor.
         /// </summary>
@@ -57,6 +73,541 @@ namespace MainPrj
             }
             // Start thread
             StartUdpThread();
+            //StartListeningThread();
+            StartSIPThread();
+        }
+        /// <summary>
+        /// Update data to channel tab.
+        /// </summary>
+        /// <param name="phone">Incomming number</param>
+        private void UpdateData(string phone, int status, int channelIdx)
+        {
+            // Disable button create customer
+            //btnCreateCustomer.Enabled = false;
+            // Get list of customers
+            List<CustomerModel> listCustomer = CommonProcess.RequestCustomerByPhone(phone);
+            // Check if has error when handle common process
+            if (CommonProcess.HasError)
+            {
+                // Reset flag
+                CommonProcess.HasError = false;
+                // Stop
+                return;
+            }
+            ChannelControl channel = null;
+            CustomerModel customer = new CustomerModel();
+            try
+            {
+                // Get channel need update
+                channel = this.listChannelControl.ElementAt(channelIdx);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                CommonProcess.ShowErrorMessage(Properties.Resources.ArgumentOutOfRange);
+                return;
+            }
+            switch (listCustomer.Count)
+            {
+                case 0:         // Incomming phone is current not existing in system
+                    customer.Name = String.Empty;
+                    // Disable button create customer
+                    //btnCreateCustomer.Enabled = true;
+                    break;
+                case 1:         // A customer has phone number is match with incomming phone
+                    customer = listCustomer.ElementAt(0);
+                    break;
+                default:        // 2 or more customer has phone number is match with incomming phone
+                    // Channel need update is not current channel
+                    if (!channelIdx.Equals(DataPure.Instance.CurrentChannel))
+                    {
+                        // Not show selector list
+                        break;
+                    }
+                    List<SelectorModel> listSelector = new List<SelectorModel>();
+                    // Create list selector data
+                    foreach (CustomerModel customerInfo in listCustomer)
+                    {
+                        SelectorModel selectorModel = new SelectorModel();
+                        selectorModel.Id = customerInfo.Id;
+                        selectorModel.Name = customerInfo.Name;
+                        selectorModel.Detail = customerInfo.Address;
+                        listSelector.Add(selectorModel);
+                    }
+                    // Create SelectorView
+                    SelectorView selectorForm = new SelectorView();
+                    selectorForm.ListData = listSelector;
+                    selectorForm.Text = Properties.Resources.SelectorTitleCustomer;
+                    selectorForm.ShowDialog();
+                    // Get customer id that user selected
+                    string customerId = selectorForm.SelectedId;
+                    if (!String.IsNullOrEmpty(customerId))
+                    {
+                        // Find customer id in list customer
+                        foreach (CustomerModel customerInfo in listCustomer)
+                        {
+                            // Found
+                            if (customerId.Equals(customerInfo.Id))
+                            {
+                                customer = customerInfo;
+                                break;
+                            }
+                        }
+                    }
+                    break;
+            }
+
+            customer.ActivePhone = phone;
+            CallModel call = new CallModel(System.DateTime.Now, channelIdx, customer, phone, status);
+            DataPure.Instance.ListCalls.Add(call);
+            CommonProcess.SetChannelInformation(channel, call.Customer);
+        }
+
+        /// <summary>
+        /// Setting ON/OFF testing control.
+        /// </summary>
+        /// <param name="onoff">Flag value</param>
+        private void TurnOnOffTestingMode(bool onoff)
+        {
+            btnSearch.Visible = onoff;
+            tbxLog.Visible = onoff;
+            chbListenFromCard.Visible = onoff;
+            chbUpdatePhone.Visible = onoff;
+
+            if (onoff)
+            {
+                this.channelControlLine2.SetIncommingPhone("01869194542");
+                this.channelControlLine3.SetIncommingPhone("01674816039");
+                this.channelControlLine4.SetIncommingPhone("0988180386");
+                this.chbListenFromCard.Checked = Properties.Settings.Default.ListeningCardMode;
+                this.chbUpdatePhone.Checked = Properties.Settings.Default.UpdatePhone;
+            }
+        }
+        /// <summary>
+        /// Handle when click Create order button.
+        /// </summary>
+        private void HandleClickCreateOrderButton()
+        {
+            DataPure.Instance.CustomerInfo = this.listChannelControl[DataPure.Instance.CurrentChannel].Data;
+            // Check if customer name is empty
+            if ((DataPure.Instance.CustomerInfo != null)
+                && (!String.IsNullOrEmpty(DataPure.Instance.CustomerInfo.Name)))
+            {
+                RoleType role = RoleType.ROLE_ACCOUNTING_AGENT;
+                if (DataPure.Instance.User != null)
+                {
+                    role = DataPure.Instance.User.Role;
+                }
+                switch (role)
+                {
+                    case RoleType.ROLE_ACCOUNTING_AGENT:
+                        OrderView order = new OrderView(DataPure.Instance.CustomerInfo);
+                        order.ShowDialog();
+                        break;
+                    case RoleType.ROLE_DIEU_PHOI:
+                        List<SelectorModel> listSelector = new List<SelectorModel>();
+                        foreach (SelectorModel item in DataPure.Instance.GetListAgents())
+                        {
+                            listSelector.Add((SelectorModel)item.Clone());
+                        }
+                        listSelector.Sort();
+
+                        SelectorView selectorView = new SelectorView();
+                        // Set data
+                        selectorView.ListData = listSelector;
+                        // Set title
+                        selectorView.Text = Properties.Resources.SelectorTitleAgent;
+                        // Set header text
+                        selectorView.SetHeaderText(SelectorColumns.SELECTOR_COLUMN_ADDRESS, string.Empty);
+                        // Set default selection
+                        selectorView.SetSelection(DataPure.Instance.CustomerInfo.Agent_id);
+                        // Show dialog
+                        selectorView.ShowDialog();
+                        string selectorId = selectorView.SelectedId;
+                        if (!String.IsNullOrEmpty(selectorId))
+                        {
+                            string note = string.Empty;
+                            note = coordinatorOrderView.GetData();
+                            DialogResult result = CommonProcess.ShowInformMessage(
+                                String.Format("Bạn đang tạo đơn hàng cho Khách hàng {0}:\n\t{1}\n\ttại {2}.\nBạn chắn chắn không?",
+                                    DataPure.Instance.CustomerInfo.Name, note, DataPure.Instance.GetAgentNameById(selectorId)),
+                                MessageBoxButtons.OKCancel);
+                            if (result.Equals(DialogResult.OK))
+                            {
+                                string id = CommonProcess.RequestCreateOrderCoordinator(selectorId, DataPure.Instance.CustomerInfo.Id, note);
+                                if (CommonProcess.HasError)
+                                {
+                                    CommonProcess.HasError = false;
+                                    CommonProcess.ShowInformMessage(Properties.Resources.CreateOrderServerError, MessageBoxButtons.OK);
+                                    return;
+                                }
+                                if (!String.IsNullOrEmpty(id))
+                                {
+                                    CommonProcess.ShowInformMessage(Properties.Resources.CreateOrderSuccess, MessageBoxButtons.OK);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            // User not choose any agent
+                            DialogResult result = CommonProcess.ShowInformMessage(
+                                Properties.Resources.YouMustSelectAnAgent, MessageBoxButtons.RetryCancel);
+                            if (result.Equals(DialogResult.Retry))
+                            {
+                                HandleClickCreateOrderButton();
+                            }
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else
+            {
+                CommonProcess.ShowErrorMessage(Properties.Resources.MissCustomerInfor);
+            }
+        }
+        /// <summary>
+        /// Handle when click Save data button.
+        /// </summary>
+        private void HandleClickSaveDataButton()
+        {
+            //OrderCarView order = new OrderCarView();
+            //order.Show();
+            CommonProcess.ShowInformMessageProcessing();
+        }
+        /// <summary>
+        /// Handle when click Update Customer button.
+        /// </summary>
+        private void HandleClickUpdateCustomerButton()
+        {
+            //CommonProcess.ShowInformMessageProcessing();
+            this.listChannelControl[DataPure.Instance.CurrentChannel].SaveNote();
+            UpdateStatus(Properties.Resources.NoteSaved);
+        }
+        /// <summary>
+        /// Handle when click Transfer To Sale button.
+        /// </summary>
+        private void HandleClickCreateCustomerButton()
+        {
+            ChannelControl channelControl = null;
+            try
+            {
+                channelControl = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                CommonProcess.ShowErrorMessage(Properties.Resources.ArgumentOutOfRange);
+                return;
+            }
+            if (channelControl != null)
+            {
+                if (String.IsNullOrEmpty(channelControl.Data.Name))
+                {
+                    List<String> customerInfo = channelControl.GetNewCustomerInfo();
+                    CommonProcess.RequestCreateNewCustomer(customerInfo[0],
+                        channelControl.GetIncommingPhone(),
+                        customerInfo[1],
+                        customerInfo[2],
+                        customerInfo[3],
+                        customerInfo[4],
+                        customerInfo[5],
+                        createCustomerProgressChanged,
+                        createCustomerCompleted);
+                }
+            }
+        }
+        /// <summary>
+        /// Handle when click List order button.
+        /// </summary>
+        private void HandleClickListOrderButton()
+        {
+            ListOrderView view = new ListOrderView();
+            view.Show();
+        }
+        /// <summary>
+        /// Handle when click History button.
+        /// </summary>
+        private void HandleClickHistoryButton()
+        {
+            HistoryView historyView = new HistoryView();
+            historyView.ListTodayData.AddRange(DataPure.Instance.ListCalls);
+            historyView.ShowDialog();
+            foreach (CallModel current in historyView.ListTodayData)
+            {
+                foreach (CallModel current2 in DataPure.Instance.ListCalls)
+                {
+                    if (current.Id.Equals(current2.Id))
+                    {
+                        current2.IsFinish = current.IsFinish;
+                        break;
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// Update tab page title.
+        /// </summary>
+        /// <param name="channel">Chanel</param>
+        /// <param name="phone">Phone</param>
+        /// <param name="status">Status</param>
+        /// <param name="statusStr">Status string</param>
+        private void UpdateTabTitle(int channel, string phone, int status, string statusStr)
+        {
+            if ((channel >= 0) && (channel < Properties.Settings.Default.ChannelNumber))
+            {
+                if (this.listChannelNeedUpdateTitle[channel])                           // Flag is ON
+                {
+                    if (status.Equals((int)CardDataStatus.CARDDATA_CALLING))            // Status is calling
+                    {
+                        this.listChannelNeedUpdateTitle[channel] = false;               // Turn off flag
+                        return;
+                    }
+                }
+                else                                                                    // Flag is OFF
+                {
+                    if (status.Equals((int)CardDataStatus.CARDDATA_RINGING))            // Status is ringing
+                    {
+                        this.listChannelNeedUpdateTitle[channel] = true;
+                    }
+                }
+                // Flag is ON
+                if (this.listChannelNeedUpdateTitle[channel])
+                {
+                    // Update tab title
+                    this.mainTabControl.TabPages[channel].Text = String.Format("{0} :{1}-{2}",
+                                channel + 1,
+                                phone.Substring(Math.Max(0, phone.Length - Properties.Settings.Default.PhoneCutLength)),
+                                statusStr);
+                }
+            }
+        }
+        /// <summary>
+        /// Update status content.
+        /// </summary>
+        /// <param name="status">Update status</param>
+        private void UpdateStatus(string status)
+        {
+            toolStripStatusLabel.Text = status;
+        }
+        /// <summary>
+        /// Login handle.
+        /// </summary>
+        private void Login()
+        {
+            // Draw avatar
+            string avatarString = string.Empty;
+            if (!String.IsNullOrEmpty(DataPure.Instance.User.First_name))
+            {
+                string[] token = DataPure.Instance.User.First_name.Split(' ');
+                if (token != null)
+                {
+                    foreach (string item in token)
+                    {
+                        avatarString += String.Format("{0}", item[0]).ToUpper();
+                    }
+                }
+            }
+            // Turn off login menu
+            this.toolStripMenuItemLogin.Enabled = false;
+            this.toolStripMenuItemLogout.Enabled = true;
+            // Update button enable
+            btnCreateOrder.Enabled = DataPure.Instance.IsAccountingAgentRole() || DataPure.Instance.IsCoordinatorRole();
+            btnOrderList.Enabled = DataPure.Instance.IsAccountingAgentRole();
+            btnCreateCustomer.Enabled = DataPure.Instance.IsAccountingAgentRole();
+            coordinatorOrderView.Enabled = DataPure.Instance.IsCoordinatorRole();
+            CommonProcess.RequestTempData(reqTempDataProgressChanged, reqTempDataCompleted);
+            pbxAvatar.Image = CommonProcess.CreateAvatar(avatarString, pbxAvatar.Size.Height);
+
+            Properties.Settings.Default.IsTabColorChange = DataPure.Instance.IsCoordinatorRole();
+            // Save setting
+            Properties.Settings.Default.Save();
+            if (Properties.Settings.Default.IsTabColorChange)
+            {
+                this.mainTabControl.DrawMode = TabDrawMode.OwnerDrawFixed;
+                this.mainTabControl.DrawItem += mainTabControl_DrawItem;
+            }
+        }
+        /// <summary>
+        /// Re-locate label.
+        /// </summary>
+        private void ReLocateLabel()
+        {
+            int leftBound = pbxAvatar.Left - 5;
+            lblUsername.Text = DataPure.Instance.User.First_name;
+            if (lblUsername.Right > leftBound)
+            {
+                lblUsername.Left = leftBound - lblUsername.Width;
+            }
+            lblRole.Text = DataPure.Instance.User.RoleStr;
+            if (lblRole.Right > leftBound)
+            {
+                lblRole.Left = leftBound - lblRole.Width;
+            }
+            if (DataPure.Instance.Agent != null)
+            {
+                lblAgent.Text = DataPure.Instance.Agent.Name;
+                if (lblAgent.Right > leftBound)
+                {
+                    lblAgent.Left = leftBound - lblAgent.Width;
+                }
+            }
+        }
+        /// <summary>
+        /// Select agent.
+        /// </summary>
+        private void SelectAgent()
+        {
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
+            // Check null object
+            if (DataPure.Instance.TempData != null)
+            {
+                // Check null object
+                if (DataPure.Instance.TempData.Agent_list != null)
+                {
+                    // Create list selector from Agents list
+                    List<SelectorModel> listSelector = new List<SelectorModel>();
+                    foreach (SelectorModel item in DataPure.Instance.TempData.Agent_list)
+                    {
+                        listSelector.Add(new SelectorModel
+                        {
+                            Id = item.Id,                   // Id
+                            Name = item.Name,                 // Name
+                            Detail = string.Empty,              // Empty
+                        });
+                    }
+                    // Sort list agents
+                    listSelector.Sort();
+                    SelectorView selectorView = new SelectorView();
+                    // Set data
+                    selectorView.ListData = listSelector;
+                    // Set title
+                    selectorView.Text = Properties.Resources.SelectorTitleAgent;
+                    // Set header text
+                    selectorView.SetHeaderText(SelectorColumns.SELECTOR_COLUMN_ADDRESS, string.Empty);
+                    // Set default selection
+                    selectorView.SetSelection(DataPure.Instance.TempData.Agent_id);
+                    timer.Stop();
+                    Console.WriteLine("Time elapsed [selectorView.ShowDialog();]:\t{0}", timer.ElapsedMilliseconds);
+                    // Show dialog
+                    selectorView.ShowDialog();
+                    // Get selection id
+                    string selectorId = selectorView.SelectedId;
+                    if (!String.IsNullOrEmpty(selectorId))
+                    {
+                        // If user select another choice
+                        if (!selectorId.Equals(DataPure.Instance.TempData.Agent_id))
+                        {
+                            // Request agent information from server
+                            CommonProcess.RequestAgentInformation(selectorId);
+                            // Updaate agent id
+                            DataPure.Instance.TempData.Agent_id = selectorId;
+                            // Search in agent list and save into [DataPure.Instance.Agent]
+                            foreach (SelectorModel item in DataPure.Instance.TempData.Agent_list)
+                            {
+                                if (selectorId.Equals(item.Id))
+                                {
+                                    DataPure.Instance.Agent = new AgentModel(item);
+                                    DataPure.Instance.Agent.Phone = DataPure.Instance.TempData.Agent_phone;
+                                    DataPure.Instance.Agent.Address = DataPure.Instance.TempData.Agent_address;
+                                    DataPure.Instance.Agent.Agent_province = DataPure.Instance.TempData.Agent_province;
+                                    DataPure.Instance.Agent.Agent_district = DataPure.Instance.TempData.Agent_district;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // User not choose any agent
+                        DialogResult result = CommonProcess.ShowInformMessage(
+                            Properties.Resources.YouMustSelectAnAgent, MessageBoxButtons.RetryCancel);
+                        if (result.Equals(DialogResult.Retry))
+                        {
+                            SelectAgent();
+                        }
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// Logout handle.
+        /// </summary>
+        private void Logout()
+        {
+            // Turn on login menus
+            this.toolStripMenuItemLogin.Enabled = true;
+            this.toolStripMenuItemLogout.Enabled = false;
+            // Reset token
+            Properties.Settings.Default.UserToken = String.Empty;
+            Properties.Settings.Default.Save();
+            // Reset label content and position
+            lblUsername.Text = Properties.Resources.Name;
+            lblUsername.Left = Properties.Settings.Default.NameLabelPosX;
+            lblRole.Text = Properties.Resources.Role;
+            lblRole.Left = Properties.Settings.Default.RoleLabelPosX;
+            lblAgent.Text = Properties.Resources.Agent;
+            lblAgent.Left = Properties.Settings.Default.AgentLabelPosX;
+            // Update button enable
+            btnCreateOrder.Enabled = false;
+            btnOrderList.Enabled = false;
+            btnCreateCustomer.Enabled = false;
+            DataPure.Instance.Agent = null;
+            coordinatorOrderView.Enabled = false;
+        }
+        #endregion
+
+        #region Event hanlers
+        /// <summary>
+        /// Handle when click Setting menu.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void toolStripMenuItemSetting_Click(object sender, EventArgs e)
+        {
+            SettingView setting = new SettingView();
+            DialogResult result = setting.ShowDialog();
+            //if (result.Equals(DialogResult.OK))
+            {
+                // For test
+                TurnOnOffTestingMode(Properties.Settings.Default.TestingMode);
+            }
+        }
+        /// <summary>
+        /// Handle when loading form
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            // Initialize
+            this.listChannelControl.Add(this.channelControlLine1);
+            this.listChannelControl.Add(this.channelControlLine2);
+            this.listChannelControl.Add(this.channelControlLine3);
+            this.listChannelControl.Add(this.channelControlLine4);
+            this.listChannelControl.Add(this.channelControlLine5);
+            this.listChannelControl.Add(this.channelControlLine6);
+            this.listChannelControl.Add(this.channelControlLine7);
+            this.listChannelControl.Add(this.channelControlLine8);
+
+            // Turn on flag update tab title
+            for (int i = 0; i < this.listChannelNeedUpdateTitle.Length; i++)
+            {
+                this.listChannelNeedUpdateTitle[i] = true;
+            }
+
+            // Check user login
+            if (!String.IsNullOrEmpty(Properties.Settings.Default.UserToken))
+            {
+                // Last user login already -> Request user infor from server
+            }
+
+            // For test
+            TurnOnOffTestingMode(Properties.Settings.Default.TestingMode);
+            CommonProcess.ReadListOrders();
+            CommonProcess.ReadHistory();
+            CommonProcess.ReadSetting();
+            CommonProcess.ReadSettingPromote();
         }
         /// <summary>
         /// Handle draw tab title.
@@ -101,6 +652,554 @@ namespace MainPrj
                 e.Graphics.DrawString(title, font, Brushes.Black, point);
             }
         }
+        /// <summary>
+        /// Handle when change tab index.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void mainTabControl_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DataPure.Instance.CurrentChannel = this.mainTabControl.SelectedIndex;
+            DataPure.Instance.CustomerInfo = this.listChannelControl[this.mainTabControl.SelectedIndex].Data;
+        }
+        /// <summary>
+        /// Handle when click button search.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            #region Test get customer information
+            string phone = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel).GetIncommingPhone();
+            int n = 0;
+            // Get incomming number information
+            if (!String.IsNullOrEmpty(phone) && int.TryParse(phone, out n))
+            {
+                // Insert value into current channel
+                try
+                {
+                    ChannelControl tab = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel);
+                    tab.SetIncommingPhone(phone);
+                    // Request server and update data from server
+                    UpdateData(phone, (int)CardDataStatus.CARDDATA_RINGING, DataPure.Instance.CurrentChannel);
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    CommonProcess.ShowErrorMessage(Properties.Resources.ArgumentOutOfRange);
+                }
+            } 
+            #endregion
+            //_TestServer test = new _TestServer();
+            //test.ShowDialog();
+            //CommonProcess.GetAgentExt();
+        }
+        /// <summary>
+        /// Handle when click Create order button
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void btnCreateOrder_Click(object sender, EventArgs e)
+        {
+            HandleClickCreateOrderButton();
+        }
+
+        /// <summary>
+        /// Handle when click Save data button
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void btnSaveData_Click(object sender, EventArgs e)
+        {
+            HandleClickSaveDataButton();
+        }
+
+        /// <summary>
+        /// Handle when click Update customer button
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void btnUpdateCustomer_Click(object sender, EventArgs e)
+        {
+            HandleClickUpdateCustomerButton();
+        }
+
+        /// <summary>
+        /// Handle when click Create customer button
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void btnCreateCustomer_Click(object sender, EventArgs e)
+        {
+            HandleClickCreateCustomerButton();
+        }
+        /// <summary>
+        /// Handle when press key on main form.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void MainForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.F1:
+                    HandleClickCreateOrderButton();
+                    break;
+                case Keys.F2:
+                    HandleClickSaveDataButton();
+                    break;
+                case Keys.F3:
+                    HandleClickUpdateCustomerButton();
+                    break;
+                case Keys.F4:
+                    HandleClickCreateCustomerButton();
+                    break;
+                case Keys.F5:
+                    HandleClickHistoryButton();
+                    break;
+                case Keys.F6:
+                    HandleClickListOrderButton();
+                    break;
+                case Keys.Return:
+                    ChannelControl channelControl = null;
+                    try
+                    {
+                        channelControl = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel);
+                    }
+                    catch (ArgumentOutOfRangeException)
+                    {
+                        CommonProcess.ShowErrorMessage(Properties.Resources.ArgumentOutOfRange);
+                        return;
+                    }
+                    if (channelControl != null)
+                    {
+                        channelControl.SearchCustomer();
+                        foreach (CallModel current in DataPure.Instance.ListCalls)
+                        {
+                            if (channelControl.Data.Id.Equals(current.Customer.Id))
+                            {
+                                current.Customer.Contact_note = channelControl.Data.Contact_note;
+                            }
+                        }
+                    }
+                    break;
+                case Keys.F7:
+                    //HistoryView1 historyView = new HistoryView1();
+                    //foreach (CallModel item in DataPure.Instance.ListCalls)
+                    //{
+                    //    historyView.ListData.Add(item.Id, item);
+                    //}
+                    //historyView.ShowDialog();
+                    //foreach (CallModel current in historyView.ListData.Values)
+                    //{
+                    //    foreach (CallModel current2 in DataPure.Instance.ListCalls)
+                    //    {
+                    //        if (current.Id.Equals(current2.Id))
+                    //        {
+                    //            current2.IsFinish = current.IsFinish;
+                    //            break;
+                    //        }
+                    //    }
+                    //}
+                    break;
+                default:
+                    break;
+            }
+        }
+        /// <summary>
+        /// Handle when creating customer.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">UploadProgressChangedEventArgs</param>
+        private void createCustomerProgressChanged(object sender, UploadProgressChangedEventArgs e)
+        {
+            if ((e.ProgressPercentage <= 50)
+                && (e.ProgressPercentage >= 0))
+            {
+                toolStripProgressBarReqServer.Value = e.ProgressPercentage * 2;
+            }
+            toolStripStatusLabel.Text = Properties.Resources.RequestingCreateCustomer;
+        }
+        /// <summary>
+        /// Handle when created customer.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">UploadValuesCompletedEventArgs</param>
+        private void createCustomerCompleted(object sender, UploadValuesCompletedEventArgs e)
+        {
+            if (e.Cancelled)
+            {
+                toolStripStatusLabel.Text = Properties.Resources.ErrorCause + "Hủy";
+            }
+            else if (e.Error != null)
+            {
+                toolStripStatusLabel.Text = Properties.Resources.ErrorCause + e.Error.Message;
+            }
+            else
+            {
+                byte[] response = e.Result;
+                string respStr = String.Empty;
+                respStr = System.Text.Encoding.UTF8.GetString(response);
+                // Response string is not null
+                if (!String.IsNullOrEmpty(respStr))
+                {
+                    DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(CustomerResponseModel));
+                    byte[] encodingBytes = null;
+                    try
+                    {
+                        // Encoding response data
+                        encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);
+                    }
+                    catch (System.Text.EncoderFallbackException)
+                    {
+                        CommonProcess.ShowErrorMessage(Properties.Resources.EncodingError);
+                    }
+                    if (encodingBytes != null)
+                    {
+                        MemoryStream msU = new MemoryStream(encodingBytes);
+                        CustomerResponseModel baseResp = (CustomerResponseModel)js.ReadObject(msU);
+                        // Check status
+                        if ((baseResp != null)
+                            && (baseResp.Status.Equals("1")))
+                        {
+                            // Create customer is success.
+                            CommonProcess.ShowInformMessage(Properties.Resources.CreateCustomerSuccess,
+                                MessageBoxButtons.OK);
+                            ChannelControl channelControl = null;
+                            try
+                            {
+                                channelControl = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel);
+                            }
+                            catch (ArgumentOutOfRangeException)
+                            {
+                                CommonProcess.ShowErrorMessage(Properties.Resources.ArgumentOutOfRange);
+                                return;
+                            }
+                            if (channelControl != null)
+                            {
+                                if (baseResp.Record != null)
+                                {
+                                    baseResp.Record[0].ActivePhone = channelControl.GetIncommingPhone();
+                                    CommonProcess.SetChannelInformation(channelControl, baseResp.Record[0]);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            // Create customer is failed.
+                            CommonProcess.ShowInformMessage(Properties.Resources.CreateCustomerFailed,
+                                MessageBoxButtons.OK);
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Handle when click on checkbox Listen from card.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void chbListenFromCard_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.ListeningCardMode = chbListenFromCard.Checked;
+            Properties.Settings.Default.Save();
+        }
+        /// <summary>
+        /// Handle when click History button.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void btnHistory_Click(object sender, EventArgs e)
+        {
+            HandleClickHistoryButton();
+        }
+        /// <summary>
+        /// Handle when close form.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            //DialogResult result = CommonProcess.ShowInformMessage(Properties.Resources.AreYouSureToClose,
+            //    MessageBoxButtons.YesNo);
+            //if (result.Equals(DialogResult.Yes))
+            //{
+            //    // Write history file
+            //    CommonProcess.WriteHistory(this.listCalls);
+            //    Properties.Settings.Default.UserToken = String.Empty;
+            //    Properties.Settings.Default.Save();
+            //}
+            //else
+            //{
+            //    e.Cancel = true;
+            //}
+            // Write history file
+            if (!CommonProcess.WriteHistory(DataPure.Instance.ListCalls))
+            {
+                e.Cancel = true;
+                return;
+            }
+            if (!CommonProcess.WriteListOrders())
+            {
+                e.Cancel = true;
+                return;
+            }
+            Properties.Settings.Default.UserToken = String.Empty;
+            Properties.Settings.Default.Save();
+        }
+        /// <summary>
+        /// Handle when check in Update phone checkbox
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void chbUpdatePhone_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.UpdatePhone = chbUpdatePhone.Checked;
+            Properties.Settings.Default.Save();
+        }
+        /// <summary>
+        /// Handle when select item Login menu
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void toolStripMenuItemLogin_Click(object sender, EventArgs e)
+        {
+            LoginView login = new LoginView();
+            login.ShowDialog();
+            DataPure.Instance.User = new UserLoginModel(login.User);
+            if (!String.IsNullOrEmpty(DataPure.Instance.User.First_name))
+            {
+                Login();
+            }
+        }
+
+        /// <summary>
+        /// Handle when select item Logout menu
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void toolStripMenuItemLogout_Click(object sender, EventArgs e)
+        {
+            if (!String.IsNullOrEmpty(Properties.Settings.Default.UserToken))
+            {
+                CommonProcess.RequestLogout();
+            }
+            DataPure.Instance.User = new UserLoginModel();
+            pbxAvatar.Image = CommonProcess.CreateAvatar(string.Empty, pbxAvatar.Size.Height);
+            Logout();
+        }
+        /// <summary>
+        /// Request temp data completed event handler.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">UploadValuesCompletedEventArgs</param>
+        private void reqTempDataCompleted(object sender, UploadValuesCompletedEventArgs e)
+        {
+            if (e.Cancelled)
+            {
+                toolStripStatusLabel.Text = Properties.Resources.ErrorCause + "Hủy";
+            }
+            else if (e.Error != null)
+            {
+                toolStripStatusLabel.Text = Properties.Resources.ErrorCause + e.Error.Message;
+            }
+            else
+            {
+                //toolStripStatusLabel.Text = Properties.Resources.RequestTempDataSuccess;
+                toolStripStatusLabel.Text = Properties.Resources.AnalyzingTempData;
+                toolStripProgressBarReqServer.Value = 0;
+                reqTempDataCompleted(e);
+            }
+        }
+        /// <summary>
+        /// Request temp data completed event handler.
+        /// </summary>
+        /// <param name="e">UploadValuesCompletedEventArgs</param>
+        /// <param name="isNotFirstTime">True if request temp data in the first time, False otherwise</param>
+        private void reqTempDataCompleted(UploadValuesCompletedEventArgs e, bool isNotFirstTime = false)
+        {
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
+            byte[] response = e.Result;
+            string respStr = String.Empty;
+            respStr = System.Text.Encoding.UTF8.GetString(response);
+
+            if (!String.IsNullOrEmpty(respStr))
+            {
+                timer.Stop();
+                Console.WriteLine("Time elapsed [respStr = System.Text.Encoding.UTF8.GetString(response);]:\t{0}", timer.ElapsedMilliseconds);
+                timer.Restart();
+                DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(TempDataResponseModel));
+                byte[] encodingBytes = null;
+                try
+                {
+                    // Encoding response data
+                    encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);
+                }
+                catch (System.Text.EncoderFallbackException)
+                {
+                    CommonProcess.ShowErrorMessage(Properties.Resources.EncodingError);
+                }
+                timer.Stop();
+                Console.WriteLine("Time elapsed [encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);]:\t{0}", timer.ElapsedMilliseconds);
+                timer.Restart();
+                if (encodingBytes != null)
+                {
+                    MemoryStream msU = new MemoryStream(encodingBytes);
+                    TempDataResponseModel baseResp = (TempDataResponseModel)js.ReadObject(msU);
+                    toolStripStatusLabel.Text = Properties.Resources.AnalyzeTempDataDone;
+                    timer.Stop();
+                    Console.WriteLine("Time elapsed [js.ReadObject(msU);]:\t{0}", timer.ElapsedMilliseconds);
+                    timer.Restart();
+                    if ((baseResp != null)
+                        && (baseResp.Record != null))
+                    {
+                        List<SelectorModel> listEmployee = null;
+                        // Update data
+                        if (isNotFirstTime)
+                        {
+                            listEmployee = new List<SelectorModel>(DataPure.Instance.GetListDelivers());
+                        }
+                        DataPure.Instance.TempData = baseResp.Record;
+                        timer.Stop();
+                        Console.WriteLine("Time elapsed [DataPure.Instance.TempData = baseResp.Record;]:\t{0}", timer.ElapsedMilliseconds);
+                        timer.Restart();
+                        DataPure.Instance.TempData.Sort();
+                        // Update data
+                        if (isNotFirstTime)
+                        {
+                            if (listEmployee != null)
+                            {
+                                DataPure.Instance.TempData.Employee_maintain = listEmployee;
+                            }
+                        }
+                        else
+                        {
+                            // Get temp data
+                            DataPure.Instance.Agent = new AgentModel(DataPure.Instance.TempData.Agent_id,
+                                DataPure.Instance.TempData.Agent_name, string.Empty,
+                                DataPure.Instance.TempData.Agent_phone,
+                                DataPure.Instance.TempData.Agent_address,
+                                DataPure.Instance.TempData.Agent_province,
+                                DataPure.Instance.TempData.Agent_district);
+                        }
+                        timer.Stop();
+                        Console.WriteLine("Time elapsed [DataPure.Instance.TempData.Sort();]:\t{0}", timer.ElapsedMilliseconds);
+                    }
+                }
+            }
+            // Get temp data
+            if (!isNotFirstTime)
+            {
+                // Select agent if user role is Accounting agent
+                if (DataPure.Instance.IsAccountingAgentRole())
+                {
+                    SelectAgent();
+                }
+                ReLocateLabel();
+            }
+            // Update address data
+            if (DataPure.Instance.IsAccountingAgentRole())
+            {
+                if (DataPure.Instance.TempData != null)
+                {
+                    foreach (ChannelControl item in this.listChannelControl)
+                    {
+                        item.SetCity(DataPure.Instance.GetListCities());
+                        item.SetStreet(DataPure.Instance.GetListStreets());
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// Request temp data progress changed event handler.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">UploadProgressChangedEventArgs</param>
+        private void reqTempDataProgressChanged(object sender, UploadProgressChangedEventArgs e)
+        {
+            //if ((e.ProgressPercentage <= 50)
+            if ((e.ProgressPercentage <= 100)
+                && (e.ProgressPercentage >= 0))
+            {
+                //toolStripProgressBarReqServer.Value = e.ProgressPercentage * 2;
+                toolStripProgressBarReqServer.Value = e.ProgressPercentage;
+            }
+            toolStripStatusLabel.Text = Properties.Resources.RequestingTempData;
+        }
+        /// <summary>
+        /// Handle list order
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void btnOrderList_Click(object sender, EventArgs e)
+        {
+            HandleClickListOrderButton();
+        }
+
+        /// <summary>
+        /// Handle when click Support menu.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void toolStripMenuItemSupport_Click(object sender, EventArgs e)
+        {
+            AboutBox about = new AboutBox();
+            about.Show();
+        }
+        /// <summary>
+        /// Handle when click Guideline menu.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void toolStripMenuItemGuideline_Click(object sender, EventArgs e)
+        {
+            CommonProcess.ShowInformMessageProcessing();
+        }
+        /// <summary>
+        /// Handle when click Update data menu.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void toolStripMenuItemUpdateData_Click(object sender, EventArgs e)
+        {
+            CommonProcess.RequestTempData(reqTempDataProgressChanged, reqTempDataCompletedMenu);
+        }
+        /// <summary>
+        /// Request temp data completed from menu event handler
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">UploadValuesCompletedEventArgs</param>
+        private void reqTempDataCompletedMenu(object sender, UploadValuesCompletedEventArgs e)
+        {
+            if (e.Cancelled)
+            {
+                toolStripStatusLabel.Text = Properties.Resources.ErrorCause + "Hủy";
+            }
+            else if (e.Error != null)
+            {
+                toolStripStatusLabel.Text = Properties.Resources.ErrorCause + e.Error.Message;
+            }
+            else
+            {
+                toolStripStatusLabel.Text = Properties.Resources.RequestTempDataSuccess;
+                toolStripProgressBarReqServer.Value = 0;
+                reqTempDataCompleted(e, true);
+            }
+        }
+        /// <summary>
+        /// Handle when click on 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void toolStripMenuItemWareHouse_Click(object sender, EventArgs e)
+        {
+            WareHouseView view = new WareHouseView();
+            view.ShowDialog();
+        }
+        #endregion
+
+        #region Tansonic UDP handling
         /// <summary>
         /// Start udp in separate thread.
         /// </summary>
@@ -296,1222 +1395,228 @@ namespace MainPrj
                 }
             }
             this.tbxLog.Text = data + "\r\n" + this.tbxLog.Text;
-        }
-        /// <summary>
-        /// Handle when click Setting menu.
-        /// </summary>
-        /// <param name="sender">Sender</param>
-        /// <param name="e">EventArgs</param>
-        private void toolStripMenuItemSetting_Click(object sender, EventArgs e)
-        {
-            SettingView setting = new SettingView();
-            DialogResult result = setting.ShowDialog();
-            //if (result.Equals(DialogResult.OK))
-            {
-                // For test
-                TurnOnOffTestingMode(Properties.Settings.Default.TestingMode);
-            }
-        }
-        /// <summary>
-        /// Handle when loading form
-        /// </summary>
-        /// <param name="sender">Sender</param>
-        /// <param name="e">EventArgs</param>
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-            // Initialize
-            this.listChannelControl.Add(this.channelControlLine1);
-            this.listChannelControl.Add(this.channelControlLine2);
-            this.listChannelControl.Add(this.channelControlLine3);
-            this.listChannelControl.Add(this.channelControlLine4);
-            this.listChannelControl.Add(this.channelControlLine5);
-            this.listChannelControl.Add(this.channelControlLine6);
-            this.listChannelControl.Add(this.channelControlLine7);
-            this.listChannelControl.Add(this.channelControlLine8);
-
-            // Turn on flag update tab title
-            for (int i = 0; i < this.listChannelNeedUpdateTitle.Length; i++)
-            {
-                this.listChannelNeedUpdateTitle[i] = true;
-            }
-
-            // Check user login
-            if (!String.IsNullOrEmpty(Properties.Settings.Default.UserToken))
-            {
-                // Last user login already -> Request user infor from server
-            }
-
-            // For test
-            TurnOnOffTestingMode(Properties.Settings.Default.TestingMode);
-            CommonProcess.ReadListOrders();
-            CommonProcess.ReadHistory();
-            CommonProcess.ReadSetting();
-            CommonProcess.ReadSettingPromote();
-        }
-        /// <summary>
-        /// Update data to channel tab.
-        /// </summary>
-        /// <param name="phone">Incomming number</param>
-        private void UpdateData(string phone, int status, int channelIdx)
-        {
-            // Disable button create customer
-            //btnCreateCustomer.Enabled = false;
-            // Get list of customers
-            List<CustomerModel> listCustomer = CommonProcess.RequestCustomerByPhone(phone);
-            // Check if has error when handle common process
-            if (CommonProcess.HasError)
-            {
-                // Reset flag
-                CommonProcess.HasError = false;
-                // Stop
-                return;
-            }
-            ChannelControl channel = null;
-            CustomerModel customer = new CustomerModel();
-            try
-            {
-                // Get channel need update
-                channel = this.listChannelControl.ElementAt(channelIdx);
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                CommonProcess.ShowErrorMessage(Properties.Resources.ArgumentOutOfRange);
-                return;
-            }
-            switch (listCustomer.Count)
-            {
-                case 0:         // Incomming phone is current not existing in system
-                    customer.Name = String.Empty;
-                    // Disable button create customer
-                    //btnCreateCustomer.Enabled = true;
-                    break;
-                case 1:         // A customer has phone number is match with incomming phone
-                    customer = listCustomer.ElementAt(0);
-                    break;
-                default:        // 2 or more customer has phone number is match with incomming phone
-                    // Channel need update is not current channel
-                    if (!channelIdx.Equals(DataPure.Instance.CurrentChannel))
-                    {
-                        // Not show selector list
-                        break;
-                    }
-                    List<SelectorModel> listSelector = new List<SelectorModel>();
-                    // Create list selector data
-                    foreach (CustomerModel customerInfo in listCustomer)
-                    {
-                        SelectorModel selectorModel = new SelectorModel();
-                        selectorModel.Id            = customerInfo.Id;
-                        selectorModel.Name          = customerInfo.Name;
-                        selectorModel.Detail        = customerInfo.Address;
-                        listSelector.Add(selectorModel);
-                    }
-                    // Create SelectorView
-                    SelectorView selectorForm = new SelectorView();
-                    selectorForm.ListData = listSelector;
-                    selectorForm.Text = Properties.Resources.SelectorTitleCustomer;
-                    selectorForm.ShowDialog();
-                    // Get customer id that user selected
-                    string customerId = selectorForm.SelectedId;
-                    if (!String.IsNullOrEmpty(customerId))
-                    {
-                        // Find customer id in list customer
-                        foreach (CustomerModel customerInfo in listCustomer)
-                        {
-                            // Found
-                            if (customerId.Equals(customerInfo.Id))
-                            {
-                               customer = customerInfo;
-                                break;
-                            }
-                        }
-                    }
-                    break;
-            }
-
-            customer.ActivePhone = phone;
-            CallModel call = new CallModel(System.DateTime.Now, channelIdx, customer, phone, status);
-            DataPure.Instance.ListCalls.Add(call);
-            CommonProcess.SetChannelInformation(channel, call.Customer);
-        }
-        /// <summary>
-        /// Handle when change tab index.
-        /// </summary>
-        /// <param name="sender">Sender</param>
-        /// <param name="e">EventArgs</param>
-        private void mainTabControl_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            DataPure.Instance.CurrentChannel = this.mainTabControl.SelectedIndex;
-            DataPure.Instance.CustomerInfo = this.listChannelControl[this.mainTabControl.SelectedIndex].Data;
-        }
-        /// <summary>
-        /// Handle when click button search.
-        /// </summary>
-        /// <param name="sender">Sender</param>
-        /// <param name="e">EventArgs</param>
-        private void btnSearch_Click(object sender, EventArgs e)
-        {
-            #region Test get customer information
-            //string phone = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel).GetIncommingPhone();
-            //int n = 0;
-            //// Get incomming number information
-            //if (!String.IsNullOrEmpty(phone) && int.TryParse(phone, out n))
-            //{
-            //    // Insert value into current channel
-            //    try
-            //    {
-            //        ChannelControl tab = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel);
-            //        tab.SetIncommingPhone(phone);
-            //        // Request server and update data from server
-            //        UpdateData(phone, (int)CardDataStatus.CARDDATA_RINGING, DataPure.Instance.CurrentChannel);
-            //    }
-            //    catch (ArgumentOutOfRangeException)
-            //    {
-            //        CommonProcess.ShowErrorMessage(Properties.Resources.ArgumentOutOfRange);
-            //    }
-            //} 
-            #endregion
-            //_TestServer test = new _TestServer();
-            //test.ShowDialog();
-            //CommonProcess.GetAgentExt();
-
-            #region Obtaining the device list
-            //IList<LivePacketDevice> allDevices = LivePacketDevice.AllLocalMachine;
-            //if (allDevices.Count == 0)
-            //{
-            //    CommonProcess.ShowInformMessage("No interfaces found! Make sure WinPcap is installed.", MessageBoxButtons.OK);
-            //}
-            //string msg = string.Empty;
-            //for (int i = 0; i < allDevices.Count; i++)
-            //{
-            //    LivePacketDevice device = allDevices[i];
-            //    msg = String.Format("{0}{1}. {2}", msg, (i + 1), device.Name);
-            //    if (device.Description != null)
-            //    {
-            //        msg = String.Format("{0} ({1})\n", msg, device.Description);
-            //    }
-            //    else
-            //    {
-            //        msg = String.Format("{0} (No description available)\n", msg);
-            //    }
-            //}
-            //CommonProcess.ShowInformMessage(msg, MessageBoxButtons.OK);
-            #endregion
-            #region Obtaining advanced information about installed devices
-            //IList<LivePacketDevice> allDevices = LivePacketDevice.AllLocalMachine;
-            //string msg = string.Empty;
-            //for (int i = 0; i < allDevices.Count; i++)
-            //{
-            //    msg += DevicePrint(allDevices[i]) + "\n";
-            //}
-            //CommonProcess.ShowInformMessage(msg, MessageBoxButtons.OK);
-            #endregion
-            #region Opening an adapter and capturing the packets
-            //IList<LivePacketDevice> allDevices = LivePacketDevice.AllLocalMachine;
-            //if (allDevices.Count == 0)
-            //{
-            //    Console.WriteLine("No interfaces found! Make sure WinPcap is installed.");
-            //    return;
-            //}
-            //for (int i = 0; i < allDevices.Count; i++)
-            //{
-            //    LivePacketDevice device = allDevices[i];
-            //    Console.WriteLine(String.Format("{0}. {1}", (i + 1), device.Name));
-            //    if (device.Description != null)
-            //    {
-            //        Console.WriteLine(String.Format("({0})", device.Description));
-            //    }
-            //    else
-            //    {
-            //        Console.WriteLine(String.Format("(No description available)"));
-            //    }
-            //}
-            //int deviceIndex = 2;
-            ////do
-            ////{
-            ////    Console.WriteLine("Enter the interface number (1-" + allDevices.Count + "): ");
-            ////    string deviceIndexString = Console.ReadLine();
-            ////    if (!int.TryParse(deviceIndexString, out deviceIndex)
-            ////        || (deviceIndex < 1) || (deviceIndex > allDevices.Count))
-            ////    {
-            ////        deviceIndex = 0;
-            ////    }
-            ////} while (deviceIndex == 0);
-
-            //// Take the selected adapter
-            //PacketDevice selectedDevice = allDevices[deviceIndex - 1];
-
-            //using (PacketCommunicator communicator = selectedDevice.Open(65536, PacketDeviceOpenAttributes.Promiscuous, 1000))
-            //{
-            //    Console.WriteLine("Listening on " + selectedDevice.Description + "...");
-            //    communicator.ReceivePackets(0, PacketHandler);
-            //}
-            #endregion
-            #region Capturing the packets without the callback
-            //IList<LivePacketDevice> allDevices = LivePacketDevice.AllLocalMachine;
-            //if (allDevices.Count == 0)
-            //{
-            //    Console.WriteLine("No interfaces found! Make sure WinPcap is installed.");
-            //    return;
-            //}
-            //for (int i = 0; i < allDevices.Count; i++)
-            //{
-            //    LivePacketDevice device = allDevices[i];
-            //    Console.WriteLine(String.Format("{0}. {1}", (i + 1), device.Name));
-            //    if (device.Description != null)
-            //    {
-            //        Console.WriteLine(String.Format("({0})", device.Description));
-            //    }
-            //    else
-            //    {
-            //        Console.WriteLine(String.Format("(No description available)"));
-            //    }
-            //}
-            //int deviceIndex = 2;
-            ////do
-            ////{
-            ////    Console.WriteLine("Enter the interface number (1-" + allDevices.Count + "): ");
-            ////    string deviceIndexString = Console.ReadLine();
-            ////    if (!int.TryParse(deviceIndexString, out deviceIndex)
-            ////        || (deviceIndex < 1) || (deviceIndex > allDevices.Count))
-            ////    {
-            ////        deviceIndex = 0;
-            ////    }
-            ////} while (deviceIndex == 0);
-
-            //// Take the selected adapter
-            //PacketDevice selectedDevice = allDevices[deviceIndex - 1];
-            //PacketCommunicator communicator = selectedDevice.Open(65536, PacketDeviceOpenAttributes.Promiscuous, 1000);
-            //BerkeleyPacketFilter filter = communicator.CreateFilter("sip");
-            //communicator.SetFilter(filter);
-            ////using (communicator = selectedDevice.Open(65536, PacketDeviceOpenAttributes.Promiscuous, 1000))
-            //{
-            //    Console.WriteLine("Listening on " + selectedDevice.Description + "...");
-            //    Packet packet;
-            //    do
-            //    {
-            //        PacketCommunicatorReceiveResult result = communicator.ReceivePacket(out packet);
-            //        switch (result)
-            //        {
-            //            case PacketCommunicatorReceiveResult.BreakLoop:
-            //                break;
-            //            case PacketCommunicatorReceiveResult.Eof:
-            //                break;
-            //            case PacketCommunicatorReceiveResult.None:
-            //                break;
-            //            case PacketCommunicatorReceiveResult.Ok:
-            //                Console.WriteLine(packet.Timestamp.ToString("yyyyMMdd hh:mm:ss.fff") + " length: " + packet.Length);
-            //                break;
-            //            case PacketCommunicatorReceiveResult.Timeout:
-            //                continue;
-            //            default:
-            //                throw new InvalidOperationException("The result " + result + " should never be reached here.");
-            //        }
-            //    } while (true);
-            //}
-            #endregion
-        }
-        #region Opening an adapter and capturing the packets
-        //private void PacketHandler(Packet packet)
-        //{
-        //    Console.WriteLine(packet.Timestamp.ToString("yyyyMMdd hh:mm:ss.fff") + " length: " + packet.Length);
-        //}
+        } 
         #endregion
 
-        #region Obtaining advanced information about installed devices
-        //private string DevicePrint(IPacketDevice device)
-        //{
-        //    string msg = string.Empty;
-        //    msg = String.Format("{0}\n", device.Name);
-        //    if (device.Description != null)
-        //    {
-        //        msg += "\tDescription: " + device.Description + "\n";
-        //    }
-        //    msg += "\tLoopback: " + (((device.Attributes & DeviceAttributes.Loopback) == DeviceAttributes.Loopback) ? "yes" : "no") + "\n";
-        //    foreach (DeviceAddress address in device.Addresses)
-        //    {
-        //        if (address.Address != null)
-        //        {
-        //            msg += "\tAddress: " + address.Address + "\n";
-        //        }
-        //        if (address.Netmask != null)
-        //        {
-        //            msg += "\tNetmask: \n\t" + address.Netmask + "\n";
-        //        }
-        //        if (address.Broadcast != null)
-        //        {
-        //            msg += "\tBroadcast: \n\t" + address.Broadcast + "\n";
-        //        }
-        //        if (address.Destination != null)
-        //        {
-        //            msg += "\tDestination: \n\t" + address.Destination + "\n";
-        //        }
-        //    }
-        //    return msg;
-        //}
-        #endregion
+        #region SIP handling
         /// <summary>
-        /// Setting ON/OFF testing control.
+        /// Last phone.
         /// </summary>
-        /// <param name="onoff">Flag value</param>
-        private void TurnOnOffTestingMode(bool onoff)
-        {
-            btnSearch.Visible         = onoff;
-            tbxLog.Visible            = onoff;
-            chbListenFromCard.Visible = onoff;
-            chbUpdatePhone.Visible    = onoff;
-
-            if (onoff)
-            {
-                this.channelControlLine2.SetIncommingPhone("01869194542");
-                this.channelControlLine3.SetIncommingPhone("01674816039");
-                this.channelControlLine4.SetIncommingPhone("0988180386");
-                this.chbListenFromCard.Checked = Properties.Settings.Default.ListeningCardMode;
-                this.chbUpdatePhone.Checked = Properties.Settings.Default.UpdatePhone;
-            }
-        }
+        private string lastPhone = string.Empty;
         /// <summary>
-        /// Handle when click Create order button
+        /// Start 
         /// </summary>
-        /// <param name="sender">Sender</param>
-        /// <param name="e">EventArgs</param>
-        private void btnCreateOrder_Click(object sender, EventArgs e)
+        private void StartSIPThread()
         {
-            HandleClickCreateOrderButton();
-        }
-
-        /// <summary>
-        /// Handle when click Save data button
-        /// </summary>
-        /// <param name="sender">Sender</param>
-        /// <param name="e">EventArgs</param>
-        private void btnSaveData_Click(object sender, EventArgs e)
-        {
-            HandleClickSaveDataButton();
-        }
-
-        /// <summary>
-        /// Handle when click Update customer button
-        /// </summary>
-        /// <param name="sender">Sender</param>
-        /// <param name="e">EventArgs</param>
-        private void btnUpdateCustomer_Click(object sender, EventArgs e)
-        {
-            HandleClickUpdateCustomerButton();
-        }
-
-        /// <summary>
-        /// Handle when click Create customer button
-        /// </summary>
-        /// <param name="sender">Sender</param>
-        /// <param name="e">EventArgs</param>
-        private void btnCreateCustomer_Click(object sender, EventArgs e)
-        {
-            HandleClickCreateCustomerButton();
-        }
-        /// <summary>
-        /// Handle when press key on main form.
-        /// </summary>
-        /// <param name="sender">Sender</param>
-        /// <param name="e">EventArgs</param>
-        private void MainForm_KeyDown(object sender, KeyEventArgs e)
-        {
-            switch (e.KeyCode)
-            {
-                case Keys.F1:
-                    HandleClickCreateOrderButton();
-                    break;
-                case Keys.F2:
-                    HandleClickSaveDataButton();
-                    break;
-                case Keys.F3:
-                    HandleClickUpdateCustomerButton();
-                    break;
-                case Keys.F4:
-                    HandleClickCreateCustomerButton();
-                    break;
-                case Keys.F5:
-                    HandleClickHistoryButton();
-                    break;
-                case Keys.F6:
-                    HandleClickListOrderButton();
-                    break;
-                case Keys.Return:
-                    ChannelControl channelControl = null;
-				    try
-				    {
-                        channelControl = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel);
-				    }
-				    catch (ArgumentOutOfRangeException)
-				    {
-					    CommonProcess.ShowErrorMessage(Properties.Resources.ArgumentOutOfRange);
-					    return;
-				    }
-				    if (channelControl != null)
-				    {
-					    channelControl.SearchCustomer();
-                        foreach (CallModel current in DataPure.Instance.ListCalls)
-					    {
-						    if (channelControl.Data.Id.Equals(current.Customer.Id))
-						    {
-							    current.Customer.Contact_note = channelControl.Data.Contact_note;
-						    }
-					    }
-				    }
-                    break;
-                case Keys.F7:
-                    //HistoryView1 historyView = new HistoryView1();
-                    //foreach (CallModel item in DataPure.Instance.ListCalls)
-                    //{
-                    //    historyView.ListData.Add(item.Id, item);
-                    //}
-                    //historyView.ShowDialog();
-                    //foreach (CallModel current in historyView.ListData.Values)
-                    //{
-                    //    foreach (CallModel current2 in DataPure.Instance.ListCalls)
-                    //    {
-                    //        if (current.Id.Equals(current2.Id))
-                    //        {
-                    //            current2.IsFinish = current.IsFinish;
-                    //            break;
-                    //        }
-                    //    }
-                    //}
-                    break;
-                default:
-                    break;
-            }
-        }
-        /// <summary>
-        /// Handle when click Create order button.
-        /// </summary>
-        private void HandleClickCreateOrderButton()
-        {
-            DataPure.Instance.CustomerInfo = this.listChannelControl[DataPure.Instance.CurrentChannel].Data;
-            // Check if customer name is empty
-            if ((DataPure.Instance.CustomerInfo != null)
-                && (!String.IsNullOrEmpty(DataPure.Instance.CustomerInfo.Name)))
-            {
-                RoleType role = RoleType.ROLE_ACCOUNTING_AGENT;
-                if (DataPure.Instance.User != null)
-                {
-                    role = DataPure.Instance.User.Role;
-                }
-                switch (role)
-                {
-                    case RoleType.ROLE_ACCOUNTING_AGENT:
-                        OrderView order = new OrderView(DataPure.Instance.CustomerInfo);
-                        order.ShowDialog();
-                        break;
-                    case RoleType.ROLE_DIEU_PHOI:
-                        List<SelectorModel> listSelector = new List<SelectorModel>();
-                        foreach (SelectorModel item in DataPure.Instance.GetListAgents())
-                        {
-                            listSelector.Add((SelectorModel)item.Clone());
-                        }
-                        listSelector.Sort();
-                        
-                        SelectorView selectorView = new SelectorView();
-                        // Set data
-                        selectorView.ListData     = listSelector;
-                        // Set title
-                        selectorView.Text         = Properties.Resources.SelectorTitleAgent;
-                        // Set header text
-                        selectorView.SetHeaderText(SelectorColumns.SELECTOR_COLUMN_ADDRESS, string.Empty);
-                        // Set default selection
-                        selectorView.SetSelection(DataPure.Instance.CustomerInfo.Agent_id);
-                        // Show dialog
-                        selectorView.ShowDialog();
-                        break;
-                    default:
-                        break;
-                }
-            }
-            else
-            {
-                CommonProcess.ShowErrorMessage(Properties.Resources.MissCustomerInfor);
-            }
-        }
-        /// <summary>
-        /// Handle when click Save data button.
-        /// </summary>
-        private void HandleClickSaveDataButton()
-        {
-            //OrderCarView order = new OrderCarView();
-            //order.Show();
-            CommonProcess.ShowInformMessageProcessing();
-        }
-        /// <summary>
-        /// Handle when click Update Customer button.
-        /// </summary>
-        private void HandleClickUpdateCustomerButton()
-        {
-            //CommonProcess.ShowInformMessageProcessing();
-            this.listChannelControl[DataPure.Instance.CurrentChannel].SaveNote();
-            UpdateStatus(Properties.Resources.NoteSaved);
-        }
-        /// <summary>
-        /// Handle when click Transfer To Sale button.
-        /// </summary>
-        private void HandleClickCreateCustomerButton()
-        {
-            ChannelControl channelControl = null;
+            // Start thread for read SIP packet
             try
             {
-                channelControl = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel);
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                CommonProcess.ShowErrorMessage(Properties.Resources.ArgumentOutOfRange);
-                return;
-            }
-            if (channelControl != null)
-            {
-                if (String.IsNullOrEmpty(channelControl.Data.Name))
+                // Check network device
+                CheckAvailableDevice();
+                if (DataPure.Instance.NetDevice != null)
                 {
-                    List<String> customerInfo = channelControl.GetNewCustomerInfo();
-                    CommonProcess.RequestCreateNewCustomer(customerInfo[0],
-                        channelControl.GetIncommingPhone(),
-                        customerInfo[1],
-                        customerInfo[2],
-                        customerInfo[3],
-                        customerInfo[4],
-                        customerInfo[5],
-                        createCustomerProgressChanged,
-                        createCustomerCompleted);
+                    sipThread = new Thread(CollectingPacket);
+                    sipThread.Start();
+                    sipThread.IsBackground = true;
+                }
+                else
+                {
+                    CommonProcess.ShowErrorMessage(Properties.Resources.NotDeviceAvailable);
+                    return;
                 }
             }
-        }
-        /// <summary>
-        /// Handle when creating customer.
-        /// </summary>
-        /// <param name="sender">Sender</param>
-        /// <param name="e">UploadProgressChangedEventArgs</param>
-        private void createCustomerProgressChanged(object sender, UploadProgressChangedEventArgs e)
-        {
-            if ((e.ProgressPercentage <= 50)
-                && (e.ProgressPercentage >= 0))
+            catch (System.ArgumentNullException)
             {
-                toolStripProgressBarReqServer.Value = e.ProgressPercentage * 2;
+                this.Close();
             }
-            toolStripStatusLabel.Text = Properties.Resources.RequestingCreateCustomer;
-        }
-        /// <summary>
-        /// Handle when created customer.
-        /// </summary>
-        /// <param name="sender">Sender</param>
-        /// <param name="e">UploadValuesCompletedEventArgs</param>
-        private void createCustomerCompleted(object sender, UploadValuesCompletedEventArgs e)
-        {
-            if (e.Cancelled)
+            catch (System.Threading.ThreadStateException)
             {
-                toolStripStatusLabel.Text = Properties.Resources.ErrorCause + "Hủy";
+                CommonProcess.ShowErrorMessage(Properties.Resources.ThreadStateError);
+                this.Close();
             }
-            else if (e.Error != null)
+            catch (System.OutOfMemoryException)
             {
-                toolStripStatusLabel.Text = Properties.Resources.ErrorCause + e.Error.Message;
-            }
-            else
-            {
-                byte[] response = e.Result;
-                string respStr = String.Empty;
-                respStr = System.Text.Encoding.UTF8.GetString(response);
-                // Response string is not null
-                if (!String.IsNullOrEmpty(respStr))
-                {
-                    DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(CustomerResponseModel));
-                    byte[] encodingBytes = null;
-                    try
-                    {
-                        // Encoding response data
-                        encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);
-                    }
-                    catch (System.Text.EncoderFallbackException)
-                    {
-                        CommonProcess.ShowErrorMessage(Properties.Resources.EncodingError);
-                    }
-                    if (encodingBytes != null)
-                    {
-                        MemoryStream msU = new MemoryStream(encodingBytes);
-                        CustomerResponseModel baseResp = (CustomerResponseModel)js.ReadObject(msU);
-                        // Check status
-                        if ((baseResp != null)
-                            && (baseResp.Status.Equals("1")))
-                        {
-                            // Create customer is success.
-                            CommonProcess.ShowInformMessage(Properties.Resources.CreateCustomerSuccess,
-                                MessageBoxButtons.OK);
-                            ChannelControl channelControl = null;
-                            try
-                            {
-                                channelControl = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel);
-                            }
-                            catch (ArgumentOutOfRangeException)
-                            {
-                                CommonProcess.ShowErrorMessage(Properties.Resources.ArgumentOutOfRange);
-                                return;
-                            }
-                            if (channelControl != null)
-                            {
-                                if (baseResp.Record != null)
-                                {
-                                    baseResp.Record[0].ActivePhone = channelControl.GetIncommingPhone();
-                                    CommonProcess.SetChannelInformation(channelControl, baseResp.Record[0]);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            // Create customer is failed.
-                            CommonProcess.ShowInformMessage(Properties.Resources.CreateCustomerFailed,
-                                MessageBoxButtons.OK);
-                        }
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Handle when click List order button.
-        /// </summary>
-        private void HandleClickListOrderButton()
-        {
-            ListOrderView view = new ListOrderView();
-            view.Show();
-        }
-        /// <summary>
-        /// Handle when click History button.
-        /// </summary>
-        private void HandleClickHistoryButton()
-        {
-            HistoryView historyView = new HistoryView();
-            historyView.ListTodayData.AddRange(DataPure.Instance.ListCalls);
-            historyView.ShowDialog();
-            foreach (CallModel current in historyView.ListTodayData)
-            {
-                foreach (CallModel current2 in DataPure.Instance.ListCalls)
-                {
-                    if (current.Id.Equals(current2.Id))
-                    {
-                        current2.IsFinish = current.IsFinish;
-                        break;
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Handle when click on checkbox Listen from card.
-        /// </summary>
-        /// <param name="sender">Sender</param>
-        /// <param name="e">EventArgs</param>
-        private void chbListenFromCard_CheckedChanged(object sender, EventArgs e)
-        {
-            Properties.Settings.Default.ListeningCardMode = chbListenFromCard.Checked;
-            Properties.Settings.Default.Save();
-        }
-        /// <summary>
-        /// Update tab page title.
-        /// </summary>
-        /// <param name="channel">Chanel</param>
-        /// <param name="phone">Phone</param>
-        /// <param name="status">Status</param>
-        /// <param name="statusStr">Status string</param>
-        private void UpdateTabTitle(int channel, string phone, int status, string statusStr)
-        {
-            if ((channel >= 0) && (channel < Properties.Settings.Default.ChannelNumber))
-            {
-                if (this.listChannelNeedUpdateTitle[channel])                           // Flag is ON
-                {
-                    if (status.Equals((int)CardDataStatus.CARDDATA_CALLING))            // Status is calling
-                    {
-                        this.listChannelNeedUpdateTitle[channel] = false;               // Turn off flag
-                        return;
-                    }
-                }
-                else                                                                    // Flag is OFF
-                {
-                    if (status.Equals((int)CardDataStatus.CARDDATA_RINGING))            // Status is ringing
-                    {
-                        this.listChannelNeedUpdateTitle[channel] = true;
-                    }
-                }
-                // Flag is ON
-                if (this.listChannelNeedUpdateTitle[channel])
-                {
-                    // Update tab title
-                    this.mainTabControl.TabPages[channel].Text = String.Format("{0} :{1}-{2}",
-                                channel + 1,
-                                phone.Substring(Math.Max(0, phone.Length - Properties.Settings.Default.PhoneCutLength)),
-                                statusStr);
-                }
+                CommonProcess.ShowErrorMessage(Properties.Resources.OutOfMemory);
+                this.Close();
             }
         }
         /// <summary>
-        /// Handle when click History button.
+        /// Collect packet data handler.
         /// </summary>
-        /// <param name="sender">Sender</param>
-        /// <param name="e">EventArgs</param>
-        private void btnHistory_Click(object sender, EventArgs e)
+        private void CollectingPacket()
         {
-            HandleClickHistoryButton();
-        }
-        /// <summary>
-        /// Handle when close form.
-        /// </summary>
-        /// <param name="sender">Sender</param>
-        /// <param name="e">EventArgs</param>
-        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            //DialogResult result = CommonProcess.ShowInformMessage(Properties.Resources.AreYouSureToClose,
-            //    MessageBoxButtons.YesNo);
-            //if (result.Equals(DialogResult.Yes))
-            //{
-            //    // Write history file
-            //    CommonProcess.WriteHistory(this.listCalls);
-            //    Properties.Settings.Default.UserToken = String.Empty;
-            //    Properties.Settings.Default.Save();
-            //}
-            //else
-            //{
-            //    e.Cancel = true;
-            //}
-            // Write history file
-            if (!CommonProcess.WriteHistory(DataPure.Instance.ListCalls))
+            const string filterStr = "ip and udp";
+            if (DataPure.Instance.NetDevice != null)
             {
-                e.Cancel = true;
-                return;
-            }
-            if (!CommonProcess.WriteListOrders())
-            {
-                e.Cancel = true;
-                return;
-            }
-            Properties.Settings.Default.UserToken = String.Empty;
-            Properties.Settings.Default.Save();
-        }
-        /// <summary>
-        /// Update status content.
-        /// </summary>
-        /// <param name="status">Update status</param>
-        private void UpdateStatus(string status)
-        {
-            toolStripStatusLabel.Text = status;
-        }
-        /// <summary>
-        /// Handle when check in Update phone checkbox
-        /// </summary>
-        /// <param name="sender">Sender</param>
-        /// <param name="e">EventArgs</param>
-        private void chbUpdatePhone_CheckedChanged(object sender, EventArgs e)
-        {
-            Properties.Settings.Default.UpdatePhone = chbUpdatePhone.Checked;
-            Properties.Settings.Default.Save();
-        }
-        /// <summary>
-        /// Handle when select item Login menu
-        /// </summary>
-        /// <param name="sender">Sender</param>
-        /// <param name="e">EventArgs</param>
-        private void toolStripMenuItemLogin_Click(object sender, EventArgs e)
-        {
-            LoginView login = new LoginView();
-            login.ShowDialog();
-            DataPure.Instance.User = new UserLoginModel(login.User);
-            if (!String.IsNullOrEmpty(DataPure.Instance.User.First_name))
-            {
-                Login();
-            }
-        }
-
-        /// <summary>
-        /// Handle when select item Logout menu
-        /// </summary>
-        /// <param name="sender">Sender</param>
-        /// <param name="e">EventArgs</param>
-        private void toolStripMenuItemLogout_Click(object sender, EventArgs e)
-        {
-            if (!String.IsNullOrEmpty(Properties.Settings.Default.UserToken))
-            {
-                CommonProcess.RequestLogout();
-            }
-            DataPure.Instance.User = new UserLoginModel();
-            pbxAvatar.Image = CommonProcess.CreateAvatar(string.Empty, pbxAvatar.Size.Height);
-            Logout();
-        }
-        /// <summary>
-        /// Login handle.
-        /// </summary>
-        private void Login()
-        {
-            // Draw avatar
-            string avatarString = string.Empty;
-            if (!String.IsNullOrEmpty(DataPure.Instance.User.First_name))
-            {
-                string[] token = DataPure.Instance.User.First_name.Split(' ');
-                if (token != null)
-                {
-                    foreach (string item in token)
-                    {
-                        avatarString += String.Format("{0}", item[0]).ToUpper();
-                    }
-                }
-            }
-            // Turn off login menu
-            this.toolStripMenuItemLogin.Enabled = false;
-            this.toolStripMenuItemLogout.Enabled = true;
-            // Update button enable
-            btnCreateOrder.Enabled       = DataPure.Instance.IsAccountingAgentRole() || DataPure.Instance.IsCoordinatorRole();
-            btnOrderList.Enabled         = DataPure.Instance.IsAccountingAgentRole();
-            btnCreateCustomer.Enabled    = DataPure.Instance.IsAccountingAgentRole();
-            coordinatorOrderView.Enabled = DataPure.Instance.IsCoordinatorRole();
-            CommonProcess.RequestTempData(reqTempDataProgressChanged, reqTempDataCompleted);
-            pbxAvatar.Image = CommonProcess.CreateAvatar(avatarString, pbxAvatar.Size.Height);
-
-            Properties.Settings.Default.IsTabColorChange = DataPure.Instance.IsCoordinatorRole();
-            // Save setting
-            Properties.Settings.Default.Save();
-            if (Properties.Settings.Default.IsTabColorChange)
-            {
-                this.mainTabControl.DrawMode = TabDrawMode.OwnerDrawFixed;
-                this.mainTabControl.DrawItem += mainTabControl_DrawItem;
-            }
-        }
-        /// <summary>
-        /// Request temp data completed event handler.
-        /// </summary>
-        /// <param name="sender">Sender</param>
-        /// <param name="e">UploadValuesCompletedEventArgs</param>
-        private void reqTempDataCompleted(object sender, UploadValuesCompletedEventArgs e)
-        {
-            if (e.Cancelled)
-            {
-                toolStripStatusLabel.Text = Properties.Resources.ErrorCause + "Hủy";
-            }
-            else if (e.Error != null)
-            {
-                toolStripStatusLabel.Text = Properties.Resources.ErrorCause + e.Error.Message;
-            }
-            else
-            {
-                //toolStripStatusLabel.Text = Properties.Resources.RequestTempDataSuccess;
-                toolStripStatusLabel.Text = Properties.Resources.AnalyzingTempData;
-                toolStripProgressBarReqServer.Value = 0;
-                reqTempDataCompleted(e);
-            }
-        }
-        /// <summary>
-        /// Request temp data completed event handler.
-        /// </summary>
-        /// <param name="e">UploadValuesCompletedEventArgs</param>
-        /// <param name="isNotFirstTime">True if request temp data in the first time, False otherwise</param>
-        private void reqTempDataCompleted(UploadValuesCompletedEventArgs e, bool isNotFirstTime = false)
-        {
-            Stopwatch timer = new Stopwatch();
-            timer.Start();
-            byte[] response = e.Result;
-            string respStr = String.Empty;
-            respStr = System.Text.Encoding.UTF8.GetString(response);
-
-            if (!String.IsNullOrEmpty(respStr))
-            {
-                timer.Stop();
-                Console.WriteLine("Time elapsed [respStr = System.Text.Encoding.UTF8.GetString(response);]:\t{0}", timer.ElapsedMilliseconds);
-                timer.Restart();
-                DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(TempDataResponseModel));
-                byte[] encodingBytes = null;
                 try
                 {
-                    // Encoding response data
-                    encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);
-                }
-                catch (System.Text.EncoderFallbackException)
-                {
-                    CommonProcess.ShowErrorMessage(Properties.Resources.EncodingError);
-                }
-                timer.Stop();
-                Console.WriteLine("Time elapsed [encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);]:\t{0}", timer.ElapsedMilliseconds);
-                timer.Restart();
-                if (encodingBytes != null)
-                {
-                    MemoryStream msU = new MemoryStream(encodingBytes);
-                    TempDataResponseModel baseResp = (TempDataResponseModel)js.ReadObject(msU);
-                    toolStripStatusLabel.Text = Properties.Resources.AnalyzeTempDataDone;
-                    timer.Stop();
-                    Console.WriteLine("Time elapsed [js.ReadObject(msU);]:\t{0}", timer.ElapsedMilliseconds);
-                    timer.Restart();
-                    if ((baseResp != null)
-                        && (baseResp.Record != null))
+                    PacketCommunicator communicator = DataPure.Instance.NetDevice.Open(
+                        Properties.Settings.Default.BufferLength,
+                        PacketDeviceOpenAttributes.Promiscuous,
+                        Properties.Settings.Default.NetworkTimeOut);
+                    using (BerkeleyPacketFilter filter = communicator.CreateFilter(filterStr))
                     {
-                        List<SelectorModel> listEmployee = null;
-                        // Update data
-                        if (isNotFirstTime)
-                        {
-                            listEmployee = new List<SelectorModel>(DataPure.Instance.GetListDelivers());
-                        }
-                        DataPure.Instance.TempData = baseResp.Record;
-                        timer.Stop();
-                        Console.WriteLine("Time elapsed [DataPure.Instance.TempData = baseResp.Record;]:\t{0}", timer.ElapsedMilliseconds);
-                        timer.Restart();
-                        DataPure.Instance.TempData.Sort();
-                        // Update data
-                        if (isNotFirstTime)
-                        {
-                            if (listEmployee != null)
-                            {
-                                DataPure.Instance.TempData.Employee_maintain = listEmployee;
-                            }
-                        }
-                        else
-                        {
-                            // Get temp data
-                            DataPure.Instance.Agent = new AgentModel(DataPure.Instance.TempData.Agent_id,
-                                DataPure.Instance.TempData.Agent_name, string.Empty,
-                                DataPure.Instance.TempData.Agent_phone,
-                                DataPure.Instance.TempData.Agent_address,
-                                DataPure.Instance.TempData.Agent_province,
-                                DataPure.Instance.TempData.Agent_district);
-                        }
-                        timer.Stop();
-                        Console.WriteLine("Time elapsed [DataPure.Instance.TempData.Sort();]:\t{0}", timer.ElapsedMilliseconds);
+                        communicator.SetFilter(filter);
                     }
+                    communicator.ReceivePackets(0, PacketHandler);
                 }
-            }
-            // Get temp data
-            if (!isNotFirstTime)
-            {
-                // Select agent if user role is Accounting agent
-                if (DataPure.Instance.IsAccountingAgentRole())
+                catch (Exception ex)
                 {
-                    SelectAgent();
-                }
-                ReLocateLabel();
-            }
-            // Update address data
-            if (DataPure.Instance.IsAccountingAgentRole())
-            {
-                if (DataPure.Instance.TempData != null)
-                {
-                    foreach (ChannelControl item in this.listChannelControl)
-                    {
-                        item.SetCity(DataPure.Instance.GetListCities());
-                        item.SetStreet(DataPure.Instance.GetListStreets());
-                    }
+                    CommonProcess.ShowErrorMessage(Properties.Resources.ErrorCause + ex.Message);
+                    return;
                 }
             }
         }
         /// <summary>
-        /// Request temp data progress changed event handler.
+        /// Check which device use receive SIP packet.
         /// </summary>
-        /// <param name="sender">Sender</param>
-        /// <param name="e">UploadProgressChangedEventArgs</param>
-        private void reqTempDataProgressChanged(object sender, UploadProgressChangedEventArgs e)
+        private void CheckAvailableDevice()
         {
-            //if ((e.ProgressPercentage <= 50)
-            if ((e.ProgressPercentage <= 100)
-                && (e.ProgressPercentage >= 0))
+            try
             {
-                //toolStripProgressBarReqServer.Value = e.ProgressPercentage * 2;
-                toolStripProgressBarReqServer.Value = e.ProgressPercentage;
-            }
-            toolStripStatusLabel.Text = Properties.Resources.RequestingTempData;
-        }
-        /// <summary>
-        /// Re-locate label.
-        /// </summary>
-        private void ReLocateLabel()
-        {
-            int leftBound = pbxAvatar.Left - 5;
-            lblUsername.Text = DataPure.Instance.User.First_name;
-            if (lblUsername.Right > leftBound)
-            {
-                lblUsername.Left = leftBound - lblUsername.Width;
-            }
-            lblRole.Text = DataPure.Instance.User.RoleStr;
-            if (lblRole.Right > leftBound)
-            {
-                lblRole.Left = leftBound - lblRole.Width;
-            }
-            if (DataPure.Instance.Agent != null)
-            {
-                lblAgent.Text = DataPure.Instance.Agent.Name;
-                if (lblAgent.Right > leftBound)
+                // Get all local device
+                IList<LivePacketDevice> allDevices = LivePacketDevice.AllLocalMachine;
+                if (allDevices.Count > 0)
                 {
-                    lblAgent.Left = leftBound - lblAgent.Width;
+                    // Loop through all devices
+                    foreach (PacketDevice device in allDevices)
+                    {
+                        // Open communicator
+                        PacketCommunicator communicator = device.Open(
+                            Properties.Settings.Default.BufferLength,
+                            PacketDeviceOpenAttributes.Promiscuous,
+                            Properties.Settings.Default.NetworkTimeOut);
+                        Packet packet;
+                        // Try to get a packet
+                        PacketCommunicatorReceiveResult result = communicator.ReceivePacket(out packet);
+                        switch (result)
+                        {
+                            case PacketCommunicatorReceiveResult.BreakLoop:
+                                break;
+                            case PacketCommunicatorReceiveResult.Eof:
+                                break;
+                            case PacketCommunicatorReceiveResult.None:
+                                break;
+                            case PacketCommunicatorReceiveResult.Ok:        // Get packet is success
+                                DataPure.Instance.NetDevice = device;       // Save to DataPure
+                                return;
+                            case PacketCommunicatorReceiveResult.Timeout:
+                                break;
+                            default:
+                                break;
+                        }
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                CommonProcess.ShowErrorMessage(Properties.Resources.ErrorCause + ex.Message);
+                return;
+            }
         }
         /// <summary>
-        /// Select agent.
+        /// Handle after receive SIP packet.
         /// </summary>
-        private void SelectAgent()
+        /// <param name="packet">SIP packet</param>
+        private void PacketHandler(Packet packet)
         {
-            Stopwatch timer = new Stopwatch();
-            timer.Start();
-            // Check null object
-            if (DataPure.Instance.TempData != null)
+            IpV4Datagram ip = packet.Ethernet.IpV4;
+            UdpDatagram udp = ip.Udp;
+            ushort srcPort = udp.SourcePort;
+            ushort destPort = udp.DestinationPort;
+            string format = "1,{0},1,1,{1},End";
+            if (srcPort == 5060 || destPort == 5060)
             {
-                // Check null object
-                if (DataPure.Instance.TempData.Agent_list != null)
+                MemoryStream ms = packet.Ethernet.IpV4.Udp.Payload.ToMemoryStream();
+                var sr = new StreamReader(ms);
+                string sipTxt = sr.ReadToEnd();
+                sr.Close();
+                string from = CommonProcess.GetFrom(sipTxt);
+                if (CommonProcess.IsRingingPacket(sipTxt))          // Is ringing call?
                 {
-                    // Create list selector from Agents list
-                    List<SelectorModel> listSelector = new List<SelectorModel>();
-                    foreach (SelectorModel item in DataPure.Instance.TempData.Agent_list)
+                    if (!String.IsNullOrEmpty(from))
                     {
-                        listSelector.Add(new SelectorModel
-                        {
-                            Id     = item.Id,                   // Id
-                            Name   = item.Name,                 // Name
-                            Detail = string.Empty,              // Empty
-                        });
+                        lastPhone = from;
+                        PrintData(String.Format(format, from, (int)CardDataStatus.CARDDATA_RINGING + 1));
                     }
-                    // Sort list agents
-                    listSelector.Sort();
-                    SelectorView selectorView = new SelectorView();
-                    // Set data
-                    selectorView.ListData     = listSelector;
-                    // Set title
-                    selectorView.Text         = Properties.Resources.SelectorTitleAgent;
-                    // Set header text
-                    selectorView.SetHeaderText(SelectorColumns.SELECTOR_COLUMN_ADDRESS, string.Empty);
-                    // Set default selection
-                    selectorView.SetSelection(DataPure.Instance.TempData.Agent_id);
-                    timer.Stop();
-                    Console.WriteLine("Time elapsed [selectorView.ShowDialog();]:\t{0}", timer.ElapsedMilliseconds);
-                    // Show dialog
-                    selectorView.ShowDialog();
-                    // Get selection id
-                    string selectorId = selectorView.SelectedId;
-                    if (!String.IsNullOrEmpty(selectorId))
+                }
+                else if (CommonProcess.IsMissPacket(sipTxt))        // Is miss call?
+                {
+                    if (!String.IsNullOrEmpty(from))
                     {
-                        // If user select another choice
-                        if (!selectorId.Equals(DataPure.Instance.TempData.Agent_id))
-                        {
-                            // Request agent information from server
-                            CommonProcess.RequestAgentInformation(selectorId);
-                            // Updaate agent id
-                            DataPure.Instance.TempData.Agent_id = selectorId;
-                            // Search in agent list and save into [DataPure.Instance.Agent]
-                            foreach (SelectorModel item in DataPure.Instance.TempData.Agent_list)
-                            {
-                                if (selectorId.Equals(item.Id))
-                                {
-                                    DataPure.Instance.Agent                = new AgentModel(item);
-                                    DataPure.Instance.Agent.Phone          = DataPure.Instance.TempData.Agent_phone;
-                                    DataPure.Instance.Agent.Address        = DataPure.Instance.TempData.Agent_address;
-                                    DataPure.Instance.Agent.Agent_province = DataPure.Instance.TempData.Agent_province;
-                                    DataPure.Instance.Agent.Agent_district = DataPure.Instance.TempData.Agent_district;
-                                    break;
-                                }
-                            }
-                        }
+                        PrintData(String.Format(format, from, (int)CardDataStatus.CARDDATA_MISS + 1));
+                    }
+                }
+                else if (CommonProcess.IsHandlingPacket(sipTxt))    // Is handling call?
+                {
+                    if (!String.IsNullOrEmpty(from))
+                    {
+                        PrintData(String.Format(format, from, (int)CardDataStatus.CARDDATA_HANDLING + 1));
+                    }
+                }
+                else if (CommonProcess.IsHangUpPacket(sipTxt))      // Is hang up call?
+                {
+                    if (!String.IsNullOrEmpty(from))
+                    {
+                        PrintData(String.Format(format, from, (int)CardDataStatus.CARDDATA_HANGUP + 1));
                     }
                     else
                     {
-                        // User not choose any agent
-                        DialogResult result = CommonProcess.ShowInformMessage(
-                            Properties.Resources.YouMustSelectAnAgent, MessageBoxButtons.RetryCancel);
-                        if (result.Equals(DialogResult.Retry))
-                        {
-                            SelectAgent();
-                        }
+                        PrintData(String.Format(format, lastPhone, (int)CardDataStatus.CARDDATA_HANGUP + 1));
+                    }
+                }
+                else if (CommonProcess.IsBusyPacket(sipTxt))        // Is busy call?
+                {
+                    if (!String.IsNullOrEmpty(from))
+                    {
+                        PrintData(String.Format(format, from, (int)CardDataStatus.CARDDATA_HANGUP + 1));
                     }
                 }
             }
         }
-        /// <summary>
-        /// Logout handle.
-        /// </summary>
-        private void Logout()
+        #endregion
+        #region Listening new order
+        private void StartListeningThread()
         {
-            // Turn on login menus
-            this.toolStripMenuItemLogin.Enabled  = true;
-            this.toolStripMenuItemLogout.Enabled = false;
-            // Reset token
-            Properties.Settings.Default.UserToken = String.Empty;
-            Properties.Settings.Default.Save();
-            // Reset label content and position
-            lblUsername.Text = Properties.Resources.Name;
-            lblUsername.Left = Properties.Settings.Default.NameLabelPosX;
-            lblRole.Text     = Properties.Resources.Role;
-            lblRole.Left     = Properties.Settings.Default.RoleLabelPosX;
-            lblAgent.Text    = Properties.Resources.Agent;
-            lblAgent.Left    = Properties.Settings.Default.AgentLabelPosX;
-            // Update button enable
-            btnCreateOrder.Enabled       = false;
-            btnOrderList.Enabled         = false;
-            btnCreateCustomer.Enabled    = false;
-            DataPure.Instance.Agent      = null;
-            coordinatorOrderView.Enabled = false;
-        }
-        /// <summary>
-        /// Handle list order
-        /// </summary>
-        /// <param name="sender">Sender</param>
-        /// <param name="e">EventArgs</param>
-        private void btnOrderList_Click(object sender, EventArgs e)
-        {
-            HandleClickListOrderButton();
+            //// Start thread for listen web
+            //try
+            //{
+            //    listenThread = new Thread(ListenThreadHandler);
+            //    listenThread.Start();
+            //    listenThread.IsBackground = true;
+            //}
+            //catch (System.ArgumentNullException)
+            //{
+            //    this.Close();
+            //}
+            //catch (System.Threading.ThreadStateException)
+            //{
+            //    CommonProcess.ShowErrorMessage(Properties.Resources.ThreadStateError);
+            //    this.Close();
+            //}
+            //catch (System.OutOfMemoryException)
+            //{
+            //    CommonProcess.ShowErrorMessage(Properties.Resources.OutOfMemory);
+            //    this.Close();
+            //}
         }
 
-        /// <summary>
-        /// Handle when click Support menu.
-        /// </summary>
-        /// <param name="sender">Sender</param>
-        /// <param name="e">EventArgs</param>
-        private void toolStripMenuItemSupport_Click(object sender, EventArgs e)
-        {
-            AboutBox about = new AboutBox();
-            about.Show();
-        }
-        /// <summary>
-        /// Handle when click Guideline menu.
-        /// </summary>
-        /// <param name="sender">Sender</param>
-        /// <param name="e">EventArgs</param>
-        private void toolStripMenuItemGuideline_Click(object sender, EventArgs e)
-        {
-            CommonProcess.ShowInformMessageProcessing();
-        }
-        /// <summary>
-        /// Handle when click Update data menu.
-        /// </summary>
-        /// <param name="sender">Sender</param>
-        /// <param name="e">EventArgs</param>
-        private void toolStripMenuItemUpdateData_Click(object sender, EventArgs e)
-        {
-            CommonProcess.RequestTempData(reqTempDataProgressChanged, reqTempDataCompletedMenu);
-        }
-        /// <summary>
-        /// Request temp data completed from menu event handler
-        /// </summary>
-        /// <param name="sender">Sender</param>
-        /// <param name="e">UploadValuesCompletedEventArgs</param>
-        private void reqTempDataCompletedMenu(object sender, UploadValuesCompletedEventArgs e)
-        {
-            if (e.Cancelled)
-            {
-                toolStripStatusLabel.Text = Properties.Resources.ErrorCause + "Hủy";
-            }
-            else if (e.Error != null)
-            {
-                toolStripStatusLabel.Text = Properties.Resources.ErrorCause + e.Error.Message;
-            }
-            else
-            {
-                toolStripStatusLabel.Text = Properties.Resources.RequestTempDataSuccess;
-                toolStripProgressBarReqServer.Value = 0;
-                reqTempDataCompleted(e, true);
-            }
-        }
-        /// <summary>
-        /// Handle when click on 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void toolStripMenuItemWareHouse_Click(object sender, EventArgs e)
-        {
-            WareHouseView view = new WareHouseView();
-            view.ShowDialog();
-        }
+        //private void ListenThreadHandler()
+        //{
+        //    Stopwatch timer = new Stopwatch();
+        //    timer.Start();
+        //    int count = 0;
+        //    while (true)
+        //    {
+        //        if (timer.ElapsedMilliseconds == 1000)
+        //        {
+        //            count++;
+        //            Console.WriteLine("Đã qua {0}s", count);
+        //            timer.Restart();
+        //        }
+        //    }
+        //    timer.Stop();
+        //}
+        #endregion
     }
 }

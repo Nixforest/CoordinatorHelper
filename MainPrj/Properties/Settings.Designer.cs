@@ -646,5 +646,41 @@ namespace MainPrj.Properties {
                 this["ImageFontSize"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("65536")]
+        public int BufferLength {
+            get {
+                return ((int)(this["BufferLength"]));
+            }
+            set {
+                this["BufferLength"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
+        public int NetworkTimeOut {
+            get {
+                return ((int)(this["NetworkTimeOut"]));
+            }
+            set {
+                this["NetworkTimeOut"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("/api/default/windowStoreCardCreate")]
+        public string URLCreateOrderCoordinator {
+            get {
+                return ((string)(this["URLCreateOrderCoordinator"]));
+            }
+            set {
+                this["URLCreateOrderCoordinator"] = value;
+            }
+        }
     }
 }

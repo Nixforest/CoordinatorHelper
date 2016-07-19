@@ -724,9 +724,13 @@ namespace MainPrj.View
                     totalPromote += Properties.Settings.Default.PromoteMoney * item.Quantity;
                 }
             }
-            foreach (PromoteModel item in promotes)
+            //foreach (PromoteModel item in promotes)
+            //{
+            //    totalPromote -= Properties.Settings.Default.PromoteMoney * item.Quantity;
+            //}
+            if (promotes.Count != 0)
             {
-                totalPromote -= Properties.Settings.Default.PromoteMoney * item.Quantity;
+                totalPromote = 0.0;
             }
             //if (promotes.Count != 0)    // Customer take promote
             //{

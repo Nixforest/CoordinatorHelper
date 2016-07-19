@@ -39,7 +39,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -54,6 +54,18 @@
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PcapDotNet.Base">
+      <HintPath>..\Pcap\PcapDotNet.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="PcapDotNet.Core">
+      <HintPath>..\Pcap\PcapDotNet.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="PcapDotNet.Core.Extensions">
+      <HintPath>..\Pcap\PcapDotNet.Core.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="PcapDotNet.Packets">
+      <HintPath>..\Pcap\PcapDotNet.Packets.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Management" />
@@ -188,6 +200,12 @@
     <Compile Include="View\OrderCarView.Designer.cs">
       <DependentUpon>OrderCarView.cs</DependentUpon>
     </Compile>
+    <Compile Include="View\OrderCoordinatorView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\OrderCoordinatorView.Designer.cs">
+      <DependentUpon>OrderCoordinatorView.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\OrderPrintView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -278,6 +296,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\OrderCarView.resx">
       <DependentUpon>OrderCarView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\OrderCoordinatorView.resx">
+      <DependentUpon>OrderCoordinatorView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\OrderPrintView.resx">
       <DependentUpon>OrderPrintView.cs</DependentUpon>

@@ -158,5 +158,14 @@
     <Setting Name="ImageFontSize" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">18</Value>
     </Setting>
+    <Setting Name="BufferLength" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">65536</Value>
+    </Setting>
+    <Setting Name="NetworkTimeOut" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1000</Value>
+    </Setting>
+    <Setting Name="URLCreateOrderCoordinator" Type="System.String" Scope="User">
+      <Value Profile="(Default)">/api/default/windowStoreCardCreate</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

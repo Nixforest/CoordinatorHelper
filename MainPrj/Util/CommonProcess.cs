@@ -15,6 +15,7 @@ using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Timers;
 using System.Windows.Forms;
 
@@ -376,6 +377,67 @@ namespace MainPrj.Util
                     }
                 }
             }
+        }
+        /// <summary>
+        /// Request create new order by coordinator.
+        /// </summary>
+        /// <param name="agentId">Id of agent</param>
+        /// <param name="customerId">Id of customer</param>
+        /// <param name="note">Note of order</param>
+        public static string RequestCreateOrderCoordinator(string agentId, string customerId, string note)
+        {
+            string retVal = string.Empty;
+            using (WebClient client = new WebClient())
+            {
+                string respStr = String.Empty;
+                try
+                {
+                    // Post keyword to server
+                    string value = string.Empty;
+                    value = String.Format("{{\"token\":\"{0}\",\"customer_id\":\"{1}\",\"agent_id\":\"{2}\",\"note\":\"{3}\"}}",
+                        Properties.Settings.Default.UserToken,
+                        customerId, agentId, note);
+                    byte[] response = client.UploadValues(
+                        Properties.Settings.Default.ServerURL + Properties.Settings.Default.URLCreateOrderCoordinator,
+                        new System.Collections.Specialized.NameValueCollection()
+                    {
+                        { "q", value}
+                    });
+                    // Get response
+                    respStr = System.Text.Encoding.UTF8.GetString(response);
+                }
+                catch (System.Net.WebException)
+                {
+                    ShowErrorMessage(Properties.Resources.InternetConnectionError);
+                    HasError = true;
+                }
+
+                if (!String.IsNullOrEmpty(respStr))
+                {
+                    DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(OrderResponseModel));
+                    byte[] encodingBytes = null;
+                    try
+                    {
+                        // Encoding response data
+                        encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);
+                    }
+                    catch (System.Text.EncoderFallbackException)
+                    {
+                        ShowErrorMessage(Properties.Resources.EncodingError);
+                        HasError = true;
+                    }
+                    if (encodingBytes != null)
+                    {
+                        MemoryStream msU = new MemoryStream(encodingBytes);
+                        OrderResponseModel baseResp = (OrderResponseModel)js.ReadObject(msU);
+                        if (baseResp != null && baseResp.Status.Equals("1"))
+                        {
+                            retVal = baseResp.Id;
+                        }
+                    }
+                }
+            }
+            return retVal;
         }
         /// <summary>
         /// Get local IP address.
@@ -1650,6 +1712,65 @@ namespace MainPrj.Util
                     Console.WriteLine(respStr);
                 }
             }
+        }
+        /// <summary>
+        /// Get FROM information from sip data.
+        /// </summary>
+        /// <param name="sipData">Data content</param>
+        /// <returns>FROM number</returns>
+        public static string GetFrom(string sipData)
+        {
+            string from = string.Empty;
+            Regex regFrom = new Regex(@"^From:\s?(?<FromID>"".*""|.*)\<sip:\+?(?<FromTelephone>.*)@.*$",
+                RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace | RegexOptions.Compiled | RegexOptions.Multiline);
+            // FROM
+            Match m = regFrom.Match(sipData);
+            if (m.Success)
+            {
+                from = ((string)m.Groups["FromID"].Value.ToString().Replace("\"", "").Trim());
+            }
+            return from;
+        }
+        /// <summary>
+        /// Check if sip data is INVITE packet.
+        /// </summary>
+        /// <returns>True if SIP data is INVITE packet type, False otherwise</returns>
+        public static bool IsRingingPacket(string sipData)
+        {
+            return sipData.StartsWith("INVITE");
+        }
+        /// <summary>
+        /// Check if sip data is CANCEL packet.
+        /// </summary>
+        /// <returns>True if SIP data is CANCEL packet type, False otherwise</returns>
+        public static bool IsMissPacket(string sipData)
+        {
+            return sipData.StartsWith("CANCEL");
+        }
+        /// <summary>
+        /// Check if sip data is OK of INVITE packet.
+        /// </summary>
+        /// <returns>True if SIP data is OK of INVITE packet type, False otherwise</returns>
+        public static bool IsHandlingPacket(string sipData)
+        {
+            return (sipData.StartsWith("SIP/2.0 200 OK") && sipData.Contains("CSeq: 102 INVITE"));
+        }
+        /// <summary>
+        /// Check if sip data is BYE packet.
+        /// </summary>
+        /// <returns>True if SIP data is BYE packet type, False otherwise</returns>
+        public static bool IsHangUpPacket(string sipData)
+        {
+            return (sipData.StartsWith("SIP/2.0 200 OK")
+                && (sipData.Contains("CSeq: 103 BYE") || sipData.Contains("CSeq: 2 BYE")));
+        }
+        /// <summary>
+        /// Check if sip data is BUSY packet.
+        /// </summary>
+        /// <returns>True if SIP data is BUSY packet type, False otherwise</returns>
+        public static bool IsBusyPacket(string sipData)
+        {
+            return (sipData.StartsWith("SIP/2.0 486 Busy Here") && sipData.Contains("CSeq: 102 INVITE"));
         }
     }
 }
