@@ -19,6 +19,8 @@ namespace MainPrj.Model
         protected string agent_name;
         [DataMember(Name = "agent_phone", IsRequired = false)]
         protected string agent_phone;
+        [DataMember(Name = "agent_cell_phone", IsRequired = false)]
+        protected string agent_cell_phone;
         [DataMember(Name = "agent_address", IsRequired = false)]
         protected string agent_address;
         [DataMember(Name = "employee_maintain", IsRequired = false)]
@@ -89,6 +91,14 @@ namespace MainPrj.Model
         {
             get { return agent_phone; }
             set { agent_phone = value; }
+        }
+        /// <summary>
+        /// Agent cell phone.
+        /// </summary>
+        public string Agent_cell_phone
+        {
+            get { return agent_cell_phone; }
+            set { agent_cell_phone = value; }
         }
         /// <summary>
         /// Gas cylinder.

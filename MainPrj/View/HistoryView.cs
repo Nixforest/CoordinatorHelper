@@ -576,17 +576,8 @@ namespace MainPrj.View
                     MessageBoxButtons.OKCancel);
                 if (result.Equals(DialogResult.OK))
                 {
-                    string id = CommonProcess.RequestCreateOrderCoordinator(selectorId, DataPure.Instance.CustomerInfo.Id, note);
-                    if (CommonProcess.HasError)
-                    {
-                        CommonProcess.HasError = false;
-                        CommonProcess.ShowInformMessage(Properties.Resources.CreateOrderServerError, MessageBoxButtons.OK);
-                        return;
-                    }
-                    if (!String.IsNullOrEmpty(id))
-                    {
-                        CommonProcess.ShowInformMessage(Properties.Resources.CreateOrderSuccess, MessageBoxButtons.OK);
-                    }
+                    CommonProcess.RequestCreateOrderCoordinator(selectorId, DataPure.Instance.CustomerInfo.Id, note,
+                        createOrderProgressChanged, createOrderCompleted);
                 }
             }
             else
@@ -599,6 +590,64 @@ namespace MainPrj.View
                     SelectAgent(note);
                 }
             }
+        }
+
+        private void createOrderCompleted(object sender, System.Net.UploadValuesCompletedEventArgs e)
+        {
+            if (e.Cancelled)
+            {
+                //toolStripStatusLabel.Text = Properties.Resources.ErrorCause + "Hủy";
+            }
+            else if (e.Error != null)
+            {
+                //toolStripStatusLabel.Text = Properties.Resources.ErrorCause + e.Error.Message;
+            }
+            else
+            {
+                byte[] response = e.Result;
+                string respStr = String.Empty;
+                respStr = System.Text.Encoding.UTF8.GetString(response);
+                if (!String.IsNullOrEmpty(respStr))
+                {
+                    DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(OrderResponseModel));
+                    byte[] encodingBytes = null;
+                    try
+                    {
+                        // Encoding response data
+                        encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);
+                    }
+                    catch (System.Text.EncoderFallbackException)
+                    {
+                        CommonProcess.ShowErrorMessage(Properties.Resources.EncodingError);
+                    }
+                    if (encodingBytes != null)
+                    {
+                        MemoryStream msU = new MemoryStream(encodingBytes);
+                        OrderResponseModel baseResp = (OrderResponseModel)js.ReadObject(msU);
+                        if (baseResp != null && baseResp.Status.Equals("1"))
+                        {
+                            string id = baseResp.Id;
+                            if (!String.IsNullOrEmpty(id))
+                            {
+                                CommonProcess.ShowInformMessage(Properties.Resources.CreateOrderSuccess, MessageBoxButtons.OK);
+                            }
+                        }
+                        else
+                        {
+                            CommonProcess.ShowInformMessage(Properties.Resources.CreateOrderServerError, MessageBoxButtons.OK);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void createOrderProgressChanged(object sender, System.Net.UploadProgressChangedEventArgs e)
+        {
+            //if ((e.ProgressPercentage <= 50) && (e.ProgressPercentage >= 0))
+            //{
+            //    toolStripProgressBar.Value = e.ProgressPercentage * 2;
+            //}
+            //toolStripStatusLabel.Text = Properties.Resources.RequestUpdateAgentCellPhone;
         }
         /// <summary>
         /// Handle when change From value.

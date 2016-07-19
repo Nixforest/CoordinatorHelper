@@ -715,6 +715,16 @@ namespace MainPrj.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap phone {
+            get {
+                object obj = ResourceManager.GetObject("phone", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap report {
             get {
                 object obj = ResourceManager.GetObject("report", resourceCulture);
@@ -750,6 +760,15 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Đang gửi yêu cầu tạo Đơn hàng....
+        /// </summary>
+        internal static string RequestingCreateOrder {
+            get {
+                return ResourceManager.GetString("RequestingCreateOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Đang gửi yêu cầu đăng nhập....
         /// </summary>
         internal static string RequestingLogin {
@@ -773,6 +792,15 @@ namespace MainPrj.Properties {
         internal static string RequestTempDataSuccess {
             get {
                 return ResourceManager.GetString("RequestTempDataSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đang gửi yêu cầu cập nhật thông tin Đại lý....
+        /// </summary>
+        internal static string RequestUpdateAgentCellPhone {
+            get {
+                return ResourceManager.GetString("RequestUpdateAgentCellPhone", resourceCulture);
             }
         }
         

@@ -373,6 +373,7 @@ namespace MainPrj.Util
                             DataPure.Instance.TempData.Agent_address     = baseResp.Record.Agent_address;
                             DataPure.Instance.TempData.Agent_province    = baseResp.Record.Agent_province;
                             DataPure.Instance.TempData.Agent_district    = baseResp.Record.Agent_district;
+                            DataPure.Instance.TempData.Agent_cell_phone  = baseResp.Record.Agent_cell_phone;
                         }
                     }
                 }
@@ -384,11 +385,15 @@ namespace MainPrj.Util
         /// <param name="agentId">Id of agent</param>
         /// <param name="customerId">Id of customer</param>
         /// <param name="note">Note of order</param>
-        public static string RequestCreateOrderCoordinator(string agentId, string customerId, string note)
+        public static string RequestCreateOrderCoordinator(string agentId, string customerId, string note,
+            UploadProgressChangedEventHandler progressChanged,
+            UploadValuesCompletedEventHandler completedHandler)
         {
             string retVal = string.Empty;
             using (WebClient client = new WebClient())
             {
+                client.UploadProgressChanged += new UploadProgressChangedEventHandler(progressChanged);
+                client.UploadValuesCompleted += new UploadValuesCompletedEventHandler(completedHandler);
                 string respStr = String.Empty;
                 try
                 {
@@ -397,14 +402,14 @@ namespace MainPrj.Util
                     value = String.Format("{{\"token\":\"{0}\",\"customer_id\":\"{1}\",\"agent_id\":\"{2}\",\"note\":\"{3}\"}}",
                         Properties.Settings.Default.UserToken,
                         customerId, agentId, note);
-                    byte[] response = client.UploadValues(
-                        Properties.Settings.Default.ServerURL + Properties.Settings.Default.URLCreateOrderCoordinator,
+                    client.UploadValuesAsync(
+                        new Uri(Properties.Settings.Default.ServerURL + Properties.Settings.Default.URLCreateOrderCoordinator),
                         new System.Collections.Specialized.NameValueCollection()
                     {
                         { "q", value}
                     });
                     // Get response
-                    respStr = System.Text.Encoding.UTF8.GetString(response);
+                    //respStr = System.Text.Encoding.UTF8.GetString(response);
                 }
                 catch (System.Net.WebException)
                 {
@@ -1253,22 +1258,62 @@ namespace MainPrj.Util
                     {
                         byte[] bytes = webClient.UploadValues(Properties.Settings.Default.ServerURL
                             + Properties.Settings.Default.URLUpdateCustomerPhone, new NameValueCollection
-					{
-						{
-							Properties.Settings.Default.CustomerIdKey,
-							customerId
-						},
-						{
-							Properties.Settings.Default.PhoneKey,
-							phone
-						}
-					});
+					    {
+						    {
+							    Properties.Settings.Default.CustomerIdKey,
+							    customerId
+						    },
+						    {
+							    Properties.Settings.Default.PhoneKey,
+							    phone
+						    }
+					    });
                     }
                     catch (WebException)
                     {
                         CommonProcess.ShowErrorMessage(Properties.Resources.InternetConnectionError);
                         CommonProcess.HasError = true;
                     }
+                }
+            }
+        }
+        /// <summary>
+        /// Update agent cell phone.
+        /// </summary>
+        /// <param name="agentId">Id of agent</param>
+        /// <param name="cellPhone">Cell phone of agent</param>
+        /// <param name="progressChanged">Progress changed handler</param>
+        /// <param name="completedHandler">Completed handler</param>
+        public static void UpdateAgentCellPhone(string agentId, string cellPhone,
+            UploadProgressChangedEventHandler progressChanged,
+            UploadValuesCompletedEventHandler completedHandler)
+        {
+            // Declare result variable
+            using (WebClient client = new WebClient())
+            {
+                client.UploadProgressChanged += new UploadProgressChangedEventHandler(progressChanged);
+                client.UploadValuesCompleted += new UploadValuesCompletedEventHandler(completedHandler);
+                try
+                {
+                    client.UploadValuesAsync(
+                        new Uri(Properties.Settings.Default.ServerURL
+                        + Properties.Settings.Default.URLUpdateCustomerPhone),
+                        new NameValueCollection
+					    {
+						    {
+							    Properties.Settings.Default.CustomerIdKey,
+							    agentId
+						    },
+						    {
+							    Properties.Settings.Default.PhoneKey,
+							    cellPhone
+						    }
+					    });
+                }
+                catch (WebException)
+                {
+                    CommonProcess.ShowErrorMessage(Properties.Resources.InternetConnectionError);
+                    CommonProcess.HasError = true;
                 }
             }
         }

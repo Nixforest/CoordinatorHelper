@@ -72,9 +72,9 @@ namespace MainPrj
                 this.mainTabControl.DrawItem += mainTabControl_DrawItem;
             }
             // Start thread
-            StartUdpThread();
+            //StartUdpThread();
             //StartListeningThread();
-            StartSIPThread();
+            //StartSIPThread();
         }
         /// <summary>
         /// Update data to channel tab.
@@ -233,17 +233,9 @@ namespace MainPrj
                                 MessageBoxButtons.OKCancel);
                             if (result.Equals(DialogResult.OK))
                             {
-                                string id = CommonProcess.RequestCreateOrderCoordinator(selectorId, DataPure.Instance.CustomerInfo.Id, note);
-                                if (CommonProcess.HasError)
-                                {
-                                    CommonProcess.HasError = false;
-                                    CommonProcess.ShowInformMessage(Properties.Resources.CreateOrderServerError, MessageBoxButtons.OK);
-                                    return;
-                                }
-                                if (!String.IsNullOrEmpty(id))
-                                {
-                                    CommonProcess.ShowInformMessage(Properties.Resources.CreateOrderSuccess, MessageBoxButtons.OK);
-                                }
+                                CommonProcess.RequestCreateOrderCoordinator(selectorId,
+                                    DataPure.Instance.CustomerInfo.Id, note,
+                                    createOrderProgressChanged, createOrderCompleted);
                             }
                         }
                         else
@@ -265,6 +257,64 @@ namespace MainPrj
             {
                 CommonProcess.ShowErrorMessage(Properties.Resources.MissCustomerInfor);
             }
+        }
+
+        private void createOrderCompleted(object sender, UploadValuesCompletedEventArgs e)
+        {
+            if (e.Cancelled)
+            {
+                toolStripStatusLabel.Text = Properties.Resources.ErrorCause + "Hủy";
+            }
+            else if (e.Error != null)
+            {
+                toolStripStatusLabel.Text = Properties.Resources.ErrorCause + e.Error.Message;
+            }
+            else
+            {
+                byte[] response = e.Result;
+                string respStr = String.Empty;
+                respStr = System.Text.Encoding.UTF8.GetString(response);
+                if (!String.IsNullOrEmpty(respStr))
+                {
+                    DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(OrderResponseModel));
+                    byte[] encodingBytes = null;
+                    try
+                    {
+                        // Encoding response data
+                        encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);
+                    }
+                    catch (System.Text.EncoderFallbackException)
+                    {
+                        CommonProcess.ShowErrorMessage(Properties.Resources.EncodingError);
+                    }
+                    if (encodingBytes != null)
+                    {
+                        MemoryStream msU = new MemoryStream(encodingBytes);
+                        OrderResponseModel baseResp = (OrderResponseModel)js.ReadObject(msU);
+                        if (baseResp != null && baseResp.Status.Equals("1"))
+                        {
+                            string id = baseResp.Id;
+                            if (!String.IsNullOrEmpty(id))
+                            {
+                                CommonProcess.ShowInformMessage(Properties.Resources.CreateOrderSuccess, MessageBoxButtons.OK);
+                            }
+                        }
+                        else
+                        {
+                            CommonProcess.ShowInformMessage(Properties.Resources.CreateOrderServerError, MessageBoxButtons.OK);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void createOrderProgressChanged(object sender, UploadProgressChangedEventArgs e)
+        {
+            if ((e.ProgressPercentage <= 50) && (e.ProgressPercentage >= 0))
+            {
+                toolStripProgressBarReqServer.Value = e.ProgressPercentage * 2;
+            }
+            toolStripStatusLabel.Text = Properties.Resources.RequestingCreateOrder;
         }
         /// <summary>
         /// Handle when click Save data button.
@@ -507,11 +557,12 @@ namespace MainPrj
                             {
                                 if (selectorId.Equals(item.Id))
                                 {
-                                    DataPure.Instance.Agent = new AgentModel(item);
-                                    DataPure.Instance.Agent.Phone = DataPure.Instance.TempData.Agent_phone;
-                                    DataPure.Instance.Agent.Address = DataPure.Instance.TempData.Agent_address;
-                                    DataPure.Instance.Agent.Agent_province = DataPure.Instance.TempData.Agent_province;
-                                    DataPure.Instance.Agent.Agent_district = DataPure.Instance.TempData.Agent_district;
+                                    DataPure.Instance.Agent                  = new AgentModel(item);
+                                    DataPure.Instance.Agent.Phone            = DataPure.Instance.TempData.Agent_phone;
+                                    DataPure.Instance.Agent.Address          = DataPure.Instance.TempData.Agent_address;
+                                    DataPure.Instance.Agent.Agent_province   = DataPure.Instance.TempData.Agent_province;
+                                    DataPure.Instance.Agent.Agent_district   = DataPure.Instance.TempData.Agent_district;
+                                    DataPure.Instance.Agent.Agent_cell_phone = DataPure.Instance.TempData.Agent_cell_phone;
                                     break;
                                 }
                             }
@@ -1081,7 +1132,8 @@ namespace MainPrj
                                 DataPure.Instance.TempData.Agent_phone,
                                 DataPure.Instance.TempData.Agent_address,
                                 DataPure.Instance.TempData.Agent_province,
-                                DataPure.Instance.TempData.Agent_district);
+                                DataPure.Instance.TempData.Agent_district,
+                                DataPure.Instance.TempData.Agent_cell_phone);
                         }
                         timer.Stop();
                         Console.WriteLine("Time elapsed [DataPure.Instance.TempData.Sort();]:\t{0}", timer.ElapsedMilliseconds);
@@ -1188,13 +1240,23 @@ namespace MainPrj
             }
         }
         /// <summary>
-        /// Handle when click on 
+        /// Handle when click on ware house item.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
         private void toolStripMenuItemWareHouse_Click(object sender, EventArgs e)
         {
             WareHouseView view = new WareHouseView();
+            view.ShowDialog();
+        }
+        /// <summary>
+        /// Handle when click on Agent phone item.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void toolStripMenuItemAgentPhone_Click(object sender, EventArgs e)
+        {
+            AgentCellPhoneView view = new AgentCellPhoneView();
             view.ShowDialog();
         }
         #endregion
