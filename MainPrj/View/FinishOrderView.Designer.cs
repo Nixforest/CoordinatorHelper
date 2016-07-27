@@ -36,6 +36,7 @@
             this.lblTotalPay = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.cbxDeliver = new System.Windows.Forms.ComboBox();
+            this.chbPromote = new System.Windows.Forms.CheckBox();
             this.listViewCylinder = new MainPrj.View.EditableListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -115,6 +116,16 @@
             this.cbxDeliver.TabIndex = 1;
             this.cbxDeliver.ValueMember = "Value";
             // 
+            // chbPromote
+            // 
+            this.chbPromote.AutoSize = true;
+            this.chbPromote.Location = new System.Drawing.Point(16, 279);
+            this.chbPromote.Name = "chbPromote";
+            this.chbPromote.Size = new System.Drawing.Size(255, 28);
+            this.chbPromote.TabIndex = 12;
+            this.chbPromote.Text = "Không lấy quà Khuyến mãi";
+            this.chbPromote.UseVisualStyleBackColor = true;
+            // 
             // listViewCylinder
             // 
             this.listViewCylinder.AllowColumnReorder = true;
@@ -125,7 +136,7 @@
             this.columnHeader4,
             this.columnHeader5});
             this.listViewCylinder.ColumnTypes = ((System.Collections.Generic.List<System.Type>)(resources.GetObject("listViewCylinder.ColumnTypes")));
-            this.listViewCylinder.DoubleClickActivation = true;
+            this.listViewCylinder.DoubleClickActivation = false;
             this.listViewCylinder.FullRowSelect = true;
             this.listViewCylinder.Location = new System.Drawing.Point(16, 41);
             this.listViewCylinder.Name = "listViewCylinder";
@@ -164,6 +175,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(636, 394);
+            this.Controls.Add(this.chbPromote);
             this.Controls.Add(this.cbxDeliver);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.btnFinish);
@@ -201,5 +213,6 @@
         private System.Windows.Forms.Label lblTotalPay;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox cbxDeliver;
+        private System.Windows.Forms.CheckBox chbPromote;
     }
 }

@@ -547,6 +547,10 @@ namespace MainPrj.View
                 }
             }
         }
+        /// <summary>
+        /// Select agent for create order.
+        /// </summary>
+        /// <param name="note">Note</param>
         private void SelectAgent(string note)
         {
             List<SelectorModel> listSelector = new List<SelectorModel>();
@@ -555,7 +559,7 @@ namespace MainPrj.View
                 listSelector.Add((SelectorModel)item.Clone());
             }
             listSelector.Sort();
-
+    
             SelectorView selectorView = new SelectorView();
             // Set data
             selectorView.ListData = listSelector;
@@ -571,7 +575,7 @@ namespace MainPrj.View
             if (!String.IsNullOrEmpty(selectorId))
             {
                 DialogResult result = CommonProcess.ShowInformMessage(
-                    String.Format("Bạn đang tạo đơn hàng cho Khách hàng {0}:\n\t{1}\n\ttại {2}.\nBạn chắn chắn không?",
+                    String.Format(Properties.Resources.CreatingOrder,
                         DataPure.Instance.CustomerInfo.Name, note, DataPure.Instance.GetAgentNameById(selectorId)),
                     MessageBoxButtons.OKCancel);
                 if (result.Equals(DialogResult.OK))
@@ -591,16 +595,20 @@ namespace MainPrj.View
                 }
             }
         }
-
+        /// <summary>
+        /// Create order completed.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">UploadValuesCompletedEventArgs</param>
         private void createOrderCompleted(object sender, System.Net.UploadValuesCompletedEventArgs e)
         {
             if (e.Cancelled)
             {
-                //toolStripStatusLabel.Text = Properties.Resources.ErrorCause + "Hủy";
+                toolStripStatusLabel.Text = Properties.Resources.ErrorCause + Properties.Resources.Cancel;
             }
             else if (e.Error != null)
             {
-                //toolStripStatusLabel.Text = Properties.Resources.ErrorCause + e.Error.Message;
+                toolStripStatusLabel.Text = Properties.Resources.ErrorCause + e.Error.Message;
             }
             else
             {
@@ -629,6 +637,7 @@ namespace MainPrj.View
                             string id = baseResp.Id;
                             if (!String.IsNullOrEmpty(id))
                             {
+                                toolStripStatusLabel.Text = Properties.Resources.CreateOrderSuccess;
                                 CommonProcess.ShowInformMessage(Properties.Resources.CreateOrderSuccess, MessageBoxButtons.OK);
                             }
                         }
@@ -640,7 +649,11 @@ namespace MainPrj.View
                 }
             }
         }
-
+        /// <summary>
+        /// Create order progress changed.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">UploadProgressChangedEventArgs</param>
         private void createOrderProgressChanged(object sender, System.Net.UploadProgressChangedEventArgs e)
         {
             //if ((e.ProgressPercentage <= 50) && (e.ProgressPercentage >= 0))
@@ -648,6 +661,8 @@ namespace MainPrj.View
             //    toolStripProgressBar.Value = e.ProgressPercentage * 2;
             //}
             //toolStripStatusLabel.Text = Properties.Resources.RequestUpdateAgentCellPhone;
+            CommonProcess.UpdateProgress(e, Properties.Resources.RequestingCreateOrder,
+                toolStripProgressBar, toolStripStatusLabel);
         }
         /// <summary>
         /// Handle when change From value.

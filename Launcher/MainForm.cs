@@ -59,6 +59,7 @@ namespace Launcher
             AutoUpdaterDotNET.AutoUpdater.Start(
                 Properties.Resources.CheckAutoUpdate,
                 Properties.Settings.Default.CurrrentVersion);
+            UpdateUI(false);
         }
         /// <summary>
         /// Handle receive message.
@@ -73,9 +74,19 @@ namespace Launcher
                 case WM_USER_DOWNLOAD_FINISHED:                 // Finish download
                     Properties.Settings.Default.CurrrentVersion = Clipboard.GetText();
                     Properties.Settings.Default.Save();
-                    toolStripStatusLabel.Text = Properties.Resources.DownloadFinishedMsg;
-                    btnRunCoordinatorHelper.Enabled = true;
-                    break;                
+                    toolStripStatusLabel.Text = Properties.Settings.Default.CurrrentVersion
+                        + " " + Properties.Resources.DownloadFinishedMsg;
+                    UpdateUI(true);
+                    break;
+                case WM_USER_CHECKVER_FINISHED:
+                    UpdateUI(true);
+                    toolStripStatusLabel.Text += " " + Properties.Resources.CheckVersion;
+                    break;
+                case WM_USER_INTERNETERR_FINISHED:
+                    UpdateUI(true);
+                    toolStripStatusLabel.Text += " " + Properties.Resources.InternetError;
+                    break;
+                default: break;
             }
             base.WndProc(ref m);
         }
@@ -96,6 +107,10 @@ namespace Launcher
                 default: break;
             }
         }
+        private void UpdateUI(bool isEnabled)
+        {
+            btnRunCoordinatorHelper.Enabled = isEnabled;
+        }
         /// <summary>
         /// User message.
         /// </summary>
@@ -104,5 +119,13 @@ namespace Launcher
         /// Download finished message.
         /// </summary>
         public const int WM_USER_DOWNLOAD_FINISHED = WM_USER + 1;
+        /// <summary>
+        /// Check version finished message.
+        /// </summary>
+        public const int WM_USER_CHECKVER_FINISHED = WM_USER + 2;
+        /// <summary>
+        /// Internet error message.
+        /// </summary>
+        public const int WM_USER_INTERNETERR_FINISHED = WM_USER + 3;
     }
 }

@@ -75,6 +75,12 @@ namespace MainPrj.View
                         {
                             item.IsUpdateToServer = true;
                         }
+                        if (chbPromote.Checked)
+                        {
+                            item.Promotes.Clear();
+                            item.PromoteMoney = Properties.Settings.Default.PromoteMoney;
+                            item.TotalPay -= item.PromoteMoney;
+                        }
                         break;
                     }
                 }
@@ -105,6 +111,10 @@ namespace MainPrj.View
                         lblTotalPay.Text = CommonProcess.FormatMoney(item.TotalPay);
                         this.deliverId = item.DeliverId;
                         //cylinders.AddRange(item.Cylinders);
+                        if (item.Promotes.Count == 0)
+                        {
+                            chbPromote.Enabled = false;
+                        }
                         break;
                     }
                 }

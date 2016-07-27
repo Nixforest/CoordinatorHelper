@@ -26,6 +26,7 @@ namespace MainPrj.Util
     /// </summary>
     public static class CommonProcess
     {
+        #region Static variables
         /// <summary>
         /// Material color.
         /// </summary>
@@ -47,461 +48,33 @@ namespace MainPrj.Util
             "3C79B2", "FF8F88", "6FB9FF", "C0CC44", "AFB28C" 
         };
         /// <summary>
+        /// Vietnamese strings sign.
+        /// </summary>
+        private static readonly string[] UnicodeSigns = new string[]
+        {
+            "aAeEoOuUiIdDyY",
+            "áàạảãâấầậẩẫăắằặẳẵ",
+            "ÁÀẠẢÃÂẤẦẬẨẪĂẮẰẶẲẴ",
+            "éèẹẻẽêếềệểễ",
+            "ÉÈẸẺẼÊẾỀỆỂỄ",
+            "óòọỏõôốồộổỗơớờợởỡ",
+            "ÓÒỌỎÕÔỐỒỘỔỖƠỚỜỢỞỠ",
+            "úùụủũưứừựửữ",
+            "ÚÙỤỦŨƯỨỪỰỬỮ",
+            "íìịỉĩ",
+            "ÍÌỊỈĨ",
+            "đ",
+            "Đ",
+            "ýỳỵỷỹ",
+            "ÝỲỴỶỸ"
+        };
+        /// <summary>
         /// Flag check if has error in processing.
         /// </summary>
         public static bool HasError = false;
+        #endregion
 
-        /// <summary>
-        /// Request customer information from server by phone number.
-        /// </summary>
-        /// <param name="phone">Phone number value</param>
-        /// <returns>List of customer</returns>
-        public static List<CustomerModel> RequestCustomerByPhone(string phone)
-        {
-            return RequestCustomer(Properties.Settings.Default.URLGetCustomerByPhone, Properties.Settings.Default.PhoneKey, phone);
-        }
-        /// <summary>
-        /// Request customer information from server by keyword.
-        /// </summary>
-        /// <param name="keyword">Keyword value</param>
-        /// <returns>List of customer</returns>
-        public static List<CustomerModel> RequestCustomerByKeyword(string keyword)
-        {
-            return RequestCustomer(Properties.Settings.Default.URLGetCustomerByKeyword, Properties.Settings.Default.KeywordKey, keyword);
-        }
-
-        /// <summary>
-        /// Request customer information from server by keyword.
-        /// </summary>
-        /// <param name="url">Request url</param>
-        /// <param name="keyword">Keyword value</param>
-        /// <returns>List of customer</returns>
-        public static List<CustomerModel> RequestCustomer(string url, string key, string keyword)
-        {
-            // Declare result variable
-            List<CustomerModel> result = new List<CustomerModel>();
-            using (WebClient client = new WebClient())
-            {
-                string respStr = String.Empty;
-                try
-                {
-                    string type = "1";
-                    if (DataPure.Instance.User != null)
-                    {
-                        if (DataPure.Instance.IsAccountingAgentRole())
-                        {
-                            type = "2";
-                        }
-                    }
-                    // Post keyword to server
-                    byte[] response = client.UploadValues(
-                        Properties.Settings.Default.ServerURL + url,
-                        new System.Collections.Specialized.NameValueCollection()
-                    {
-                        { key, keyword },
-                        { "window_customer_type", type }
-                    });
-                    // Get response
-                    respStr = System.Text.Encoding.UTF8.GetString(response);
-                }
-                catch (System.Net.WebException)
-                {
-                    ShowErrorMessage(Properties.Resources.InternetConnectionError);
-                    HasError = true;
-                }
-
-                if (!String.IsNullOrEmpty(respStr))
-                {
-                    DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(CustomerResponseModel));
-                    byte[] encodingBytes = null;
-                    try
-                    {
-                        // Encoding response data
-                        encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);
-                    }
-                    catch (System.Text.EncoderFallbackException)
-                    {
-                        ShowErrorMessage(Properties.Resources.EncodingError);
-                        HasError = true;
-                    }
-                    if (encodingBytes != null)
-                    {
-                        MemoryStream msU = new MemoryStream(encodingBytes);
-                        CustomerResponseModel baseResp = (CustomerResponseModel)js.ReadObject(msU);
-                        if (baseResp.Record != null)
-                        {
-                            foreach (CustomerModel item in baseResp.Record)
-                            {
-                                result.Add(item);
-                            }
-                        }
-                    }
-                }
-            }
-            return result;
-        }
-        /// <summary>
-        /// Request logout
-        /// </summary>
-        public static void RequestLogout()
-        {
-            UserLoginResponseModel data = new UserLoginResponseModel();
-            using (WebClient client = new WebClient())
-            {
-                string respStr = String.Empty;
-                try
-                {
-                    // Post keyword to server
-                    string value = string.Empty;
-                    value = String.Format("{{\"token\":\"{0}\"}}", Properties.Settings.Default.UserToken);
-                    byte[] response = client.UploadValues(
-                        Properties.Settings.Default.ServerURL + Properties.Settings.Default.URLLogout,
-                        new System.Collections.Specialized.NameValueCollection()
-                    {
-                        { "q", value}
-                    });
-                    // Get response
-                    respStr = System.Text.Encoding.UTF8.GetString(response);
-                }
-                catch (System.Net.WebException)
-                {
-                    ShowErrorMessage(Properties.Resources.InternetConnectionError);
-                    HasError = true;
-                }
-
-                if (!String.IsNullOrEmpty(respStr))
-                {
-                    DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(BaseResponseModel));
-                    byte[] encodingBytes = null;
-                    try
-                    {
-                        // Encoding response data
-                        encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);
-                    }
-                    catch (System.Text.EncoderFallbackException)
-                    {
-                        ShowErrorMessage(Properties.Resources.EncodingError);
-                        HasError = true;
-                    }
-                    if (encodingBytes != null)
-                    {
-                        MemoryStream msU = new MemoryStream(encodingBytes);
-                        BaseResponseModel baseResp = (BaseResponseModel)js.ReadObject(msU);
-                        if (baseResp != null)
-                        {
-                            
-                        }
-                    }
-                }
-            }
-        }
-        /// <summary>
-        /// Request login.
-        /// </summary>
-        /// <param name="url">Server url</param>
-        /// <param name="username">Username</param>
-        /// <param name="password">password</param>
-        /// <param name="progressChanged">Event handler when progress changed</param>
-        /// <param name="completedHandler">Event handler when finish upload</param>
-        /// <returns>UserLoginResponseModel</returns>
-        public static UserLoginResponseModel RequestLogin(string username, string password,
-            UploadProgressChangedEventHandler progressChanged, UploadValuesCompletedEventHandler completedHandler)
-        {
-            // Declare result variable
-            UserLoginResponseModel data = new UserLoginResponseModel();
-            using (WebClient client = new WebClient())
-            {
-                client.UploadProgressChanged += new UploadProgressChangedEventHandler(progressChanged);
-                client.UploadValuesCompleted += new UploadValuesCompletedEventHandler(completedHandler);
-                string respStr = String.Empty;
-                try
-                {
-                    // Post keyword to server
-                    string value = string.Empty;
-                    value = String.Format("{{\"username\":\"{0}\",\"password\":\"{1}\",\"gcm_device_token\":\"{2}\",\"apns_device_token\":\"{3}\",\"type\":\"2\"}}",
-                        username, password, "1", "1");
-                    client.UploadValuesAsync(
-                        new Uri(Properties.Settings.Default.ServerURL + Properties.Settings.Default.URLLogin),
-                        new System.Collections.Specialized.NameValueCollection()
-                    {
-                        { "q", value}
-                    });
-                    // Get response
-                    //respStr = System.Text.Encoding.UTF8.GetString(response);
-                }
-                catch (System.Net.WebException)
-                {
-                    ShowErrorMessage(Properties.Resources.InternetConnectionError);
-                    HasError = true;
-                }
-            }
-            return data;
-        }
-        /// <summary>
-        /// Request temp data.
-        /// </summary>
-        /// <param name="progressChanged">Event handler when progress changed</param>
-        /// <param name="completedHandler">Event handler when finish upload</param>
-        /// <param name="isNotFirstTime"></param>
-        public static void RequestTempData(UploadProgressChangedEventHandler progressChanged,
-            UploadValuesCompletedEventHandler completedHandler)
-        {
-            // Declare result variable
-            using (WebClient client = new WebClient())
-            {
-                client.UploadProgressChanged += new UploadProgressChangedEventHandler(progressChanged);
-                client.UploadValuesCompleted += new UploadValuesCompletedEventHandler(completedHandler);
-                string respStr = String.Empty;
-                try
-                {
-                    // Post keyword to server
-                    string value = string.Empty;
-                    value = String.Format("{{\"token\":\"{0}\"}}",
-                        Properties.Settings.Default.UserToken);
-                    client.UploadValuesAsync(
-                        new Uri(Properties.Settings.Default.ServerURL + Properties.Settings.Default.URLGetConfig),
-                        new System.Collections.Specialized.NameValueCollection()
-                    {
-                        { "q", value}
-                    });
-                    // Get response
-                    //respStr = System.Text.Encoding.UTF8.GetString(response);
-                }
-                catch (System.Net.WebException)
-                {
-                    ShowErrorMessage(Properties.Resources.InternetConnectionError);
-                    HasError = true;
-                }
-            }
-        }
-        /// <summary>
-        /// Request create new customer.
-        /// </summary>
-        /// <param name="name">Name</param>
-        /// <param name="phone">Phone</param>
-        /// <param name="cityId">Id of city</param>
-        /// <param name="districtId">Id of district</param>
-        /// <param name="wardId">Id of ward</param>
-        /// <param name="streetId">Id of street</param>
-        /// <param name="addressDetail">Detail of address</param>
-        /// <param name="progressChanged">Event handler when progress changed</param>
-        /// <param name="completedHandler">Event handler when finish upload</param>
-        public static void RequestCreateNewCustomer(string name, string phone, string cityId, string districtId,
-            string wardId, string streetId, string addressDetail, UploadProgressChangedEventHandler progressChanged,
-            UploadValuesCompletedEventHandler completedHandler)
-        {
-            using (WebClient client = new WebClient())
-            {
-                client.UploadProgressChanged += new UploadProgressChangedEventHandler(progressChanged);
-                client.UploadValuesCompleted += new UploadValuesCompletedEventHandler(completedHandler);
-                try
-                {
-                    // Post keyword to server
-                    string value = string.Empty;
-                    value = String.Format("{{\"token\":\"{0}\", \"agent_id\":\"{1}\", \"first_name\":\"{2}\", \"phone\":\"{3}\", \"province_id\":\"{4}\", \"district_id\":\"{5}\", \"ward_id\":\"{6}\", \"street_id\":\"{7}\", \"house_numbers\":\"{8}\"}}",
-                        Properties.Settings.Default.UserToken,
-                        DataPure.Instance.Agent.Id,
-                        name, phone, cityId, districtId, wardId, streetId, addressDetail);
-                    client.UploadValuesAsync(
-                        new Uri(Properties.Settings.Default.ServerURL + Properties.Settings.Default.URLCreateCustomer),
-                        new System.Collections.Specialized.NameValueCollection()
-                    {
-                        { "q", value}
-                    });
-                }
-                catch (System.Net.WebException)
-                {
-                    ShowErrorMessage(Properties.Resources.InternetConnectionError);
-                    HasError = true;
-                }
-            }
-        }
-        /// <summary>
-        /// Request agent information from server.
-        /// </summary>
-        /// <param name="agentId">Agent Id</param>
-        public static void RequestAgentInformation(string agentId)
-        {
-            using (WebClient client = new WebClient())
-            {
-                string respStr = String.Empty;
-                try
-                {
-                    // Post keyword to server
-                    string value = string.Empty;
-                    value = String.Format("{{\"token\":\"{0}\",\"agent_id\":\"{1}\"}}",
-                        Properties.Settings.Default.UserToken,
-                        agentId);
-                    byte[] response = client.UploadValues(
-                        Properties.Settings.Default.ServerURL + Properties.Settings.Default.URLGetAgentInfo,
-                        new System.Collections.Specialized.NameValueCollection()
-                    {
-                        { "q", value}
-                    });
-                    // Get response
-                    respStr = System.Text.Encoding.UTF8.GetString(response);
-                }
-                catch (System.Net.WebException)
-                {
-                    ShowErrorMessage(Properties.Resources.InternetConnectionError);
-                    HasError = true;
-                }
-
-                if (!String.IsNullOrEmpty(respStr))
-                {
-                    DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(TempDataResponseModel));
-                    byte[] encodingBytes = null;
-                    try
-                    {
-                        // Encoding response data
-                        encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);
-                    }
-                    catch (System.Text.EncoderFallbackException)
-                    {
-                        ShowErrorMessage(Properties.Resources.EncodingError);
-                        HasError = true;
-                    }
-                    if (encodingBytes != null)
-                    {
-                        MemoryStream msU = new MemoryStream(encodingBytes);
-                        TempDataResponseModel baseResp = (TempDataResponseModel)js.ReadObject(msU);
-                        if ((baseResp != null)
-                            && (baseResp.Record != null))
-                        {
-                            DataPure.Instance.TempData.Employee_maintain = baseResp.Record.Employee_maintain;
-                            DataPure.Instance.TempData.Agent_phone       = baseResp.Record.Agent_phone;
-                            DataPure.Instance.TempData.Agent_address     = baseResp.Record.Agent_address;
-                            DataPure.Instance.TempData.Agent_province    = baseResp.Record.Agent_province;
-                            DataPure.Instance.TempData.Agent_district    = baseResp.Record.Agent_district;
-                            DataPure.Instance.TempData.Agent_cell_phone  = baseResp.Record.Agent_cell_phone;
-                        }
-                    }
-                }
-            }
-        }
-        /// <summary>
-        /// Request create new order by coordinator.
-        /// </summary>
-        /// <param name="agentId">Id of agent</param>
-        /// <param name="customerId">Id of customer</param>
-        /// <param name="note">Note of order</param>
-        public static string RequestCreateOrderCoordinator(string agentId, string customerId, string note,
-            UploadProgressChangedEventHandler progressChanged,
-            UploadValuesCompletedEventHandler completedHandler)
-        {
-            string retVal = string.Empty;
-            using (WebClient client = new WebClient())
-            {
-                client.UploadProgressChanged += new UploadProgressChangedEventHandler(progressChanged);
-                client.UploadValuesCompleted += new UploadValuesCompletedEventHandler(completedHandler);
-                string respStr = String.Empty;
-                try
-                {
-                    // Post keyword to server
-                    string value = string.Empty;
-                    value = String.Format("{{\"token\":\"{0}\",\"customer_id\":\"{1}\",\"agent_id\":\"{2}\",\"note\":\"{3}\"}}",
-                        Properties.Settings.Default.UserToken,
-                        customerId, agentId, note);
-                    client.UploadValuesAsync(
-                        new Uri(Properties.Settings.Default.ServerURL + Properties.Settings.Default.URLCreateOrderCoordinator),
-                        new System.Collections.Specialized.NameValueCollection()
-                    {
-                        { "q", value}
-                    });
-                    // Get response
-                    //respStr = System.Text.Encoding.UTF8.GetString(response);
-                }
-                catch (System.Net.WebException)
-                {
-                    ShowErrorMessage(Properties.Resources.InternetConnectionError);
-                    HasError = true;
-                }
-
-                if (!String.IsNullOrEmpty(respStr))
-                {
-                    DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(OrderResponseModel));
-                    byte[] encodingBytes = null;
-                    try
-                    {
-                        // Encoding response data
-                        encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);
-                    }
-                    catch (System.Text.EncoderFallbackException)
-                    {
-                        ShowErrorMessage(Properties.Resources.EncodingError);
-                        HasError = true;
-                    }
-                    if (encodingBytes != null)
-                    {
-                        MemoryStream msU = new MemoryStream(encodingBytes);
-                        OrderResponseModel baseResp = (OrderResponseModel)js.ReadObject(msU);
-                        if (baseResp != null && baseResp.Status.Equals("1"))
-                        {
-                            retVal = baseResp.Id;
-                        }
-                    }
-                }
-            }
-            return retVal;
-        }
-        /// <summary>
-        /// Get local IP address.
-        /// </summary>
-        /// <returns>IP Address</returns>
-        public static string GetLocalIPAddress()
-        {
-            // Check network is available
-            if (!System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
-            {
-                return Properties.Resources.InternetConnectionError;
-            }
-            string hostName = String.Empty;                                 // Host name
-            try
-            {
-                hostName = Dns.GetHostName();                               // Get computer host name
-            }
-            catch (SocketException)
-            {
-                ShowErrorMessage(Properties.Resources.SocketException);
-                return String.Empty;
-            }
-            if (!String.IsNullOrEmpty(hostName))                            // Host name is valid
-            {
-                try
-                {
-                    IPAddress[] host = Dns.GetHostAddresses(hostName);      // Get IP Addresses
-                    if (host != null)
-                    {
-                        foreach (IPAddress item in host)
-                        {
-                            if (item.AddressFamily == AddressFamily.InterNetwork)
-                            {
-                                return item.ToString();
-                            }
-                        }
-                    }
-                }
-                catch (System.ArgumentOutOfRangeException)
-                {
-                    ShowErrorMessage(Properties.Resources.ErrorLengthOfHostName);
-                    return String.Empty;
-                }
-                catch (SocketException)
-                {
-                    ShowErrorMessage(Properties.Resources.SocketException);
-                    return String.Empty;
-                }
-                catch (ArgumentException)
-                {
-                    ShowErrorMessage(Properties.Resources.ErrorIPAddressInvalid);
-                    return String.Empty;
-                }
-            }
-            return String.Empty;
-        }
-        [DllImport("user32.dll", EntryPoint = "FindWindow", SetLastError = true)]
-        private static extern IntPtr FindWindowByCaption(IntPtr ZeroOnly, string lpWindowName);
-
+        #region Show message
         [DllImport("user32.dll")]
         private static extern int PostMessage(IntPtr hWnd, uint msg, int wParam, int lParam);
         /// <summary>
@@ -554,219 +127,9 @@ namespace MainPrj.Util
             return MessageBox.Show(Properties.Resources.FunctionProcessing, Properties.Resources.Inform,
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
-        /// <summary>
-        /// Get status string from status id.
-        /// </summary>
-        /// <param name="status">Status id</param>
-        /// <returns>
-        /// 0: Gọi đến
-        /// 1: Gọi đi
-        /// 2: Đang xử lý
-        /// 3: Xong
-        /// 4: Nhỡ
-        /// 5: Xong
-        /// </returns>
-        public static string GetStatusString(int status)
-        {
-            string retVal = String.Empty;
-            switch (status)
-            {
-                case (int)CardDataStatus.CARDDATA_RINGING:
-                    retVal = Properties.Resources.CardDataStatus1;
-                    break;
-                case (int)CardDataStatus.CARDDATA_CALLING:
-                    retVal = Properties.Resources.CardDataStatus2;
-                    break;
-                case (int)CardDataStatus.CARDDATA_HANDLING:
-                    retVal = Properties.Resources.CardDataStatus3;
-                    break;
-                case (int)CardDataStatus.CARDDATA_HANGUP:
-                    retVal = Properties.Resources.CardDataStatus4;
-                    break;
-                case (int)CardDataStatus.CARDDATA_MISS:
-                    retVal = Properties.Resources.CardDataStatus5;
-                    break;
-                case (int)CardDataStatus.CARDDATA_RECORD:
-                    retVal = Properties.Resources.CardDataStatus6;
-                    break;
-                default:
-                    break;
-            }
-            return retVal;
-        }
-        /// <summary>
-        /// Get call type string.
-        /// </summary>
-        /// <param name="type">Type of call</param>
-        /// <returns>Đặt hàng ngay/Đặt hàng sau/Bảo trì</returns>
-        public static string GetCallTypeString(CallType type)
-        {
-            string retVal = String.Empty;
-            switch (type)
-            {
-                case CallType.CALLTYPE_ORDER:
-                    retVal = Properties.Resources.CallType1;
-                    break;
-                case CallType.CALLTYPE_ORDER_SAVE:
-                    retVal = Properties.Resources.CallType2;
-                    break;
-                case CallType.CALLTYPE_UPHOLD:
-                    retVal = Properties.Resources.CallType3;
-                    break;
-                default:
-                    break;
-            }
-            return retVal;
-        }
-        /// <summary>
-        /// Get role string.
-        /// </summary>
-        /// <param name="type">Role type</param>
-        /// <returns>Role string</returns>
-        public static string GetRoleString(RoleType type)
-        {
-            string retVal = string.Empty;
-            switch (type)
-            {
-                case RoleType.ROLE_MANAGER:
-                    retVal = "Quản lý";
-                    break;
-                case RoleType.ROLE_ADMIN:
-                    retVal = "Quản lý";
-                    break;
-                case RoleType.ROLE_SALE:
-                    retVal = "Bán hàng";
-                    break;
-                case RoleType.ROLE_CUSTOMER:
-                    retVal = "Khách hàng";
-                    break;
-                case RoleType.ROLE_AGENT:
-                    retVal = "Đại lý";
-                    break;
-                case RoleType.ROLE_MEMBER:
-                    retVal = "Thành viên";
-                    break;
-                case RoleType.ROLE_EMPLOYEE_MAINTAIN:
-                    retVal = "Giao nhận";
-                    break;
-                case RoleType.ROLE_CHECK_MAINTAIN:
-                    break;
-                case RoleType.ROLE_ACCOUNTING_AGENT:
-                    retVal = "Kế Toán Bán Hàng";
-                    break;
-                case RoleType.ROLE_ACCOUNTING_AGENT_PRIMARY:
-                    retVal = "Kế Toán Đại Lý";
-                    break;
-                case RoleType.ROLE_ACCOUNTING_ZONE:
-                    retVal = "Kế Toán Khu Vực";
-                    break;
-                case RoleType.ROLE_MONITORING:
-                    break;
-                case RoleType.ROLE_MONITORING_MAINTAIN:
-                    break;
-                case RoleType.ROLE_MONITORING_MARKET_DEVELOPMENT:
-                    retVal = "Chuyên Viên CCS";
-                    break;
-                case RoleType.ROLE_EMPLOYEE_MARKET_DEVELOPMENT:
-                    break;
-                case RoleType.ROLE_MONITORING_STORE_CARD:
-                    break;
-                case RoleType.ROLE_DIEU_PHOI:
-                    retVal = "Điều Phối";
-                    break;
-                case RoleType.ROLE_SCHEDULE_CAR:
-                    break;
-                case RoleType.ROLE_DIRECTOR:
-                    break;
-                case RoleType.ROLE_SUB_USER_AGENT:
-                    break;
-                case RoleType.ROLE_DRIVER:
-                    break;
-                case RoleType.ROLE_ACCOUNT_RECEIVABLE:
-                    break;
-                case RoleType.ROLE_HEAD_GAS_BO:
-                    break;
-                case RoleType.ROLE_HEAD_GAS_MOI:
-                    break;
-                case RoleType.ROLE_DIRECTOR_BUSSINESS:
-                    break;
-                case RoleType.ROLE_RECEPTION:
-                    break;
-                case RoleType.ROLE_CHIEF_ACCOUNTANT:
-                    break;
-                case RoleType.ROLE_CHIEF_MONITOR:
-                    break;
-                case RoleType.ROLE_MONITOR_AGENT:
-                    break;
-                case RoleType.ROLE_SECRETARY_OF_THE_MEETING:
-                    break;
-                case RoleType.ROLE_HEAD_OF_LEGAL:
-                    break;
-                case RoleType.ROLE_EMPLOYEE_OF_LEGAL:
-                    break;
-                case RoleType.ROLE_ACCOUNTING:
-                    break;
-                case RoleType.ROLE_DEBT_COLLECTION:
-                    break;
-                case RoleType.ROLE_HEAD_TECHNICAL:
-                    break;
-                case RoleType.ROLE_HEAD_OF_MAINTAIN:
-                    break;
-                case RoleType.ROLE_E_MAINTAIN:
-                    break;
-                case RoleType.ROLE_SECURITY_SYSTEM:
-                    break;
-                case RoleType.ROLE_BUSINESS_PROJECT:
-                    break;
-                case RoleType.ROLE_HEAD_OF_BUSINESS:
-                    break;
-                case RoleType.ROLE_WORKER:
-                    break;
-                case RoleType.ROLE_SECURITY:
-                    break;
-                case RoleType.ROLE_MANAGING_DIRECTOR:
-                    break;
-                case RoleType.ROLE_CRAFT_WAREHOUSE:
-                    break;
-                case RoleType.ROLE_HEAD_GAS_FAMILY:
-                    break;
-                case RoleType.ROLE_TEST_CALL_CENTER:
-                    break;
-                case RoleType.ROLE_CHIET_NAP:
-                    break;
-                case RoleType.ROLE_PHU_XE:
-                    break;
-                case RoleType.ROLE_SUB_DIRECTOR:
-                    break;
-                case RoleType.ROLE_ITEMS:
-                    break;
-                case RoleType.ROLE_CASHIER:
-                    break;
-                case RoleType.ROLE_MECHANIC:
-                    break;
-                case RoleType.ROLE_TECHNICAL:
-                    break;
-                case RoleType.ROLE_AUDIT:
-                    break;
-                case RoleType.ROLE_SALE_ADMIN:
-                    break;
-                case RoleType.ROLE_IT:
-                    break;
-                case RoleType.ROLE_IT_EMPLOYEE:
-                    break;
-                case RoleType.ROLE_BRANCH_DIRECTOR:
-                    break;
-                case RoleType.ROLE_CLEANER:
-                    break;
-                case RoleType.ROLE_MANAGER_DRIVER:
-                    break;
-                case RoleType.ROLETYPE_NUM:
-                    break;
-                default:
-                    break;
-            }
-            return retVal;
-        }
+        #endregion
+
+        #region File handler
         /// <summary>
         /// Handle write file.
         /// </summary>
@@ -857,6 +220,11 @@ namespace MainPrj.Util
                 HasError = true;
             }
         }
+        /// <summary>
+        /// Read history by date.
+        /// </summary>
+        /// <param name="dateValue">Date value</param>
+        /// <returns>List of call models</returns>
         public static List<CallModel> ReadHistoryByDate(DateTime dateValue)
         {
             List<CallModel> result = new List<CallModel>();
@@ -1181,7 +549,281 @@ namespace MainPrj.Util
                 HasError = true;
             }
         }
-        //public static void 
+        #endregion
+
+        #region Common methods
+        [DllImport("user32.dll", EntryPoint = "FindWindow", SetLastError = true)]
+        private static extern IntPtr FindWindowByCaption(IntPtr ZeroOnly, string lpWindowName);
+        [DllImport("user32.dll")]
+        public static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+        /// <summary>
+        /// Get local IP address.
+        /// </summary>
+        /// <returns>IP Address</returns>
+        public static string GetLocalIPAddress()
+        {
+            // Check network is available
+            if (!System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
+            {
+                return Properties.Resources.InternetConnectionError;
+            }
+            string hostName = String.Empty;                                 // Host name
+            try
+            {
+                hostName = Dns.GetHostName();                               // Get computer host name
+            }
+            catch (SocketException)
+            {
+                ShowErrorMessage(Properties.Resources.SocketException);
+                return String.Empty;
+            }
+            if (!String.IsNullOrEmpty(hostName))                            // Host name is valid
+            {
+                try
+                {
+                    IPAddress[] host = Dns.GetHostAddresses(hostName);      // Get IP Addresses
+                    if (host != null)
+                    {
+                        foreach (IPAddress item in host)
+                        {
+                            if (item.AddressFamily == AddressFamily.InterNetwork)
+                            {
+                                return item.ToString();
+                            }
+                        }
+                    }
+                }
+                catch (System.ArgumentOutOfRangeException)
+                {
+                    ShowErrorMessage(Properties.Resources.ErrorLengthOfHostName);
+                    return String.Empty;
+                }
+                catch (SocketException)
+                {
+                    ShowErrorMessage(Properties.Resources.SocketException);
+                    return String.Empty;
+                }
+                catch (ArgumentException)
+                {
+                    ShowErrorMessage(Properties.Resources.ErrorIPAddressInvalid);
+                    return String.Empty;
+                }
+            }
+            return String.Empty;
+        }
+        /// <summary>
+        /// Get status string from status id.
+        /// </summary>
+        /// <param name="status">Status id</param>
+        /// <returns>
+        /// 0: Gọi đến
+        /// 1: Gọi đi
+        /// 2: Đang xử lý
+        /// 3: Xong
+        /// 4: Nhỡ
+        /// 5: Xong
+        /// </returns>
+        public static string GetStatusString(int status)
+        {
+            string retVal = String.Empty;
+            switch (status)
+            {
+                case (int)CardDataStatus.CARDDATA_RINGING:
+                    retVal = Properties.Resources.CardDataStatus1;
+                    break;
+                case (int)CardDataStatus.CARDDATA_CALLING:
+                    retVal = Properties.Resources.CardDataStatus2;
+                    break;
+                case (int)CardDataStatus.CARDDATA_HANDLING:
+                    retVal = Properties.Resources.CardDataStatus3;
+                    break;
+                case (int)CardDataStatus.CARDDATA_HANGUP:
+                    retVal = Properties.Resources.CardDataStatus4;
+                    break;
+                case (int)CardDataStatus.CARDDATA_MISS:
+                    retVal = Properties.Resources.CardDataStatus5;
+                    break;
+                case (int)CardDataStatus.CARDDATA_RECORD:
+                    retVal = Properties.Resources.CardDataStatus6;
+                    break;
+                default:
+                    break;
+            }
+            return retVal;
+        }
+        /// <summary>
+        /// Get call type string.
+        /// </summary>
+        /// <param name="type">Type of call</param>
+        /// <returns>Đặt hàng ngay/Đặt hàng sau/Bảo trì</returns>
+        public static string GetCallTypeString(CallType type)
+        {
+            string retVal = String.Empty;
+            switch (type)
+            {
+                case CallType.CALLTYPE_ORDER:
+                    retVal = Properties.Resources.CallType1;
+                    break;
+                case CallType.CALLTYPE_ORDER_SAVE:
+                    retVal = Properties.Resources.CallType2;
+                    break;
+                case CallType.CALLTYPE_UPHOLD:
+                    retVal = Properties.Resources.CallType3;
+                    break;
+                default:
+                    break;
+            }
+            return retVal;
+        }
+        /// <summary>
+        /// Get role string.
+        /// </summary>
+        /// <param name="type">Role type</param>
+        /// <returns>Role string</returns>
+        public static string GetRoleString(RoleType type)
+        {
+            string retVal = string.Empty;
+            switch (type)
+            {
+                case RoleType.ROLE_MANAGER:
+                    retVal = "Quản lý";
+                    break;
+                case RoleType.ROLE_ADMIN:
+                    retVal = "Quản lý";
+                    break;
+                case RoleType.ROLE_SALE:
+                    retVal = "Bán hàng";
+                    break;
+                case RoleType.ROLE_CUSTOMER:
+                    retVal = "Khách hàng";
+                    break;
+                case RoleType.ROLE_AGENT:
+                    retVal = "Đại lý";
+                    break;
+                case RoleType.ROLE_MEMBER:
+                    retVal = "Thành viên";
+                    break;
+                case RoleType.ROLE_EMPLOYEE_MAINTAIN:
+                    retVal = "Giao nhận";
+                    break;
+                case RoleType.ROLE_CHECK_MAINTAIN:
+                    break;
+                case RoleType.ROLE_ACCOUNTING_AGENT:
+                    retVal = "Kế Toán Bán Hàng";
+                    break;
+                case RoleType.ROLE_ACCOUNTING_AGENT_PRIMARY:
+                    retVal = "Kế Toán Đại Lý";
+                    break;
+                case RoleType.ROLE_ACCOUNTING_ZONE:
+                    retVal = "Kế Toán Khu Vực";
+                    break;
+                case RoleType.ROLE_MONITORING:
+                    break;
+                case RoleType.ROLE_MONITORING_MAINTAIN:
+                    break;
+                case RoleType.ROLE_MONITORING_MARKET_DEVELOPMENT:
+                    retVal = "Chuyên Viên CCS";
+                    break;
+                case RoleType.ROLE_EMPLOYEE_MARKET_DEVELOPMENT:
+                    break;
+                case RoleType.ROLE_MONITORING_STORE_CARD:
+                    break;
+                case RoleType.ROLE_DIEU_PHOI:
+                    retVal = "Điều Phối";
+                    break;
+                case RoleType.ROLE_SCHEDULE_CAR:
+                    break;
+                case RoleType.ROLE_DIRECTOR:
+                    break;
+                case RoleType.ROLE_SUB_USER_AGENT:
+                    break;
+                case RoleType.ROLE_DRIVER:
+                    break;
+                case RoleType.ROLE_ACCOUNT_RECEIVABLE:
+                    break;
+                case RoleType.ROLE_HEAD_GAS_BO:
+                    break;
+                case RoleType.ROLE_HEAD_GAS_MOI:
+                    break;
+                case RoleType.ROLE_DIRECTOR_BUSSINESS:
+                    break;
+                case RoleType.ROLE_RECEPTION:
+                    break;
+                case RoleType.ROLE_CHIEF_ACCOUNTANT:
+                    break;
+                case RoleType.ROLE_CHIEF_MONITOR:
+                    break;
+                case RoleType.ROLE_MONITOR_AGENT:
+                    break;
+                case RoleType.ROLE_SECRETARY_OF_THE_MEETING:
+                    break;
+                case RoleType.ROLE_HEAD_OF_LEGAL:
+                    break;
+                case RoleType.ROLE_EMPLOYEE_OF_LEGAL:
+                    break;
+                case RoleType.ROLE_ACCOUNTING:
+                    break;
+                case RoleType.ROLE_DEBT_COLLECTION:
+                    break;
+                case RoleType.ROLE_HEAD_TECHNICAL:
+                    break;
+                case RoleType.ROLE_HEAD_OF_MAINTAIN:
+                    break;
+                case RoleType.ROLE_E_MAINTAIN:
+                    break;
+                case RoleType.ROLE_SECURITY_SYSTEM:
+                    break;
+                case RoleType.ROLE_BUSINESS_PROJECT:
+                    break;
+                case RoleType.ROLE_HEAD_OF_BUSINESS:
+                    break;
+                case RoleType.ROLE_WORKER:
+                    break;
+                case RoleType.ROLE_SECURITY:
+                    break;
+                case RoleType.ROLE_MANAGING_DIRECTOR:
+                    break;
+                case RoleType.ROLE_CRAFT_WAREHOUSE:
+                    break;
+                case RoleType.ROLE_HEAD_GAS_FAMILY:
+                    break;
+                case RoleType.ROLE_TEST_CALL_CENTER:
+                    break;
+                case RoleType.ROLE_CHIET_NAP:
+                    break;
+                case RoleType.ROLE_PHU_XE:
+                    break;
+                case RoleType.ROLE_SUB_DIRECTOR:
+                    break;
+                case RoleType.ROLE_ITEMS:
+                    break;
+                case RoleType.ROLE_CASHIER:
+                    break;
+                case RoleType.ROLE_MECHANIC:
+                    break;
+                case RoleType.ROLE_TECHNICAL:
+                    break;
+                case RoleType.ROLE_AUDIT:
+                    break;
+                case RoleType.ROLE_SALE_ADMIN:
+                    break;
+                case RoleType.ROLE_IT:
+                    break;
+                case RoleType.ROLE_IT_EMPLOYEE:
+                    break;
+                case RoleType.ROLE_BRANCH_DIRECTOR:
+                    break;
+                case RoleType.ROLE_CLEANER:
+                    break;
+                case RoleType.ROLE_MANAGER_DRIVER:
+                    break;
+                case RoleType.ROLETYPE_NUM:
+                    break;
+                default:
+                    break;
+            }
+            return retVal;
+        }
         /// <summary>
         /// Set data to channel tab.
         /// </summary>
@@ -1244,335 +886,6 @@ namespace MainPrj.Util
             return result;
         }
         /// <summary>
-        /// Update customer phone.
-        /// </summary>
-        /// <param name="customerId">Customer Id</param>
-        /// <param name="phone">Phone to update</param>
-        public static void UpdateCustomerPhone(string customerId, string phone)
-        {
-            if (Properties.Settings.Default.UpdatePhone)
-            {
-                using (WebClient webClient = new WebClient())
-                {
-                    try
-                    {
-                        byte[] bytes = webClient.UploadValues(Properties.Settings.Default.ServerURL
-                            + Properties.Settings.Default.URLUpdateCustomerPhone, new NameValueCollection
-					    {
-						    {
-							    Properties.Settings.Default.CustomerIdKey,
-							    customerId
-						    },
-						    {
-							    Properties.Settings.Default.PhoneKey,
-							    phone
-						    }
-					    });
-                    }
-                    catch (WebException)
-                    {
-                        CommonProcess.ShowErrorMessage(Properties.Resources.InternetConnectionError);
-                        CommonProcess.HasError = true;
-                    }
-                }
-            }
-        }
-        /// <summary>
-        /// Update agent cell phone.
-        /// </summary>
-        /// <param name="agentId">Id of agent</param>
-        /// <param name="cellPhone">Cell phone of agent</param>
-        /// <param name="progressChanged">Progress changed handler</param>
-        /// <param name="completedHandler">Completed handler</param>
-        public static void UpdateAgentCellPhone(string agentId, string cellPhone,
-            UploadProgressChangedEventHandler progressChanged,
-            UploadValuesCompletedEventHandler completedHandler)
-        {
-            // Declare result variable
-            using (WebClient client = new WebClient())
-            {
-                client.UploadProgressChanged += new UploadProgressChangedEventHandler(progressChanged);
-                client.UploadValuesCompleted += new UploadValuesCompletedEventHandler(completedHandler);
-                try
-                {
-                    client.UploadValuesAsync(
-                        new Uri(Properties.Settings.Default.ServerURL
-                        + Properties.Settings.Default.URLUpdateCustomerPhone),
-                        new NameValueCollection
-					    {
-						    {
-							    Properties.Settings.Default.CustomerIdKey,
-							    agentId
-						    },
-						    {
-							    Properties.Settings.Default.PhoneKey,
-							    cellPhone
-						    }
-					    });
-                }
-                catch (WebException)
-                {
-                    CommonProcess.ShowErrorMessage(Properties.Resources.InternetConnectionError);
-                    CommonProcess.HasError = true;
-                }
-            }
-        }
-        /// <summary>
-        /// Update customer to server.
-        /// </summary>
-        /// <param name="model">Model</param>
-        /// <returns>Order id</returns>
-        public static string UpdateOrderToServer(OrderModel model)
-        {
-            string retVal = string.Empty;
-            if (!String.IsNullOrEmpty(Properties.Settings.Default.UserToken))
-            {
-                string respStr = String.Empty;
-                using (WebClient webClient = new WebClient())
-                {
-                    try
-                    {
-                        UpdateOrderModel updateModel = new UpdateOrderModel();
-                        // Create data
-                        updateModel.Token        = Properties.Settings.Default.UserToken;
-                        updateModel.Id           = model.WebId;
-                        updateModel.Note         = model.Note;
-                        updateModel.Status       = (int)model.Status;
-                        updateModel.Order_detail = new List<OrderDetailModel>();
-                        foreach (ProductModel product in model.Products)
-                        {
-                            OrderDetailModel orderDetail = new OrderDetailModel();
-                            // Create data
-                            orderDetail.Materials_id      = product.Id;
-                            orderDetail.Materials_type_id = product.TypeId;
-                            orderDetail.Quantity          = product.Quantity;
-                            orderDetail.Price             = product.Price.ToString();
-                            orderDetail.TotalPay          = (product.Price * product.Quantity).ToString();
-                            orderDetail.Seri              = string.Empty;
-
-                            // Add to list order detail
-                            updateModel.Order_detail.Add(orderDetail);
-                        }
-                        foreach (PromoteModel promote in model.Promotes)
-                        {
-                            OrderDetailModel orderDetail = new OrderDetailModel();
-                            // Create data
-                            orderDetail.Materials_id      = promote.Id;
-                            orderDetail.Materials_type_id = promote.TypeId;
-                            orderDetail.Quantity          = promote.Quantity;
-                            orderDetail.Price             = String.Empty;
-                            orderDetail.TotalPay          = String.Empty;
-                            orderDetail.Seri              = string.Empty;
-
-                            // Add to list order detail
-                            updateModel.Order_detail.Add(orderDetail);
-                        }
-                        foreach (CylinderModel cylinder in model.Cylinders)
-                        {
-                            OrderDetailModel orderDetail = new OrderDetailModel();
-                            // Create data
-                            orderDetail.Materials_id      = cylinder.Id;
-                            orderDetail.Materials_type_id = cylinder.TypeId;
-                            orderDetail.Quantity          = cylinder.Quantity;
-                            orderDetail.Price             = String.Empty;
-                            orderDetail.TotalPay          = String.Empty;
-                            orderDetail.Seri              = cylinder.Serial;
-
-                            // Add to list order detail
-                            updateModel.Order_detail.Add(orderDetail);
-                        }
-
-                        // Post keyword to server
-                        string value = string.Empty;
-                        value = updateModel.ToString();
-                        byte[] response = webClient.UploadValues(
-                            Properties.Settings.Default.ServerURL + Properties.Settings.Default.URLUpdateOrder,
-                            new System.Collections.Specialized.NameValueCollection()
-                        {
-                            { "q", value}
-                        });
-                        // Get response
-                        respStr = System.Text.Encoding.UTF8.GetString(response);
-                    }
-                    catch (WebException)
-                    {
-                        CommonProcess.ShowErrorMessage(Properties.Resources.InternetConnectionError);
-                        CommonProcess.HasError = true;
-                    }
-                }
-                if (!String.IsNullOrEmpty(respStr))
-                {
-                    DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(OrderResponseModel));
-                    byte[] encodingBytes = null;
-                    try
-                    {
-                        // Encoding response data
-                        encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);
-                    }
-                    catch (System.Text.EncoderFallbackException)
-                    {
-                        ShowErrorMessage(Properties.Resources.EncodingError);
-                        HasError = true;
-                    }
-                    if (encodingBytes != null)
-                    {
-                        MemoryStream msU = new MemoryStream(encodingBytes);
-                        OrderResponseModel baseResp = (OrderResponseModel)js.ReadObject(msU);
-                        if ((baseResp != null)
-                            && (baseResp.Id != null))
-                        {
-                            retVal = baseResp.Id;
-                        }
-                    }
-                }
-            }
-            return retVal;
-        }
-        /// <summary>
-        /// Create order to server.
-        /// </summary>
-        /// <param name="model">Model</param>
-        /// <returns>Order id</returns>
-        public static string CreateOrderToServer(OrderModel model)
-        {
-            string retVal = string.Empty;
-            if (!String.IsNullOrEmpty(Properties.Settings.Default.UserToken))
-            {
-                string respStr = String.Empty;
-                using (WebClient webClient = new WebClient())
-                {
-                    try
-                    {
-                        CreateOrderModel createModel = new CreateOrderModel();
-                        // Create data
-                        createModel.Token       = Properties.Settings.Default.UserToken;
-                        createModel.Customer_id = model.Customer.Id;
-                        createModel.Note        = model.Note;
-                        createModel.Status      = (int)model.Status;
-                        if (DataPure.Instance.Agent != null)
-                        {
-                            createModel.Agent_id = DataPure.Instance.Agent.Id;
-                        }
-                        else
-                        {
-                            CommonProcess.ShowErrorMessage(Properties.Resources.YouMustSelectAnAgent);
-                            CommonProcess.HasError = true;
-                            return string.Empty;
-                        }
-                        createModel.Employee_maintain_id = model.DeliverId;
-                        createModel.Monitor_market_development_id = model.CCSId;
-                        createModel.Order_detail = new List<OrderDetailModel>();
-                        foreach (ProductModel product in model.Products)
-                        {
-                            OrderDetailModel orderDetail = new OrderDetailModel();
-                            // Create data
-                            orderDetail.Materials_id      = product.Id;
-                            orderDetail.Materials_type_id = product.TypeId;
-                            orderDetail.Quantity          = product.Quantity;
-                            orderDetail.Price             = product.Price.ToString();
-                            orderDetail.TotalPay          = (product.Price * product.Quantity).ToString();
-                            orderDetail.Seri              = string.Empty;
-
-                            // Add to list order detail
-                            createModel.Order_detail.Add(orderDetail);
-                        }
-                        foreach (PromoteModel promote in model.Promotes)
-                        {
-                            OrderDetailModel orderDetail = new OrderDetailModel();
-                            // Create data
-                            orderDetail.Materials_id      = promote.Id;
-                            orderDetail.Materials_type_id = promote.TypeId;
-                            orderDetail.Quantity          = promote.Quantity;
-                            orderDetail.Price             = String.Empty;
-                            orderDetail.TotalPay          = String.Empty;
-                            orderDetail.Seri              = string.Empty;
-
-                            // Add to list order detail
-                            createModel.Order_detail.Add(orderDetail);
-                        }
-                        foreach (CylinderModel cylinder in model.Cylinders)
-                        {
-                            OrderDetailModel orderDetail = new OrderDetailModel();
-                            // Create data
-                            orderDetail.Materials_id      = cylinder.Id;
-                            orderDetail.Materials_type_id = cylinder.TypeId;
-                            orderDetail.Quantity          = cylinder.Quantity;
-                            orderDetail.Price             = String.Empty;
-                            orderDetail.TotalPay          = String.Empty;
-                            orderDetail.Seri              = cylinder.Serial;
-
-                            // Add to list order detail
-                            createModel.Order_detail.Add(orderDetail);
-                        }
-
-                        // Post keyword to server
-                        string value = string.Empty;
-                        value = createModel.ToString();
-                        byte[] response = webClient.UploadValues(
-                            Properties.Settings.Default.ServerURL + Properties.Settings.Default.URLCreateOrder,
-                            new System.Collections.Specialized.NameValueCollection()
-                        {
-                            { "q", value}
-                        });
-                        // Get response
-                        respStr = System.Text.Encoding.UTF8.GetString(response);
-                    }
-                    catch (WebException)
-                    {
-                        CommonProcess.ShowErrorMessage(Properties.Resources.InternetConnectionError);
-                        CommonProcess.HasError = true;
-                    }
-                }
-                if (!String.IsNullOrEmpty(respStr))
-                {
-                    DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(OrderResponseModel));
-                    byte[] encodingBytes = null;
-                    try
-                    {
-                        // Encoding response data
-                        encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);
-                    }
-                    catch (System.Text.EncoderFallbackException)
-                    {
-                        ShowErrorMessage(Properties.Resources.EncodingError);
-                        HasError = true;
-                    }
-                    if (encodingBytes != null)
-                    {
-                        MemoryStream msU = new MemoryStream(encodingBytes);
-                        OrderResponseModel baseResp = (OrderResponseModel)js.ReadObject(msU);
-                        if ((baseResp != null)
-                            && (baseResp.Id != null))
-                        {
-                            retVal = baseResp.Id;
-                        }
-                    }
-                }
-            }
-            return retVal;
-        }
-        /// <summary>
-        /// Vietnamese strings sign.
-        /// </summary>
-        private static readonly string[] UnicodeSigns = new string[]
-        {
-            "aAeEoOuUiIdDyY",
-            "áàạảãâấầậẩẫăắằặẳẵ",
-            "ÁÀẠẢÃÂẤẦẬẨẪĂẮẰẶẲẴ",
-            "éèẹẻẽêếềệểễ",
-            "ÉÈẸẺẼÊẾỀỆỂỄ",
-            "óòọỏõôốồộổỗơớờợởỡ",
-            "ÓÒỌỎÕÔỐỒỘỔỖƠỚỜỢỞỠ",
-            "úùụủũưứừựửữ",
-            "ÚÙỤỦŨƯỨỪỰỬỮ",
-            "íìịỉĩ",
-            "ÍÌỊỈĨ",
-            "đ",
-            "Đ",
-            "ýỳỵỷỹ",
-            "ÝỲỴỶỸ"
-        };
-        /// <summary>
         /// Remove sign for Vietnamese string.
         /// </summary>
         /// <param name="str">String to format</param>
@@ -1606,11 +919,28 @@ namespace MainPrj.Util
             return CreateAvatar(retVal, text, size,
                 (Color)new ColorConverter().ConvertFromString("#" + bgColor), fontSize);
         }
+        /// <summary>
+        /// Create avatar.
+        /// </summary>
+        /// <param name="text">Text</param>
+        /// <param name="size">Size</param>
+        /// <param name="color">Color</param>
+        /// <param name="fontSize">Font size of text</param>
+        /// <returns>Bitmap object</returns>
         public static Bitmap CreateAvatar(string text, int size, Color color, int fontSize = 24)
         {
             Bitmap retVal = new Bitmap(size, size);
             return CreateAvatar(retVal, text, size, color, fontSize);
         }
+        /// <summary>
+        /// Create avatar.
+        /// </summary>
+        /// <param name="bitmap">Bitmap object</param>
+        /// <param name="text">Text</param>
+        /// <param name="size">Size</param>
+        /// <param name="color">Color</param>
+        /// <param name="fontSize">Font size of text</param>
+        /// <returns>Bitmap object</returns>
         public static Bitmap CreateAvatar(Bitmap bitmap, string text, int size, Color color, int fontSize = 24)
         {
             var sf = new StringFormat();
@@ -1706,14 +1036,22 @@ namespace MainPrj.Util
             }
             return ret;
         }
-        [DllImport("user32.dll")]
-        public static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
-
+        /// <summary>
+        /// Make long method.
+        /// </summary>
+        /// <param name="lowPart">Low value</param>
+        /// <param name="highPart">High value</param>
+        /// <returns>Int value</returns>
         public static int MakeLong(short lowPart, short highPart)
         {
             return (int)(((ushort)lowPart) | (uint)(highPart << 16));
         }
-
+        /// <summary>
+        /// Set space for listview.
+        /// </summary>
+        /// <param name="listview">List view object</param>
+        /// <param name="cx">X space</param>
+        /// <param name="cy">Y space</param>
         public static void ListView_SetSpacing(ListView listview, short cx, short cy)
         {
             const int LVM_FIRST = 0x1000;
@@ -1727,36 +1065,6 @@ namespace MainPrj.Util
             // DOESN'T WORK!
             // can't find ListView_SetIconSpacing in dll comctl32.dll
             //ListView_SetIconSpacing(listView.Handle, 5, 5);
-        }
-        public static void GetAgentExt()
-        {
-            using (WebClient client = new WebClient())
-            {
-                string respStr = String.Empty;
-                try
-                {
-                    // Post keyword to server
-                    byte[] response = client.UploadValues(
-                        Properties.Settings.Default.ServerURL + "/api/spj/getAgent",
-                        new System.Collections.Specialized.NameValueCollection()
-                    {
-                        { "key", "dc36cc6fb2db91e515372db1821b6275" },
-                        { "phone", "01684331552" }
-                    });
-                    // Get response
-                    respStr = System.Text.Encoding.UTF8.GetString(response);
-                }
-                catch (System.Net.WebException)
-                {
-                    ShowErrorMessage(Properties.Resources.InternetConnectionError);
-                    HasError = true;
-                }
-
-                if (!String.IsNullOrEmpty(respStr))
-                {
-                    Console.WriteLine(respStr);
-                }
-            }
         }
         /// <summary>
         /// Get FROM information from sip data.
@@ -1816,6 +1124,793 @@ namespace MainPrj.Util
         public static bool IsBusyPacket(string sipData)
         {
             return (sipData.StartsWith("SIP/2.0 486 Busy Here") && sipData.Contains("CSeq: 102 INVITE"));
+        } 
+        /// <summary>
+        /// Update progress.
+        /// </summary>
+        /// <param name="e">UploadProgressChangedEventArgs</param>
+        /// <param name="status">Status string</param>
+        /// <param name="bar">Progress bar</param>
+        /// <param name="label">Status label</param>
+        public static void UpdateProgress(UploadProgressChangedEventArgs e, string status,
+            ToolStripProgressBar bar, ToolStripStatusLabel label)
+        {
+            if ((e.ProgressPercentage <= 50)
+                && (e.ProgressPercentage >= 0))
+            {
+                bar.Value = e.ProgressPercentage * 2;
+            }
+            label.Text = status;
         }
+        #endregion
+
+        #region Request Server
+        /// <summary>
+        /// Request customer information from server by phone number.
+        /// </summary>
+        /// <param name="phone">Phone number value</param>
+        /// <returns>List of customer</returns>
+        public static List<CustomerModel> RequestCustomerByPhone(string phone)
+        {
+            return RequestCustomer(Properties.Settings.Default.URLGetCustomerByPhone, Properties.Settings.Default.PhoneKey, phone);
+        }
+        /// <summary>
+        /// Request customer information from server by keyword.
+        /// </summary>
+        /// <param name="keyword">Keyword value</param>
+        /// <returns>List of customer</returns>
+        public static List<CustomerModel> RequestCustomerByKeyword(string keyword)
+        {
+            return RequestCustomer(Properties.Settings.Default.URLGetCustomerByKeyword, Properties.Settings.Default.KeywordKey, keyword);
+        }
+
+        /// <summary>
+        /// Request customer information from server by keyword.
+        /// </summary>
+        /// <param name="url">Request url</param>
+        /// <param name="keyword">Keyword value</param>
+        /// <returns>List of customer</returns>
+        public static List<CustomerModel> RequestCustomer(string url, string key, string keyword)
+        {
+            // Declare result variable
+            List<CustomerModel> result = new List<CustomerModel>();
+            using (WebClient client = new WebClient())
+            {
+                string respStr = String.Empty;
+                try
+                {
+                    string type = "1";
+                    if (DataPure.Instance.User != null)
+                    {
+                        if (DataPure.Instance.IsAccountingAgentRole())
+                        {
+                            type = "2";
+                        }
+                    }
+                    // Post keyword to server
+                    byte[] response = client.UploadValues(
+                        Properties.Settings.Default.ServerURL + url,
+                        new System.Collections.Specialized.NameValueCollection()
+                    {
+                        { key, keyword },
+                        { "window_customer_type", type }
+                    });
+                    // Get response
+                    respStr = System.Text.Encoding.UTF8.GetString(response);
+                }
+                catch (System.Net.WebException)
+                {
+                    ShowErrorMessage(Properties.Resources.InternetConnectionError);
+                    HasError = true;
+                }
+
+                if (!String.IsNullOrEmpty(respStr))
+                {
+                    DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(CustomerResponseModel));
+                    byte[] encodingBytes = null;
+                    try
+                    {
+                        // Encoding response data
+                        encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);
+                    }
+                    catch (System.Text.EncoderFallbackException)
+                    {
+                        ShowErrorMessage(Properties.Resources.EncodingError);
+                        HasError = true;
+                    }
+                    if (encodingBytes != null)
+                    {
+                        MemoryStream msU = new MemoryStream(encodingBytes);
+                        CustomerResponseModel baseResp = (CustomerResponseModel)js.ReadObject(msU);
+                        if (baseResp.Record != null)
+                        {
+                            foreach (CustomerModel item in baseResp.Record)
+                            {
+                                result.Add(item);
+                            }
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+        /// <summary>
+        /// Request logout
+        /// </summary>
+        public static void RequestLogout()
+        {
+            UserLoginResponseModel data = new UserLoginResponseModel();
+            using (WebClient client = new WebClient())
+            {
+                string respStr = String.Empty;
+                try
+                {
+                    // Post keyword to server
+                    string value = string.Empty;
+                    value = String.Format("{{\"token\":\"{0}\"}}", Properties.Settings.Default.UserToken);
+                    byte[] response = client.UploadValues(
+                        Properties.Settings.Default.ServerURL + Properties.Settings.Default.URLLogout,
+                        new System.Collections.Specialized.NameValueCollection()
+                    {
+                        { "q", value}
+                    });
+                    // Get response
+                    respStr = System.Text.Encoding.UTF8.GetString(response);
+                }
+                catch (System.Net.WebException)
+                {
+                    ShowErrorMessage(Properties.Resources.InternetConnectionError);
+                    HasError = true;
+                }
+
+                if (!String.IsNullOrEmpty(respStr))
+                {
+                    DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(BaseResponseModel));
+                    byte[] encodingBytes = null;
+                    try
+                    {
+                        // Encoding response data
+                        encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);
+                    }
+                    catch (System.Text.EncoderFallbackException)
+                    {
+                        ShowErrorMessage(Properties.Resources.EncodingError);
+                        HasError = true;
+                    }
+                    if (encodingBytes != null)
+                    {
+                        MemoryStream msU = new MemoryStream(encodingBytes);
+                        BaseResponseModel baseResp = (BaseResponseModel)js.ReadObject(msU);
+                        if (baseResp != null)
+                        {
+
+                        }
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// Request logout.
+        /// </summary>
+        /// <param name="progressChanged">Progress changed handler</param>
+        /// <param name="completedHandler">Completed handler</param>
+        public static void RequestLogout(UploadProgressChangedEventHandler progressChanged, UploadValuesCompletedEventHandler completedHandler)
+        {
+            UserLoginResponseModel data = new UserLoginResponseModel();
+            using (WebClient client = new WebClient())
+            {
+                string respStr = String.Empty;
+                client.UploadProgressChanged += new UploadProgressChangedEventHandler(progressChanged);
+                client.UploadValuesCompleted += new UploadValuesCompletedEventHandler(completedHandler);
+                try
+                {
+                    // Post keyword to server
+                    string value = string.Empty;
+                    value = String.Format("{{\"token\":\"{0}\"}}", Properties.Settings.Default.UserToken);
+                    client.UploadValuesAsync(
+                        new Uri(Properties.Settings.Default.ServerURL + Properties.Settings.Default.URLLogout),
+                        new System.Collections.Specialized.NameValueCollection()
+                    {
+                        { "q", value}
+                    });
+                }
+                catch (System.Net.WebException)
+                {
+                    ShowErrorMessage(Properties.Resources.InternetConnectionError);
+                    HasError = true;
+                }
+            }
+        }
+        /// <summary>
+        /// Request login.
+        /// </summary>
+        /// <param name="url">Server url</param>
+        /// <param name="username">Username</param>
+        /// <param name="password">password</param>
+        /// <param name="progressChanged">Event handler when progress changed</param>
+        /// <param name="completedHandler">Event handler when finish upload</param>
+        /// <returns>UserLoginResponseModel</returns>
+        public static UserLoginResponseModel RequestLogin(string username, string password,
+            UploadProgressChangedEventHandler progressChanged, UploadValuesCompletedEventHandler completedHandler)
+        {
+            // Declare result variable
+            UserLoginResponseModel data = new UserLoginResponseModel();
+            using (WebClient client = new WebClient())
+            {
+                client.UploadProgressChanged += new UploadProgressChangedEventHandler(progressChanged);
+                client.UploadValuesCompleted += new UploadValuesCompletedEventHandler(completedHandler);
+                string respStr = String.Empty;
+                try
+                {
+                    // Post keyword to server
+                    string value = string.Empty;
+                    value = String.Format("{{\"username\":\"{0}\",\"password\":\"{1}\",\"gcm_device_token\":\"{2}\",\"apns_device_token\":\"{3}\",\"type\":\"2\"}}",
+                        username, password, "1", "1");
+                    client.UploadValuesAsync(
+                        new Uri(Properties.Settings.Default.ServerURL + Properties.Settings.Default.URLLogin),
+                        new System.Collections.Specialized.NameValueCollection()
+                    {
+                        { "q", value}
+                    });
+                    // Get response
+                    //respStr = System.Text.Encoding.UTF8.GetString(response);
+                }
+                catch (System.Net.WebException)
+                {
+                    ShowErrorMessage(Properties.Resources.InternetConnectionError);
+                    HasError = true;
+                }
+            }
+            return data;
+        }
+        /// <summary>
+        /// Request temp data.
+        /// </summary>
+        /// <param name="progressChanged">Event handler when progress changed</param>
+        /// <param name="completedHandler">Event handler when finish upload</param>
+        /// <param name="isNotFirstTime"></param>
+        public static void RequestTempData(UploadProgressChangedEventHandler progressChanged,
+            UploadValuesCompletedEventHandler completedHandler)
+        {
+            // Declare result variable
+            using (WebClient client = new WebClient())
+            {
+                client.UploadProgressChanged += new UploadProgressChangedEventHandler(progressChanged);
+                client.UploadValuesCompleted += new UploadValuesCompletedEventHandler(completedHandler);
+                string respStr = String.Empty;
+                try
+                {
+                    // Post keyword to server
+                    string value = string.Empty;
+                    value = String.Format("{{\"token\":\"{0}\"}}",
+                        Properties.Settings.Default.UserToken);
+                    client.UploadValuesAsync(
+                        new Uri(Properties.Settings.Default.ServerURL + Properties.Settings.Default.URLGetConfig),
+                        new System.Collections.Specialized.NameValueCollection()
+                    {
+                        { "q", value}
+                    });
+                    // Get response
+                    //respStr = System.Text.Encoding.UTF8.GetString(response);
+                }
+                catch (System.Net.WebException)
+                {
+                    ShowErrorMessage(Properties.Resources.InternetConnectionError);
+                    HasError = true;
+                }
+            }
+        }
+        /// <summary>
+        /// Request create new customer.
+        /// </summary>
+        /// <param name="name">Name</param>
+        /// <param name="phone">Phone</param>
+        /// <param name="cityId">Id of city</param>
+        /// <param name="districtId">Id of district</param>
+        /// <param name="wardId">Id of ward</param>
+        /// <param name="streetId">Id of street</param>
+        /// <param name="addressDetail">Detail of address</param>
+        /// <param name="progressChanged">Event handler when progress changed</param>
+        /// <param name="completedHandler">Event handler when finish upload</param>
+        public static void RequestCreateNewCustomer(string name, string phone, string cityId, string districtId,
+            string wardId, string streetId, string addressDetail, UploadProgressChangedEventHandler progressChanged,
+            UploadValuesCompletedEventHandler completedHandler)
+        {
+            using (WebClient client = new WebClient())
+            {
+                client.UploadProgressChanged += new UploadProgressChangedEventHandler(progressChanged);
+                client.UploadValuesCompleted += new UploadValuesCompletedEventHandler(completedHandler);
+                try
+                {
+                    // Post keyword to server
+                    string value = string.Empty;
+                    value = String.Format("{{\"token\":\"{0}\", \"agent_id\":\"{1}\", \"first_name\":\"{2}\", \"phone\":\"{3}\", \"province_id\":\"{4}\", \"district_id\":\"{5}\", \"ward_id\":\"{6}\", \"street_id\":\"{7}\", \"house_numbers\":\"{8}\"}}",
+                        Properties.Settings.Default.UserToken,
+                        DataPure.Instance.Agent.Id,
+                        name, phone, cityId, districtId, wardId, streetId, addressDetail);
+                    client.UploadValuesAsync(
+                        new Uri(Properties.Settings.Default.ServerURL + Properties.Settings.Default.URLCreateCustomer),
+                        new System.Collections.Specialized.NameValueCollection()
+                    {
+                        { "q", value}
+                    });
+                }
+                catch (System.Net.WebException)
+                {
+                    ShowErrorMessage(Properties.Resources.InternetConnectionError);
+                    HasError = true;
+                }
+            }
+        }
+        /// <summary>
+        /// Request agent information from server.
+        /// </summary>
+        /// <param name="agentId">Agent Id</param>
+        public static void RequestAgentInformation(string agentId)
+        {
+            using (WebClient client = new WebClient())
+            {
+                string respStr = String.Empty;
+                try
+                {
+                    // Post keyword to server
+                    string value = string.Empty;
+                    value = String.Format("{{\"token\":\"{0}\",\"agent_id\":\"{1}\"}}",
+                        Properties.Settings.Default.UserToken,
+                        agentId);
+                    byte[] response = client.UploadValues(
+                        Properties.Settings.Default.ServerURL + Properties.Settings.Default.URLGetAgentInfo,
+                        new System.Collections.Specialized.NameValueCollection()
+                    {
+                        { "q", value}
+                    });
+                    // Get response
+                    respStr = System.Text.Encoding.UTF8.GetString(response);
+                }
+                catch (System.Net.WebException)
+                {
+                    ShowErrorMessage(Properties.Resources.InternetConnectionError);
+                    HasError = true;
+                }
+
+                if (!String.IsNullOrEmpty(respStr))
+                {
+                    DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(TempDataResponseModel));
+                    byte[] encodingBytes = null;
+                    try
+                    {
+                        // Encoding response data
+                        encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);
+                    }
+                    catch (System.Text.EncoderFallbackException)
+                    {
+                        ShowErrorMessage(Properties.Resources.EncodingError);
+                        HasError = true;
+                    }
+                    if (encodingBytes != null)
+                    {
+                        MemoryStream msU = new MemoryStream(encodingBytes);
+                        TempDataResponseModel baseResp = (TempDataResponseModel)js.ReadObject(msU);
+                        if ((baseResp != null)
+                            && (baseResp.Record != null))
+                        {
+                            DataPure.Instance.TempData.Employee_maintain = baseResp.Record.Employee_maintain;
+                            DataPure.Instance.TempData.Agent_phone = baseResp.Record.Agent_phone;
+                            DataPure.Instance.TempData.Agent_address = baseResp.Record.Agent_address;
+                            DataPure.Instance.TempData.Agent_province = baseResp.Record.Agent_province;
+                            DataPure.Instance.TempData.Agent_district = baseResp.Record.Agent_district;
+                            DataPure.Instance.TempData.Agent_cell_phone = baseResp.Record.Agent_cell_phone;
+                        }
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// Request create new order by coordinator.
+        /// </summary>
+        /// <param name="agentId">Id of agent</param>
+        /// <param name="customerId">Id of customer</param>
+        /// <param name="note">Note of order</param>
+        public static string RequestCreateOrderCoordinator(string agentId, string customerId, string note,
+            UploadProgressChangedEventHandler progressChanged,
+            UploadValuesCompletedEventHandler completedHandler)
+        {
+            string retVal = string.Empty;
+            using (WebClient client = new WebClient())
+            {
+                client.UploadProgressChanged += new UploadProgressChangedEventHandler(progressChanged);
+                client.UploadValuesCompleted += new UploadValuesCompletedEventHandler(completedHandler);
+                string respStr = String.Empty;
+                try
+                {
+                    // Post keyword to server
+                    string value = string.Empty;
+                    value = String.Format("{{\"token\":\"{0}\",\"customer_id\":\"{1}\",\"agent_id\":\"{2}\",\"note\":\"{3}\"}}",
+                        Properties.Settings.Default.UserToken,
+                        customerId, agentId, note);
+                    client.UploadValuesAsync(
+                        new Uri(Properties.Settings.Default.ServerURL + Properties.Settings.Default.URLCreateOrderCoordinator),
+                        new System.Collections.Specialized.NameValueCollection()
+                    {
+                        { "q", value}
+                    });
+                    // Get response
+                    //respStr = System.Text.Encoding.UTF8.GetString(response);
+                }
+                catch (System.Net.WebException)
+                {
+                    ShowErrorMessage(Properties.Resources.InternetConnectionError);
+                    HasError = true;
+                }
+
+                if (!String.IsNullOrEmpty(respStr))
+                {
+                    DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(OrderResponseModel));
+                    byte[] encodingBytes = null;
+                    try
+                    {
+                        // Encoding response data
+                        encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);
+                    }
+                    catch (System.Text.EncoderFallbackException)
+                    {
+                        ShowErrorMessage(Properties.Resources.EncodingError);
+                        HasError = true;
+                    }
+                    if (encodingBytes != null)
+                    {
+                        MemoryStream msU = new MemoryStream(encodingBytes);
+                        OrderResponseModel baseResp = (OrderResponseModel)js.ReadObject(msU);
+                        if (baseResp != null && baseResp.Status.Equals("1"))
+                        {
+                            retVal = baseResp.Id;
+                        }
+                    }
+                }
+            }
+            return retVal;
+        }
+        /// <summary>
+        /// Update customer phone.
+        /// </summary>
+        /// <param name="customerId">Customer Id</param>
+        /// <param name="phone">Phone to update</param>
+        public static void UpdateCustomerPhone(string customerId, string phone)
+        {
+            if (Properties.Settings.Default.UpdatePhone)
+            {
+                using (WebClient webClient = new WebClient())
+                {
+                    try
+                    {
+                        byte[] bytes = webClient.UploadValues(Properties.Settings.Default.ServerURL
+                            + Properties.Settings.Default.URLUpdateCustomerPhone, new NameValueCollection
+					    {
+						    {
+							    Properties.Settings.Default.CustomerIdKey,
+							    customerId
+						    },
+						    {
+							    Properties.Settings.Default.PhoneKey,
+							    phone
+						    }
+					    });
+                    }
+                    catch (WebException)
+                    {
+                        CommonProcess.ShowErrorMessage(Properties.Resources.InternetConnectionError);
+                        CommonProcess.HasError = true;
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// Update agent cell phone.
+        /// </summary>
+        /// <param name="agentId">Id of agent</param>
+        /// <param name="cellPhone">Cell phone of agent</param>
+        /// <param name="progressChanged">Progress changed handler</param>
+        /// <param name="completedHandler">Completed handler</param>
+        public static void UpdateAgentCellPhone(string agentId, string cellPhone,
+            UploadProgressChangedEventHandler progressChanged,
+            UploadValuesCompletedEventHandler completedHandler)
+        {
+            // Declare result variable
+            using (WebClient client = new WebClient())
+            {
+                client.UploadProgressChanged += new UploadProgressChangedEventHandler(progressChanged);
+                client.UploadValuesCompleted += new UploadValuesCompletedEventHandler(completedHandler);
+                try
+                {
+                    client.UploadValuesAsync(
+                        new Uri(Properties.Settings.Default.ServerURL
+                        + Properties.Settings.Default.URLUpdateCustomerPhone),
+                        new NameValueCollection
+					    {
+						    {
+							    Properties.Settings.Default.CustomerIdKey,
+							    agentId
+						    },
+						    {
+							    Properties.Settings.Default.PhoneKey,
+							    cellPhone
+						    }
+					    });
+                }
+                catch (WebException)
+                {
+                    CommonProcess.ShowErrorMessage(Properties.Resources.InternetConnectionError);
+                    CommonProcess.HasError = true;
+                }
+            }
+        }
+        /// <summary>
+        /// Update customer to server.
+        /// </summary>
+        /// <param name="model">Model</param>
+        /// <returns>Order id</returns>
+        public static string UpdateOrderToServer(OrderModel model)
+        {
+            string retVal = string.Empty;
+            if (!String.IsNullOrEmpty(Properties.Settings.Default.UserToken))
+            {
+                string respStr = String.Empty;
+                using (WebClient webClient = new WebClient())
+                {
+                    try
+                    {
+                        UpdateOrderModel updateModel = new UpdateOrderModel();
+                        // Create data
+                        updateModel.Token = Properties.Settings.Default.UserToken;
+                        updateModel.Id = model.WebId;
+                        updateModel.Note = model.Note;
+                        updateModel.Status = (int)model.Status;
+                        updateModel.Order_detail = new List<OrderDetailModel>();
+                        foreach (ProductModel product in model.Products)
+                        {
+                            OrderDetailModel orderDetail = new OrderDetailModel();
+                            // Create data
+                            orderDetail.Materials_id = product.Id;
+                            orderDetail.Materials_type_id = product.TypeId;
+                            orderDetail.Quantity = product.Quantity;
+                            orderDetail.Price = product.Price.ToString();
+                            orderDetail.TotalPay = (product.Price * product.Quantity).ToString();
+                            orderDetail.Seri = string.Empty;
+
+                            // Add to list order detail
+                            updateModel.Order_detail.Add(orderDetail);
+                        }
+                        foreach (PromoteModel promote in model.Promotes)
+                        {
+                            OrderDetailModel orderDetail = new OrderDetailModel();
+                            // Create data
+                            orderDetail.Materials_id = promote.Id;
+                            orderDetail.Materials_type_id = promote.TypeId;
+                            orderDetail.Quantity = promote.Quantity;
+                            orderDetail.Price = String.Empty;
+                            orderDetail.TotalPay = String.Empty;
+                            orderDetail.Seri = string.Empty;
+
+                            // Add to list order detail
+                            updateModel.Order_detail.Add(orderDetail);
+                        }
+                        foreach (CylinderModel cylinder in model.Cylinders)
+                        {
+                            OrderDetailModel orderDetail = new OrderDetailModel();
+                            // Create data
+                            orderDetail.Materials_id = cylinder.Id;
+                            orderDetail.Materials_type_id = cylinder.TypeId;
+                            orderDetail.Quantity = cylinder.Quantity;
+                            orderDetail.Price = String.Empty;
+                            orderDetail.TotalPay = String.Empty;
+                            orderDetail.Seri = cylinder.Serial;
+
+                            // Add to list order detail
+                            updateModel.Order_detail.Add(orderDetail);
+                        }
+
+                        // Post keyword to server
+                        string value = string.Empty;
+                        value = updateModel.ToString();
+                        byte[] response = webClient.UploadValues(
+                            Properties.Settings.Default.ServerURL + Properties.Settings.Default.URLUpdateOrder,
+                            new System.Collections.Specialized.NameValueCollection()
+                        {
+                            { "q", value}
+                        });
+                        // Get response
+                        respStr = System.Text.Encoding.UTF8.GetString(response);
+                    }
+                    catch (WebException)
+                    {
+                        CommonProcess.ShowErrorMessage(Properties.Resources.InternetConnectionError);
+                        CommonProcess.HasError = true;
+                    }
+                }
+                if (!String.IsNullOrEmpty(respStr))
+                {
+                    DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(OrderResponseModel));
+                    byte[] encodingBytes = null;
+                    try
+                    {
+                        // Encoding response data
+                        encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);
+                    }
+                    catch (System.Text.EncoderFallbackException)
+                    {
+                        ShowErrorMessage(Properties.Resources.EncodingError);
+                        HasError = true;
+                    }
+                    if (encodingBytes != null)
+                    {
+                        MemoryStream msU = new MemoryStream(encodingBytes);
+                        OrderResponseModel baseResp = (OrderResponseModel)js.ReadObject(msU);
+                        if ((baseResp != null)
+                            && (baseResp.Id != null))
+                        {
+                            retVal = baseResp.Id;
+                        }
+                    }
+                }
+            }
+            return retVal;
+        }
+        /// <summary>
+        /// Create order to server.
+        /// </summary>
+        /// <param name="model">Model</param>
+        /// <returns>Order id</returns>
+        public static string CreateOrderToServer(OrderModel model)
+        {
+            string retVal = string.Empty;
+            if (!String.IsNullOrEmpty(Properties.Settings.Default.UserToken))
+            {
+                string respStr = String.Empty;
+                using (WebClient webClient = new WebClient())
+                {
+                    try
+                    {
+                        CreateOrderModel createModel = new CreateOrderModel();
+                        // Create data
+                        createModel.Token = Properties.Settings.Default.UserToken;
+                        createModel.Customer_id = model.Customer.Id;
+                        createModel.Note = model.Note;
+                        createModel.Status = (int)model.Status;
+                        if (DataPure.Instance.Agent != null)
+                        {
+                            createModel.Agent_id = DataPure.Instance.Agent.Id;
+                        }
+                        else
+                        {
+                            CommonProcess.ShowErrorMessage(Properties.Resources.YouMustSelectAnAgent);
+                            CommonProcess.HasError = true;
+                            return string.Empty;
+                        }
+                        createModel.Employee_maintain_id = model.DeliverId;
+                        createModel.Monitor_market_development_id = model.CCSId;
+                        createModel.Order_detail = new List<OrderDetailModel>();
+                        foreach (ProductModel product in model.Products)
+                        {
+                            OrderDetailModel orderDetail = new OrderDetailModel();
+                            // Create data
+                            orderDetail.Materials_id = product.Id;
+                            orderDetail.Materials_type_id = product.TypeId;
+                            orderDetail.Quantity = product.Quantity;
+                            orderDetail.Price = product.Price.ToString();
+                            orderDetail.TotalPay = (product.Price * product.Quantity).ToString();
+                            orderDetail.Seri = string.Empty;
+
+                            // Add to list order detail
+                            createModel.Order_detail.Add(orderDetail);
+                        }
+                        foreach (PromoteModel promote in model.Promotes)
+                        {
+                            OrderDetailModel orderDetail = new OrderDetailModel();
+                            // Create data
+                            orderDetail.Materials_id = promote.Id;
+                            orderDetail.Materials_type_id = promote.TypeId;
+                            orderDetail.Quantity = promote.Quantity;
+                            orderDetail.Price = String.Empty;
+                            orderDetail.TotalPay = String.Empty;
+                            orderDetail.Seri = string.Empty;
+
+                            // Add to list order detail
+                            createModel.Order_detail.Add(orderDetail);
+                        }
+                        foreach (CylinderModel cylinder in model.Cylinders)
+                        {
+                            OrderDetailModel orderDetail = new OrderDetailModel();
+                            // Create data
+                            orderDetail.Materials_id = cylinder.Id;
+                            orderDetail.Materials_type_id = cylinder.TypeId;
+                            orderDetail.Quantity = cylinder.Quantity;
+                            orderDetail.Price = String.Empty;
+                            orderDetail.TotalPay = String.Empty;
+                            orderDetail.Seri = cylinder.Serial;
+
+                            // Add to list order detail
+                            createModel.Order_detail.Add(orderDetail);
+                        }
+
+                        // Post keyword to server
+                        string value = string.Empty;
+                        value = createModel.ToString();
+                        byte[] response = webClient.UploadValues(
+                            Properties.Settings.Default.ServerURL + Properties.Settings.Default.URLCreateOrder,
+                            new System.Collections.Specialized.NameValueCollection()
+                        {
+                            { "q", value}
+                        });
+                        // Get response
+                        respStr = System.Text.Encoding.UTF8.GetString(response);
+                    }
+                    catch (WebException)
+                    {
+                        CommonProcess.ShowErrorMessage(Properties.Resources.InternetConnectionError);
+                        CommonProcess.HasError = true;
+                    }
+                }
+                if (!String.IsNullOrEmpty(respStr))
+                {
+                    DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(OrderResponseModel));
+                    byte[] encodingBytes = null;
+                    try
+                    {
+                        // Encoding response data
+                        encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);
+                    }
+                    catch (System.Text.EncoderFallbackException)
+                    {
+                        ShowErrorMessage(Properties.Resources.EncodingError);
+                        HasError = true;
+                    }
+                    if (encodingBytes != null)
+                    {
+                        MemoryStream msU = new MemoryStream(encodingBytes);
+                        OrderResponseModel baseResp = (OrderResponseModel)js.ReadObject(msU);
+                        if ((baseResp != null)
+                            && (baseResp.Id != null))
+                        {
+                            retVal = baseResp.Id;
+                        }
+                    }
+                }
+            }
+            return retVal;
+        }
+        /// <summary>
+        /// Get agent ext.
+        /// </summary>
+        public static void GetAgentExt()
+        {
+            using (WebClient client = new WebClient())
+            {
+                string respStr = String.Empty;
+                try
+                {
+                    // Post keyword to server
+                    byte[] response = client.UploadValues(
+                        Properties.Settings.Default.ServerURL + "/api/spj/getAgent",
+                        new System.Collections.Specialized.NameValueCollection()
+                    {
+                        { "key", "dc36cc6fb2db91e515372db1821b6275" },
+                        { "phone", "01684331552" }
+                    });
+                    // Get response
+                    respStr = System.Text.Encoding.UTF8.GetString(response);
+                }
+                catch (System.Net.WebException)
+                {
+                    ShowErrorMessage(Properties.Resources.InternetConnectionError);
+                    HasError = true;
+                }
+
+                if (!String.IsNullOrEmpty(respStr))
+                {
+                    Console.WriteLine(respStr);
+                }
+            }
+        }
+        #endregion
     }
 }

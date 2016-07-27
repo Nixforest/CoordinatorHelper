@@ -419,4 +419,16 @@ Nhấn NO để chọn lại Khách hàng.</value>
   <data name="RequestUpdateAgentCellPhone" xml:space="preserve">
     <value>Đang gửi yêu cầu cập nhật thông tin Đại lý...</value>
   </data>
+  <data name="RequestingLogout" xml:space="preserve">
+    <value>Đang gửi yêu cầu đăng xuất...</value>
+  </data>
+  <data name="RequestLogoutSuccess" xml:space="preserve">
+    <value>Đăng xuất thành công!</value>
+  </data>
+  <data name="CreatingOrder" xml:space="preserve">
+    <value>Bạn đang tạo đơn hàng cho Khách hàng {0}:
+{1}
+tại {2}.
+Bạn chắn chắn không?</value>
+  </data>
 </root>

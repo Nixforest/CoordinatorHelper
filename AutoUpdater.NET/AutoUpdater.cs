@@ -9,6 +9,7 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Xml;
 using Microsoft.Win32;
+using System.Runtime.InteropServices;
 
 namespace AutoUpdaterDotNET
 {
@@ -38,6 +39,21 @@ namespace AutoUpdaterDotNET
     /// </summary>
     public static class AutoUpdater
     {
+        public const uint WM_USER = 0x0400;
+        /// <summary>
+        /// Check version finished message.
+        /// </summary>
+        public const uint WM_USER_CHECKVER_FINISHED = WM_USER + 2;
+        /// <summary>
+        /// Internet error message.
+        /// </summary>
+        public const uint WM_USER_INTERNETERR_FINISHED = WM_USER + 3;
+
+        [DllImport("user32.dll", EntryPoint = "FindWindow", SetLastError = true)]
+        private static extern IntPtr FindWindowByCaption(IntPtr ZeroOnly, string lpWindowName);
+
+        [DllImport("user32.dll")]
+        private static extern int PostMessage(IntPtr hWnd, uint msg, int wParam, int lParam);
         internal static String DialogTitle;
 
         internal static String ChangeLogURL;
@@ -181,6 +197,11 @@ namespace AutoUpdaterDotNET
                 {
                     CheckForUpdateEvent(null);
                 }
+                IntPtr hWnd = FindWindowByCaption(IntPtr.Zero, Assembly.GetEntryAssembly().GetName().Name);
+                if (hWnd.ToInt32() != 0)
+                {
+                    PostMessage(hWnd, WM_USER_INTERNETERR_FINISHED, 0, 0);
+                }
                 return;
             }
 
@@ -286,13 +307,21 @@ namespace AutoUpdaterDotNET
                     thread.Start();
                 }
             }
+            // Check last version
+            else
+            {
+                IntPtr hWnd = FindWindowByCaption(IntPtr.Zero, Assembly.GetEntryAssembly().GetName().Name);
+                if (hWnd.ToInt32() != 0)
+                {
+                    PostMessage(hWnd, WM_USER_CHECKVER_FINISHED, 0, 0);
+                }
+            }
 
             if (CheckForUpdateEvent != null)
             {
                 CheckForUpdateEvent(args);
             }
         }
-
         private static string GetURL(Uri baseUri, XmlNode xmlNode)
         {
             var temp = xmlNode != null ? xmlNode.InnerText : "";

@@ -108,19 +108,20 @@ namespace MainPrj.View
             // btnUpdateData
             // 
             this.btnUpdateData.Image = global::MainPrj.Properties.Resources.upload_tray;
-            this.btnUpdateData.Location = new System.Drawing.Point(16, 6);
+            this.btnUpdateData.Location = new System.Drawing.Point(507, 6);
             this.btnUpdateData.Name = "btnUpdateData";
             this.btnUpdateData.Size = new System.Drawing.Size(124, 39);
             this.btnUpdateData.TabIndex = 0;
             this.btnUpdateData.Text = "Cập nhật";
             this.btnUpdateData.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnUpdateData.UseVisualStyleBackColor = true;
+            this.btnUpdateData.Visible = false;
             this.btnUpdateData.Click += new System.EventHandler(this.btnUpdateData_Click);
             // 
             // btnAddCylinder
             // 
             this.btnAddCylinder.Image = global::MainPrj.Properties.Resources.money_icon_gray;
-            this.btnAddCylinder.Location = new System.Drawing.Point(146, 6);
+            this.btnAddCylinder.Location = new System.Drawing.Point(16, 6);
             this.btnAddCylinder.Name = "btnAddCylinder";
             this.btnAddCylinder.Size = new System.Drawing.Size(121, 39);
             this.btnAddCylinder.TabIndex = 1;
@@ -232,7 +233,7 @@ namespace MainPrj.View
             // btnExportReport
             // 
             this.btnExportReport.Image = global::MainPrj.Properties.Resources.report;
-            this.btnExportReport.Location = new System.Drawing.Point(273, 6);
+            this.btnExportReport.Location = new System.Drawing.Point(143, 6);
             this.btnExportReport.Name = "btnExportReport";
             this.btnExportReport.Size = new System.Drawing.Size(166, 39);
             this.btnExportReport.TabIndex = 2;
@@ -244,7 +245,7 @@ namespace MainPrj.View
             // btnCancelOrder
             // 
             this.btnCancelOrder.Image = global::MainPrj.Properties.Resources.cancel_order;
-            this.btnCancelOrder.Location = new System.Drawing.Point(445, 6);
+            this.btnCancelOrder.Location = new System.Drawing.Point(315, 6);
             this.btnCancelOrder.Name = "btnCancelOrder";
             this.btnCancelOrder.Size = new System.Drawing.Size(186, 39);
             this.btnCancelOrder.TabIndex = 2;

@@ -95,7 +95,7 @@ namespace MainPrj.View
                     createCustomerCompleted);
             }
         }
-
+        // 
         private void createCustomerCompleted(object sender, System.Net.UploadValuesCompletedEventArgs e)
         {
             if (e.Cancelled)
@@ -134,6 +134,7 @@ namespace MainPrj.View
                             && (baseResp.Status.Equals("1")))
                         {
                             // Create customer is success.
+                            toolStripStatusLabel.Text = Properties.Resources.CreateCustomerSuccess;
                             CommonProcess.ShowInformMessage(Properties.Resources.CreateCustomerSuccess,
                                 MessageBoxButtons.OK);
                             if (baseResp.Record != null)
@@ -159,12 +160,14 @@ namespace MainPrj.View
         /// <param name="e">UploadProgressChangedEventArgs</param>
         private void createCustomerProgressChanged(object sender, System.Net.UploadProgressChangedEventArgs e)
         {
-            if ((e.ProgressPercentage <= 50)
-                && (e.ProgressPercentage >= 0))
-            {
-                toolStripProgressBar.Value = e.ProgressPercentage * 2;
-            }
-            toolStripStatusLabel.Text = Properties.Resources.RequestingCreateCustomer;
+            //if ((e.ProgressPercentage <= 50)
+            //    && (e.ProgressPercentage >= 0))
+            //{
+            //    toolStripProgressBar.Value = e.ProgressPercentage * 2;
+            //}
+            //toolStripStatusLabel.Text = Properties.Resources.RequestingCreateCustomer;
+            CommonProcess.UpdateProgress(e, Properties.Resources.RequestingCreateCustomer,
+                toolStripProgressBar, toolStripStatusLabel);
         }
         /// <summary>
         /// Handle when load form

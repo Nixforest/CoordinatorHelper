@@ -312,6 +312,18 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bạn đang tạo đơn hàng cho Khách hàng {0}:
+        ///{1}
+        ///tại {2}.
+        ///Bạn chắn chắn không?.
+        /// </summary>
+        internal static string CreatingOrder {
+            get {
+                return ResourceManager.GetString("CreatingOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bạn có muốn lưu thay đổi hay không?.
         /// </summary>
         internal static string DataNotSaveYet {
@@ -778,11 +790,29 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Đang gửi yêu cầu đăng xuất....
+        /// </summary>
+        internal static string RequestingLogout {
+            get {
+                return ResourceManager.GetString("RequestingLogout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Đang gửi yêu cầu cập nhật data....
         /// </summary>
         internal static string RequestingTempData {
             get {
                 return ResourceManager.GetString("RequestingTempData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đăng xuất thành công!.
+        /// </summary>
+        internal static string RequestLogoutSuccess {
+            get {
+                return ResourceManager.GetString("RequestLogoutSuccess", resourceCulture);
             }
         }
         

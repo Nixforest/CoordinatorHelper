@@ -52,13 +52,17 @@
             this.dtpFilterFrom = new System.Windows.Forms.DateTimePicker();
             this.dtpFilterTo = new System.Windows.Forms.DateTimePicker();
             this.label2 = new System.Windows.Forms.Label();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
+            this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.contextMenuStrip.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnClose
             // 
             this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnClose.Location = new System.Drawing.Point(1190, 591);
+            this.btnClose.Location = new System.Drawing.Point(1190, 578);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(116, 36);
             this.btnClose.TabIndex = 7;
@@ -85,7 +89,7 @@
             this.listViewHistory.MultiSelect = false;
             this.listViewHistory.Name = "listViewHistory";
             this.listViewHistory.ShowItemToolTips = true;
-            this.listViewHistory.Size = new System.Drawing.Size(1294, 529);
+            this.listViewHistory.Size = new System.Drawing.Size(1294, 514);
             this.listViewHistory.TabIndex = 6;
             this.listViewHistory.UseCompatibleStateImageBehavior = false;
             this.listViewHistory.View = System.Windows.Forms.View.Details;
@@ -249,12 +253,35 @@
             this.label2.TabIndex = 8;
             this.label2.Text = "→";
             // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripProgressBar,
+            this.toolStripStatusLabel});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 617);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(1318, 22);
+            this.statusStrip1.TabIndex = 9;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripProgressBar
+            // 
+            this.toolStripProgressBar.Name = "toolStripProgressBar";
+            this.toolStripProgressBar.Size = new System.Drawing.Size(100, 16);
+            // 
+            // toolStripStatusLabel
+            // 
+            this.toolStripStatusLabel.ForeColor = System.Drawing.Color.Green;
+            this.toolStripStatusLabel.Name = "toolStripStatusLabel";
+            this.toolStripStatusLabel.Size = new System.Drawing.Size(0, 17);
+            // 
             // HistoryView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
             this.ClientSize = new System.Drawing.Size(1318, 639);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.dtpFilterTo);
             this.Controls.Add(this.dtpFilterFrom);
@@ -276,6 +303,8 @@
             this.Load += new System.EventHandler(this.HistoryView_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.HistoryView_KeyDown);
             this.contextMenuStrip.ResumeLayout(false);
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -305,5 +334,8 @@
         private System.Windows.Forms.DateTimePicker dtpFilterFrom;
         private System.Windows.Forms.DateTimePicker dtpFilterTo;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel;
     }
 }

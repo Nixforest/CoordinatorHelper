@@ -80,6 +80,15 @@ namespace Launcher.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Đã cài đặt phiên bản mới nhất. Bạn có thể bắt đầu chương trình..
+        /// </summary>
+        internal static string CheckVersion {
+            get {
+                return ResourceManager.GetString("CheckVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Đã tải xong phiên bản mới nhất. Bạn có thể bắt đầu chương trình..
         /// </summary>
         internal static string DownloadFinishedMsg {
@@ -94,6 +103,15 @@ namespace Launcher.Properties {
         internal static string FirstVersion {
             get {
                 return ResourceManager.GetString("FirstVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lỗi kết nối mạng.
+        /// </summary>
+        internal static string InternetError {
+            get {
+                return ResourceManager.GetString("InternetError", resourceCulture);
             }
         }
         

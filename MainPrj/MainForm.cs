@@ -72,7 +72,7 @@ namespace MainPrj
                 this.mainTabControl.DrawItem += mainTabControl_DrawItem;
             }
             // Start thread
-            //StartUdpThread();
+            StartUdpThread();
             //StartListeningThread();
             //StartSIPThread();
         }
@@ -228,7 +228,7 @@ namespace MainPrj
                             string note = string.Empty;
                             note = coordinatorOrderView.GetData();
                             DialogResult result = CommonProcess.ShowInformMessage(
-                                String.Format("Bạn đang tạo đơn hàng cho Khách hàng {0}:\n\t{1}\n\ttại {2}.\nBạn chắn chắn không?",
+                                String.Format(Properties.Resources.CreatingOrder,
                                     DataPure.Instance.CustomerInfo.Name, note, DataPure.Instance.GetAgentNameById(selectorId)),
                                 MessageBoxButtons.OKCancel);
                             if (result.Equals(DialogResult.OK))
@@ -257,64 +257,6 @@ namespace MainPrj
             {
                 CommonProcess.ShowErrorMessage(Properties.Resources.MissCustomerInfor);
             }
-        }
-
-        private void createOrderCompleted(object sender, UploadValuesCompletedEventArgs e)
-        {
-            if (e.Cancelled)
-            {
-                toolStripStatusLabel.Text = Properties.Resources.ErrorCause + "Hủy";
-            }
-            else if (e.Error != null)
-            {
-                toolStripStatusLabel.Text = Properties.Resources.ErrorCause + e.Error.Message;
-            }
-            else
-            {
-                byte[] response = e.Result;
-                string respStr = String.Empty;
-                respStr = System.Text.Encoding.UTF8.GetString(response);
-                if (!String.IsNullOrEmpty(respStr))
-                {
-                    DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(OrderResponseModel));
-                    byte[] encodingBytes = null;
-                    try
-                    {
-                        // Encoding response data
-                        encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);
-                    }
-                    catch (System.Text.EncoderFallbackException)
-                    {
-                        CommonProcess.ShowErrorMessage(Properties.Resources.EncodingError);
-                    }
-                    if (encodingBytes != null)
-                    {
-                        MemoryStream msU = new MemoryStream(encodingBytes);
-                        OrderResponseModel baseResp = (OrderResponseModel)js.ReadObject(msU);
-                        if (baseResp != null && baseResp.Status.Equals("1"))
-                        {
-                            string id = baseResp.Id;
-                            if (!String.IsNullOrEmpty(id))
-                            {
-                                CommonProcess.ShowInformMessage(Properties.Resources.CreateOrderSuccess, MessageBoxButtons.OK);
-                            }
-                        }
-                        else
-                        {
-                            CommonProcess.ShowInformMessage(Properties.Resources.CreateOrderServerError, MessageBoxButtons.OK);
-                        }
-                    }
-                }
-            }
-        }
-
-        private void createOrderProgressChanged(object sender, UploadProgressChangedEventArgs e)
-        {
-            if ((e.ProgressPercentage <= 50) && (e.ProgressPercentage >= 0))
-            {
-                toolStripProgressBarReqServer.Value = e.ProgressPercentage * 2;
-            }
-            toolStripStatusLabel.Text = Properties.Resources.RequestingCreateOrder;
         }
         /// <summary>
         /// Handle when click Save data button.
@@ -856,94 +798,6 @@ namespace MainPrj
                     break;
             }
         }
-        /// <summary>
-        /// Handle when creating customer.
-        /// </summary>
-        /// <param name="sender">Sender</param>
-        /// <param name="e">UploadProgressChangedEventArgs</param>
-        private void createCustomerProgressChanged(object sender, UploadProgressChangedEventArgs e)
-        {
-            if ((e.ProgressPercentage <= 50)
-                && (e.ProgressPercentage >= 0))
-            {
-                toolStripProgressBarReqServer.Value = e.ProgressPercentage * 2;
-            }
-            toolStripStatusLabel.Text = Properties.Resources.RequestingCreateCustomer;
-        }
-        /// <summary>
-        /// Handle when created customer.
-        /// </summary>
-        /// <param name="sender">Sender</param>
-        /// <param name="e">UploadValuesCompletedEventArgs</param>
-        private void createCustomerCompleted(object sender, UploadValuesCompletedEventArgs e)
-        {
-            if (e.Cancelled)
-            {
-                toolStripStatusLabel.Text = Properties.Resources.ErrorCause + "Hủy";
-            }
-            else if (e.Error != null)
-            {
-                toolStripStatusLabel.Text = Properties.Resources.ErrorCause + e.Error.Message;
-            }
-            else
-            {
-                byte[] response = e.Result;
-                string respStr = String.Empty;
-                respStr = System.Text.Encoding.UTF8.GetString(response);
-                // Response string is not null
-                if (!String.IsNullOrEmpty(respStr))
-                {
-                    DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(CustomerResponseModel));
-                    byte[] encodingBytes = null;
-                    try
-                    {
-                        // Encoding response data
-                        encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);
-                    }
-                    catch (System.Text.EncoderFallbackException)
-                    {
-                        CommonProcess.ShowErrorMessage(Properties.Resources.EncodingError);
-                    }
-                    if (encodingBytes != null)
-                    {
-                        MemoryStream msU = new MemoryStream(encodingBytes);
-                        CustomerResponseModel baseResp = (CustomerResponseModel)js.ReadObject(msU);
-                        // Check status
-                        if ((baseResp != null)
-                            && (baseResp.Status.Equals("1")))
-                        {
-                            // Create customer is success.
-                            CommonProcess.ShowInformMessage(Properties.Resources.CreateCustomerSuccess,
-                                MessageBoxButtons.OK);
-                            ChannelControl channelControl = null;
-                            try
-                            {
-                                channelControl = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel);
-                            }
-                            catch (ArgumentOutOfRangeException)
-                            {
-                                CommonProcess.ShowErrorMessage(Properties.Resources.ArgumentOutOfRange);
-                                return;
-                            }
-                            if (channelControl != null)
-                            {
-                                if (baseResp.Record != null)
-                                {
-                                    baseResp.Record[0].ActivePhone = channelControl.GetIncommingPhone();
-                                    CommonProcess.SetChannelInformation(channelControl, baseResp.Record[0]);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            // Create customer is failed.
-                            CommonProcess.ShowInformMessage(Properties.Resources.CreateCustomerFailed,
-                                MessageBoxButtons.OK);
-                        }
-                    }
-                }
-            }
-        }
 
         /// <summary>
         /// Handle when click on checkbox Listen from card.
@@ -1033,11 +887,215 @@ namespace MainPrj
         {
             if (!String.IsNullOrEmpty(Properties.Settings.Default.UserToken))
             {
-                CommonProcess.RequestLogout();
+                //CommonProcess.RequestLogout();
+                CommonProcess.RequestLogout(logoutProgressChanged, logoutCompleted);
             }
-            DataPure.Instance.User = new UserLoginModel();
-            pbxAvatar.Image = CommonProcess.CreateAvatar(string.Empty, pbxAvatar.Size.Height);
-            Logout();
+        }
+        /// <summary>
+        /// Handle list order
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void btnOrderList_Click(object sender, EventArgs e)
+        {
+            HandleClickListOrderButton();
+        }
+
+        /// <summary>
+        /// Handle when click Support menu.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void toolStripMenuItemSupport_Click(object sender, EventArgs e)
+        {
+            AboutBox about = new AboutBox();
+            about.Show();
+        }
+        /// <summary>
+        /// Handle when click Guideline menu.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void toolStripMenuItemGuideline_Click(object sender, EventArgs e)
+        {
+            CommonProcess.ShowInformMessageProcessing();
+        }
+        /// <summary>
+        /// Handle when click Update data menu.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void toolStripMenuItemUpdateData_Click(object sender, EventArgs e)
+        {
+            CommonProcess.RequestTempData(reqTempDataProgressChanged, reqTempDataCompletedMenu);
+        }
+        /// <summary>
+        /// Request temp data completed from menu event handler
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">UploadValuesCompletedEventArgs</param>
+        private void reqTempDataCompletedMenu(object sender, UploadValuesCompletedEventArgs e)
+        {
+            if (e.Cancelled)
+            {
+                toolStripStatusLabel.Text = Properties.Resources.ErrorCause + Properties.Resources.Cancel;
+            }
+            else if (e.Error != null)
+            {
+                toolStripStatusLabel.Text = Properties.Resources.ErrorCause + e.Error.Message;
+            }
+            else
+            {
+                toolStripStatusLabel.Text = Properties.Resources.RequestTempDataSuccess;
+                toolStripProgressBarReqServer.Value = 0;
+                reqTempDataCompleted(e, true);
+            }
+        }
+        /// <summary>
+        /// Handle when click on ware house item.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void toolStripMenuItemWareHouse_Click(object sender, EventArgs e)
+        {
+            WareHouseView view = new WareHouseView();
+            view.ShowDialog();
+        }
+        /// <summary>
+        /// Handle when click on Agent phone item.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void toolStripMenuItemAgentPhone_Click(object sender, EventArgs e)
+        {
+            AgentCellPhoneView view = new AgentCellPhoneView();
+            view.ShowDialog();
+        }
+        #endregion
+
+        #region Request server handler
+        /// <summary>
+        /// Handle when finish logout.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">UploadValuesCompletedEventArgs</param>
+        private void logoutCompleted(object sender, UploadValuesCompletedEventArgs e)
+        {
+            if (e.Cancelled)
+            {
+                toolStripStatusLabel.Text = Properties.Resources.ErrorCause + Properties.Resources.Cancel;
+            }
+            else if (e.Error != null)
+            {
+                toolStripStatusLabel.Text = Properties.Resources.ErrorCause + e.Error.Message;
+            }
+            else
+            {
+                // Logout is success
+                toolStripStatusLabel.Text = Properties.Resources.RequestLogoutSuccess;
+                DataPure.Instance.User = new UserLoginModel();
+                pbxAvatar.Image = CommonProcess.CreateAvatar(string.Empty, pbxAvatar.Size.Height);
+                Logout();
+            }
+        }
+        /// <summary>
+        /// Handle when logout progress changed.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">UploadProgressChangedEventArgs</param>
+        private void logoutProgressChanged(object sender, UploadProgressChangedEventArgs e)
+        {
+            UpdateProgress(e, Properties.Resources.RequestingLogout);
+        }
+        /// <summary>
+        /// Handle when creating customer.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">UploadProgressChangedEventArgs</param>
+        private void createCustomerProgressChanged(object sender, UploadProgressChangedEventArgs e)
+        {
+            //if ((e.ProgressPercentage <= 50)
+            //    && (e.ProgressPercentage >= 0))
+            //{
+            //    toolStripProgressBarReqServer.Value = e.ProgressPercentage * 2;
+            //}
+            //toolStripStatusLabel.Text = Properties.Resources.RequestingCreateCustomer;
+            UpdateProgress(e, Properties.Resources.RequestingCreateCustomer);
+        }
+        /// <summary>
+        /// Handle when created customer.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">UploadValuesCompletedEventArgs</param>
+        private void createCustomerCompleted(object sender, UploadValuesCompletedEventArgs e)
+        {
+            if (e.Cancelled)
+            {
+                toolStripStatusLabel.Text = Properties.Resources.ErrorCause + Properties.Resources.Cancel;
+            }
+            else if (e.Error != null)
+            {
+                toolStripStatusLabel.Text = Properties.Resources.ErrorCause + e.Error.Message;
+            }
+            else
+            {
+                byte[] response = e.Result;
+                string respStr = String.Empty;
+                respStr = System.Text.Encoding.UTF8.GetString(response);
+                // Response string is not null
+                if (!String.IsNullOrEmpty(respStr))
+                {
+                    DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(CustomerResponseModel));
+                    byte[] encodingBytes = null;
+                    try
+                    {
+                        // Encoding response data
+                        encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);
+                    }
+                    catch (System.Text.EncoderFallbackException)
+                    {
+                        CommonProcess.ShowErrorMessage(Properties.Resources.EncodingError);
+                    }
+                    if (encodingBytes != null)
+                    {
+                        MemoryStream msU = new MemoryStream(encodingBytes);
+                        CustomerResponseModel baseResp = (CustomerResponseModel)js.ReadObject(msU);
+                        // Check status
+                        if ((baseResp != null)
+                            && (baseResp.Status.Equals("1")))
+                        {
+                            // Create customer is success.
+                            toolStripStatusLabel.Text = Properties.Resources.CreateCustomerSuccess;
+                            CommonProcess.ShowInformMessage(Properties.Resources.CreateCustomerSuccess,
+                                MessageBoxButtons.OK);
+                            ChannelControl channelControl = null;
+                            try
+                            {
+                                channelControl = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel);
+                            }
+                            catch (ArgumentOutOfRangeException)
+                            {
+                                CommonProcess.ShowErrorMessage(Properties.Resources.ArgumentOutOfRange);
+                                return;
+                            }
+                            if (channelControl != null)
+                            {
+                                if (baseResp.Record != null)
+                                {
+                                    baseResp.Record[0].ActivePhone = channelControl.GetIncommingPhone();
+                                    CommonProcess.SetChannelInformation(channelControl, baseResp.Record[0]);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            // Create customer is failed.
+                            CommonProcess.ShowInformMessage(Properties.Resources.CreateCustomerFailed,
+                                MessageBoxButtons.OK);
+                        }
+                    }
+                }
+            }
         }
         /// <summary>
         /// Request temp data completed event handler.
@@ -1048,7 +1106,8 @@ namespace MainPrj
         {
             if (e.Cancelled)
             {
-                toolStripStatusLabel.Text = Properties.Resources.ErrorCause + "Hủy";
+                toolStripStatusLabel.Text = Properties.Resources.ErrorCause
+                    + Properties.Resources.Cancel;
             }
             else if (e.Error != null)
             {
@@ -1056,7 +1115,6 @@ namespace MainPrj
             }
             else
             {
-                //toolStripStatusLabel.Text = Properties.Resources.RequestTempDataSuccess;
                 toolStripStatusLabel.Text = Properties.Resources.AnalyzingTempData;
                 toolStripProgressBarReqServer.Value = 0;
                 reqTempDataCompleted(e);
@@ -1115,6 +1173,7 @@ namespace MainPrj
                         timer.Stop();
                         Console.WriteLine("Time elapsed [DataPure.Instance.TempData = baseResp.Record;]:\t{0}", timer.ElapsedMilliseconds);
                         timer.Restart();
+                        DataPure.Instance.TempData.Material_gas.AddRange(DataPure.Instance.TempData.Material_vo);
                         DataPure.Instance.TempData.Sort();
                         // Update data
                         if (isNotFirstTime)
@@ -1170,63 +1229,26 @@ namespace MainPrj
         /// <param name="e">UploadProgressChangedEventArgs</param>
         private void reqTempDataProgressChanged(object sender, UploadProgressChangedEventArgs e)
         {
-            //if ((e.ProgressPercentage <= 50)
-            if ((e.ProgressPercentage <= 100)
-                && (e.ProgressPercentage >= 0))
-            {
-                //toolStripProgressBarReqServer.Value = e.ProgressPercentage * 2;
-                toolStripProgressBarReqServer.Value = e.ProgressPercentage;
-            }
-            toolStripStatusLabel.Text = Properties.Resources.RequestingTempData;
+            ////if ((e.ProgressPercentage <= 50)
+            //if ((e.ProgressPercentage <= 100)
+            //    && (e.ProgressPercentage >= 0))
+            //{
+            //    //toolStripProgressBarReqServer.Value = e.ProgressPercentage * 2;
+            //    toolStripProgressBarReqServer.Value = e.ProgressPercentage;
+            //}
+            //toolStripStatusLabel.Text = Properties.Resources.RequestingTempData;
+            UpdateProgress(e, Properties.Resources.RequestingTempData);
         }
         /// <summary>
-        /// Handle list order
+        /// Created order completed.
         /// </summary>
-        /// <param name="sender">Sender</param>
-        /// <param name="e">EventArgs</param>
-        private void btnOrderList_Click(object sender, EventArgs e)
-        {
-            HandleClickListOrderButton();
-        }
-
-        /// <summary>
-        /// Handle when click Support menu.
-        /// </summary>
-        /// <param name="sender">Sender</param>
-        /// <param name="e">EventArgs</param>
-        private void toolStripMenuItemSupport_Click(object sender, EventArgs e)
-        {
-            AboutBox about = new AboutBox();
-            about.Show();
-        }
-        /// <summary>
-        /// Handle when click Guideline menu.
-        /// </summary>
-        /// <param name="sender">Sender</param>
-        /// <param name="e">EventArgs</param>
-        private void toolStripMenuItemGuideline_Click(object sender, EventArgs e)
-        {
-            CommonProcess.ShowInformMessageProcessing();
-        }
-        /// <summary>
-        /// Handle when click Update data menu.
-        /// </summary>
-        /// <param name="sender">Sender</param>
-        /// <param name="e">EventArgs</param>
-        private void toolStripMenuItemUpdateData_Click(object sender, EventArgs e)
-        {
-            CommonProcess.RequestTempData(reqTempDataProgressChanged, reqTempDataCompletedMenu);
-        }
-        /// <summary>
-        /// Request temp data completed from menu event handler
-        /// </summary>
-        /// <param name="sender">Sender</param>
-        /// <param name="e">UploadValuesCompletedEventArgs</param>
-        private void reqTempDataCompletedMenu(object sender, UploadValuesCompletedEventArgs e)
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void createOrderCompleted(object sender, UploadValuesCompletedEventArgs e)
         {
             if (e.Cancelled)
             {
-                toolStripStatusLabel.Text = Properties.Resources.ErrorCause + "Hủy";
+                toolStripStatusLabel.Text = Properties.Resources.ErrorCause + Properties.Resources.Cancel;
             }
             else if (e.Error != null)
             {
@@ -1234,30 +1256,65 @@ namespace MainPrj
             }
             else
             {
-                toolStripStatusLabel.Text = Properties.Resources.RequestTempDataSuccess;
-                toolStripProgressBarReqServer.Value = 0;
-                reqTempDataCompleted(e, true);
+                byte[] response = e.Result;
+                string respStr = String.Empty;
+                respStr = System.Text.Encoding.UTF8.GetString(response);
+                if (!String.IsNullOrEmpty(respStr))
+                {
+                    DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(OrderResponseModel));
+                    byte[] encodingBytes = null;
+                    try
+                    {
+                        // Encoding response data
+                        encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);
+                    }
+                    catch (System.Text.EncoderFallbackException)
+                    {
+                        CommonProcess.ShowErrorMessage(Properties.Resources.EncodingError);
+                    }
+                    if (encodingBytes != null)
+                    {
+                        MemoryStream msU = new MemoryStream(encodingBytes);
+                        OrderResponseModel baseResp = (OrderResponseModel)js.ReadObject(msU);
+                        if (baseResp != null && baseResp.Status.Equals("1"))
+                        {
+                            string id = baseResp.Id;
+                            if (!String.IsNullOrEmpty(id))
+                            {
+                                toolStripStatusLabel.Text = Properties.Resources.CreateOrderSuccess;
+                                CommonProcess.ShowInformMessage(Properties.Resources.CreateOrderSuccess, MessageBoxButtons.OK);
+                            }
+                        }
+                        else
+                        {
+                            CommonProcess.ShowInformMessage(Properties.Resources.CreateOrderServerError, MessageBoxButtons.OK);
+                        }
+                    }
+                }
             }
         }
         /// <summary>
-        /// Handle when click on ware house item.
+        /// Create order progress changed.
         /// </summary>
         /// <param name="sender">Sender</param>
-        /// <param name="e">EventArgs</param>
-        private void toolStripMenuItemWareHouse_Click(object sender, EventArgs e)
+        /// <param name="e">UploadProgressChangedEventArgs</param>
+        private void createOrderProgressChanged(object sender, UploadProgressChangedEventArgs e)
         {
-            WareHouseView view = new WareHouseView();
-            view.ShowDialog();
+            //if ((e.ProgressPercentage <= 50) && (e.ProgressPercentage >= 0))
+            //{
+            //    toolStripProgressBarReqServer.Value = e.ProgressPercentage * 2;
+            //}
+            //toolStripStatusLabel.Text = Properties.Resources.RequestingCreateOrder;
+            UpdateProgress(e, Properties.Resources.RequestingCreateOrder);
         }
         /// <summary>
-        /// Handle when click on Agent phone item.
+        /// Update progress bar.
         /// </summary>
-        /// <param name="sender">Sender</param>
-        /// <param name="e">EventArgs</param>
-        private void toolStripMenuItemAgentPhone_Click(object sender, EventArgs e)
+        /// <param name="e">UploadProgressChangedEventArgs</param>
+        /// <param name="status">Status string</param>
+        private void UpdateProgress(UploadProgressChangedEventArgs e, string status)
         {
-            AgentCellPhoneView view = new AgentCellPhoneView();
-            view.ShowDialog();
+            CommonProcess.UpdateProgress(e, status, toolStripProgressBarReqServer, toolStripStatusLabel);
         }
         #endregion
 
@@ -1637,6 +1694,7 @@ namespace MainPrj
             }
         }
         #endregion
+
         #region Listening new order
         private void StartListeningThread()
         {

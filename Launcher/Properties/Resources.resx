@@ -120,11 +120,17 @@
   <data name="CheckAutoUpdate" xml:space="preserve">
     <value>http://android.huongminhgroup.com/coordinatorhelper/autoupdate.xml</value>
   </data>
+  <data name="CheckVersion" xml:space="preserve">
+    <value>Đã cài đặt phiên bản mới nhất. Bạn có thể bắt đầu chương trình.</value>
+  </data>
   <data name="DownloadFinishedMsg" xml:space="preserve">
     <value>Đã tải xong phiên bản mới nhất. Bạn có thể bắt đầu chương trình.</value>
   </data>
   <data name="FirstVersion" xml:space="preserve">
     <value>1.0.0.0</value>
+  </data>
+  <data name="InternetError" xml:space="preserve">
+    <value>Lỗi kết nối mạng</value>
   </data>
   <data name="MainAppName" xml:space="preserve">
     <value>CoordinatorHelper.exe</value>
