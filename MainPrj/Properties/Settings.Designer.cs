@@ -694,5 +694,14 @@ namespace MainPrj.Properties {
                 this["LastUsername"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1972")]
+        public int ZiboUdpPort {
+            get {
+                return ((int)(this["ZiboUdpPort"]));
+            }
+        }
     }
 }

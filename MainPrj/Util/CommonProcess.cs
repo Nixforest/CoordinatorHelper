@@ -27,6 +27,32 @@ namespace MainPrj.Util
     public static class CommonProcess
     {
         #region Static variables
+        public static List<string> AGENT_LIST_ZIBO = new List<string>
+        {
+            "30753",		// Cửa hàng Cần Thơ 1
+            "138544",		// Cửa hàng Cần Thơ 2
+            "262526",		// Cửa Hàng Ô Môn
+            "118",		    // Đại lý An Thạnh
+            "116",		    // Đại lý Bình Đa
+            "122",		    // Đại lý Bình Tân
+            "106",		    // Đại lý Bình Thạnh 1
+            "115",		    // Đại lý Dĩ An
+            "108",		    // Đại lý Hóc Môn
+            "109",		    // Đại lý Lái Thiêu
+            "114",		    // Đại lý Long Bình Tân
+            "121",		    // Đại lý Ngã Ba Trị An
+            "100",		    // Đại lý Quận 2
+            "113",		    // Đại lý Quận 3
+            "101",		    // Đại lý Quận 4
+            "102",		    // Đại lý Quận 7
+            "105",		    // Đại lý Quận 9
+            "119",			// Đại lý Tân Định
+            "126",		    // Đại lý Tân Phú
+            "117",		    // Đại lý Thống Nhất
+            "110",		    // Đại lý Thủ Dầu Một
+            "112",		    // Đại lý Thủ Đức 1
+            "123"		    // Đại lý Trảng Dài
+        };
         /// <summary>
         /// Material color.
         /// </summary>
@@ -853,7 +879,7 @@ namespace MainPrj.Util
         /// <returns>True if phone is valid, False otherwise</returns>
         public static bool IsValidPhone(string phone)
         {
-            return IsValidNumber(phone);
+            return IsValidDouble(phone);
         }
         /// <summary>
         /// Check if string is valid number
@@ -1074,6 +1100,7 @@ namespace MainPrj.Util
         public static string GetFrom(string sipData)
         {
             string from = string.Empty;
+            // From: "108" <sip:108@210.245.124.253>;tag=as1d09372a
             Regex regFrom = new Regex(@"^From:\s?(?<FromID>"".*""|.*)\<sip:\+?(?<FromTelephone>.*)@.*$",
                 RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace | RegexOptions.Compiled | RegexOptions.Multiline);
             // FROM

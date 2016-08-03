@@ -24,21 +24,80 @@ namespace MainPrj.View
         private double totalPay   = 0.0;
         private int totalCylinder = 0;
         /// <summary>
+        /// List items of Deliver combobox.
+        /// </summary>
+        private List<object> _listDeliverItems = new List<object>();
+        /// <summary>
         /// Constructor.
         /// </summary>
         public ListOrderView()
         {
             InitializeComponent();
         }
+        /// <summary>
+        /// Update total.
+        /// </summary>
         private void UpdateTotal()
         {
             totalGas      = 0;
             totalGasStove = 0;
             totalVan      = 0;
-            totalPay   = 0.0;
+            totalPay      = 0.0;
             totalCylinder = 0;
 
             foreach (OrderModel item in DataPure.Instance.ListOrders)
+            {
+                if (item.Status.Equals(OrderStatus.ORDERSTATUS_CANCEL))
+                {
+                    continue;
+                }
+                // Total gas
+                foreach (ProductModel product in item.Products)
+                {
+                    if (product.IsGas())
+                    {
+                        totalGas += product.Quantity;
+                    }
+                    else if (product.IsGasStove())
+                    {
+                        totalGasStove += product.Quantity;
+                    }
+                    else if (product.IsVan())
+                    {
+                        totalVan += product.Quantity;
+                    }
+                }
+
+                // Total Cylinder
+                foreach (CylinderModel cylinder in item.Cylinders)
+                {
+                    if (!String.IsNullOrEmpty(cylinder.Id))
+                    {
+                        totalCylinder += cylinder.Quantity;
+                    }
+                }
+                // Total pay
+                totalPay += item.TotalPay;
+            }
+            lblTotalGas.Text = totalGas.ToString();
+            lblGasStove.Text = totalGasStove.ToString();
+            lblVan.Text      = totalVan.ToString();
+            lblCylinder.Text = totalCylinder.ToString();
+            lblTotalPay.Text = CommonProcess.FormatMoney(totalPay);
+        }
+        /// <summary>
+        /// Update total.
+        /// </summary>
+        /// <param name="listOrder">List orders</param>
+        private void UpdateTotal(List<OrderModel> listOrders)
+        {
+            totalGas      = 0;
+            totalGasStove = 0;
+            totalVan      = 0;
+            totalPay      = 0.0;
+            totalCylinder = 0;
+
+            foreach (OrderModel item in listOrders)
             {
                 if (item.Status.Equals(OrderStatus.ORDERSTATUS_CANCEL))
                 {
@@ -99,22 +158,25 @@ namespace MainPrj.View
             this.listViewListOrder.Items.Clear();
             for (int i = listData.Count - 1; i >= 0; i--)
             {
-                this.listViewListOrder.Items.Add(
+                if (!listData[i].Status.Equals(OrderStatus.ORDERSTATUS_CANCEL))
+                {
+                    this.listViewListOrder.Items.Add(
                     CreateListViewItem(listData[i], listData.Count - i));
 
-                for (int j = 1; j < listData[i].Cylinders.Count; j++)
-                {
-                    OrderModel subModel = new OrderModel();
-                    if (j < listData[i].Products.Count)
+                    for (int j = 1; j < listData[i].Cylinders.Count; j++)
                     {
-                        subModel.Products.Add(listData[i].Products[j]);
+                        OrderModel subModel = new OrderModel();
+                        if (j < listData[i].Products.Count)
+                        {
+                            subModel.Products.Add(listData[i].Products[j]);
+                        }
+                        else
+                        {
+                            subModel.Products.Add(new ProductModel());
+                        }
+                        subModel.Cylinders.Add(listData[i].Cylinders[j]);
+                        this.listViewListOrder.Items.Add(CreateListViewSubItem(subModel));
                     }
-                    else
-                    {
-                        subModel.Products.Add(new ProductModel());
-                    }
-                    subModel.Cylinders.Add(listData[i].Cylinders[j]);
-                    this.listViewListOrder.Items.Add(CreateListViewSubItem(subModel));
                 }
             }
         }
@@ -215,6 +277,22 @@ namespace MainPrj.View
                 Properties.Resources.ListOrder, title);
         }
         /// <summary>
+        /// Add an item into Deliver combobox
+        /// </summary>
+        /// <param name="model"></param>
+        private void AddDeliverToCombobox(OrderModel model)
+        {
+            if (model != null)
+            {
+                string id = !String.IsNullOrEmpty(model.DeliverId) ? model.DeliverId : model.CCSId;
+                object item = new { Text = DataPure.Instance.GetDeliverNameInOrder(model), Value = id };
+                if (!_listDeliverItems.Contains(item))
+                {
+                    _listDeliverItems.Add(item);
+                }
+            }
+        }
+        /// <summary>
         /// Handle load form.
         /// </summary>
         /// <param name="sender">Sender</param>
@@ -222,6 +300,11 @@ namespace MainPrj.View
         private void ListOrderView_Load(object sender, EventArgs e)
         {
             SetTitle(System.DateTime.Now.ToString(Properties.Resources.DateTimeFormat));
+            // Add deliver filter
+            _listDeliverItems = new List<object>();
+            _listDeliverItems.Add(new { Text = string.Empty, Value = string.Empty });
+
+            // Loop through all orders
             for (int i = DataPure.Instance.ListOrders.Count - 1; i >= 0; i--)
             {
                 this.listViewListOrder.Items.Add(
@@ -237,7 +320,11 @@ namespace MainPrj.View
                     subModel.Cylinders.Add(DataPure.Instance.ListOrders[i].Cylinders[j]);
                     this.listViewListOrder.Items.Add(CreateListViewSubItem(subModel));
                 }
+                // Add deliver filter
+                AddDeliverToCombobox(DataPure.Instance.ListOrders[i]);
             }
+            cbxDeliver.DataSource    = _listDeliverItems;
+            cbxDeliver.SelectedIndex = 0;
             // ListView columns type
             this.listViewListOrder.ColumnTypes = new List<Type>()
             { 
@@ -379,37 +466,40 @@ namespace MainPrj.View
             {
                 arr[(int)ListOrderColumns.LISTORDER_COLUMN_TOTALPAY] = String.Empty;
             }
-            string deliverStr = string.Empty;
-            if (!String.IsNullOrEmpty(model.DeliverId))
-            {
-                if ((DataPure.Instance.TempData != null)
-                    && (DataPure.Instance.TempData.Employee_maintain != null))
-                {
-                    foreach (SelectorModel deliver in DataPure.Instance.TempData.Employee_maintain)
-                    {
-                        if (model.DeliverId.Equals(deliver.Id))
-                        {
-                            deliverStr = deliver.Name;
-                            break;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                if ((DataPure.Instance.TempData != null)
-                    && (DataPure.Instance.TempData.Monitor_market_development != null))
-                {
-                    foreach (SelectorModel deliver in DataPure.Instance.TempData.Monitor_market_development)
-                    {
-                        if (model.CCSId.Equals(deliver.Id))
-                        {
-                            deliverStr = deliver.Name;
-                            break;
-                        }
-                    }
-                }
-            }
+            string deliverStr = DataPure.Instance.GetDeliverNameInOrder(model);
+
+            #region Del
+            //if (!String.IsNullOrEmpty(model.DeliverId))
+            //{
+            //    if ((DataPure.Instance.TempData != null)
+            //        && (DataPure.Instance.TempData.Employee_maintain != null))
+            //    {
+            //        foreach (SelectorModel deliver in DataPure.Instance.TempData.Employee_maintain)
+            //        {
+            //            if (model.DeliverId.Equals(deliver.Id))
+            //            {
+            //                deliverStr = deliver.Name;
+            //                break;
+            //            }
+            //        }
+            //    }
+            //}
+            //else
+            //{
+            //    if ((DataPure.Instance.TempData != null)
+            //        && (DataPure.Instance.TempData.Monitor_market_development != null))
+            //    {
+            //        foreach (SelectorModel deliver in DataPure.Instance.TempData.Monitor_market_development)
+            //        {
+            //            if (model.CCSId.Equals(deliver.Id))
+            //            {
+            //                deliverStr = deliver.Name;
+            //                break;
+            //            }
+            //        }
+            //    }
+            //} 
+            #endregion
             arr[(int)ListOrderColumns.LISTORDER_COLUMN_DELIVER]           = deliverStr;
             arr[(int)ListOrderColumns.LISTORDER_COLUMN_CYLINDER]          = model.Cylinders[0].Name;
             if (model.Cylinders[0].Quantity != 0)
@@ -863,10 +953,89 @@ namespace MainPrj.View
                 UpdateTotal();
             }
         }
-
+        /// <summary>
+        /// Handle double click on item in listview.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
         private void listViewListOrder_DoubleClick(object sender, EventArgs e)
         {
             HandleFinishOrder();
+        }
+        /// <summary>
+        /// Handle change selection in Deliver combobox.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void cbxDeliver_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbxDeliver.SelectedIndex == 0)
+            {
+                LoadListView(DataPure.Instance.ListOrders);
+                UpdateTotal();
+            }
+            else
+            {
+                this.listDataSearch.Clear();
+                foreach (OrderModel model in DataPure.Instance.ListOrders)
+                {
+                    string id = !String.IsNullOrEmpty(model.DeliverId) ? model.DeliverId : model.CCSId;
+                    if (id.Equals(cbxDeliver.SelectedValue))
+                    {
+                        this.listDataSearch.Add(model);
+                    }
+                }
+                LoadListView(this.listDataSearch);
+                UpdateTotal(this.listDataSearch);
+            }
+        }
+        /// <summary>
+        /// Handle when click print order.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void btnPrint_Click(object sender, EventArgs e)
+        {
+            if ((this.listViewListOrder.SelectedItems.Count > 0)
+                && (!String.IsNullOrEmpty(this.listViewListOrder.SelectedItems[0].Tag.ToString())))
+            {
+                string id = this.listViewListOrder.SelectedItems[0].Tag.ToString();
+                foreach (OrderModel item in DataPure.Instance.ListOrders)
+                {
+                    if (item.Id.Equals(id))
+                    {
+                        // Print
+                        BillPrintModel printModel = new BillPrintModel();
+                        printModel.Brand = Properties.Settings.Default.BillBrand;
+                        printModel.Phone = DataPure.Instance.Agent.Phone;
+                        printModel.CustomerName = item.Customer != null ?
+                            String.Format("{0}-{1}", item.Customer.ActivePhone,
+                            item.Customer.Name) : String.Empty;
+                        printModel.CustomerAddress = item.Customer != null ? item.Customer.Address : String.Empty;
+                        printModel.AgentAddress = DataPure.Instance.Agent.Address;
+                        printModel.Products.AddRange(item.Products);
+                        printModel.Promotes.AddRange(item.Promotes);
+                        printModel.TotalMoney = item.TotalMoney;
+
+                        double totalPromote = 0.0;
+                        foreach (ProductModel product in item.Products)
+                        {
+                            if (product.IsGas())
+                            {
+                                totalPromote += Properties.Settings.Default.PromoteMoney * product.Quantity;
+                            }
+                        }
+                        if (item.Promotes.Count != 0)
+                        {
+                            totalPromote = 0.0;
+                        }
+                        printModel.TotalPromote = totalPromote;
+                        printModel.TotalPay = item.TotalPay;
+                        printModel.Print();
+                        break;
+                    }
+                }
+            }
         }
     }
 }

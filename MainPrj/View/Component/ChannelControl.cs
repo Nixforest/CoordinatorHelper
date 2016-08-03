@@ -399,18 +399,18 @@ namespace MainPrj.View
                         if (selectedId.Equals(customer.Id))
                         {
                             // Update data
-                            this.data.Id = customer.Id;
-                            this.data.Name = customer.Name;
-                            this.data.Address = customer.Address;
-                            this.data.PhoneList = customer.PhoneList;
-                            this.data.AgencyName = customer.AgencyName;
+                            this.data.Id            = customer.Id;
+                            this.data.Name          = customer.Name;
+                            this.data.Address       = customer.Address;
+                            this.data.PhoneList     = customer.PhoneList;
+                            this.data.AgencyName    = customer.AgencyName;
                             this.data.AgencyNearest = customer.AgencyNearest;
-                            this.data.Contact = customer.Contact;
-                            this.data.CustomerType = customer.CustomerType;
+                            this.data.Contact       = customer.Contact;
+                            this.data.CustomerType  = customer.CustomerType;
                             this.data.Contact_note += customer.Contact_note;
-                            this.data.Sale_name = customer.Sale_name;
-                            this.data.Sale_phone = customer.Sale_phone;
-                            this.data.Sale_type = customer.Sale_type;
+                            this.data.Sale_name     = customer.Sale_name;
+                            this.data.Sale_phone    = customer.Sale_phone;
+                            this.data.Sale_type     = customer.Sale_type;
 
                             this.SetCustomerName(this.data.Name);
                             this.SetAddress(this.data.Address);
@@ -458,6 +458,35 @@ namespace MainPrj.View
         public bool CanChangeTab()
         {
             return !this.tbxSearchCustomer.Focused && !this.tbxNote.Focused;
+        }
+        /// <summary>
+        /// Set data for channel.
+        /// </summary>
+        /// <param name="customer">Customer information</param>
+        public void SetChannelInformation(CustomerModel customer)
+        {
+            this.data.Id            = customer.Id;
+            this.data.Name          = customer.Name;
+            this.data.Address       = customer.Address;
+            this.data.PhoneList     = customer.PhoneList;
+            this.data.AgencyName    = customer.AgencyName;
+            this.data.AgencyNearest = customer.AgencyNearest;
+            this.data.Contact       = customer.Contact;
+            this.data.CustomerType  = customer.CustomerType;
+            this.data.Contact_note += customer.Contact_note;
+            this.data.Sale_name     = customer.Sale_name;
+            this.data.Sale_phone    = customer.Sale_phone;
+            this.data.Sale_type     = customer.Sale_type;
+
+            this.SetCustomerName(this.data.Name);
+            this.SetAddress(this.data.Address);
+            this.SetPhoneList(this.data.PhoneList);
+            this.SetAgency(this.data.AgencyName);
+            this.SetAgencyNearest(this.data.AgencyNearest);
+            this.SetContact(this.data.Contact);
+            this.SetCustomerType(this.data.CustomerType);
+            this.SetNote(this.data.Contact_note);
+            this.SetSaleInfor(this.data.Sale_name, this.data.Sale_phone);
         }
         /// <summary>
         /// Handle when change city.

@@ -247,6 +247,15 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to  - CCS.
+        /// </summary>
+        internal static string CCSSuffix {
+            get {
+                return ResourceManager.GetString("CCSSuffix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to http://android.huongminhgroup.com/coordinatorhelper/autoupdate.xml.
         /// </summary>
         internal static string CheckAutoUpdate {
@@ -737,6 +746,16 @@ namespace MainPrj.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap printer {
+            get {
+                object obj = ResourceManager.GetObject("printer", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap report {
             get {
                 object obj = ResourceManager.GetObject("report", resourceCulture);
@@ -831,6 +850,15 @@ namespace MainPrj.Properties {
         internal static string RequestUpdateAgentCellPhone {
             get {
                 return ResourceManager.GetString("RequestUpdateAgentCellPhone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đại lý đang sử dụng card ghi âm cũ. Cần phải khởi động lại chương trình thì hệ thống mới nhảy Line khi có cuộc gọi đến được. Sau khi nhấn OK để tắt thông báo này, khởi động lại chương trình!.
+        /// </summary>
+        internal static string RestartProgram {
+            get {
+                return ResourceManager.GetString("RestartProgram", resourceCulture);
             }
         }
         
@@ -997,6 +1025,15 @@ namespace MainPrj.Properties {
         internal static string YouMustSelectAnAgent {
             get {
                 return ResourceManager.GetString("YouMustSelectAnAgent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 1972.
+        /// </summary>
+        internal static string ZiboUdpPort {
+            get {
+                return ResourceManager.GetString("ZiboUdpPort", resourceCulture);
             }
         }
     }

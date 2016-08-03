@@ -180,6 +180,18 @@ namespace MainPrj.Util
             return new List<SelectorModel>();
         }
         /// <summary>
+        /// Get list of CCS.
+        /// </summary>
+        /// <returns></returns>
+        public List<SelectorModel> GetListCCSs()
+        {
+            if ((tempData != null) && (tempData.Monitor_market_development != null))
+            {
+                return tempData.Monitor_market_development.ToList();
+            }
+            return new List<SelectorModel>();
+        }
+        /// <summary>
         /// Get list of all materials gas.
         /// </summary>
         /// <returns>List of all materials gas</returns>
@@ -243,6 +255,75 @@ namespace MainPrj.Util
                 }
             }
             return string.Empty;
+        }
+        /// <summary>
+        /// Get deliver name by Id.
+        /// </summary>
+        /// <param name="id">Id of deliver</param>
+        /// <returns>Name of deliver, if id is not exist, return EMPTY</returns>
+        public string GetDeliverNameById(string id)
+        {
+            string retVal = string.Empty;
+            if (!String.IsNullOrEmpty(id))
+            {
+                if ((tempData != null) && (tempData.Employee_maintain != null))
+                {
+                    foreach (SelectorModel deliver in tempData.Employee_maintain)
+                    {
+                        if (id.Equals(deliver.Id))
+                        {
+                            retVal = deliver.Name;
+                            break;
+                        }
+                    }
+                }
+            }
+            return retVal;
+        }
+        /// <summary>
+        /// Get CCS name by Id.
+        /// </summary>
+        /// <param name="id">Id of CCS</param>
+        /// <returns>Name of CCS, if id is not exist, return EMPTY</returns>
+        public string GetCCSNameById(string id)
+        {
+            string retVal = string.Empty;
+            if (!String.IsNullOrEmpty(id))
+            {
+                if ((tempData != null) && (tempData.Monitor_market_development != null))
+                {
+                    foreach (SelectorModel ccs in tempData.Monitor_market_development)
+                    {
+                        if (id.Equals(ccs.Id))
+                        {
+                            retVal = ccs.Name;
+                            break;
+                        }
+                    }
+                }
+            }
+            return retVal;
+        }
+        /// <summary>
+        /// Get deliver name in order.
+        /// </summary>
+        /// <param name="model">Order model</param>
+        /// <returns>Name of deliver</returns>
+        public string GetDeliverNameInOrder(OrderModel model)
+        {
+            string retVal = string.Empty;
+            if (model != null)
+            {
+                // Get deliver name
+                retVal = GetDeliverNameById(model.DeliverId);
+                // If deliver does not exist
+                if (String.IsNullOrEmpty(retVal))
+                {
+                    // Get CCS name
+                    retVal = GetCCSNameById(model.CCSId) + Properties.Resources.CCSSuffix;
+                }
+            }
+            return retVal;
         }
         #endregion
 

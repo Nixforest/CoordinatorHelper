@@ -109,7 +109,7 @@ namespace MainPrj.View
                             }
                         }
                         lblTotalPay.Text = CommonProcess.FormatMoney(item.TotalPay);
-                        this.deliverId = item.DeliverId;
+                        this.deliverId = !String.IsNullOrEmpty(item.DeliverId) ? item.DeliverId : item.CCSId;
                         //cylinders.AddRange(item.Cylinders);
                         if (item.Promotes.Count == 0)
                         {
@@ -153,13 +153,13 @@ namespace MainPrj.View
                 {
                     // Deliver
                     List<object> items = new List<object>();
-                    // Check null object
-                    if (DataPure.Instance.TempData.Employee_maintain != null)
+                    foreach (SelectorModel item in DataPure.Instance.GetListDelivers())
                     {
-                        foreach (SelectorModel item in DataPure.Instance.TempData.Employee_maintain)
-                        {
-                            items.Add(new { Text = item.Name, Value = item.Id });
-                        }
+                        items.Add(new { Text = item.Name, Value = item.Id });
+                    }
+                    foreach (SelectorModel item in DataPure.Instance.GetListCCSs())
+                    {
+                        items.Add(new { Text = item.Name + Properties.Resources.CCSSuffix, Value = item.Id });
                     }
                     cbxDeliver.DataSource = items;
                     cbxDeliver.SelectedValue = this.DeliverId;
@@ -250,7 +250,9 @@ namespace MainPrj.View
                 default: break;
             }
         }
-
+        /// <summary>
+        /// Handle delete cylinders row.
+        /// </summary>
         private void HandleDeleteCylinders()
         {
             if (this.listViewCylinder.SelectedItems.Count > 0)
@@ -270,7 +272,9 @@ namespace MainPrj.View
                 ReloadListCylinders();
             }
         }
-
+        /// <summary>
+        /// Handle add cylinders.
+        /// </summary>
         private void HandleAddCylinder()
         {
             List<SelectorModel> listSelector = new List<SelectorModel>();
@@ -331,6 +335,7 @@ namespace MainPrj.View
                             cylinders.Add(model);
                         }
                         ReloadListCylinders();
+                        this.btnFinish.Focus();
                         break;
                     }
                 }

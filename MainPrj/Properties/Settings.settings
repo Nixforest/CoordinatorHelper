@@ -170,5 +170,8 @@
     <Setting Name="LastUsername" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="ZiboUdpPort" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">1972</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

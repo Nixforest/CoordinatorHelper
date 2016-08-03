@@ -509,6 +509,15 @@ namespace MainPrj
                                 }
                             }
                         }
+                        // Check if agent use zibo record card
+                        if (CommonProcess.AGENT_LIST_ZIBO.Contains(DataPure.Instance.Agent.Id)
+                        //if (CommonProcess.AGENT_LIST_ZIBO.Any(str => str.Contains(DataPure.Instance.Agent.Id))
+                            && (Properties.Settings.Default.UdpMainPort != Properties.Settings.Default.ZiboUdpPort))
+                        {
+                            Properties.Settings.Default.UdpMainPort = Properties.Settings.Default.ZiboUdpPort;
+                            Properties.Settings.Default.Save();
+                            CommonProcess.ShowInformMessage(Properties.Resources.RestartProgram, MessageBoxButtons.OK);
+                        }
                     }
                     else
                     {
@@ -664,9 +673,9 @@ namespace MainPrj
         {
             #region Test get customer information
             string phone = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel).GetIncommingPhone();
-            int n = 0;
+            double n = 0;
             // Get incomming number information
-            if (!String.IsNullOrEmpty(phone) && int.TryParse(phone, out n))
+            if (!String.IsNullOrEmpty(phone) && double.TryParse(phone, out n))
             {
                 // Insert value into current channel
                 try
@@ -680,7 +689,8 @@ namespace MainPrj
                 {
                     CommonProcess.ShowErrorMessage(Properties.Resources.ArgumentOutOfRange);
                 }
-            } 
+            }
+            //PrintData("<CRMV1               0002     2016-08-02 16:15:00                               01689908271                    >                                          172.16.1.64                                       {RAWCID:[0939331371]}{DETAILDES:[]}");
             #endregion
             //_TestServer test = new _TestServer();
             //test.ShowDialog();
@@ -1083,7 +1093,8 @@ namespace MainPrj
                                 if (baseResp.Record != null)
                                 {
                                     baseResp.Record[0].ActivePhone = channelControl.GetIncommingPhone();
-                                    CommonProcess.SetChannelInformation(channelControl, baseResp.Record[0]);
+                                    //CommonProcess.SetChannelInformation(channelControl, baseResp.Record[0]);
+                                    channelControl.SetChannelInformation(baseResp.Record[0]);
                                 }
                             }
                         }
@@ -1173,7 +1184,10 @@ namespace MainPrj
                         timer.Stop();
                         Console.WriteLine("Time elapsed [DataPure.Instance.TempData = baseResp.Record;]:\t{0}", timer.ElapsedMilliseconds);
                         timer.Restart();
-                        DataPure.Instance.TempData.Material_gas.AddRange(DataPure.Instance.TempData.Material_vo);
+                        if ((DataPure.Instance.TempData != null) && (DataPure.Instance.TempData.Material_gas != null))
+                        {
+                            DataPure.Instance.TempData.Material_gas.AddRange(DataPure.Instance.TempData.Material_vo);
+                        }
                         DataPure.Instance.TempData.Sort();
                         // Update data
                         if (isNotFirstTime)
@@ -1328,6 +1342,7 @@ namespace MainPrj
             try
             {
                 mainUdp = new UdpClient(Properties.Settings.Default.UdpMainPort);
+                //mainUdp = new UdpClient(new IPEndPoint(IPAddress.Any, Properties.Settings.Default.UdpMainPort));
             }
             catch (System.ArgumentOutOfRangeException)
             {
@@ -1370,6 +1385,7 @@ namespace MainPrj
         {
             string recvBuf = String.Empty;
             IPEndPoint remoteHost = new IPEndPoint(IPAddress.Any, 0);
+            //IPEndPoint remoteHost = new IPEndPoint(IPAddress.Any, Properties.Settings.Default.UdpMainPort);
             while (mainUdp != null)
             {
                 try
@@ -1421,7 +1437,7 @@ namespace MainPrj
                 this.Invoke(invoker, data);
                 return;
             }
-            int n;
+            double n;
             CardDataModel model = new CardDataModel(data);          // Data model
             bool needUpdate = false;                                // Flag need update UI
             ChannelControl channel = null;                          // Channel incomming
@@ -1429,7 +1445,7 @@ namespace MainPrj
             if (!String.IsNullOrEmpty(model.Phone))
             {
                 // Check phone is valid
-                if (int.TryParse(model.Phone, out n))
+                if (double.TryParse(model.Phone, out n))
                 {
                     // Insert value into current channel
                     try

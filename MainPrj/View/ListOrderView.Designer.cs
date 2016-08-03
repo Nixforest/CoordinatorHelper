@@ -36,11 +36,6 @@ namespace MainPrj.View
             this.btnClose = new System.Windows.Forms.Button();
             this.btnUpdateData = new System.Windows.Forms.Button();
             this.btnAddCylinder = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
             this.lblTotalGas = new System.Windows.Forms.Label();
             this.lblGasStove = new System.Windows.Forms.Label();
             this.lblVan = new System.Windows.Forms.Label();
@@ -48,6 +43,13 @@ namespace MainPrj.View
             this.lblTotalPay = new System.Windows.Forms.Label();
             this.btnExportReport = new System.Windows.Forms.Button();
             this.btnCancelOrder = new System.Windows.Forms.Button();
+            this.cbxDeliver = new System.Windows.Forms.ComboBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.listViewListOrder = new MainPrj.View.EditableListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -62,6 +64,8 @@ namespace MainPrj.View
             this.columnHeader12 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader13 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader14 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.btnPrint = new System.Windows.Forms.Button();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnClear
@@ -130,103 +134,60 @@ namespace MainPrj.View
             this.btnAddCylinder.UseVisualStyleBackColor = true;
             this.btnAddCylinder.Click += new System.EventHandler(this.btnAddCylinder_Click);
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 603);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(142, 24);
-            this.label2.TabIndex = 11;
-            this.label2.Text = "Tổng bình xuất:";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(243, 603);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(138, 24);
-            this.label3.TabIndex = 11;
-            this.label3.Text = "Tổng bếp xuất:";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(461, 603);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(135, 24);
-            this.label4.TabIndex = 11;
-            this.label4.Text = "Tổng van xuất:";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(691, 603);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(85, 24);
-            this.label5.TabIndex = 11;
-            this.label5.Text = "Tổng vỏ:";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(876, 603);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(95, 24);
-            this.label6.TabIndex = 11;
-            this.label6.Text = "Tổng tiền:";
-            // 
             // lblTotalGas
             // 
             this.lblTotalGas.AutoSize = true;
-            this.lblTotalGas.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTotalGas.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTotalGas.ForeColor = System.Drawing.Color.Red;
-            this.lblTotalGas.Location = new System.Drawing.Point(160, 599);
+            this.lblTotalGas.Location = new System.Drawing.Point(530, 586);
             this.lblTotalGas.Name = "lblTotalGas";
-            this.lblTotalGas.Size = new System.Drawing.Size(29, 31);
+            this.lblTotalGas.Size = new System.Drawing.Size(16, 17);
             this.lblTotalGas.TabIndex = 11;
             this.lblTotalGas.Text = "0";
             // 
             // lblGasStove
             // 
             this.lblGasStove.AutoSize = true;
-            this.lblGasStove.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblGasStove.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblGasStove.ForeColor = System.Drawing.Color.Blue;
-            this.lblGasStove.Location = new System.Drawing.Point(387, 599);
+            this.lblGasStove.Location = new System.Drawing.Point(530, 604);
             this.lblGasStove.Name = "lblGasStove";
-            this.lblGasStove.Size = new System.Drawing.Size(29, 31);
+            this.lblGasStove.Size = new System.Drawing.Size(16, 17);
             this.lblGasStove.TabIndex = 11;
             this.lblGasStove.Text = "0";
             // 
             // lblVan
             // 
             this.lblVan.AutoSize = true;
-            this.lblVan.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblVan.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblVan.ForeColor = System.Drawing.Color.Fuchsia;
-            this.lblVan.Location = new System.Drawing.Point(602, 599);
+            this.lblVan.Location = new System.Drawing.Point(622, 586);
             this.lblVan.Name = "lblVan";
-            this.lblVan.Size = new System.Drawing.Size(29, 31);
+            this.lblVan.Size = new System.Drawing.Size(16, 17);
             this.lblVan.TabIndex = 11;
             this.lblVan.Text = "0";
             // 
             // lblCylinder
             // 
+            this.lblCylinder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblCylinder.AutoSize = true;
-            this.lblCylinder.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCylinder.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCylinder.ForeColor = System.Drawing.Color.Red;
-            this.lblCylinder.Location = new System.Drawing.Point(782, 599);
+            this.lblCylinder.Location = new System.Drawing.Point(1016, 586);
             this.lblCylinder.Name = "lblCylinder";
-            this.lblCylinder.Size = new System.Drawing.Size(29, 31);
+            this.lblCylinder.Size = new System.Drawing.Size(16, 17);
             this.lblCylinder.TabIndex = 11;
             this.lblCylinder.Text = "0";
             // 
             // lblTotalPay
             // 
+            this.lblTotalPay.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblTotalPay.AutoSize = true;
-            this.lblTotalPay.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTotalPay.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTotalPay.ForeColor = System.Drawing.Color.DarkGreen;
-            this.lblTotalPay.Location = new System.Drawing.Point(977, 599);
+            this.lblTotalPay.Location = new System.Drawing.Point(806, 586);
             this.lblTotalPay.Name = "lblTotalPay";
-            this.lblTotalPay.Size = new System.Drawing.Size(29, 31);
+            this.lblTotalPay.Size = new System.Drawing.Size(16, 17);
             this.lblTotalPay.TabIndex = 11;
             this.lblTotalPay.Text = "0";
             // 
@@ -254,6 +215,83 @@ namespace MainPrj.View
             this.btnCancelOrder.UseVisualStyleBackColor = true;
             this.btnCancelOrder.Click += new System.EventHandler(this.btnCancelOrder_Click);
             // 
+            // cbxDeliver
+            // 
+            this.cbxDeliver.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cbxDeliver.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.cbxDeliver.DisplayMember = "Text";
+            this.cbxDeliver.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbxDeliver.FormattingEnabled = true;
+            this.cbxDeliver.Location = new System.Drawing.Point(866, 22);
+            this.cbxDeliver.Name = "cbxDeliver";
+            this.cbxDeliver.Size = new System.Drawing.Size(131, 24);
+            this.cbxDeliver.TabIndex = 12;
+            this.cbxDeliver.ValueMember = "Value";
+            this.cbxDeliver.SelectedIndexChanged += new System.EventHandler(this.cbxDeliver_SelectedIndexChanged);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.BackColor = System.Drawing.SystemColors.Control;
+            this.groupBox1.Controls.Add(this.cbxDeliver);
+            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox1.Location = new System.Drawing.Point(16, 51);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(1290, 55);
+            this.groupBox1.TabIndex = 13;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Bộ lọc";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(486, 586);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(38, 17);
+            this.label2.TabIndex = 8;
+            this.label2.Text = "Gas:";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(487, 603);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(37, 17);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "Bếp:";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(579, 586);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(37, 17);
+            this.label4.TabIndex = 8;
+            this.label4.Text = "Van:";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(587, 603);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(29, 17);
+            this.label5.TabIndex = 8;
+            this.label5.Text = "Vỏ:";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.ForeColor = System.Drawing.Color.Fuchsia;
+            this.label6.Location = new System.Drawing.Point(622, 603);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(16, 17);
+            this.label6.TabIndex = 11;
+            this.label6.Text = "0";
+            // 
             // listViewListOrder
             // 
             this.listViewListOrder.AllowColumnReorder = true;
@@ -277,11 +315,11 @@ namespace MainPrj.View
             this.listViewListOrder.FullRowSelect = true;
             this.listViewListOrder.GridLines = true;
             this.listViewListOrder.HideSelection = false;
-            this.listViewListOrder.Location = new System.Drawing.Point(16, 51);
+            this.listViewListOrder.Location = new System.Drawing.Point(16, 112);
             this.listViewListOrder.MultiSelect = false;
             this.listViewListOrder.Name = "listViewListOrder";
             this.listViewListOrder.ShowItemToolTips = true;
-            this.listViewListOrder.Size = new System.Drawing.Size(1290, 532);
+            this.listViewListOrder.Size = new System.Drawing.Size(1290, 471);
             this.listViewListOrder.TabIndex = 5;
             this.listViewListOrder.UseCompatibleStateImageBehavior = false;
             this.listViewListOrder.View = System.Windows.Forms.View.Details;
@@ -352,27 +390,41 @@ namespace MainPrj.View
             this.columnHeader14.Text = "GHI CHÚ";
             this.columnHeader14.Width = 90;
             // 
+            // btnPrint
+            // 
+            this.btnPrint.Image = global::MainPrj.Properties.Resources.printer;
+            this.btnPrint.Location = new System.Drawing.Point(507, 6);
+            this.btnPrint.Name = "btnPrint";
+            this.btnPrint.Size = new System.Drawing.Size(71, 39);
+            this.btnPrint.TabIndex = 1;
+            this.btnPrint.Text = "In";
+            this.btnPrint.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnPrint.UseVisualStyleBackColor = true;
+            this.btnPrint.Click += new System.EventHandler(this.btnPrint_Click);
+            // 
             // ListOrderView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1318, 639);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label3);
+            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.btnPrint);
             this.Controls.Add(this.lblTotalPay);
             this.Controls.Add(this.lblCylinder);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.lblVan);
             this.Controls.Add(this.lblGasStove);
             this.Controls.Add(this.lblTotalGas);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.btnCancelOrder);
             this.Controls.Add(this.btnExportReport);
             this.Controls.Add(this.btnAddCylinder);
             this.Controls.Add(this.btnUpdateData);
             this.Controls.Add(this.btnClear);
             this.Controls.Add(this.tbxSearch);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.listViewListOrder);
             this.Controls.Add(this.btnClose);
@@ -385,6 +437,7 @@ namespace MainPrj.View
             this.Text = "Danh sách đơn hàng";
             this.Load += new System.EventHandler(this.ListOrderView_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ListOrderView_KeyDown);
+            this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -412,11 +465,6 @@ namespace MainPrj.View
         private System.Windows.Forms.ColumnHeader columnHeader14;
         private System.Windows.Forms.Button btnUpdateData;
         private System.Windows.Forms.Button btnAddCylinder;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label lblTotalGas;
         private System.Windows.Forms.Label lblGasStove;
         private System.Windows.Forms.Label lblVan;
@@ -424,5 +472,13 @@ namespace MainPrj.View
         private System.Windows.Forms.Label lblTotalPay;
         private System.Windows.Forms.Button btnExportReport;
         private System.Windows.Forms.Button btnCancelOrder;
+        private System.Windows.Forms.ComboBox cbxDeliver;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button btnPrint;
     }
 }

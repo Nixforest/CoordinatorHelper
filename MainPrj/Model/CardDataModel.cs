@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace MainPrj
 {
@@ -76,29 +77,53 @@ namespace MainPrj
             int n;
             if (data != null)
             {
-                string[] arrDataBuf = data.Split(',');
-                if (arrDataBuf.Length == (int)CardDataType.CARDDATA_NUM)
+                if (data.StartsWith("txIP"))
                 {
-                    first = arrDataBuf[(int)CardDataType.CARDDATA_TYPE1];
-                    phone = arrDataBuf[(int)CardDataType.CARDDATA_PHONE];
-                    third = arrDataBuf[(int)CardDataType.CARDDATA_TYPE3];
-                    string channelStr = arrDataBuf[(int)CardDataType.CARDDATA_CHANNEL];
-                    if (!String.IsNullOrEmpty(channelStr))
+                    string[] arrDataBuf = data.Split(',');
+                    if (arrDataBuf.Length == (int)CardDataType.CARDDATA_NUM)
                     {
-                        if (int.TryParse(channelStr, out n))
+                        first = arrDataBuf[(int)CardDataType.CARDDATA_TYPE1];
+                        phone = arrDataBuf[(int)CardDataType.CARDDATA_PHONE];
+                        third = arrDataBuf[(int)CardDataType.CARDDATA_TYPE3];
+                        string channelStr = arrDataBuf[(int)CardDataType.CARDDATA_CHANNEL];
+                        if (!String.IsNullOrEmpty(channelStr))
                         {
-                            channel = n - 1;
+                            if (int.TryParse(channelStr, out n))
+                            {
+                                channel = n - 1;
+                            }
                         }
+                        string statusStr = arrDataBuf[(int)CardDataType.CARDDATA_STATUS];
+                        if (!String.IsNullOrEmpty(statusStr))
+                        {
+                            if (int.TryParse(statusStr, out n))
+                            {
+                                status = n - 1;
+                            }
+                        }
+                        sixth = arrDataBuf[(int)CardDataType.CARDDATA_TYPE6];
                     }
-                    string statusStr = arrDataBuf[(int)CardDataType.CARDDATA_STATUS];
-                    if (!String.IsNullOrEmpty(statusStr))
+                }
+                else
+                {
+                    // <CRMV1               0002     2016-08-02 16:15:00                               0939331371                    >                                          172.16.1.64                                       {RAWCID:[0939331371]}{DETAILDES:[]}
+                    Regex regData = new Regex(@"^\<CRMV1\s*?(?<channel>.*)\s+\d*\-\d*\-\d*\s\d*:\d*:\d*\s*?(?<phone>.*)\s*\>\s*?(?<sourceIP>.*)\s*\{RAWCID:.*?\}",
+                        RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace | RegexOptions.Compiled | RegexOptions.Multiline);
+                    // FROM
+                    Match m = regData.Match(data);
+                    if (m.Success)
                     {
-                        if (int.TryParse(statusStr, out n))
+                        phone = m.Groups["phone"].Value.ToString().Trim();
+                        string channelStr = m.Groups["channel"].Value.ToString().Trim();
+                        if (!String.IsNullOrEmpty(channelStr))
                         {
-                            status = n - 1;
+                            if (int.TryParse(channelStr, out n))
+                            {
+                                channel = n - 1;
+                            }
                         }
+                        status = (int)CardDataStatus.CARDDATA_HANDLING;
                     }
-                    sixth = arrDataBuf[(int)CardDataType.CARDDATA_TYPE6];
                 }
             }
         }
