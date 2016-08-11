@@ -45,10 +45,9 @@ namespace MainPrj.Util
             "113",		    // Đại lý Quận 3
             "101",		    // Đại lý Quận 4
             "102",		    // Đại lý Quận 7
-            "105",		    // Đại lý Quận 9
             "119",			// Đại lý Tân Định
             "126",		    // Đại lý Tân Phú
-            "117",		    // Đại lý Thống Nhất
+            "120",		    // Đại lý Tân Sơn
             "110",		    // Đại lý Thủ Dầu Một
             "112",		    // Đại lý Thủ Đức 1
             "123"		    // Đại lý Trảng Dài
