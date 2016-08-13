@@ -226,16 +226,24 @@ namespace MainPrj
                         if (!String.IsNullOrEmpty(selectorId))
                         {
                             string note = string.Empty;
-                            note = coordinatorOrderView.GetData();
-                            DialogResult result = CommonProcess.ShowInformMessage(
-                                String.Format(Properties.Resources.CreatingOrder,
-                                    DataPure.Instance.CustomerInfo.Name, note, DataPure.Instance.GetAgentNameById(selectorId)),
-                                MessageBoxButtons.OKCancel);
-                            if (result.Equals(DialogResult.OK))
+                            //note = coordinatorOrderView.GetData();
+                            note = coordinatorOrderView_v2.GetData();
+                            if (!String.IsNullOrEmpty(note))
                             {
-                                CommonProcess.RequestCreateOrderCoordinator(selectorId,
-                                    DataPure.Instance.CustomerInfo.Id, note,
-                                    createOrderProgressChanged, createOrderCompleted);
+                                DialogResult result = CommonProcess.ShowInformMessage(
+                                    String.Format(Properties.Resources.CreatingOrder,
+                                        DataPure.Instance.CustomerInfo.Name, note, DataPure.Instance.GetAgentNameById(selectorId)),
+                                    MessageBoxButtons.OKCancel);
+                                if (result.Equals(DialogResult.OK))
+                                {
+                                    CommonProcess.RequestCreateOrderCoordinator(selectorId,
+                                        DataPure.Instance.CustomerInfo.Id, note,
+                                        createOrderProgressChanged, createOrderCompleted);
+                                }
+                            }
+                            else
+                            {
+                                CommonProcess.ShowErrorMessage(Properties.Resources.NotSelectMaterial);
                             }
                         }
                         else
@@ -406,7 +414,8 @@ namespace MainPrj
             btnCreateOrder.Enabled = DataPure.Instance.IsAccountingAgentRole() || DataPure.Instance.IsCoordinatorRole();
             btnOrderList.Enabled = DataPure.Instance.IsAccountingAgentRole();
             btnCreateCustomer.Enabled = DataPure.Instance.IsAccountingAgentRole();
-            coordinatorOrderView.Enabled = DataPure.Instance.IsCoordinatorRole();
+            //coordinatorOrderView.Enabled = DataPure.Instance.IsCoordinatorRole();
+            coordinatorOrderView_v2.Visible = DataPure.Instance.IsCoordinatorRole();
             CommonProcess.RequestTempData(reqTempDataProgressChanged, reqTempDataCompleted);
             pbxAvatar.Image = CommonProcess.CreateAvatar(avatarString, pbxAvatar.Size.Height);
 
@@ -555,7 +564,8 @@ namespace MainPrj
             btnOrderList.Enabled = false;
             btnCreateCustomer.Enabled = false;
             DataPure.Instance.Agent = null;
-            coordinatorOrderView.Enabled = false;
+            //coordinatorOrderView.Enabled = false;
+            coordinatorOrderView_v2.Visible = false;
         }
         #endregion
 

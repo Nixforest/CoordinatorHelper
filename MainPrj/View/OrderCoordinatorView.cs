@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MainPrj.Util;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -25,7 +26,8 @@ namespace MainPrj.View
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            note = coordinatorOrderView.GetData();
+            //note = coordinatorOrderView.GetData();
+            note = coordinatorOrderView_v2.GetData();
             this.DialogResult = DialogResult.OK;
             this.Close();
         }

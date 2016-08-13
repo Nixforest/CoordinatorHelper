@@ -553,7 +553,7 @@ namespace MainPrj.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("280")]
+        [global::System.Configuration.DefaultSettingValueAttribute("255")]
         public int BillSizeW {
             get {
                 return ((int)(this["BillSizeW"]));

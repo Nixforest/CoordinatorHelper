@@ -135,7 +135,7 @@
       <Value Profile="(Default)">Times New Roman</Value>
     </Setting>
     <Setting Name="BillSizeW" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">280</Value>
+      <Value Profile="(Default)">255</Value>
     </Setting>
     <Setting Name="BillSizeH" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">820</Value>

@@ -216,7 +216,7 @@ namespace MainPrj.Model
                 new SizeF(Properties.Settings.Default.BillSizeW, size.Height)));
 
             // Products label Name
-            int nameW = 130;
+            int nameW = 105;
             int qtyW = 20;
             int moneyW = 60;
             int totalW = 60;

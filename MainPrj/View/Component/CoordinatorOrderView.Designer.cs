@@ -32,19 +32,19 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.rbtnYellow = new System.Windows.Forms.RadioButton();
             this.rbtnRed = new System.Windows.Forms.RadioButton();
+            this.rbtnNoColor = new System.Windows.Forms.RadioButton();
             this.rbtnGrey = new System.Windows.Forms.RadioButton();
             this.rbtnOrange = new System.Windows.Forms.RadioButton();
             this.rbtnBlue = new System.Windows.Forms.RadioButton();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.rbtnSmall = new System.Windows.Forms.RadioButton();
+            this.rbtnLarge50 = new System.Windows.Forms.RadioButton();
             this.rbtnLarge = new System.Windows.Forms.RadioButton();
             this.tbxNote = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.nUDQuantity = new System.Windows.Forms.NumericUpDown();
-            this.rbtnNoColor = new System.Windows.Forms.RadioButton();
-            this.rbtnLarge50 = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -102,6 +102,18 @@
             this.rbtnRed.Text = "Đỏ";
             this.rbtnRed.UseVisualStyleBackColor = true;
             // 
+            // rbtnNoColor
+            // 
+            this.rbtnNoColor.AutoSize = true;
+            this.rbtnNoColor.Checked = true;
+            this.rbtnNoColor.Location = new System.Drawing.Point(6, 23);
+            this.rbtnNoColor.Name = "rbtnNoColor";
+            this.rbtnNoColor.Size = new System.Drawing.Size(131, 29);
+            this.rbtnNoColor.TabIndex = 4;
+            this.rbtnNoColor.TabStop = true;
+            this.rbtnNoColor.Text = "Không màu";
+            this.rbtnNoColor.UseVisualStyleBackColor = true;
+            // 
             // rbtnGrey
             // 
             this.rbtnGrey.AutoSize = true;
@@ -156,6 +168,17 @@
             this.rbtnSmall.Text = "Nhỏ";
             this.rbtnSmall.UseVisualStyleBackColor = true;
             // 
+            // rbtnLarge50
+            // 
+            this.rbtnLarge50.AutoSize = true;
+            this.rbtnLarge50.Location = new System.Drawing.Point(153, 29);
+            this.rbtnLarge50.Name = "rbtnLarge50";
+            this.rbtnLarge50.Size = new System.Drawing.Size(125, 29);
+            this.rbtnLarge50.TabIndex = 3;
+            this.rbtnLarge50.TabStop = true;
+            this.rbtnLarge50.Text = "Lớn (50kg)";
+            this.rbtnLarge50.UseVisualStyleBackColor = true;
+            // 
             // rbtnLarge
             // 
             this.rbtnLarge.AutoSize = true;
@@ -187,8 +210,9 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(7, 31);
+            this.label2.Location = new System.Drawing.Point(6, 31);
             this.label2.Name = "label2";
+            this.label2.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.label2.Size = new System.Drawing.Size(96, 25);
             this.label2.TabIndex = 1;
             this.label2.Text = "Số lượng:";
@@ -205,41 +229,9 @@
             // nUDQuantity
             // 
             this.nUDQuantity.Location = new System.Drawing.Point(104, 29);
-            this.nUDQuantity.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
             this.nUDQuantity.Name = "nUDQuantity";
             this.nUDQuantity.Size = new System.Drawing.Size(135, 30);
             this.nUDQuantity.TabIndex = 0;
-            this.nUDQuantity.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            // 
-            // rbtnNoColor
-            // 
-            this.rbtnNoColor.AutoSize = true;
-            this.rbtnNoColor.Checked = true;
-            this.rbtnNoColor.Location = new System.Drawing.Point(6, 23);
-            this.rbtnNoColor.Name = "rbtnNoColor";
-            this.rbtnNoColor.Size = new System.Drawing.Size(131, 29);
-            this.rbtnNoColor.TabIndex = 4;
-            this.rbtnNoColor.Text = "Không màu";
-            this.rbtnNoColor.UseVisualStyleBackColor = true;
-            // 
-            // rbtnLarge50
-            // 
-            this.rbtnLarge50.AutoSize = true;
-            this.rbtnLarge50.Location = new System.Drawing.Point(153, 29);
-            this.rbtnLarge50.Name = "rbtnLarge50";
-            this.rbtnLarge50.Size = new System.Drawing.Size(125, 29);
-            this.rbtnLarge50.TabIndex = 3;
-            this.rbtnLarge50.TabStop = true;
-            this.rbtnLarge50.Text = "Lớn (50kg)";
-            this.rbtnLarge50.UseVisualStyleBackColor = true;
             // 
             // CoordinatorOrderView
             // 
@@ -267,20 +259,20 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TextBox tbxNote;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.NumericUpDown nUDQuantity;
         private System.Windows.Forms.RadioButton rbtnYellow;
         private System.Windows.Forms.RadioButton rbtnBlue;
         private System.Windows.Forms.RadioButton rbtnOrange;
         private System.Windows.Forms.RadioButton rbtnGrey;
         private System.Windows.Forms.RadioButton rbtnRed;
-        private System.Windows.Forms.RadioButton rbtnLarge;
-        private System.Windows.Forms.RadioButton rbtnSmall;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.RadioButton rbtnNoColor;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.RadioButton rbtnSmall;
         private System.Windows.Forms.RadioButton rbtnLarge50;
+        private System.Windows.Forms.RadioButton rbtnLarge;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.NumericUpDown nUDQuantity;
 
     }
 }

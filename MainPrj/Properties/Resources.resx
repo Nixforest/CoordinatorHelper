@@ -443,4 +443,17 @@ Bạn chắn chắn không?</value>
   <data name="printer" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>printer.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="CustomerNameUnknown" xml:space="preserve">
+    <value>Không rõ</value>
+  </data>
+  <data name="NotInputProductPrice" xml:space="preserve">
+    <value>Chưa nhập giá sản phẩm.</value>
+  </data>
+  <data name="CreateOrderServerError1987" xml:space="preserve">
+    <value>Lỗi xảy ra khi tạo đơn hàng trên web.
+Điều phối hãy thoát ra rồi đăng nhập lại!</value>
+  </data>
+  <data name="NotSelectMaterial" xml:space="preserve">
+    <value>Chưa chọn loại gas nào!</value>
+  </data>
 </root>

@@ -312,6 +312,16 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Lỗi xảy ra khi tạo đơn hàng trên web.
+        ///Điều phối hãy thoát ra rồi đăng nhập lại!.
+        /// </summary>
+        internal static string CreateOrderServerError1987 {
+            get {
+                return ResourceManager.GetString("CreateOrderServerError1987", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tạo đơn hàng thành công!.
         /// </summary>
         internal static string CreateOrderSuccess {
@@ -329,6 +339,15 @@ namespace MainPrj.Properties {
         internal static string CreatingOrder {
             get {
                 return ResourceManager.GetString("CreatingOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Không rõ.
+        /// </summary>
+        internal static string CustomerNameUnknown {
+            get {
+                return ResourceManager.GetString("CustomerNameUnknown", resourceCulture);
             }
         }
         
@@ -660,6 +679,15 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Chưa nhập giá sản phẩm..
+        /// </summary>
+        internal static string NotInputProductPrice {
+            get {
+                return ResourceManager.GetString("NotInputProductPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Chưa đăng nhập..
         /// </summary>
         internal static string NotLoginYet {
@@ -683,6 +711,15 @@ namespace MainPrj.Properties {
         internal static string NotSelectDeliverCCS {
             get {
                 return ResourceManager.GetString("NotSelectDeliverCCS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chưa chọn loại gas nào!.
+        /// </summary>
+        internal static string NotSelectMaterial {
+            get {
+                return ResourceManager.GetString("NotSelectMaterial", resourceCulture);
             }
         }
         

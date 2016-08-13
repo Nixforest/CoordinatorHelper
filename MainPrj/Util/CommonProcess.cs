@@ -859,7 +859,15 @@ namespace MainPrj.Util
             if ((channel != null) && (customer != null))
             {
                 channel.ClearData();
-                channel.SetCustomerName(customer.Name);
+                // Check if name of customer is empty, set "Không rõ"
+                if (String.IsNullOrEmpty(customer.Name))
+                {
+                    channel.SetCustomerName(Properties.Resources.CustomerNameUnknown);
+                }
+                else
+                {
+                    channel.SetCustomerName(customer.Name);
+                }
                 channel.SetAddress(customer.Address);
                 channel.SetPhoneList(customer.PhoneList);
                 channel.SetAgency(customer.AgencyName);

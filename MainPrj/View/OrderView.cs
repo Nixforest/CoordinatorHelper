@@ -706,6 +706,15 @@ namespace MainPrj.View
                 CommonProcess.ShowErrorMessage(Properties.Resources.NotSelectProducts);
                 return false;
             }
+            // Check if not input price
+            foreach (ProductModel product in products)
+            {
+                if (product.Price == 0)
+                {
+                    CommonProcess.ShowErrorMessage(Properties.Resources.NotInputProductPrice);
+                    return false;
+                }
+            }
             return retVal;
         }
         /// <summary>
@@ -833,7 +842,10 @@ namespace MainPrj.View
             if (this.listViewRecentProduct.SelectedItems.Count > 0)
             {
                 MaterialBitmap item = (MaterialBitmap) this.listViewRecentProduct.SelectedItems[0].Tag;
-                AddProduct(item.Model);
+                if (DataPure.Instance.GetListMaterialGas().ContainsKey(item.Model.Materials_no))
+                {
+                    AddProduct(DataPure.Instance.GetListMaterialGas()[item.Model.Materials_no]);
+                }
 
                 UpdateMoney();
             }
@@ -901,7 +913,11 @@ namespace MainPrj.View
             if (this.listViewRecentPromote.SelectedItems.Count > 0)
             {
                 MaterialBitmap item = (MaterialBitmap)this.listViewRecentPromote.SelectedItems[0].Tag;
-                AddPromote(item.Model);
+                if (DataPure.Instance.GetListMaterialPromote().ContainsKey(item.Model.Materials_no))
+                {
+                    AddPromote(DataPure.Instance.GetListMaterialPromote()[item.Model.Materials_no]);
+                }
+                //AddPromote(item.Model);
 
                 UpdateMoney();
             }

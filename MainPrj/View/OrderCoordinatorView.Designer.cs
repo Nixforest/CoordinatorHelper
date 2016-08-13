@@ -32,21 +32,23 @@
             this.coordinatorOrderView = new MainPrj.View.Component.CoordinatorOrderView();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.coordinatorOrderView_v2 = new MainPrj.View.Component.CoordinatorOrderView_v2();
             this.SuspendLayout();
             // 
             // coordinatorOrderView
             // 
             this.coordinatorOrderView.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.coordinatorOrderView.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.coordinatorOrderView.Location = new System.Drawing.Point(1, 1);
+            this.coordinatorOrderView.Location = new System.Drawing.Point(67, 6);
             this.coordinatorOrderView.Margin = new System.Windows.Forms.Padding(6);
             this.coordinatorOrderView.Name = "coordinatorOrderView";
             this.coordinatorOrderView.Size = new System.Drawing.Size(315, 274);
             this.coordinatorOrderView.TabIndex = 0;
+            this.coordinatorOrderView.Visible = false;
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(83, 276);
+            this.btnOK.Location = new System.Drawing.Point(84, 180);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(108, 42);
             this.btnOK.TabIndex = 1;
@@ -57,12 +59,22 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(197, 276);
+            this.btnCancel.Location = new System.Drawing.Point(198, 180);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(108, 42);
             this.btnCancel.TabIndex = 1;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
+            // 
+            // coordinatorOrderView_v2
+            // 
+            this.coordinatorOrderView_v2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.coordinatorOrderView_v2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.coordinatorOrderView_v2.Location = new System.Drawing.Point(1, 1);
+            this.coordinatorOrderView_v2.Margin = new System.Windows.Forms.Padding(6);
+            this.coordinatorOrderView_v2.Name = "coordinatorOrderView_v2";
+            this.coordinatorOrderView_v2.Size = new System.Drawing.Size(315, 170);
+            this.coordinatorOrderView_v2.TabIndex = 0;
             // 
             // OrderCoordinatorView
             // 
@@ -71,7 +83,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(317, 330);
+            this.ClientSize = new System.Drawing.Size(317, 229);
+            this.Controls.Add(this.coordinatorOrderView_v2);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.coordinatorOrderView);
@@ -91,5 +104,6 @@
         private Component.CoordinatorOrderView coordinatorOrderView;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Button btnCancel;
+        private Component.CoordinatorOrderView_v2 coordinatorOrderView_v2;
     }
 }

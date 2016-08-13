@@ -531,7 +531,14 @@ namespace MainPrj.View
                                     if (result.Equals(DialogResult.OK))
                                     {
                                         string note = view.Note;
-                                        SelectAgent(note);
+                                        if (!String.IsNullOrEmpty(note))
+                                        {
+                                            SelectAgent(note);
+                                        }
+                                        else
+                                        {
+                                            CommonProcess.ShowErrorMessage(Properties.Resources.NotSelectMaterial);
+                                        }
                                     }
                                     break;
                                 default:
@@ -632,13 +639,24 @@ namespace MainPrj.View
                     {
                         MemoryStream msU = new MemoryStream(encodingBytes);
                         OrderResponseModel baseResp = (OrderResponseModel)js.ReadObject(msU);
-                        if (baseResp != null && baseResp.Status.Equals("1"))
+                        if (baseResp != null)
                         {
-                            string id = baseResp.Id;
-                            if (!String.IsNullOrEmpty(id))
+                            // Success
+                            if (baseResp.Status.Equals("1"))
                             {
-                                toolStripStatusLabel.Text = Properties.Resources.CreateOrderSuccess;
-                                CommonProcess.ShowInformMessage(Properties.Resources.CreateOrderSuccess, MessageBoxButtons.OK);
+                                string id = baseResp.Id;
+                                if (!String.IsNullOrEmpty(id))
+                                {
+                                    toolStripStatusLabel.Text = Properties.Resources.CreateOrderSuccess;
+                                    CommonProcess.ShowInformMessage(Properties.Resources.CreateOrderSuccess, MessageBoxButtons.OK);
+                                }
+                            }
+                            else                            // Failed
+                            {
+                                if (baseResp.Code.Equals("1987"))
+                                {
+                                    CommonProcess.ShowInformMessage(Properties.Resources.CreateOrderServerError1987, MessageBoxButtons.OK);
+                                }
                             }
                         }
                         else

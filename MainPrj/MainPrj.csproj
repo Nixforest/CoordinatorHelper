@@ -152,6 +152,12 @@
     <Compile Include="View\Component\CoordinatorOrderView.Designer.cs">
       <DependentUpon>CoordinatorOrderView.cs</DependentUpon>
     </Compile>
+    <Compile Include="View\Component\CoordinatorOrderView_v2.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Component\CoordinatorOrderView_v2.Designer.cs">
+      <DependentUpon>CoordinatorOrderView_v2.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\Component\WordWrapListView.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -278,6 +284,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\Component\CoordinatorOrderView.resx">
       <DependentUpon>CoordinatorOrderView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Component\CoordinatorOrderView_v2.resx">
+      <DependentUpon>CoordinatorOrderView_v2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\Component\EditableListView.resx">
       <DependentUpon>EditableListView.cs</DependentUpon>
