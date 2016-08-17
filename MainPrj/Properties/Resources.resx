@@ -456,4 +456,7 @@ Bạn chắn chắn không?</value>
   <data name="NotSelectMaterial" xml:space="preserve">
     <value>Chưa chọn loại gas nào!</value>
   </data>
+  <data name="UpdateAgentCellPhoneError" xml:space="preserve">
+    <value>Số điện thoại không hợp lệ!</value>
+  </data>
 </root>

@@ -74,7 +74,7 @@ namespace MainPrj
             // Start thread
             StartUdpThread();
             //StartListeningThread();
-            //StartSIPThread();
+            StartSIPThread();
         }
         /// <summary>
         /// Update data to channel tab.
@@ -843,7 +843,7 @@ namespace MainPrj
         /// </summary>
         /// <param name="sender">Sender</param>
         /// <param name="e">EventArgs</param>
-        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        private void MainForm_FormClosing(object sender, CancelEventArgs e)
         {
             //DialogResult result = CommonProcess.ShowInformMessage(Properties.Resources.AreYouSureToClose,
             //    MessageBoxButtons.YesNo);
@@ -859,18 +859,26 @@ namespace MainPrj
             //    e.Cancel = true;
             //}
             // Write history file
+            e.Cancel = true;
+            base.WindowState = FormWindowState.Minimized;
+        }
+        /// <summary>
+        /// Save data.
+        /// </summary>
+        /// <returns></returns>
+        private bool SaveSettingData()
+        {
             if (!CommonProcess.WriteHistory(DataPure.Instance.ListCalls))
             {
-                e.Cancel = true;
-                return;
+                return false;
             }
             if (!CommonProcess.WriteListOrders())
             {
-                e.Cancel = true;
-                return;
+                return false;
             }
             Properties.Settings.Default.UserToken = String.Empty;
             Properties.Settings.Default.Save();
+            return true;
         }
         /// <summary>
         /// Handle when check in Update phone checkbox
@@ -1745,6 +1753,15 @@ namespace MainPrj
             //    CommonProcess.ShowErrorMessage(Properties.Resources.OutOfMemory);
             //    this.Close();
             //}
+        }
+
+        private void toolStripMenuItemExit_Click(object sender, EventArgs e)
+        {
+            if (SaveSettingData())
+            {
+                Application.Exit();
+                //this.Close();
+            }
         }
 
         //private void ListenThreadHandler()

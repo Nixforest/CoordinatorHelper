@@ -1028,6 +1028,15 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Số điện thoại không hợp lệ!.
+        /// </summary>
+        internal static string UpdateAgentCellPhoneError {
+            get {
+                return ResourceManager.GetString("UpdateAgentCellPhoneError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cập nhật đơn hàng thành công!.
         /// </summary>
         internal static string UpdateOrderSuccess {

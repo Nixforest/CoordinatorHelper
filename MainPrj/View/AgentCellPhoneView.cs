@@ -1,10 +1,13 @@
-﻿using MainPrj.Util;
+﻿using MainPrj.Model;
+using MainPrj.Util;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Windows.Forms;
 
@@ -61,10 +64,40 @@ namespace MainPrj.View
             }
             else
             {
-                toolStripStatusLabel.Text = Properties.Resources.RequestAgentInfoSuccess;
-                DataPure.Instance.Agent.Agent_cell_phone = tbxPhone.Text;
-                tbxPhone.Enabled = true;
+                byte[] response = e.Result;
+                string respStr = String.Empty;
+                respStr = System.Text.Encoding.UTF8.GetString(response);
+                if (!String.IsNullOrEmpty(respStr))
+                {
+                    DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(BaseResponseModel));
+                    byte[] encodingBytes = null;
+                    try
+                    {
+                        // Encoding response data
+                        encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);
+                    }
+                    catch (System.Text.EncoderFallbackException)
+                    {
+                        CommonProcess.ShowErrorMessage(Properties.Resources.EncodingError);
+                    }
+                    if (encodingBytes != null)
+                    {
+                        MemoryStream msU = new MemoryStream(encodingBytes);
+                        BaseResponseModel baseResp = (BaseResponseModel)js.ReadObject(msU);
+                        if (baseResp != null && baseResp.Status.Equals("1"))
+                        {
+                            toolStripStatusLabel.Text = Properties.Resources.RequestAgentInfoSuccess;
+                            DataPure.Instance.Agent.Agent_cell_phone = tbxPhone.Text;
+                        }
+                        else
+                        {
+                            toolStripStatusLabel.Text = Properties.Resources.UpdateAgentCellPhoneError;
+                            CommonProcess.ShowErrorMessage(Properties.Resources.UpdateAgentCellPhoneError);
+                        }
+                    }
+                }
             }
+            tbxPhone.Enabled = true;
         }
         /// <summary>
         /// Update agent progress changed handler.
