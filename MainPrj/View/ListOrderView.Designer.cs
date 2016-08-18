@@ -50,6 +50,7 @@ namespace MainPrj.View
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
+            this.btnPrint = new System.Windows.Forms.Button();
             this.listViewListOrder = new MainPrj.View.EditableListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -64,7 +65,6 @@ namespace MainPrj.View
             this.columnHeader12 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader13 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader14 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.btnPrint = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -119,7 +119,6 @@ namespace MainPrj.View
             this.btnUpdateData.Text = "Cập nhật";
             this.btnUpdateData.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnUpdateData.UseVisualStyleBackColor = true;
-            this.btnUpdateData.Visible = false;
             this.btnUpdateData.Click += new System.EventHandler(this.btnUpdateData_Click);
             // 
             // btnAddCylinder
@@ -292,6 +291,18 @@ namespace MainPrj.View
             this.label6.TabIndex = 11;
             this.label6.Text = "0";
             // 
+            // btnPrint
+            // 
+            this.btnPrint.Image = global::MainPrj.Properties.Resources.printer;
+            this.btnPrint.Location = new System.Drawing.Point(637, 6);
+            this.btnPrint.Name = "btnPrint";
+            this.btnPrint.Size = new System.Drawing.Size(71, 39);
+            this.btnPrint.TabIndex = 1;
+            this.btnPrint.Text = "In";
+            this.btnPrint.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnPrint.UseVisualStyleBackColor = true;
+            this.btnPrint.Click += new System.EventHandler(this.btnPrint_Click);
+            // 
             // listViewListOrder
             // 
             this.listViewListOrder.AllowColumnReorder = true;
@@ -389,18 +400,6 @@ namespace MainPrj.View
             // 
             this.columnHeader14.Text = "GHI CHÚ";
             this.columnHeader14.Width = 90;
-            // 
-            // btnPrint
-            // 
-            this.btnPrint.Image = global::MainPrj.Properties.Resources.printer;
-            this.btnPrint.Location = new System.Drawing.Point(507, 6);
-            this.btnPrint.Name = "btnPrint";
-            this.btnPrint.Size = new System.Drawing.Size(71, 39);
-            this.btnPrint.TabIndex = 1;
-            this.btnPrint.Text = "In";
-            this.btnPrint.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnPrint.UseVisualStyleBackColor = true;
-            this.btnPrint.Click += new System.EventHandler(this.btnPrint_Click);
             // 
             // ListOrderView
             // 

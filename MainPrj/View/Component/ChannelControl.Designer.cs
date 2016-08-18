@@ -59,6 +59,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.btnNewCustomer = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -69,7 +70,7 @@
             this.tbxIncommingNumber.Location = new System.Drawing.Point(2, 2);
             this.tbxIncommingNumber.Margin = new System.Windows.Forms.Padding(2);
             this.tbxIncommingNumber.Name = "tbxIncommingNumber";
-            this.tbxIncommingNumber.Size = new System.Drawing.Size(840, 35);
+            this.tbxIncommingNumber.Size = new System.Drawing.Size(788, 35);
             this.tbxIncommingNumber.TabIndex = 1;
             this.tbxIncommingNumber.Text = "Số điện thoại";
             this.tbxIncommingNumber.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -140,6 +141,8 @@
             // 
             // cbxWard
             // 
+            this.cbxWard.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cbxWard.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbxWard.DisplayMember = "Text";
             this.cbxWard.FormattingEnabled = true;
             this.cbxWard.Location = new System.Drawing.Point(610, 94);
@@ -406,10 +409,24 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Tên Khách Hàng:";
             // 
+            // btnNewCustomer
+            // 
+            this.btnNewCustomer.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnNewCustomer.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.btnNewCustomer.Location = new System.Drawing.Point(795, 2);
+            this.btnNewCustomer.Margin = new System.Windows.Forms.Padding(0);
+            this.btnNewCustomer.Name = "btnNewCustomer";
+            this.btnNewCustomer.Size = new System.Drawing.Size(42, 35);
+            this.btnNewCustomer.TabIndex = 21;
+            this.btnNewCustomer.Text = "+";
+            this.btnNewCustomer.UseVisualStyleBackColor = true;
+            this.btnNewCustomer.Click += new System.EventHandler(this.btnNewCustomer_Click);
+            // 
             // ChannelControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.btnNewCustomer);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.tbxIncommingNumber);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -457,5 +474,6 @@
         private System.Windows.Forms.ComboBox cbxDistrict;
         private System.Windows.Forms.ComboBox cbxWard;
         private System.Windows.Forms.ComboBox cbxStreet;
+        private System.Windows.Forms.Button btnNewCustomer;
     }
 }

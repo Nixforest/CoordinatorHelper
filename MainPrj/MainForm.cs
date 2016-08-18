@@ -74,7 +74,7 @@ namespace MainPrj
             // Start thread
             StartUdpThread();
             //StartListeningThread();
-            StartSIPThread();
+            //StartSIPThread();
         }
         /// <summary>
         /// Update data to channel tab.
@@ -200,6 +200,7 @@ namespace MainPrj
                 switch (role)
                 {
                     case RoleType.ROLE_ACCOUNTING_AGENT:
+                    case RoleType.ROLE_ACCOUNTING_ZONE:
                         OrderView order = new OrderView(DataPure.Instance.CustomerInfo);
                         order.ShowDialog();
                         break;

@@ -192,7 +192,7 @@ namespace MainPrj.Model
             // Date
             Offset = Offset + (int)size.Height;
             text = String.Format("Ngày: {0}", System.DateTime.Now.ToString("dd/MM/yy HH:mm:ss"));
-            font = new Font(Properties.Settings.Default.BilllFont, 8, FontStyle.Italic);
+            font = new Font(Properties.Settings.Default.BilllFont, 12, FontStyle.Italic);
             size = graphics.MeasureString(text, font);
             positionX = (Properties.Settings.Default.BillSizeW - (int)size.Width) - startX;
             graphics.DrawString(text, font, brush, positionX, startY + Offset);
@@ -208,23 +208,32 @@ namespace MainPrj.Model
 
             // Customer address
             Offset = Offset + (int)size.Height;
-            text = String.Format("Địa chỉ: {0}\nVPGD: {1}", this.CustomerAddress, this.AgentAddress);
-            font = new Font(Properties.Settings.Default.BilllFont, 10, FontStyle.Italic);
+            text = String.Format("ĐC: {0}", this.CustomerAddress);
+            font = new Font(Properties.Settings.Default.BilllFont, 12, FontStyle.Bold);
             size = graphics.MeasureString(text, font, Properties.Settings.Default.BillSizeW);
             positionX = startX;
             graphics.DrawString(text, font, brush, new RectangleF(new PointF(positionX, startY + Offset),
                 new SizeF(Properties.Settings.Default.BillSizeW, size.Height)));
 
+            // Underline
+            Offset = Offset + (int)size.Height;
+            text = "-----------------------------------------";
+            font = new Font(Properties.Settings.Default.BilllFont, 10);
+            size = graphics.MeasureString(text, font);
+            positionX = startX + (Properties.Settings.Default.BillSizeW - (int)size.Width) / 2;
+            graphics.DrawString(text, font, brush, positionX, startY + Offset);
+
             // Products label Name
-            int nameW = 105;
+            int nameW = 99;
             int qtyW = 20;
-            int moneyW = 60;
-            int totalW = 60;
+            int moneyW = 63;
+            int totalW = 63;
             Offset = Offset + (int)size.Height;
             text = "Tên hàng";
             font = new Font(Properties.Settings.Default.BilllFont, 8, FontStyle.Bold | FontStyle.Underline);
             size = graphics.MeasureString(text, font, nameW);
-            positionX = startX + (nameW - (int)size.Width) / 2;
+            //positionX = startX + (nameW - (int)size.Width) / 2;
+            positionX = startX;
             graphics.DrawString(text, font, brush, new RectangleF(new PointF(positionX, startY + Offset),
                 new SizeF(nameW, size.Height)));
 
@@ -246,7 +255,7 @@ namespace MainPrj.Model
             graphics.DrawString(text, font, brush, new RectangleF(new PointF(positionX, startY + Offset),
                 new SizeF(totalW, size.Height)));
             // Products
-            font = new Font(Properties.Settings.Default.BilllFont, 8);
+            font = new Font(Properties.Settings.Default.BilllFont, 10);
             foreach (ProductModel product in this.Products)
             {
                 Offset = Offset + (int)size.Height;
@@ -291,7 +300,8 @@ namespace MainPrj.Model
             text = "Tên quà tặng";
             font = new Font(Properties.Settings.Default.BilllFont, 8, FontStyle.Bold | FontStyle.Underline);
             size = graphics.MeasureString(text, font, nameW);
-            positionX = startX + (nameW - (int)size.Width) / 2;
+            //positionX = startX + (nameW - (int)size.Width) / 2;
+            positionX = startX;
             graphics.DrawString(text, font, brush, new RectangleF(new PointF(positionX, startY + Offset),
                 new SizeF(nameW, size.Height)));
 
@@ -300,7 +310,7 @@ namespace MainPrj.Model
             positionX = startX + nameW + (qtyW - (int)size.Width) / 2;
             graphics.DrawString(text, font, brush, new RectangleF(new PointF(positionX, startY + Offset),
                 new SizeF(qtyW, size.Height)));
-            font = new Font(Properties.Settings.Default.BilllFont, 8);
+            font = new Font(Properties.Settings.Default.BilllFont, 10);
             foreach (PromoteModel promote in this.Promotes)
             {
                 Offset = Offset + (int)size.Height;
@@ -315,6 +325,14 @@ namespace MainPrj.Model
                 graphics.DrawString(text, font, brush, new RectangleF(new PointF(positionX, startY + Offset),
                     new SizeF(nameW, size.Height)));
             }
+
+            // Underline
+            Offset = Offset + (int)size.Height;
+            text = "-----------------------------------------";
+            font = new Font(Properties.Settings.Default.BilllFont, 10);
+            size = graphics.MeasureString(text, font);
+            positionX = startX + (Properties.Settings.Default.BillSizeW - (int)size.Width) / 2;
+            graphics.DrawString(text, font, brush, positionX, startY + Offset);
 
             // Total money
             Offset = Offset + (int)size.Height;

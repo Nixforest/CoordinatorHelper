@@ -522,6 +522,7 @@ namespace MainPrj.View
                             switch (role)
                             {
                                 case RoleType.ROLE_ACCOUNTING_AGENT:
+                                case RoleType.ROLE_ACCOUNTING_ZONE:
                                     OrderView order = new OrderView(DataPure.Instance.CustomerInfo);
                                     order.ShowDialog();
                                     break;

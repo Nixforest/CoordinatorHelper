@@ -66,6 +66,7 @@
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.btnUpdate = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -420,6 +421,16 @@
             this.columnHeader6.Text = "Tiền";
             this.columnHeader6.Width = 150;
             // 
+            // btnUpdate
+            // 
+            this.btnUpdate.Location = new System.Drawing.Point(751, 662);
+            this.btnUpdate.Name = "btnUpdate";
+            this.btnUpdate.Size = new System.Drawing.Size(102, 46);
+            this.btnUpdate.TabIndex = 6;
+            this.btnUpdate.Text = "Cập nhật";
+            this.btnUpdate.UseVisualStyleBackColor = true;
+            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
+            // 
             // OrderView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
@@ -435,6 +446,7 @@
             this.Controls.Add(this.cbxDeliver);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnCreatePrint);
+            this.Controls.Add(this.btnUpdate);
             this.Controls.Add(this.btnCreateOrder);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.tbxPromote);
@@ -508,5 +520,6 @@
         private System.Windows.Forms.Button btnCreatePrint;
         private System.Windows.Forms.ListView listViewRecentProduct;
         private System.Windows.Forms.ListView listViewRecentPromote;
+        private System.Windows.Forms.Button btnUpdate;
     }
 }

@@ -465,19 +465,20 @@ namespace MainPrj.View
         /// <param name="customer">Customer information</param>
         public void SetChannelInformation(CustomerModel customer)
         {
-            //this.data.Id            = customer.Id;
-            //this.data.Name          = customer.Name;
-            //this.data.Address       = customer.Address;
-            //this.data.PhoneList     = customer.PhoneList;
-            //this.data.AgencyName    = customer.AgencyName;
-            //this.data.AgencyNearest = customer.AgencyNearest;
-            //this.data.Contact       = customer.Contact;
-            //this.data.CustomerType  = customer.CustomerType;
-            //this.data.Contact_note += customer.Contact_note;
-            //this.data.Sale_name     = customer.Sale_name;
-            //this.data.Sale_phone    = customer.Sale_phone;
-            //this.data.Sale_type     = customer.Sale_type;
-            this.data = customer;
+            this.data.Id            = customer.Id;
+            this.data.Name          = customer.Name;
+            this.data.Address       = customer.Address;
+            this.data.PhoneList     = customer.PhoneList;
+            this.data.AgencyName    = customer.AgencyName;
+            this.data.AgencyNearest = customer.AgencyNearest;
+            this.data.Contact       = customer.Contact;
+            this.data.CustomerType  = customer.CustomerType;
+            this.data.Contact_note += customer.Contact_note;
+            this.data.Sale_name     = customer.Sale_name;
+            this.data.Sale_phone    = customer.Sale_phone;
+            this.data.Sale_type     = customer.Sale_type;
+            this.data.ActivePhone   = customer.ActivePhone;
+            //this.data = customer;
 
             this.SetCustomerName(this.data.Name);
             this.SetAddress(this.data.Address);
@@ -602,7 +603,8 @@ namespace MainPrj.View
                                         items.Add(new { Text = string.Empty, Value = string.Empty });
                                         foreach (WardModel ward in district.Data)
                                         {
-                                            items.Add(new { Text = ward.Name, Value = ward.Id });
+                                            string removeSign = CommonProcess.NormalizationString(ward.Name);
+                                            items.Add(new { Text = String.Format("{0} - {1}", removeSign, ward.Name), Value = ward.Id });
                                         }
                                         cbxWard.DataSource = items;
                                     }
@@ -619,6 +621,12 @@ namespace MainPrj.View
             {
                 cbxWard.SelectedIndex = 0;
             }
+        }
+
+        private void btnNewCustomer_Click(object sender, EventArgs e)
+        {
+            this.ClearData();
+            this.Data = new CustomerModel();
         }
     }
 }

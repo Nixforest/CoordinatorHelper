@@ -813,46 +813,45 @@ namespace MainPrj.View
         /// <param name="e">EventArgs</param>
         private void btnUpdateData_Click(object sender, EventArgs e)
         {
-            foreach (ListViewItem lvItem in this.listViewListOrder.Items)
+            //foreach (ListViewItem lvItem in this.listViewListOrder.Items)
+            //{
+            //    if (!String.IsNullOrEmpty(lvItem.Tag.ToString()))
+            //    {
+            //        string id = lvItem.Tag.ToString();
+            //        foreach (OrderModel item in DataPure.Instance.ListOrders)
+            //        {
+            //            if (item.Id.Equals(id) && !item.IsUpdateToServer)
+            //            {
+            //                string retId = CommonProcess.UpdateOrderToServer(item);
+            //                if (!String.IsNullOrEmpty(retId))
+            //                {
+            //                    item.IsUpdateToServer = true;
+            //                    //CommonProcess.ShowInformMessage(Properties.Resources.UpdateOrderSuccess, MessageBoxButtons.OK);
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
+            //CommonProcess.ShowInformMessage(Properties.Resources.UpdateOrderSuccess, MessageBoxButtons.OK);
+            //LoadListView(DataPure.Instance.ListOrders);
+            if (listViewListOrder.SelectedItems.Count > 0)
             {
-                if (!String.IsNullOrEmpty(lvItem.Tag.ToString()))
+                string id = listViewListOrder.SelectedItems[0].Tag.ToString();
+                if (!string.IsNullOrEmpty(id))
                 {
-                    string id = lvItem.Tag.ToString();
                     foreach (OrderModel item in DataPure.Instance.ListOrders)
                     {
-                        if (item.Id.Equals(id) && !item.IsUpdateToServer)
+                        if (item.Id.Equals(id))
                         {
-                            string retId = CommonProcess.UpdateOrderToServer(item);
-                            if (!String.IsNullOrEmpty(retId))
-                            {
-                                item.IsUpdateToServer = true;
-                                //CommonProcess.ShowInformMessage(Properties.Resources.UpdateOrderSuccess, MessageBoxButtons.OK);
-                            }
+                            OrderView order = new OrderView(item.Customer, true);
+                            order.SetData(item);
+                            order.ShowDialog();
+                            LoadListView(DataPure.Instance.ListOrders);
+                            return;
                         }
                     }
                 }
             }
-            CommonProcess.ShowInformMessage(Properties.Resources.UpdateOrderSuccess, MessageBoxButtons.OK);
-            LoadListView(DataPure.Instance.ListOrders);
-            //if ((this.listViewListOrder.SelectedItems.Count > 0)
-            //    && (!String.IsNullOrEmpty(this.listViewListOrder.SelectedItems[0].Tag.ToString())))
-            //{
-            //    string id = this.listViewListOrder.SelectedItems[0].Tag.ToString();
-            //    foreach (OrderModel item in DataPure.Instance.ListOrders)
-            //    {
-            //        if (item.Id.Equals(id))
-            //        {
-            //            string retId = CommonProcess.UpdateOrderToServer(item);
-            //            if (!String.IsNullOrEmpty(retId))
-            //            {
-            //                CommonProcess.ShowInformMessage(Properties.Resources.UpdateOrderSuccess, MessageBoxButtons.OK);
-            //            }
-            //            item.IsUpdateToServer = true;
-            //            LoadListView(DataPure.Instance.ListOrders);
-            //            break;
-            //        }
-            //    }
-            //}
         }
 
         /// <summary>

@@ -35,6 +35,16 @@ namespace MainPrj.View
         private ImageList _listProductImg = new ImageList();
         private ImageList _listPromoteImg = new ImageList();
         private CustomerModel customerInfo = null;
+        private bool _isUpdateMode = false;
+        private OrderModel _data = null;
+        /// <summary>
+        /// Is in update mode.
+        /// </summary>
+        public bool IsUpdateMode
+        {
+            get { return _isUpdateMode; }
+            set { _isUpdateMode = value; }
+        }
         /// <summary>
         /// Customer information.
         /// </summary>
@@ -46,10 +56,17 @@ namespace MainPrj.View
         /// <summary>
         /// Constructor.
         /// </summary>
-        public OrderView(CustomerModel customer)
+        public OrderView(CustomerModel customer, bool isUpdateMode = false)
         {
             InitializeComponent();
-            customerInfo = customer;
+            customerInfo                  = customer;
+            _isUpdateMode                 = isUpdateMode;
+            listViewRecentProduct.Enabled = !_isUpdateMode;
+            listViewProduct.Enabled       = !_isUpdateMode;
+            tbxItem.Enabled               = !_isUpdateMode;
+            btnCreateOrder.Visible        = !_isUpdateMode;
+            btnCreatePrint.Visible        = !_isUpdateMode;
+            btnUpdate.Visible             = _isUpdateMode;
         }
         /// <summary>
         /// Handle click Cancel button.
@@ -163,6 +180,25 @@ namespace MainPrj.View
             foreach (string item in DataPure.Instance.ListRecentPromotesImg.Keys)
             {
                 AddPromoteSelected(DataPure.Instance.ListRecentPromotesImg[item]);
+            }
+            // Update data
+            if (_isUpdateMode && (_data != null))
+            {
+                // Set deliver
+                if (!String.IsNullOrEmpty(_data.DeliverId))
+                {
+                    cbxDeliver.SelectedValue = _data.DeliverId;
+                }
+                // Set CCS
+                if (!String.IsNullOrEmpty(_data.CCSId))
+                {
+                    cbxCCS.SelectedValue = _data.CCSId;
+                }
+                products = _data.Products;
+                ReloadListProduct();
+                promotes = _data.Promotes;
+                ReloadListPromotes();
+                UpdateMoney();
             }
         }
 
@@ -920,6 +956,42 @@ namespace MainPrj.View
                 //AddPromote(item.Model);
 
                 UpdateMoney();
+            }
+        }
+        public void SetData(OrderModel model)
+        {
+            if (model == null)
+            {
+                return;
+            }
+            _data = model;
+        }
+
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+            if (_isUpdateMode && (_data != null))
+            {
+                if (ValidateData())
+                {
+                    if (cbxDeliver.SelectedValue != null)
+                    {
+                        _data.DeliverId = cbxDeliver.SelectedValue.ToString();
+                    }
+                    if (cbxCCS.SelectedValue != null)
+                    {
+                        _data.CCSId = cbxCCS.SelectedValue.ToString();
+                    }
+                    //_data.Promotes.Clear();
+                    //_data.Promotes.AddRange(promotes);
+                    string retId = CommonProcess.UpdateOrderToServer(_data);
+                    if (!String.IsNullOrEmpty(retId))
+                    {
+                        _data.IsUpdateToServer = true;
+                        CommonProcess.ShowInformMessage(Properties.Resources.UpdateOrderSuccess, MessageBoxButtons.OK);
+
+                        this.Close();
+                    }
+                }
             }
         }
     }
