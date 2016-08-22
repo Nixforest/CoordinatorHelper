@@ -243,6 +243,7 @@ namespace MainPrj.View
             nUDMainPort.ReadOnly   = false;
             nUDMainPort.Enabled    = true;
             chbTestingMode.Visible = true;
+            groupBoxServer.Visible = true;
         }
     }
 }

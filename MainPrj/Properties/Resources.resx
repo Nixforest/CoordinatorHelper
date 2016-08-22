@@ -459,4 +459,7 @@ Bạn chắn chắn không?</value>
   <data name="UpdateAgentCellPhoneError" xml:space="preserve">
     <value>Số điện thoại không hợp lệ!</value>
   </data>
+  <data name="DefaultDateTimeFormat" xml:space="preserve">
+    <value>dd-MM-yyyy</value>
+  </data>
 </root>

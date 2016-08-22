@@ -20,7 +20,10 @@ namespace MainPrj.Model
         [DataMember(Name = "name", IsRequired = false)]
         private string name;
         [DataMember(Name = "quantity", IsRequired = false)]
-        private int quantity;
+        //++ BUG0044-SPJ (NguyenPT 20160822) Change quantity data type
+        //private int quantity;
+        private double quantity;
+        //-- BUG0044-SPJ (NguyenPT 20160822) Change quantity data type
         [DataMember(Name = "price", IsRequired = false)]
         private double price;
         [DataMember(Name = "money", IsRequired = false)]
@@ -36,7 +39,10 @@ namespace MainPrj.Model
         {
             id           = string.Empty;
             name         = string.Empty;
-            quantity     = 0;
+            //++ BUG0044-SPJ (NguyenPT 20160822) Change quantity data type
+            //quantity     = 0;
+            quantity     = 0.0;
+            //-- BUG0044-SPJ (NguyenPT 20160822) Change quantity data type
             price        = 0.0;
             money        = 0.0;
             materials_no = string.Empty;
@@ -77,7 +83,10 @@ namespace MainPrj.Model
         /// <summary>
         /// Quantity of product.
         /// </summary>
-        public int Quantity
+        //++ BUG0044-SPJ (NguyenPT 20160822) Change quantity data type
+        //public int Quantity
+        public double Quantity
+        //-- BUG0044-SPJ (NguyenPT 20160822) Change quantity data type
         {
             get { return quantity; }
             set { quantity = value; }
@@ -113,6 +122,10 @@ namespace MainPrj.Model
             }
             return false;
         }
+        /// <summary>
+        /// Check if material is Gas stove.
+        /// </summary>
+        /// <returns>True if material is Gas stove, false otherwise</returns>
         public bool IsGasStove()
         {
             if (TypeId.Equals("5"))
@@ -121,6 +134,10 @@ namespace MainPrj.Model
             }
             return false;
         }
+        /// <summary>
+        /// Check if material is Van.
+        /// </summary>
+        /// <returns>True if material is Van, false otherwise</returns>
         public bool IsVan()
         {
             if (TypeId.Equals("3"))

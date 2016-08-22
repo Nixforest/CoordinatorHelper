@@ -379,6 +379,15 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to dd-MM-yyyy.
+        /// </summary>
+        internal static string DefaultDateTimeFormat {
+            get {
+                return ResourceManager.GetString("DefaultDateTimeFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Chi tiết.
         /// </summary>
         internal static string Detail {

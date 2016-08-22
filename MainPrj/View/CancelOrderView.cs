@@ -13,23 +13,32 @@ namespace MainPrj.View
 {
     public partial class CancelOrderView : Form
     {
-        private string id = string.Empty;
+        //++ BUG0011-SPJ (NguyenPT 20160822) Add Created date property
+        //private string id = string.Empty;
+        private OrderModel _data = null;
 
-        /// <summary>
-        /// Order's id.
-        /// </summary>
-        public string Id
-        {
-            get { return id; }
-            set { id = value; }
-        }
+        ///// <summary>
+        ///// Order's id.
+        ///// </summary>
+        //public string Id
+        //{
+        //    get { return id; }
+        //    set { id = value; }
+        //}
+        //-- BUG0011-SPJ (NguyenPT 20160822) Add Created date property
         /// <summary>
         /// Constructor.
         /// </summary>
-        public CancelOrderView(string id)
+        //++ BUG0011-SPJ (NguyenPT 20160822) Add Created date property
+        //public CancelOrderView(string id)
+        public CancelOrderView(OrderModel data)
+        //-- BUG0011-SPJ (NguyenPT 20160822) Add Created date property
         {
             InitializeComponent();
-            this.Id = id;
+            //++ BUG0011-SPJ (NguyenPT 20160822) Add Created date property
+            //this.Id = id;
+            _data = data;
+            //-- BUG0011-SPJ (NguyenPT 20160822) Add Created date property
         }
         /// <summary>
         /// Handle when click Finish button.
@@ -38,28 +47,45 @@ namespace MainPrj.View
         /// <param name="e">EventArgs</param>
         private void btnFinish_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(id))
+            //++ BUG0011-SPJ (NguyenPT 20160822) Add Created date property
+            //if (!string.IsNullOrEmpty(id))
+            //{
+            //    foreach (OrderModel item in DataPure.Instance.ListOrders)
+            //    {
+            //        if (item.Id.Equals(id))
+            //        {
+            //            item.Status           = OrderStatus.ORDERSTATUS_CANCEL;
+            //            item.IsUpdateToServer = false;
+            //            item.Note             = tbxReason.Text.Trim();
+
+            //            // Update to server
+            //            string retId = CommonProcess.UpdateOrderToServer(item);
+            //            if (!String.IsNullOrEmpty(retId))
+            //            {
+            //                item.IsUpdateToServer = true;
+            //            }
+            //            break;
+            //        }
+            //    }
+
+            //    this.Close();
+            //}
+            if (_data != null)
             {
-                foreach (OrderModel item in DataPure.Instance.ListOrders)
+                _data.Status           = OrderStatus.ORDERSTATUS_CANCEL;
+                _data.IsUpdateToServer = false;
+                _data.Note             = tbxReason.Text.Trim();
+
+                // Update to server
+                string retId = CommonProcess.UpdateOrderToServer(_data);
+                if (!String.IsNullOrEmpty(retId))
                 {
-                    if (item.Id.Equals(id))
-                    {
-                        item.Status           = OrderStatus.ORDERSTATUS_CANCEL;
-                        item.IsUpdateToServer = false;
-                        item.Note             = tbxReason.Text.Trim();
-
-                        // Update to server
-                        string retId = CommonProcess.UpdateOrderToServer(item);
-                        if (!String.IsNullOrEmpty(retId))
-                        {
-                            item.IsUpdateToServer = true;
-                        }
-                        break;
-                    }
+                    _data.IsUpdateToServer = true;
+                    CommonProcess.UpdateOrderToFile(_data);
                 }
-
-                this.Close();
             }
+            this.Close();
+            //-- BUG0011-SPJ (NguyenPT 20160822) Add Created date property
         }
     }
 }

@@ -20,7 +20,10 @@ namespace MainPrj.Model.Update
         [DataMember(Name = "materials_type_id", IsRequired = false)]
         protected string materials_type_id;
         [DataMember(Name = "qty", IsRequired = false)]
-        protected int qty;
+        //++ BUG0044-SPJ (NguyenPT 20160822) Change quantity data type
+        //protected int qty;
+        protected double qty;
+        //-- BUG0044-SPJ (NguyenPT 20160822) Change quantity data type
         [DataMember(Name = "price", IsRequired = false)]
         protected string price;
         [DataMember(Name = "amount", IsRequired = false)]
@@ -58,7 +61,10 @@ namespace MainPrj.Model.Update
         /// <summary>
         /// Quantity.
         /// </summary>
-        public int Quantity
+        //++ BUG0044-SPJ (NguyenPT 20160822) Change quantity data type
+        //public int Quantity
+        public double Quantity
+        //-- BUG0044-SPJ (NguyenPT 20160822) Change quantity data type
         {
             get { return qty; }
             set { qty = value; }
@@ -104,6 +110,10 @@ namespace MainPrj.Model.Update
             }
             return retVal;
         }
+        /// <summary>
+        /// Check if material is Gas.
+        /// </summary>
+        /// <returns>True if material is Gas, false otherwise</returns>
         public bool IsGas()
         {
             if (materials_type_id.Equals("4")
@@ -115,6 +125,10 @@ namespace MainPrj.Model.Update
             }
             return false;
         }
+        /// <summary>
+        /// Check if material is Gas stove.
+        /// </summary>
+        /// <returns>True if material is Gas stove, false otherwise</returns>
         public bool IsGasStove()
         {
             if (materials_type_id.Equals("5"))
@@ -123,6 +137,10 @@ namespace MainPrj.Model.Update
             }
             return false;
         }
+        /// <summary>
+        /// Check if material is Van.
+        /// </summary>
+        /// <returns>True if material is Van, false otherwise</returns>
         public bool IsVan()
         {
             if (materials_type_id.Equals("3"))
@@ -131,6 +149,10 @@ namespace MainPrj.Model.Update
             }
             return false;
         }
+        /// <summary>
+        /// Check if material is promote.
+        /// </summary>
+        /// <returns>True if material is promote, false otherwise</returns>
         public bool IsPromote()
         {
             if (materials_type_id.Equals("6"))
@@ -139,6 +161,10 @@ namespace MainPrj.Model.Update
             }
             return false;
         }
+        /// <summary>
+        /// Check if material is cylinder.
+        /// </summary>
+        /// <returns>True if material is cylinder, false otherwise</returns>
         public bool IsCylinder()
         {
             if (materials_type_id.Equals("1")

@@ -32,7 +32,6 @@ namespace MainPrj.View
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ListOrderView));
             this.btnClear = new System.Windows.Forms.Button();
             this.tbxSearch = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnUpdateData = new System.Windows.Forms.Button();
             this.btnAddCylinder = new System.Windows.Forms.Button();
@@ -51,6 +50,10 @@ namespace MainPrj.View
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.btnPrint = new System.Windows.Forms.Button();
+            this.lblTotalPromote = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.dtpFilterTo = new System.Windows.Forms.DateTimePicker();
+            this.dtpFilterFrom = new System.Windows.Forms.DateTimePicker();
             this.listViewListOrder = new MainPrj.View.EditableListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -81,22 +84,13 @@ namespace MainPrj.View
             // tbxSearch
             // 
             this.tbxSearch.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.tbxSearch.Location = new System.Drawing.Point(819, 10);
+            this.tbxSearch.Location = new System.Drawing.Point(936, 10);
             this.tbxSearch.Name = "tbxSearch";
-            this.tbxSearch.Size = new System.Drawing.Size(388, 29);
+            this.tbxSearch.Size = new System.Drawing.Size(271, 29);
             this.tbxSearch.TabIndex = 3;
             this.tbxSearch.Text = "Tìm kiếm";
             this.tbxSearch.Enter += new System.EventHandler(this.tbxSearch_Enter);
             this.tbxSearch.Leave += new System.EventHandler(this.tbxSearch_Leave);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(721, 13);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(92, 24);
-            this.label1.TabIndex = 8;
-            this.label1.Text = "Tìm kiếm:";
             // 
             // btnClose
             // 
@@ -303,6 +297,47 @@ namespace MainPrj.View
             this.btnPrint.UseVisualStyleBackColor = true;
             this.btnPrint.Click += new System.EventHandler(this.btnPrint_Click);
             // 
+            // lblTotalPromote
+            // 
+            this.lblTotalPromote.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblTotalPromote.AutoSize = true;
+            this.lblTotalPromote.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTotalPromote.ForeColor = System.Drawing.Color.DarkGreen;
+            this.lblTotalPromote.Location = new System.Drawing.Point(696, 586);
+            this.lblTotalPromote.Name = "lblTotalPromote";
+            this.lblTotalPromote.Size = new System.Drawing.Size(16, 17);
+            this.lblTotalPromote.TabIndex = 11;
+            this.lblTotalPromote.Text = "0";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(834, 9);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(29, 24);
+            this.label1.TabIndex = 16;
+            this.label1.Text = "→";
+            // 
+            // dtpFilterTo
+            // 
+            this.dtpFilterTo.CustomFormat = "dd/MM";
+            this.dtpFilterTo.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpFilterTo.Location = new System.Drawing.Point(865, 10);
+            this.dtpFilterTo.Name = "dtpFilterTo";
+            this.dtpFilterTo.Size = new System.Drawing.Size(65, 29);
+            this.dtpFilterTo.TabIndex = 14;
+            this.dtpFilterTo.ValueChanged += new System.EventHandler(this.dtpFilterTo_ValueChanged);
+            // 
+            // dtpFilterFrom
+            // 
+            this.dtpFilterFrom.CustomFormat = "dd/MM";
+            this.dtpFilterFrom.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpFilterFrom.Location = new System.Drawing.Point(765, 9);
+            this.dtpFilterFrom.Name = "dtpFilterFrom";
+            this.dtpFilterFrom.Size = new System.Drawing.Size(66, 29);
+            this.dtpFilterFrom.TabIndex = 15;
+            this.dtpFilterFrom.ValueChanged += new System.EventHandler(this.dtpFilterFrom_ValueChanged);
+            // 
             // listViewListOrder
             // 
             this.listViewListOrder.AllowColumnReorder = true;
@@ -406,8 +441,12 @@ namespace MainPrj.View
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1318, 639);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.dtpFilterTo);
+            this.Controls.Add(this.dtpFilterFrom);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnPrint);
+            this.Controls.Add(this.lblTotalPromote);
             this.Controls.Add(this.lblTotalPay);
             this.Controls.Add(this.lblCylinder);
             this.Controls.Add(this.label6);
@@ -424,7 +463,6 @@ namespace MainPrj.View
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.listViewListOrder);
             this.Controls.Add(this.btnClose);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -446,7 +484,6 @@ namespace MainPrj.View
 
         private System.Windows.Forms.Button btnClear;
         private System.Windows.Forms.TextBox tbxSearch;
-        private System.Windows.Forms.Label label1;
         private EditableListView listViewListOrder;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
@@ -479,5 +516,9 @@ namespace MainPrj.View
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button btnPrint;
+        private System.Windows.Forms.Label lblTotalPromote;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.DateTimePicker dtpFilterTo;
+        private System.Windows.Forms.DateTimePicker dtpFilterFrom;
     }
 }

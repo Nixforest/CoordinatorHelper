@@ -13,7 +13,7 @@ namespace MainPrj.Model
     /// Order model.
     /// </summary>
     [DataContract]
-    public class OrderModel
+    public class OrderModel : IComparable<OrderModel>
     {
         [DataMember(Name = "id", IsRequired = false)]
         private string id;
@@ -45,6 +45,10 @@ namespace MainPrj.Model
         private bool isUpdateToServer;
         [DataMember(Name = "status", IsRequired = false)]
         private OrderStatus status;
+        //++ BUG0011-SPJ (NguyenPT 20160822) Add Created date property
+        [DataMember(Name = "created_date", IsRequired = false)]
+        private string created_date;
+        //-- BUG0011-SPJ (NguyenPT 20160822) Add Created date property
 
         /// <summary>
         /// Constructor.
@@ -66,7 +70,20 @@ namespace MainPrj.Model
             webId            = string.Empty;
             isUpdateToServer = true;
             status           = OrderStatus.ORDERSTATUS_NEW;
+            //++ BUG0011-SPJ (NguyenPT 20160822) Add Created date property
+            created_date = DateTime.Now.ToString(Properties.Resources.DefaultDateTimeFormat);
+            //-- BUG0011-SPJ (NguyenPT 20160822) Add Created date property
         }
+        //++ BUG0011-SPJ (NguyenPT 20160822) Add Created date property
+        /// <summary>
+        /// Created date.
+        /// </summary>
+        public string Created_date
+        {
+            get { return created_date; }
+            set { created_date = value; }
+        }
+        //-- BUG0011-SPJ (NguyenPT 20160822) Add Created date property
         /// <summary>
         /// Flag check if this order is finished.
         /// </summary>
@@ -226,6 +243,22 @@ namespace MainPrj.Model
                 CommonProcess.ShowErrorMessage(Properties.Resources.ErrorCause + ex.Message);
             }
             return retVal;
+        }
+        /// <summary>
+        /// Compare delegate
+        /// </summary>
+        /// <param name="other">Compared object</param>
+        /// <returns>Id compare result</returns>
+        public int CompareTo(OrderModel other)
+        {
+            if (other == null)
+            {
+                return 1;
+            }
+            else
+            {
+                return other.Id.CompareTo(this.Id);
+            }
         }
     }
 }

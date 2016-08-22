@@ -158,6 +158,9 @@ namespace MainPrj
 
             customer.ActivePhone = phone;
             CallModel call = new CallModel(System.DateTime.Now, channelIdx, customer, phone, status);
+            //++ BUG0043-SPJ (NguyenPT 20160822) Fix bug lost all history when program down
+            CommonProcess.WriteHistory(call);
+            //-- BUG0043-SPJ (NguyenPT 20160822) Fix bug lost all history when program down
             DataPure.Instance.ListCalls.Add(call);
             CommonProcess.SetChannelInformation(channel, call.Customer);
         }
@@ -305,6 +308,9 @@ namespace MainPrj
                 if (String.IsNullOrEmpty(channelControl.Data.Name))
                 {
                     List<String> customerInfo = channelControl.GetNewCustomerInfo();
+                    //++ BUG0040-SPJ (NguyenPT 20160822) Disable Create Customer button
+                    btnCreateCustomer.Enabled = false;
+                    //-- BUG0040-SPJ (NguyenPT 20160822) Disable Create Customer button
                     CommonProcess.RequestCreateNewCustomer(customerInfo[0],
                         channelControl.GetIncommingPhone(),
                         customerInfo[1],
@@ -323,6 +329,9 @@ namespace MainPrj
         private void HandleClickListOrderButton()
         {
             ListOrderView view = new ListOrderView();
+            //++ BUG0011-SPJ (NguyenPT 20160822) Add list data to List Order screen
+            view.ListTodayData.AddRange(DataPure.Instance.ListOrders);
+            //-- BUG0011-SPJ (NguyenPT 20160822) Add list data to List Order screen
             view.Show();
         }
         /// <summary>
@@ -1126,6 +1135,9 @@ namespace MainPrj
                     }
                 }
             }
+            //++ BUG0040-SPJ (NguyenPT 20160822) Enable Create Customer button
+            btnCreateCustomer.Enabled = true;
+            //-- BUG0040-SPJ (NguyenPT 20160822) Enable Create Customer button
         }
         /// <summary>
         /// Request temp data completed event handler.

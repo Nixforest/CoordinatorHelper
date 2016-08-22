@@ -67,6 +67,7 @@
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnUpdate = new System.Windows.Forms.Button();
+            this.dtpDate = new System.Windows.Forms.DateTimePicker();
             this.SuspendLayout();
             // 
             // label1
@@ -254,6 +255,7 @@
             // 
             // tbxCustomer
             // 
+            this.tbxCustomer.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.tbxCustomer.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tbxCustomer.ForeColor = System.Drawing.SystemColors.MenuHighlight;
             this.tbxCustomer.Location = new System.Drawing.Point(568, 15);
@@ -284,13 +286,14 @@
             // 
             // textBox1
             // 
+            this.textBox1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox1.ForeColor = System.Drawing.SystemColors.MenuHighlight;
             this.textBox1.Location = new System.Drawing.Point(448, 15);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(114, 101);
+            this.textBox1.Size = new System.Drawing.Size(123, 101);
             this.textBox1.TabIndex = 9;
             this.textBox1.TabStop = false;
             this.textBox1.Text = "Khách hàng:\r\nĐịa chỉ:";
@@ -431,15 +434,25 @@
             this.btnUpdate.UseVisualStyleBackColor = true;
             this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
             // 
+            // dtpDate
+            // 
+            this.dtpDate.CustomFormat = "dd-MM-yyyy";
+            this.dtpDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpDate.Location = new System.Drawing.Point(826, 121);
+            this.dtpDate.Name = "dtpDate";
+            this.dtpDate.Size = new System.Drawing.Size(129, 29);
+            this.dtpDate.TabIndex = 12;
+            // 
             // OrderView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(967, 716);
+            this.Controls.Add(this.tbxCustomer);
+            this.Controls.Add(this.dtpDate);
             this.Controls.Add(this.listViewRecentPromote);
             this.Controls.Add(this.listViewRecentProduct);
             this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.tbxCustomer);
             this.Controls.Add(this.listViewPromote);
             this.Controls.Add(this.listViewProduct);
             this.Controls.Add(this.cbxCCS);
@@ -521,5 +534,6 @@
         private System.Windows.Forms.ListView listViewRecentProduct;
         private System.Windows.Forms.ListView listViewRecentPromote;
         private System.Windows.Forms.Button btnUpdate;
+        private System.Windows.Forms.DateTimePicker dtpDate;
     }
 }

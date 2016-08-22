@@ -17,16 +17,36 @@ namespace MainPrj.View
         /// <summary>
         /// List of data which search result.
         /// </summary>
-        private List<OrderModel> listDataSearch = new List<OrderModel>();
-        private int totalGas      = 0;
-        private int totalGasStove = 0;
-        private int totalVan      = 0;
+        private List<OrderModel> listCurrentData = new List<OrderModel>();
+        //++ BUG0044-SPJ (NguyenPT 20160822) Change quantity data type to double
+        //private int totalGas      = 0;
+        //private int totalGasStove = 0;
+        //private int totalVan = 0;
+        private double totalGas      = 0.0;
+        private double totalGasStove = 0.0;
+        private double totalVan      = 0.0;
+        //-- BUG0044-SPJ (NguyenPT 20160822) Change quantity data type to double
         private double totalPay   = 0.0;
         private int totalCylinder = 0;
+        //++ BUG0010-SPJ (NguyenPT 20160818) Add total promote money
+        private double totalPromote = 0.0;
+        //-- BUG0010-SPJ (NguyenPT 20160818) Add total promote money
         /// <summary>
         /// List items of Deliver combobox.
         /// </summary>
         private List<object> _listDeliverItems = new List<object>();
+        //++ BUG0041-SPJ (NguyenPT 20160822) Filter Orders data by date
+        private List<OrderModel> listTodayData = new List<OrderModel>();
+
+        /// <summary>
+        /// List of data.
+        /// </summary>
+        public List<OrderModel> ListTodayData
+        {
+            get { return listTodayData; }
+            set { listTodayData = value; }
+        }
+        //-- BUG0041-SPJ (NguyenPT 20160822) Filter Orders data by date
         /// <summary>
         /// Constructor.
         /// </summary>
@@ -44,8 +64,11 @@ namespace MainPrj.View
             totalVan      = 0;
             totalPay      = 0.0;
             totalCylinder = 0;
+            //++ BUG0010-SPJ (NguyenPT 20160818) Add total promote money
+            totalPromote = 0.0;
+            //-- BUG0010-SPJ (NguyenPT 20160818) Add total promote money
 
-            foreach (OrderModel item in DataPure.Instance.ListOrders)
+            foreach (OrderModel item in listCurrentData)
             {
                 if (item.Status.Equals(OrderStatus.ORDERSTATUS_CANCEL))
                 {
@@ -76,6 +99,10 @@ namespace MainPrj.View
                         totalCylinder += cylinder.Quantity;
                     }
                 }
+                
+                //++ BUG0010-SPJ (NguyenPT 20160818) Calculate total promote money
+                totalPromote += item.PromoteMoney;
+                //-- BUG0010-SPJ (NguyenPT 20160818) Calculate total promote money
                 // Total pay
                 totalPay += item.TotalPay;
             }
@@ -84,6 +111,9 @@ namespace MainPrj.View
             lblVan.Text      = totalVan.ToString();
             lblCylinder.Text = totalCylinder.ToString();
             lblTotalPay.Text = CommonProcess.FormatMoney(totalPay);
+            //++ BUG0010-SPJ (NguyenPT 20160818) Show total promote money
+            lblTotalPromote.Text = CommonProcess.FormatMoney(totalPromote);
+            //-- BUG0010-SPJ (NguyenPT 20160818) Show total promote money
         }
         /// <summary>
         /// Update total.
@@ -146,40 +176,48 @@ namespace MainPrj.View
         {
             tbxSearch.Text      = Properties.Resources.SearchString;
             tbxSearch.ForeColor = SystemColors.GrayText;
-            this.listDataSearch.Clear();
-            LoadListView(DataPure.Instance.ListOrders);
+            this.listCurrentData.Clear();
+            //LoadListView(DataPure.Instance.ListOrders);
+            int dayNum = (dtpFilterTo.Value - dtpFilterFrom.Value).Days;
+            DateTime from = dtpFilterFrom.Value;
+            for (int i = 0; i <= dayNum; i++)
+            {
+                from = dtpFilterFrom.Value;
+                this.listCurrentData.AddRange(CommonProcess.ReadListOrdersByDate(from.AddDays(i)));
+            }
+            ReloadListView(this.listCurrentData);
         }
         /// <summary>
         /// Load data to listview.
         /// </summary>
         /// <param name="listData">List of data</param>
-        private void LoadListView(List<OrderModel> listData)
-        {
-            this.listViewListOrder.Items.Clear();
-            for (int i = listData.Count - 1; i >= 0; i--)
-            {
-                if (!listData[i].Status.Equals(OrderStatus.ORDERSTATUS_CANCEL))
-                {
-                    this.listViewListOrder.Items.Add(
-                    CreateListViewItem(listData[i], listData.Count - i));
+        //private void LoadListView(List<OrderModel> listData)
+        //{
+        //    this.listViewListOrder.Items.Clear();
+        //    for (int i = listData.Count - 1; i >= 0; i--)
+        //    {
+        //        if (!listData[i].Status.Equals(OrderStatus.ORDERSTATUS_CANCEL))
+        //        {
+        //            this.listViewListOrder.Items.Add(
+        //            CreateListViewItem(listData[i], listData.Count - i));
 
-                    for (int j = 1; j < listData[i].Cylinders.Count; j++)
-                    {
-                        OrderModel subModel = new OrderModel();
-                        if (j < listData[i].Products.Count)
-                        {
-                            subModel.Products.Add(listData[i].Products[j]);
-                        }
-                        else
-                        {
-                            subModel.Products.Add(new ProductModel());
-                        }
-                        subModel.Cylinders.Add(listData[i].Cylinders[j]);
-                        this.listViewListOrder.Items.Add(CreateListViewSubItem(subModel));
-                    }
-                }
-            }
-        }
+        //            for (int j = 1; j < listData[i].Cylinders.Count; j++)
+        //            {
+        //                OrderModel subModel = new OrderModel();
+        //                if (j < listData[i].Products.Count)
+        //                {
+        //                    subModel.Products.Add(listData[i].Products[j]);
+        //                }
+        //                else
+        //                {
+        //                    subModel.Products.Add(new ProductModel());
+        //                }
+        //                subModel.Cylinders.Add(listData[i].Cylinders[j]);
+        //                this.listViewListOrder.Items.Add(CreateListViewSubItem(subModel));
+        //            }
+        //        }
+        //    }
+        //}
 
         /// <summary>
         /// Handle when lost focus on Search textbox.
@@ -241,10 +279,20 @@ namespace MainPrj.View
             if (listViewListOrder.SelectedItems.Count > 0)
             {
                 string id = listViewListOrder.SelectedItems[0].Tag.ToString();
-                FinishOrderView view = new FinishOrderView(id);
-                view.ShowDialog();
-                LoadListView(DataPure.Instance.ListOrders);
-                UpdateTotal();
+                if (!string.IsNullOrEmpty(id))
+                {
+                    foreach (OrderModel item in this.listCurrentData)
+                    {
+                        if (item.Id.Equals(id))
+                        {
+                            FinishOrderView view = new FinishOrderView(item);
+                            view.ShowDialog();
+                            ReloadListView(this.listCurrentData);
+                            UpdateTotal();
+                            break;
+                        }
+                    }
+                }
             }
         }
         /// <summary>
@@ -253,19 +301,69 @@ namespace MainPrj.View
         /// <param name="keyword">Keyword</param>
         private void SearchByKeyword(string keyword)
         {
-            this.listDataSearch.Clear();
+            this.listCurrentData.Clear();
             keyword = CommonProcess.NormalizationString(keyword).ToLower();
+            //if (!String.IsNullOrEmpty(keyword))
+            //{
+            //    foreach (OrderModel item in DataPure.Instance.ListOrders)
+            //    {
+            //        if (item.IsContainString(keyword))
+            //        {
+            //            this.listDataSearch.Add(item);
+            //        }
+            //    }
+            //}
+            //LoadListView(this.listDataSearch);
+            // Result when search with keyword
+            List<OrderModel> listResult = new List<OrderModel>();
+            // Get number of days
+            int dayNum = (dtpFilterTo.Value - dtpFilterFrom.Value).Days;
+            // Get From value
+            DateTime from = dtpFilterFrom.Value;
+            // Loop for all dates
+            for (int i = 0; i <= dayNum; i++)
+            {
+                from = dtpFilterFrom.Value.AddDays(i);
+                DateTime today = System.DateTime.Now;
+                if ((from.Year == today.Year)
+                    && (from.Month == today.Month)
+                    && (from.Day == today.Day))
+                {
+                    if (!String.IsNullOrEmpty(keyword))
+                    {
+                        foreach (OrderModel item in this.listTodayData)
+                        {
+                            if (item.IsContainString(keyword))
+                            {
+                                listResult.Add(item);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        listResult.AddRange(this.listTodayData);
+                    }
+                }
+                else
+                {
+                    listResult.AddRange(CommonProcess.ReadListOrdersByDate(from));
+                }
+            }
             if (!String.IsNullOrEmpty(keyword))
             {
-                foreach (OrderModel item in DataPure.Instance.ListOrders)
+                foreach (OrderModel item in listResult)
                 {
                     if (item.IsContainString(keyword))
                     {
-                        this.listDataSearch.Add(item);
+                        this.listCurrentData.Add(item);
                     }
                 }
             }
-            LoadListView(this.listDataSearch);
+            else
+            {
+                this.listCurrentData.AddRange(listResult);
+            }
+            ReloadListView(listCurrentData);
         }
         /// <summary>
         /// Set title.
@@ -293,6 +391,55 @@ namespace MainPrj.View
             }
         }
         /// <summary>
+        /// Reload listview.
+        /// </summary>
+        /// <param name="list">List data</param>
+        private void ReloadListView(List<OrderModel> list, bool isFilter = true)
+        {
+            list.Sort();
+            if (isFilter)
+            {
+                // Add deliver filter
+                _listDeliverItems = new List<object>();
+                _listDeliverItems.Add(new { Text = string.Empty, Value = string.Empty });
+            }
+            this.listViewListOrder.Items.Clear();
+
+            // Loop through all orders
+            int idx = 0;
+            for (int i = list.Count - 1; i >= 0; i--)
+            {
+                if (!list[i].Status.Equals(OrderStatus.ORDERSTATUS_CANCEL))
+                {
+                    this.listViewListOrder.Items.Add(
+                        CreateListViewItem(list[i], ++idx));
+
+                    for (int j = 1; j < list[i].Cylinders.Count; j++)
+                    {
+                        OrderModel subModel = new OrderModel();
+                        if (j < list[i].Products.Count)
+                        {
+                            subModel.Products.Add(list[i].Products[j]);
+                        }
+                        else
+                        {
+                            subModel.Products.Add(new ProductModel());
+                        }
+                        subModel.Cylinders.Add(list[i].Cylinders[j]);
+                        this.listViewListOrder.Items.Add(CreateListViewSubItem(subModel));
+                    }
+                    // Add deliver filter
+                    AddDeliverToCombobox(list[i]);
+
+                    if (isFilter)
+                    {
+                        cbxDeliver.DataSource = _listDeliverItems;
+                        cbxDeliver.SelectedIndex = 0;
+                    }
+                }
+            }
+        }
+        /// <summary>
         /// Handle load form.
         /// </summary>
         /// <param name="sender">Sender</param>
@@ -300,31 +447,28 @@ namespace MainPrj.View
         private void ListOrderView_Load(object sender, EventArgs e)
         {
             SetTitle(System.DateTime.Now.ToString(Properties.Resources.DateTimeFormat));
-            // Add deliver filter
-            _listDeliverItems = new List<object>();
-            _listDeliverItems.Add(new { Text = string.Empty, Value = string.Empty });
 
-            // Loop through all orders
-            for (int i = DataPure.Instance.ListOrders.Count - 1; i >= 0; i--)
-            {
-                this.listViewListOrder.Items.Add(
-                    CreateListViewItem(DataPure.Instance.ListOrders[i], DataPure.Instance.ListOrders.Count - i));
+            this.listCurrentData.AddRange(this.listTodayData);
+            ReloadListView(this.listCurrentData);
+            //// Loop through all orders
+            //for (int i = DataPure.Instance.ListOrders.Count - 1; i >= 0; i--)
+            //{
+            //    this.listViewListOrder.Items.Add(
+            //        CreateListViewItem(DataPure.Instance.ListOrders[i], DataPure.Instance.ListOrders.Count - i));
 
-                for (int j = 1; j < DataPure.Instance.ListOrders[i].Cylinders.Count; j++)
-                {
-                    OrderModel subModel = new OrderModel();
-                    if (j < DataPure.Instance.ListOrders[i].Products.Count)
-                    {
-                        subModel.Products.Add(DataPure.Instance.ListOrders[i].Products[j]);
-                    }
-                    subModel.Cylinders.Add(DataPure.Instance.ListOrders[i].Cylinders[j]);
-                    this.listViewListOrder.Items.Add(CreateListViewSubItem(subModel));
-                }
-                // Add deliver filter
-                AddDeliverToCombobox(DataPure.Instance.ListOrders[i]);
-            }
-            cbxDeliver.DataSource    = _listDeliverItems;
-            cbxDeliver.SelectedIndex = 0;
+            //    for (int j = 1; j < DataPure.Instance.ListOrders[i].Cylinders.Count; j++)
+            //    {
+            //        OrderModel subModel = new OrderModel();
+            //        if (j < DataPure.Instance.ListOrders[i].Products.Count)
+            //        {
+            //            subModel.Products.Add(DataPure.Instance.ListOrders[i].Products[j]);
+            //        }
+            //        subModel.Cylinders.Add(DataPure.Instance.ListOrders[i].Cylinders[j]);
+            //        this.listViewListOrder.Items.Add(CreateListViewSubItem(subModel));
+            //    }
+            //    // Add deliver filter
+            //    AddDeliverToCombobox(DataPure.Instance.ListOrders[i]);
+            //}
             // ListView columns type
             this.listViewListOrder.ColumnTypes = new List<Type>()
             { 
@@ -619,7 +763,7 @@ namespace MainPrj.View
                         {
                             index = idx - mainIdx;
                         }
-                        foreach (OrderModel item in DataPure.Instance.ListOrders)
+                        foreach (OrderModel item in this.listCurrentData)
                         {
                             if (item.Id.Equals(id))
                             {
@@ -680,7 +824,7 @@ namespace MainPrj.View
                                 }
                             }
                         }
-                        foreach (OrderModel item in DataPure.Instance.ListOrders)
+                        foreach (OrderModel item in this.listCurrentData)
                         {
                             if (item.Id.Equals(id))
                             {
@@ -735,7 +879,7 @@ namespace MainPrj.View
                                 }
                             }
                         }
-                        foreach (OrderModel item in DataPure.Instance.ListOrders)
+                        foreach (OrderModel item in this.listCurrentData)
                         {
                             if (item.Id.Equals(id))
                             {
@@ -763,7 +907,7 @@ namespace MainPrj.View
                         // Check if this row is sub row
                         if (!String.IsNullOrEmpty(id))
                         {
-                            foreach (OrderModel item in DataPure.Instance.ListOrders)
+                            foreach (OrderModel item in this.listCurrentData)
                             {
                                 if (item.Id.Equals(id))
                                 {
@@ -786,7 +930,8 @@ namespace MainPrj.View
                 default:
                     break;
             }
-            LoadListView(DataPure.Instance.ListOrders);
+            //LoadListView(DataPure.Instance.ListOrders);
+            ReloadListView(this.listCurrentData);
         }
         /// <summary>
         /// Handle click Close button
@@ -839,14 +984,18 @@ namespace MainPrj.View
                 string id = listViewListOrder.SelectedItems[0].Tag.ToString();
                 if (!string.IsNullOrEmpty(id))
                 {
-                    foreach (OrderModel item in DataPure.Instance.ListOrders)
+                    foreach (OrderModel item in this.listCurrentData)
                     {
                         if (item.Id.Equals(id))
                         {
                             OrderView order = new OrderView(item.Customer, true);
                             order.SetData(item);
                             order.ShowDialog();
-                            LoadListView(DataPure.Instance.ListOrders);
+                            //++ BUG0010-SPJ (NguyenPT 20160818) Show total promote money
+                            UpdateTotal();
+                            //-- BUG0010-SPJ (NguyenPT 20160818) Show total promote money
+                            //LoadListView(DataPure.Instance.ListOrders);
+                            ReloadListView(this.listCurrentData);
                             return;
                         }
                     }
@@ -863,7 +1012,7 @@ namespace MainPrj.View
         {
             OrderReport report = new OrderReport();
             Dictionary<string, OrderDetailModel> listData = new Dictionary<string, OrderDetailModel>();
-            foreach (OrderModel item in DataPure.Instance.ListOrders)
+            foreach (OrderModel item in this.listCurrentData)
             {
                 if (item.Status.Equals(OrderStatus.ORDERSTATUS_CANCEL))
                 {
@@ -946,10 +1095,22 @@ namespace MainPrj.View
             if (listViewListOrder.SelectedItems.Count > 0)
             {
                 string id = listViewListOrder.SelectedItems[0].Tag.ToString();
-                CancelOrderView view = new CancelOrderView(id);
-                view.ShowDialog();
-                LoadListView(DataPure.Instance.ListOrders);
-                UpdateTotal();
+                if (!string.IsNullOrEmpty(id))
+                {
+                    foreach (OrderModel item in this.listCurrentData)
+                    {
+                        if (item.Id.Equals(id))
+                        {
+                            //CancelOrderView view = new CancelOrderView(id);
+                            CancelOrderView view = new CancelOrderView(item);
+                            view.ShowDialog();
+                            //LoadListView(DataPure.Instance.ListOrders);
+                            ReloadListView(this.listCurrentData);
+                            UpdateTotal();
+                            break;
+                        }
+                    }
+                }
             }
         }
         /// <summary>
@@ -970,22 +1131,25 @@ namespace MainPrj.View
         {
             if (cbxDeliver.SelectedIndex == 0)
             {
-                LoadListView(DataPure.Instance.ListOrders);
+                //LoadListView(DataPure.Instance.ListOrders);
+                ReloadListView(this.listCurrentData);
                 UpdateTotal();
             }
             else
             {
-                this.listDataSearch.Clear();
-                foreach (OrderModel model in DataPure.Instance.ListOrders)
+                //this.listCurrentData.Clear();
+                List<OrderModel> list = new List<OrderModel>();
+                foreach (OrderModel model in this.listCurrentData)
                 {
                     string id = !String.IsNullOrEmpty(model.DeliverId) ? model.DeliverId : model.CCSId;
                     if (id.Equals(cbxDeliver.SelectedValue))
                     {
-                        this.listDataSearch.Add(model);
+                        list.Add(model);
                     }
                 }
-                LoadListView(this.listDataSearch);
-                UpdateTotal(this.listDataSearch);
+                //LoadListView(this.listCurrentData);
+                ReloadListView(list, false);
+                UpdateTotal(list);
             }
         }
         /// <summary>
@@ -999,7 +1163,7 @@ namespace MainPrj.View
                 && (!String.IsNullOrEmpty(this.listViewListOrder.SelectedItems[0].Tag.ToString())))
             {
                 string id = this.listViewListOrder.SelectedItems[0].Tag.ToString();
-                foreach (OrderModel item in DataPure.Instance.ListOrders)
+                foreach (OrderModel item in this.listCurrentData)
                 {
                     if (item.Id.Equals(id))
                     {
@@ -1035,6 +1199,36 @@ namespace MainPrj.View
                     }
                 }
             }
+        }
+
+        private void dtpFilterFrom_ValueChanged(object sender, EventArgs e)
+        {
+            // Check if From value is greater than To value
+            if (dtpFilterFrom.Value > dtpFilterTo.Value)
+            {
+                dtpFilterTo.Value = dtpFilterFrom.Value;
+            }
+            string keyword = this.tbxSearch.Text.Trim();
+            if (this.tbxSearch.Text.Equals(Properties.Resources.SearchString))
+            {
+                keyword = string.Empty;
+            }
+            this.SearchByKeyword(keyword);
+        }
+
+        private void dtpFilterTo_ValueChanged(object sender, EventArgs e)
+        {
+            // Check if From value is greater than To value
+            if (dtpFilterFrom.Value > dtpFilterTo.Value)
+            {
+                dtpFilterFrom.Value = dtpFilterTo.Value;
+            }
+            string keyword = this.tbxSearch.Text.Trim();
+            if (this.tbxSearch.Text.Equals(Properties.Resources.SearchString))
+            {
+                keyword = string.Empty;
+            }
+            this.SearchByKeyword(keyword);
         }
     }
 }

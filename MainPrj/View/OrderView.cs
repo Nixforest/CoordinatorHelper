@@ -66,6 +66,7 @@ namespace MainPrj.View
             tbxItem.Enabled               = !_isUpdateMode;
             btnCreateOrder.Visible        = !_isUpdateMode;
             btnCreatePrint.Visible        = !_isUpdateMode;
+            dtpDate.Enabled               = !_isUpdateMode;
             btnUpdate.Visible             = _isUpdateMode;
         }
         /// <summary>
@@ -94,6 +95,7 @@ namespace MainPrj.View
         /// <param name="e">EventArgs</param>
         private void OrderView_Load(object sender, EventArgs e)
         {
+            dtpDate.Value = DateTime.Now;
             // Customer information
             tbxCustomer.Text = String.Format("{0} - {1}\r\n{2}",
                 CustomerInfo != null ? CustomerInfo.Name : String.Empty,
@@ -198,6 +200,14 @@ namespace MainPrj.View
                 ReloadListProduct();
                 promotes = _data.Promotes;
                 ReloadListPromotes();
+                if (_data.Created_date != null)
+                {
+                    dtpDate.Value = Convert.ToDateTime(_data.Created_date);
+                }
+                else
+                {
+                    dtpDate.Value = DateTime.Now;
+                }
                 UpdateMoney();
             }
         }
@@ -325,9 +335,11 @@ namespace MainPrj.View
                             if (item.Id.Equals(id))
                             {
                                 string quantityStr = e.DisplayText;
-                                int quantity = item.Quantity;
+                                //int quantity = item.Quantity;
+                                double quantity = item.Quantity;
                                 // Check editing value is valid or not
-                                if (int.TryParse(quantityStr, out quantity))
+                                //if (int.TryParse(quantityStr, out quantity))
+                                if (double.TryParse(quantityStr, out quantity))
                                 {
                                     // Update data
                                     item.Quantity = quantity;
@@ -389,7 +401,13 @@ namespace MainPrj.View
         /// <param name="e">EventArgs</param>
         private void cbxDeliver_SelectedIndexChanged(object sender, EventArgs e)
         {
-            lblDeliver.Text = String.Format(Properties.Resources.IdIs, cbxDeliver.SelectedValue.ToString());
+            //++ BUG0042-SPJ (NguyenPT 20160818) Check selected value is not null
+            //lblDeliver.Text = String.Format(Properties.Resources.IdIs, cbxDeliver.SelectedValue.ToString());
+            if (cbxDeliver.SelectedValue != null)
+            {
+                lblDeliver.Text = String.Format(Properties.Resources.IdIs, cbxDeliver.SelectedValue.ToString());
+            }
+            //-- BUG0042-SPJ (NguyenPT 20160818) Check selected value is not null
         }
 
         /// <summary>
@@ -399,7 +417,13 @@ namespace MainPrj.View
         /// <param name="e">EventArgs</param>
         private void cbxCCS_SelectedIndexChanged(object sender, EventArgs e)
         {
-            lblCCS.Text = String.Format(Properties.Resources.IdIs, cbxCCS.SelectedValue.ToString());
+            //++ BUG0042-SPJ (NguyenPT 20160818) Check selected value is not null
+            //lblCCS.Text = String.Format(Properties.Resources.IdIs, cbxCCS.SelectedValue.ToString());
+            if (cbxCCS.SelectedValue != null)
+            {
+                lblCCS.Text = String.Format(Properties.Resources.IdIs, cbxCCS.SelectedValue.ToString());
+            }
+            //-- BUG0042-SPJ (NguyenPT 20160818) Check selected value is not null
         }
         /// <summary>
         /// Handle keydown event
@@ -686,7 +710,9 @@ namespace MainPrj.View
                 model.TotalPay = totalPay;
                 model.TotalMoney = total;
                 model.PromoteMoney = totalPromote;
-                model.Id = System.DateTime.Now.ToString(Properties.Settings.Default.CallIdFormat);
+                model.Created_date = dtpDate.Value.ToString(Properties.Resources.DefaultDateTimeFormat);
+                //model.Id = System.DateTime.Now.ToString(Properties.Settings.Default.CallIdFormat);
+                model.Id = dtpDate.Value.ToString(Properties.Settings.Default.CallIdFormat);
                 string ret = CommonProcess.CreateOrderToServer(model);
                 if (CommonProcess.HasError)
                 {
@@ -703,7 +729,17 @@ namespace MainPrj.View
                     }
                 }
                 model.WebId = ret;
-                DataPure.Instance.ListOrders.Add(model);
+                
+                //DataPure.Instance.ListOrders.Add(model);
+                if ((dtpDate.Value.Day == System.DateTime.Now.Day)
+                    && (dtpDate.Value.Month == System.DateTime.Now.Month)
+                    && (dtpDate.Value.Year == System.DateTime.Now.Year))
+                {
+                    DataPure.Instance.ListOrders.Add(model);
+                }
+                // Write order to file
+                CommonProcess.WriteOrderByDate(dtpDate.Value, model);
+                
                 this.Close();
                 return true;
             }
@@ -743,13 +779,15 @@ namespace MainPrj.View
                 return false;
             }
             // Check if not input price
+            double total = 0.0;
             foreach (ProductModel product in products)
             {
-                if (product.Price == 0)
-                {
-                    CommonProcess.ShowErrorMessage(Properties.Resources.NotInputProductPrice);
-                    return false;
-                }
+                total += product.Price;
+            }
+            if (total == 0)
+            {
+                CommonProcess.ShowErrorMessage(Properties.Resources.NotInputProductPrice);
+                return false;
             }
             return retVal;
         }
@@ -981,8 +1019,9 @@ namespace MainPrj.View
                     {
                         _data.CCSId = cbxCCS.SelectedValue.ToString();
                     }
-                    //_data.Promotes.Clear();
-                    //_data.Promotes.AddRange(promotes);
+                    _data.TotalPay     = totalPay;
+                    _data.TotalMoney   = total;
+                    _data.PromoteMoney = totalPromote;
                     string retId = CommonProcess.UpdateOrderToServer(_data);
                     if (!String.IsNullOrEmpty(retId))
                     {

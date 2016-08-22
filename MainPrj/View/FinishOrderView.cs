@@ -13,7 +13,10 @@ namespace MainPrj.View
 {
     public partial class FinishOrderView : Form
     {
-        private string id = string.Empty;
+        //++ BUG0011-SPJ (NguyenPT 20160822) Add Created date property
+        //private string id = string.Empty;
+        private OrderModel _data = null;
+        //-- BUG0011-SPJ (NguyenPT 20160822) Add Created date property
         private string deliverId = string.Empty;
         /// <summary>
         /// Deliver id.
@@ -24,22 +27,30 @@ namespace MainPrj.View
             set { deliverId = value; }
         }
 
-        /// <summary>
-        /// Order's id.
-        /// </summary>
-        public string Id
-        {
-            get { return id; }
-            set { id = value; }
-        }
+        //++ BUG0011-SPJ (NguyenPT 20160822) Add Created date property
+        ///// <summary>
+        ///// Order's id.
+        ///// </summary>
+        //public string Id
+        //{
+        //    get { return id; }
+        //    set { id = value; }
+        //}
+        //-- BUG0011-SPJ (NguyenPT 20160822) Add Created date property
         private List<CylinderModel> cylinders = new List<CylinderModel>();
         /// <summary>
         /// Constructor.
         /// </summary>
-        public FinishOrderView(string id)
+        //++ BUG0011-SPJ (NguyenPT 20160822) Add Created date property
+        //public FinishOrderView(string id)
+        public FinishOrderView(OrderModel data)
+        //-- BUG0011-SPJ (NguyenPT 20160822) Add Created date property
         {
             InitializeComponent();
-            this.Id = id;
+            //++ BUG0011-SPJ (NguyenPT 20160822) Add Created date property
+            //this.Id = id;
+            _data = data;
+            //-- BUG0011-SPJ (NguyenPT 20160822) Add Created date property
         }
         /// <summary>
         /// Handle when click Finish button.
@@ -48,45 +59,79 @@ namespace MainPrj.View
         /// <param name="e">EventArgs</param>
         private void btnFinish_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(id))
+            //++ BUG0011-SPJ (NguyenPT 20160822) Add Created date property
+            //if (!string.IsNullOrEmpty(id))
+            //{
+            //    foreach (OrderModel item in DataPure.Instance.ListOrders)
+            //    {
+            //        if (item.Id.Equals(id))
+            //        {
+            //            item.Cylinders.Clear();
+            //            item.Cylinders.AddRange(cylinders);
+            //            if (cylinders.Count < item.Products.Count)
+            //            {
+            //                for (int i = 0; i < (item.Products.Count - cylinders.Count); i++)
+            //                {
+            //                    item.Cylinders.Add(new CylinderModel());
+            //                }
+            //            }
+            //            item.Status           = OrderStatus.ORDERSTATUS_PAID;
+            //            item.IsUpdateToServer = false;
+            //            if (cbxDeliver.SelectedValue != null)
+            //            {
+            //                item.DeliverId = cbxDeliver.SelectedValue.ToString();
+            //            }
+            //            // Update to server
+            //            string retId = CommonProcess.UpdateOrderToServer(item);
+            //            if (!String.IsNullOrEmpty(retId))
+            //            {
+            //                item.IsUpdateToServer = true;
+            //            }
+            //            if (chbPromote.Checked)
+            //            {
+            //                item.Promotes.Clear();
+            //                item.PromoteMoney = Properties.Settings.Default.PromoteMoney;
+            //                item.TotalPay -= item.PromoteMoney;
+            //            }
+            //            break;
+            //        }
+            //    }
+
+            //    this.Close();
+            //}
+            if (_data != null)
             {
-                foreach (OrderModel item in DataPure.Instance.ListOrders)
+                _data.Cylinders.Clear();
+                _data.Cylinders.AddRange(cylinders);
+                if (cylinders.Count < _data.Products.Count)
                 {
-                    if (item.Id.Equals(id))
+                    for (int i = 0; i < (_data.Products.Count - cylinders.Count); i++)
                     {
-                        item.Cylinders.Clear();
-                        item.Cylinders.AddRange(cylinders);
-                        if (cylinders.Count < item.Products.Count)
-                        {
-                            for (int i = 0; i < (item.Products.Count - cylinders.Count); i++)
-                            {
-                                item.Cylinders.Add(new CylinderModel());
-                            }
-                        }
-                        item.Status           = OrderStatus.ORDERSTATUS_PAID;
-                        item.IsUpdateToServer = false;
-                        if (cbxDeliver.SelectedValue != null)
-                        {
-                            item.DeliverId = cbxDeliver.SelectedValue.ToString();
-                        }
-                        // Update to server
-                        string retId = CommonProcess.UpdateOrderToServer(item);
-                        if (!String.IsNullOrEmpty(retId))
-                        {
-                            item.IsUpdateToServer = true;
-                        }
-                        if (chbPromote.Checked)
-                        {
-                            item.Promotes.Clear();
-                            item.PromoteMoney = Properties.Settings.Default.PromoteMoney;
-                            item.TotalPay -= item.PromoteMoney;
-                        }
-                        break;
+                        _data.Cylinders.Add(new CylinderModel());
                     }
                 }
-
-                this.Close();
+                _data.Status           = OrderStatus.ORDERSTATUS_PAID;
+                _data.IsUpdateToServer = false;
+                if (cbxDeliver.SelectedValue != null)
+                {
+                    _data.DeliverId = cbxDeliver.SelectedValue.ToString();
+                }
+                if (chbPromote.Checked)
+                {
+                    _data.Promotes.Clear();
+                    _data.PromoteMoney = Properties.Settings.Default.PromoteMoney;
+                    _data.TotalPay -= _data.PromoteMoney;
+                }
+                // Update to server
+                string retId = CommonProcess.UpdateOrderToServer(_data);
+                if (!String.IsNullOrEmpty(retId))
+                {
+                    _data.IsUpdateToServer = true;
+                    CommonProcess.UpdateOrderToFile(_data);
+                }
             }
+            this.Close();
+            //-- BUG0011-SPJ (NguyenPT 20160822) Add Created date property
         }
         /// <summary>
         /// Handle when open form
@@ -95,30 +140,48 @@ namespace MainPrj.View
         /// <param name="e">EventArgs</param>
         private void FinishOrderView_Load(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(id))
+            //++ BUG0011-SPJ (NguyenPT 20160822) Add Created date property
+            //if (!string.IsNullOrEmpty(id))
+            //{
+            //    foreach (OrderModel item in DataPure.Instance.ListOrders)
+            //    {
+            //        if (item.Id.Equals(id))
+            //        {
+            //            foreach (CylinderModel cylinder in item.Cylinders)
+            //            {
+            //                if (!String.IsNullOrEmpty(cylinder.Id))
+            //                {
+            //                    cylinders.Add(cylinder);
+            //                }
+            //            }
+            //            lblTotalPay.Text = CommonProcess.FormatMoney(item.TotalPay);
+            //            this.deliverId = !String.IsNullOrEmpty(item.DeliverId) ? item.DeliverId : item.CCSId;
+            //            //cylinders.AddRange(item.Cylinders);
+            //            if (item.Promotes.Count == 0)
+            //            {
+            //                chbPromote.Enabled = false;
+            //            }
+            //            break;
+            //        }
+            //    }
+            //}
+            if (_data != null)
             {
-                foreach (OrderModel item in DataPure.Instance.ListOrders)
+                foreach (CylinderModel cylinder in _data.Cylinders)
                 {
-                    if (item.Id.Equals(id))
+                    if (!String.IsNullOrEmpty(cylinder.Id))
                     {
-                        foreach (CylinderModel cylinder in item.Cylinders)
-                        {
-                            if (!String.IsNullOrEmpty(cylinder.Id))
-                            {
-                                cylinders.Add(cylinder);
-                            }
-                        }
-                        lblTotalPay.Text = CommonProcess.FormatMoney(item.TotalPay);
-                        this.deliverId = !String.IsNullOrEmpty(item.DeliverId) ? item.DeliverId : item.CCSId;
-                        //cylinders.AddRange(item.Cylinders);
-                        if (item.Promotes.Count == 0)
-                        {
-                            chbPromote.Enabled = false;
-                        }
-                        break;
+                        cylinders.Add(cylinder);
                     }
                 }
+                lblTotalPay.Text = CommonProcess.FormatMoney(_data.TotalPay);
+                this.deliverId = !String.IsNullOrEmpty(_data.DeliverId) ? _data.DeliverId : _data.CCSId;
+                if (_data.Promotes.Count == 0)
+                {
+                    chbPromote.Enabled = false;
+                }
             }
+            //-- BUG0011-SPJ (NguyenPT 20160822) Add Created date property
             int index = 0;
             foreach (CylinderModel item in cylinders)
             {

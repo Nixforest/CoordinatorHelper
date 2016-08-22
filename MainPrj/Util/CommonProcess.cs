@@ -187,6 +187,38 @@ namespace MainPrj.Util
             }
             return true;
         }
+        //++ BUG0043-SPJ (NguyenPT 20160822) Write history when has a call
+        /// <summary>
+        /// Write history.
+        /// </summary>
+        /// <param name="model">Model</param>
+        /// <returns>True if write success, false otherwise</returns>
+        public static bool WriteHistory(CallModel model)
+        {
+            if (model != null)
+            {
+                string date = model.Id.Substring(0, 8);
+                string filepath = String.Format("{0}\\{1}_{2}", Properties.Settings.Default.SettingFilePath,
+                    date, Properties.Settings.Default.HistoryFileName);
+
+                try
+                {
+                    using (StreamWriter sw = File.AppendText(filepath))
+                    {
+                        // Write file
+                        sw.WriteLine(model.ToString());
+                        sw.Close();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ShowErrorMessage(Properties.Resources.ErrorCause + ex.Message);
+                    return false;
+                }
+            }
+            return true;
+        }
+        //-- BUG0043-SPJ (NguyenPT 20160822) Write history when has a call
         /// <summary>
         /// Read history.
         /// </summary>
@@ -396,6 +428,153 @@ namespace MainPrj.Util
                 HasError = true;
             }
         }
+        //++ BUG0043-SPJ (NguyenPT 20160822) Write list order
+        /// <summary>
+        /// Read list orders by date.
+        /// </summary>
+        /// <param name="dateValue">Date value</param>
+        /// <returns>List of call models</returns>
+        public static List<OrderModel> ReadListOrdersByDate(DateTime dateValue)
+        {
+            List<OrderModel> result = new List<OrderModel>();
+            string date = dateValue.ToString(Properties.Settings.Default.CallIdFormat).Substring(0, 8);
+
+            string filepath = String.Format("{0}\\{1}_{2}", Properties.Settings.Default.SettingFilePath,
+                date, Properties.Settings.Default.OrdersFileName);
+            try
+            {
+                DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(OrderModel));
+                string line = string.Empty;
+                byte[] encodingBytes = null;
+                using (StreamReader sr = new StreamReader(File.Open(filepath, System.IO.FileMode.OpenOrCreate)))
+                {
+                    while (true)
+                    {
+                        line = sr.ReadLine();
+                        if (!String.IsNullOrEmpty(line))
+                        {
+                            try
+                            {
+                                // Encoding response data
+                                encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(line);
+                            }
+                            catch (System.Text.EncoderFallbackException)
+                            {
+                                ShowErrorMessage(Properties.Resources.EncodingError);
+                                HasError = true;
+                            }
+                            if (encodingBytes != null)
+                            {
+                                MemoryStream msU = new MemoryStream(encodingBytes);
+                                OrderModel model = (OrderModel)js.ReadObject(msU);
+                                if (model != null)
+                                {
+                                    result.Add(model);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+            catch (DirectoryNotFoundException)
+            {
+                HasError = false;
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage(Properties.Resources.ErrorCause + ex.Message);
+                HasError = true;
+            }
+            return result;
+        }
+        /// <summary>
+        /// Write order on date.
+        /// </summary>
+        /// <param name="dateValue">Date value</param>
+        /// <param name="model">Model</param>
+        /// <returns>True if write success, false otherwise</returns>
+        public static bool WriteOrderByDate(DateTime dateValue, OrderModel model)
+        {
+            if (model != null)
+            {
+                string date = dateValue.ToString("yyyyMMdd");
+
+                string filepath = String.Format("{0}\\{1}_{2}", Properties.Settings.Default.SettingFilePath,
+                    date, Properties.Settings.Default.OrdersFileName);
+                try
+                {
+                    using (StreamWriter sw = File.AppendText(filepath))
+                    {
+                        // Write file
+                        sw.WriteLine(model.ToString());
+                        sw.Close();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ShowErrorMessage(Properties.Resources.ErrorCause + ex.Message);
+                    return false;
+                }
+            }
+            return true;
+        }
+        /// <summary>
+        /// Write list orders fle.
+        /// </summary>
+        public static bool WriteListOrdersByDate(DateTime dateValue, List<OrderModel> list)
+        {
+            if (list.Count > 0)
+            {
+                string date = dateValue.ToString("yyyyMMdd");
+
+                string filepath = String.Format("{0}\\{1}_{2}", Properties.Settings.Default.SettingFilePath,
+                    date, Properties.Settings.Default.OrdersFileName);
+                try
+                {
+                    using (StreamWriter sw = new StreamWriter(File.Open(filepath, System.IO.FileMode.Create)))
+                    {
+                        // Write file
+                        foreach (OrderModel item in list)
+                        {
+                            sw.WriteLine(item.ToString());
+                        }
+                        sw.Close();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ShowErrorMessage(Properties.Resources.ErrorCause + ex.Message);
+                    return false;
+                }
+            }
+            return true;
+        }
+        /// <summary>
+        /// Update order to file.
+        /// </summary>
+        /// <param name="model">Model</param>
+        public static void UpdateOrderToFile(OrderModel model)
+        {
+            if (model == null)
+	        {
+                return;
+	        }
+            List<OrderModel> list = ReadListOrdersByDate(Convert.ToDateTime(model.Created_date));
+            for (int i = 0; i < list.Count; i++ )
+            {
+                if (list[i].Id.Equals(model.Id))
+                {
+                    list[i] = model;
+                    break;
+                }
+            }
+            WriteListOrdersByDate(Convert.ToDateTime(model.Created_date), list);
+        }
+        //-- BUG0043-SPJ (NguyenPT 20160822) Write list order
         /// <summary>
         /// Write setting.
         /// </summary>
@@ -1695,11 +1874,14 @@ namespace MainPrj.Util
                     {
                         UpdateOrderModel updateModel = new UpdateOrderModel();
                         // Create data
-                        updateModel.Token = Properties.Settings.Default.UserToken;
-                        updateModel.Id = model.WebId;
-                        updateModel.Note = model.Note;
-                        updateModel.Status = (int)model.Status;
-                        updateModel.Order_detail = new List<OrderDetailModel>();
+                        updateModel.Token           = Properties.Settings.Default.UserToken;
+                        updateModel.Id              = model.WebId;
+                        updateModel.Note            = model.Note;
+                        updateModel.Status          = (int)model.Status;
+                        //++ BUG0011-SPJ (NguyenPT 20160822) Add Created date property
+                        updateModel.Created_date    = model.Created_date;
+                        //-- BUG0011-SPJ (NguyenPT 20160822) Add Created date property
+                        updateModel.Order_detail    = new List<OrderDetailModel>();
                         foreach (ProductModel product in model.Products)
                         {
                             OrderDetailModel orderDetail = new OrderDetailModel();
@@ -1779,10 +1961,19 @@ namespace MainPrj.Util
                     {
                         MemoryStream msU = new MemoryStream(encodingBytes);
                         OrderResponseModel baseResp = (OrderResponseModel)js.ReadObject(msU);
-                        if ((baseResp != null)
-                            && (baseResp.Id != null))
+                        if (baseResp != null)
                         {
-                            retVal = baseResp.Id;
+                            if (baseResp.Status == "1")
+                            {
+                                if (baseResp.Id != null)
+                                {
+                                    retVal = baseResp.Id;
+                                }
+                            }
+                            else
+                            {
+                                ShowErrorMessage(baseResp.Message);
+                            }
                         }
                     }
                 }
@@ -1806,10 +1997,13 @@ namespace MainPrj.Util
                     {
                         CreateOrderModel createModel = new CreateOrderModel();
                         // Create data
-                        createModel.Token = Properties.Settings.Default.UserToken;
-                        createModel.Customer_id = model.Customer.Id;
-                        createModel.Note = model.Note;
-                        createModel.Status = (int)model.Status;
+                        createModel.Token        = Properties.Settings.Default.UserToken;
+                        createModel.Customer_id  = model.Customer.Id;
+                        createModel.Note         = model.Note;
+                        createModel.Status       = (int)model.Status;
+                        //++ BUG0011-SPJ (NguyenPT 20160822) Add Created date property
+                        createModel.Created_date = model.Created_date;
+                        //-- BUG0011-SPJ (NguyenPT 20160822) Add Created date property
                         if (DataPure.Instance.Agent != null)
                         {
                             createModel.Agent_id = DataPure.Instance.Agent.Id;
@@ -1902,10 +2096,19 @@ namespace MainPrj.Util
                     {
                         MemoryStream msU = new MemoryStream(encodingBytes);
                         OrderResponseModel baseResp = (OrderResponseModel)js.ReadObject(msU);
-                        if ((baseResp != null)
-                            && (baseResp.Id != null))
+                        if (baseResp != null)
                         {
-                            retVal = baseResp.Id;
+                            if (baseResp.Status == "1")
+                            {
+                                if (baseResp.Id != null)
+                                {
+                                    retVal = baseResp.Id;
+                                }
+                            }
+                            else
+                            {
+                                ShowErrorMessage(baseResp.Message);
+                            }
                         }
                     }
                 }

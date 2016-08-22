@@ -33,7 +33,7 @@
             this.nUDMainPort = new System.Windows.Forms.NumericUpDown();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBoxServer = new System.Windows.Forms.GroupBox();
             this.tbxPhoneSeparator = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -94,7 +94,7 @@
             this.cbxTabColorChanged = new System.Windows.Forms.CheckBox();
             this.btnAccess = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.nUDMainPort)).BeginInit();
-            this.groupBox1.SuspendLayout();
+            this.groupBoxServer.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nUDTimeAutoCloseMsgBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDPhoneCutLen)).BeginInit();
@@ -144,26 +144,26 @@
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
-            // groupBox1
+            // groupBoxServer
             // 
-            this.groupBox1.Controls.Add(this.tbxPhoneSeparator);
-            this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Controls.Add(this.groupBox2);
-            this.groupBox1.Controls.Add(this.tbxURLUpdateCustomerPhone);
-            this.groupBox1.Controls.Add(this.label8);
-            this.groupBox1.Controls.Add(this.tbxURLGetCustomerByKeyword);
-            this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Controls.Add(this.tbxURLGetCustomerByPhone);
-            this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.tbxServerURL);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Location = new System.Drawing.Point(385, 9);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(514, 585);
-            this.groupBox1.TabIndex = 5;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Máy chủ";
-            this.groupBox1.Visible = false;
+            this.groupBoxServer.Controls.Add(this.tbxPhoneSeparator);
+            this.groupBoxServer.Controls.Add(this.label5);
+            this.groupBoxServer.Controls.Add(this.groupBox2);
+            this.groupBoxServer.Controls.Add(this.tbxURLUpdateCustomerPhone);
+            this.groupBoxServer.Controls.Add(this.label8);
+            this.groupBoxServer.Controls.Add(this.tbxURLGetCustomerByKeyword);
+            this.groupBoxServer.Controls.Add(this.label6);
+            this.groupBoxServer.Controls.Add(this.tbxURLGetCustomerByPhone);
+            this.groupBoxServer.Controls.Add(this.label3);
+            this.groupBoxServer.Controls.Add(this.tbxServerURL);
+            this.groupBoxServer.Controls.Add(this.label2);
+            this.groupBoxServer.Location = new System.Drawing.Point(385, 9);
+            this.groupBoxServer.Name = "groupBoxServer";
+            this.groupBoxServer.Size = new System.Drawing.Size(514, 585);
+            this.groupBoxServer.TabIndex = 5;
+            this.groupBoxServer.TabStop = false;
+            this.groupBoxServer.Text = "Máy chủ";
+            this.groupBoxServer.Visible = false;
             // 
             // tbxPhoneSeparator
             // 
@@ -711,7 +711,7 @@
             this.Controls.Add(this.btnMissCallTextColor);
             this.Controls.Add(this.cbxTabColorChanged);
             this.Controls.Add(this.chbTestingMode);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.groupBoxServer);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.label26);
@@ -749,8 +749,8 @@
             this.Text = "Cài đặt chung";
             this.Load += new System.EventHandler(this.SettingView_Load);
             ((System.ComponentModel.ISupportInitialize)(this.nUDMainPort)).EndInit();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.groupBoxServer.ResumeLayout(false);
+            this.groupBoxServer.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nUDTimeAutoCloseMsgBox)).EndInit();
@@ -766,7 +766,7 @@
         private System.Windows.Forms.NumericUpDown nUDMainPort;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnSave;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox groupBoxServer;
         private System.Windows.Forms.TextBox tbxServerURL;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox tbxURLGetCustomerByPhone;

@@ -25,6 +25,19 @@ namespace MainPrj.Model.Update
         protected string note;
         [DataMember(Name = "status", IsRequired = false)]
         protected int status;
+        //++ BUG0011-SPJ (NguyenPT 20160822) Add Created date property
+        [DataMember(Name = "created_date", IsRequired = false)]
+        private string created_date;
+
+        /// <summary>
+        /// Created date.
+        /// </summary>
+        public string Created_date
+        {
+            get { return created_date; }
+            set { created_date = value; }
+        }
+        //-- BUG0011-SPJ (NguyenPT 20160822) Add Created date property
         /// <summary>
         /// Status of order.
         /// </summary>
