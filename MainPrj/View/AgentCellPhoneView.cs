@@ -84,16 +84,31 @@ namespace MainPrj.View
                     {
                         MemoryStream msU = new MemoryStream(encodingBytes);
                         BaseResponseModel baseResp = (BaseResponseModel)js.ReadObject(msU);
+                        //++ BUG0012-SPJ (NguyenPT 20160822) Show message from server
                         if (baseResp != null && baseResp.Status.Equals("1"))
                         {
                             toolStripStatusLabel.Text = Properties.Resources.RequestAgentInfoSuccess;
                             DataPure.Instance.Agent.Agent_cell_phone = tbxPhone.Text;
+                        }
+                        if (baseResp != null)
+                        {
+                            if (baseResp.Status.Equals("1"))
+                            {
+                                toolStripStatusLabel.Text = Properties.Resources.RequestAgentInfoSuccess;
+                                DataPure.Instance.Agent.Agent_cell_phone = tbxPhone.Text;
+                            }
+                            else
+                            {
+                                toolStripStatusLabel.Text = baseResp.Message;
+                                CommonProcess.ShowErrorMessage(baseResp.Message);
+                            }
                         }
                         else
                         {
                             toolStripStatusLabel.Text = Properties.Resources.UpdateAgentCellPhoneError;
                             CommonProcess.ShowErrorMessage(Properties.Resources.UpdateAgentCellPhoneError);
                         }
+                        //-- BUG0012-SPJ (NguyenPT 20160822) Show message from server
                     }
                 }
             }

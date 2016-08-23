@@ -463,13 +463,71 @@ namespace MainPrj
                 }
             }
         }
+
+        //++ BUG0045-SPJ (NguyenPT 20160823) Update agent info
+        /// <summary>
+        /// Update new agent information from server.
+        /// </summary>
+        /// <param name="agentId">Agent id</param>
+        private void UpdateAgentInfo(string agentId)
+        {
+            // Request agent information from server
+            CommonProcess.RequestAgentInformation(agentId);
+            // Updaate agent id
+            DataPure.Instance.TempData.Agent_id = agentId;
+            // Search in agent list and save into [DataPure.Instance.Agent]
+            foreach (SelectorModel item in DataPure.Instance.GetListAgents())
+            {
+                if (agentId.Equals(item.Id))
+                {
+                    DataPure.Instance.Agent = new AgentModel(item);
+                    DataPure.Instance.Agent.Phone = DataPure.Instance.TempData.Agent_phone;
+                    DataPure.Instance.Agent.Address = DataPure.Instance.TempData.Agent_address;
+                    DataPure.Instance.Agent.Agent_province = DataPure.Instance.TempData.Agent_province;
+                    DataPure.Instance.Agent.Agent_district = DataPure.Instance.TempData.Agent_district;
+                    DataPure.Instance.Agent.Agent_cell_phone = DataPure.Instance.TempData.Agent_cell_phone;
+                    break;
+                }
+            }
+        }
+        //-- BUG0045-SPJ (NguyenPT 20160823) Update agent info
+        //++ BUG0053-SPJ (NguyenPT 20160823) Check record device
+        /// <summary>
+        /// Check if agent use zibo record card, change port and restart thread.
+        /// </summary>
+        private void CheckRecordDevice()
+        {
+            // Check if agent use zibo record card
+            if (CommonProcess.AGENT_LIST_ZIBO.Contains(DataPure.Instance.Agent.Id)
+                //if (CommonProcess.AGENT_LIST_ZIBO.Any(str => str.Contains(DataPure.Instance.Agent.Id))
+                && (Properties.Settings.Default.UdpMainPort != Properties.Settings.Default.ZiboUdpPort))
+            {
+                Properties.Settings.Default.UdpMainPort = Properties.Settings.Default.ZiboUdpPort;
+                Properties.Settings.Default.Save();
+                //CommonProcess.ShowInformMessage(Properties.Resources.RestartProgram, MessageBoxButtons.OK);
+                StopUdpThread();
+                StartUdpThread();
+            }
+        }
+        //-- BUG0053-SPJ (NguyenPT 20160823) Check record device
         /// <summary>
         /// Select agent.
         /// </summary>
         private void SelectAgent()
         {
-            Stopwatch timer = new Stopwatch();
-            timer.Start();
+            //++ BUG0045-SPJ (NguyenPT 20160823) Update agent info
+            string agentId = CommonProcess.ReadAgentIdFromSetting();
+            if (!string.IsNullOrEmpty(agentId) && CommonProcess.IsValidAgentId(agentId))
+            {
+                // If user select another choice
+                if (!agentId.Equals(DataPure.Instance.TempData.Agent_id))
+                {
+                    UpdateAgentInfo(agentId);
+                }
+                CheckRecordDevice();
+                return;
+            }
+            //-- BUG0045-SPJ (NguyenPT 20160823) Update agent info
             // Check null object
             if (DataPure.Instance.TempData != null)
             {
@@ -498,8 +556,6 @@ namespace MainPrj
                     selectorView.SetHeaderText(SelectorColumns.SELECTOR_COLUMN_ADDRESS, string.Empty);
                     // Set default selection
                     selectorView.SetSelection(DataPure.Instance.TempData.Agent_id);
-                    timer.Stop();
-                    Console.WriteLine("Time elapsed [selectorView.ShowDialog();]:\t{0}", timer.ElapsedMilliseconds);
                     // Show dialog
                     selectorView.ShowDialog();
                     // Get selection id
@@ -509,34 +565,41 @@ namespace MainPrj
                         // If user select another choice
                         if (!selectorId.Equals(DataPure.Instance.TempData.Agent_id))
                         {
-                            // Request agent information from server
-                            CommonProcess.RequestAgentInformation(selectorId);
-                            // Updaate agent id
-                            DataPure.Instance.TempData.Agent_id = selectorId;
-                            // Search in agent list and save into [DataPure.Instance.Agent]
-                            foreach (SelectorModel item in DataPure.Instance.TempData.Agent_list)
-                            {
-                                if (selectorId.Equals(item.Id))
-                                {
-                                    DataPure.Instance.Agent                  = new AgentModel(item);
-                                    DataPure.Instance.Agent.Phone            = DataPure.Instance.TempData.Agent_phone;
-                                    DataPure.Instance.Agent.Address          = DataPure.Instance.TempData.Agent_address;
-                                    DataPure.Instance.Agent.Agent_province   = DataPure.Instance.TempData.Agent_province;
-                                    DataPure.Instance.Agent.Agent_district   = DataPure.Instance.TempData.Agent_district;
-                                    DataPure.Instance.Agent.Agent_cell_phone = DataPure.Instance.TempData.Agent_cell_phone;
-                                    break;
-                                }
-                            }
+                            //++ BUG0045-SPJ (NguyenPT 20160823) Update agent info
+                            //// Request agent information from server
+                            //CommonProcess.RequestAgentInformation(selectorId);
+                            //// Updaate agent id
+                            //DataPure.Instance.TempData.Agent_id = selectorId;
+                            //// Search in agent list and save into [DataPure.Instance.Agent]
+                            //foreach (SelectorModel item in DataPure.Instance.TempData.Agent_list)
+                            //{
+                            //    if (selectorId.Equals(item.Id))
+                            //    {
+                            //        DataPure.Instance.Agent                  = new AgentModel(item);
+                            //        DataPure.Instance.Agent.Phone            = DataPure.Instance.TempData.Agent_phone;
+                            //        DataPure.Instance.Agent.Address          = DataPure.Instance.TempData.Agent_address;
+                            //        DataPure.Instance.Agent.Agent_province   = DataPure.Instance.TempData.Agent_province;
+                            //        DataPure.Instance.Agent.Agent_district   = DataPure.Instance.TempData.Agent_district;
+                            //        DataPure.Instance.Agent.Agent_cell_phone = DataPure.Instance.TempData.Agent_cell_phone;
+                            //        break;
+                            //    }
+                            //}
+                            UpdateAgentInfo(selectorId);
+                            //-- BUG0045-SPJ (NguyenPT 20160823) Update agent info
                         }
+                        CommonProcess.WriteAgentIdToSetting(selectorId);
+                        //++ BUG0053-SPJ (NguyenPT 20160823) Check record device
                         // Check if agent use zibo record card
-                        if (CommonProcess.AGENT_LIST_ZIBO.Contains(DataPure.Instance.Agent.Id)
-                        //if (CommonProcess.AGENT_LIST_ZIBO.Any(str => str.Contains(DataPure.Instance.Agent.Id))
-                            && (Properties.Settings.Default.UdpMainPort != Properties.Settings.Default.ZiboUdpPort))
-                        {
-                            Properties.Settings.Default.UdpMainPort = Properties.Settings.Default.ZiboUdpPort;
-                            Properties.Settings.Default.Save();
-                            CommonProcess.ShowInformMessage(Properties.Resources.RestartProgram, MessageBoxButtons.OK);
-                        }
+                        //if (CommonProcess.AGENT_LIST_ZIBO.Contains(DataPure.Instance.Agent.Id)
+                        ////if (CommonProcess.AGENT_LIST_ZIBO.Any(str => str.Contains(DataPure.Instance.Agent.Id))
+                        //    && (Properties.Settings.Default.UdpMainPort != Properties.Settings.Default.ZiboUdpPort))
+                        //{
+                        //    Properties.Settings.Default.UdpMainPort = Properties.Settings.Default.ZiboUdpPort;
+                        //    Properties.Settings.Default.Save();
+                        //    CommonProcess.ShowInformMessage(Properties.Resources.RestartProgram, MessageBoxButtons.OK);
+                        //}
+                        CheckRecordDevice();
+                        //-- BUG0053-SPJ (NguyenPT 20160823) Check record device
                     }
                     else
                     {
@@ -692,25 +755,25 @@ namespace MainPrj
         private void btnSearch_Click(object sender, EventArgs e)
         {
             #region Test get customer information
-            string phone = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel).GetIncommingPhone();
-            double n = 0;
-            // Get incomming number information
-            if (!String.IsNullOrEmpty(phone) && double.TryParse(phone, out n))
-            {
-                // Insert value into current channel
-                try
-                {
-                    ChannelControl tab = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel);
-                    tab.SetIncommingPhone(phone);
-                    // Request server and update data from server
-                    UpdateData(phone, (int)CardDataStatus.CARDDATA_RINGING, DataPure.Instance.CurrentChannel);
-                }
-                catch (ArgumentOutOfRangeException)
-                {
-                    CommonProcess.ShowErrorMessage(Properties.Resources.ArgumentOutOfRange);
-                }
-            }
-            //PrintData("<CRMV1               0002     2016-08-02 16:15:00                               01689908271                    >                                          172.16.1.64                                       {RAWCID:[0939331371]}{DETAILDES:[]}");
+            //string phone = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel).GetIncommingPhone();
+            //double n = 0;
+            //// Get incomming number information
+            //if (!String.IsNullOrEmpty(phone) && double.TryParse(phone, out n))
+            //{
+            //    // Insert value into current channel
+            //    try
+            //    {
+            //        ChannelControl tab = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel);
+            //        tab.SetIncommingPhone(phone);
+            //        // Request server and update data from server
+            //        UpdateData(phone, (int)CardDataStatus.CARDDATA_RINGING, DataPure.Instance.CurrentChannel);
+            //    }
+            //    catch (ArgumentOutOfRangeException)
+            //    {
+            //        CommonProcess.ShowErrorMessage(Properties.Resources.ArgumentOutOfRange);
+            //    }
+            //}
+            PrintData("<CRMV1               0002     2016-08-02 16:15:00                               01689908271                    >                                          172.16.1.64                                       {RAWCID:[0939331371]}{DETAILDES:[]}");
             #endregion
             //_TestServer test = new _TestServer();
             //test.ShowDialog();
@@ -1206,10 +1269,16 @@ namespace MainPrj
                         && (baseResp.Record != null))
                     {
                         List<SelectorModel> listEmployee = null;
+                        //++ BUG0052-SPJ (NguyenPT 20160823) Update CCS when change Agent
+                        List<SelectorModel> listCCS = null;
+                        //-- BUG0052-SPJ (NguyenPT 20160823) Update CCS when change Agent
                         // Update data
                         if (isNotFirstTime)
                         {
                             listEmployee = new List<SelectorModel>(DataPure.Instance.GetListDelivers());
+                            //++ BUG0052-SPJ (NguyenPT 20160823) Update CCS when change Agent
+                            listCCS = new List<SelectorModel>(DataPure.Instance.GetListCCSs());
+                            //-- BUG0052-SPJ (NguyenPT 20160823) Update CCS when change Agent
                         }
                         DataPure.Instance.TempData = baseResp.Record;
                         timer.Stop();
@@ -1226,6 +1295,9 @@ namespace MainPrj
                             if (listEmployee != null)
                             {
                                 DataPure.Instance.TempData.Employee_maintain = listEmployee;
+                                //++ BUG0052-SPJ (NguyenPT 20160823) Update CCS when change Agent
+                                DataPure.Instance.TempData.Monitor_market_development = listCCS;
+                                //-- BUG0052-SPJ (NguyenPT 20160823) Update CCS when change Agent
                             }
                         }
                         else
@@ -1409,6 +1481,18 @@ namespace MainPrj
                 this.Close();
             }
         }
+        //++ BUG0053-SPJ (NguyenPT 20160823) Stop Udp thread
+        /// <summary>
+        /// Stop Udp thread.
+        /// </summary>
+        private void StopUdpThread()
+        {
+            if ((udpThread != null) && (udpThread.IsAlive))
+            {
+                udpThread.Abort();
+            }
+        }
+        //-- BUG0053-SPJ (NguyenPT 20160823) Stop Udp thread
         /// <summary>
         /// Get data from Tansonic card.
         /// </summary>

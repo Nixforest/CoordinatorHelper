@@ -573,7 +573,13 @@ namespace MainPrj.View
             {
                 retVal.Add(defaultVal);
             }
-            retVal.Add(tbxAddress.Text.Trim());
+            //++ BUG0049-SPJ (NguyenPT 20160823) Remove "," in Home number address
+            //retVal.Add(tbxAddress.Text.Trim());
+            string address = tbxAddress.Text.Trim();
+            address = address.Replace(", ", " ");
+            address = address.Replace(",", " ");
+            retVal.Add(address);
+            //-- BUG0049-SPJ (NguyenPT 20160823) Remove "," in Home number address
             return retVal;
         }
 

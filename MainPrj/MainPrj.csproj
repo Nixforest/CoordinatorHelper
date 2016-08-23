@@ -128,6 +128,7 @@
     <Compile Include="Util\CommonProcess.cs" />
     <Compile Include="Util\DataPure.cs" />
     <Compile Include="Util\FlashWindowHelper.cs" />
+    <Compile Include="Util\INIHandle.cs" />
     <Compile Include="View\AboutBox.cs">
       <SubType>Form</SubType>
     </Compile>

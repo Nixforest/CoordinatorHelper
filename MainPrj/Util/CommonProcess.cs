@@ -26,6 +26,12 @@ namespace MainPrj.Util
     /// </summary>
     public static class CommonProcess
     {
+        #region Constant
+        //++ BUG0045-SPJ (NguyenPT 20160823) Define constants
+        public static string INI_KEY_AGENTID        = "AgentId";
+        public static string INI_SECTION_GENERAL = "General";
+        //-- BUG0045-SPJ (NguyenPT 20160823) Define constants
+        #endregion
         #region Static variables
         public static List<string> AGENT_LIST_ZIBO = new List<string>
         {
@@ -753,6 +759,28 @@ namespace MainPrj.Util
                 HasError = true;
             }
         }
+        //++ BUG0045-SPJ (NguyenPT 20160823) Read/Write agent id to setting.ini file
+        /// <summary>
+        /// Write agent id to setting.ini file.
+        /// </summary>
+        /// <param name="agentId">Agent id</param>
+        public static void WriteAgentIdToSetting(string agentId)
+        {
+            string filepath = String.Format("{0}\\setting.ini", Properties.Settings.Default.SettingFilePath);
+            var iniFile = new INIHandle(filepath);
+            iniFile.Write(INI_KEY_AGENTID, agentId, INI_SECTION_GENERAL);
+        }
+        /// <summary>
+        /// Read agent id from setting file.
+        /// </summary>
+        /// <returns>Agent id</returns>
+        public static string ReadAgentIdFromSetting()
+        {
+            string filepath = String.Format("{0}\\setting.ini", Properties.Settings.Default.SettingFilePath);
+            var iniFile = new INIHandle(filepath);
+            return iniFile.Read(INI_KEY_AGENTID, INI_SECTION_GENERAL);
+        }
+        //-- BUG0045-SPJ (NguyenPT 20160823) Read/Write agent id to setting.ini file
         #endregion
 
         #region Common methods
@@ -1355,6 +1383,24 @@ namespace MainPrj.Util
             }
             label.Text = status;
         }
+        //++ BUG0045-SPJ (NguyenPT 20160823) Check if agent id is exist inside List agents
+        /// <summary>
+        /// Check if agent id id valid.
+        /// </summary>
+        /// <param name="agentId">Id of agent</param>
+        /// <returns>True if agent id is exist inside List agents, False otherwise</returns>
+        public static bool IsValidAgentId(string agentId)
+        {
+            foreach (SelectorModel item in DataPure.Instance.GetListAgents())
+            {
+                if (item.Id.Equals(agentId))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        //-- BUG0045-SPJ (NguyenPT 20160823) Check if agent id is exist inside List agents
         #endregion
 
         #region Request Server
@@ -1708,6 +1754,9 @@ namespace MainPrj.Util
                             && (baseResp.Record != null))
                         {
                             DataPure.Instance.TempData.Employee_maintain = baseResp.Record.Employee_maintain;
+                            //++ BUG0052-SPJ (NguyenPT 20160823) Update CCS when change Agent
+                            DataPure.Instance.TempData.Monitor_market_development = baseResp.Record.Monitor_market_development;
+                            //-- BUG0052-SPJ (NguyenPT 20160823) Update CCS when change Agent
                             DataPure.Instance.TempData.Agent_phone = baseResp.Record.Agent_phone;
                             DataPure.Instance.TempData.Agent_address = baseResp.Record.Agent_address;
                             DataPure.Instance.TempData.Agent_province = baseResp.Record.Agent_province;
