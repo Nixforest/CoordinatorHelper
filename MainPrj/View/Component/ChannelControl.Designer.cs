@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.tbxIncommingNumber = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.cbxCity = new System.Windows.Forms.ComboBox();
@@ -60,6 +61,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.btnNewCustomer = new System.Windows.Forms.Button();
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -158,10 +160,10 @@
             this.cbxStreet.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbxStreet.DisplayMember = "Text";
             this.cbxStreet.FormattingEnabled = true;
-            this.cbxStreet.Location = new System.Drawing.Point(384, 60);
+            this.cbxStreet.Location = new System.Drawing.Point(486, 60);
             this.cbxStreet.Margin = new System.Windows.Forms.Padding(2);
             this.cbxStreet.Name = "cbxStreet";
-            this.cbxStreet.Size = new System.Drawing.Size(450, 32);
+            this.cbxStreet.Size = new System.Drawing.Size(348, 32);
             this.cbxStreet.TabIndex = 5;
             this.cbxStreet.ValueMember = "Value";
             // 
@@ -341,7 +343,7 @@
             this.tbxAddress.Location = new System.Drawing.Point(159, 60);
             this.tbxAddress.Margin = new System.Windows.Forms.Padding(2);
             this.tbxAddress.Name = "tbxAddress";
-            this.tbxAddress.Size = new System.Drawing.Size(220, 29);
+            this.tbxAddress.Size = new System.Drawing.Size(323, 29);
             this.tbxAddress.TabIndex = 4;
             // 
             // label4
@@ -419,6 +421,7 @@
             this.btnNewCustomer.Size = new System.Drawing.Size(42, 35);
             this.btnNewCustomer.TabIndex = 21;
             this.btnNewCustomer.Text = "+";
+            this.toolTip.SetToolTip(this.btnNewCustomer, "Click nút này khi tạo mới Khách hàng từ sổ bán hàng");
             this.btnNewCustomer.UseVisualStyleBackColor = true;
             this.btnNewCustomer.Click += new System.EventHandler(this.btnNewCustomer_Click);
             // 
@@ -475,5 +478,6 @@
         private System.Windows.Forms.ComboBox cbxWard;
         private System.Windows.Forms.ComboBox cbxStreet;
         private System.Windows.Forms.Button btnNewCustomer;
+        private System.Windows.Forms.ToolTip toolTip;
     }
 }

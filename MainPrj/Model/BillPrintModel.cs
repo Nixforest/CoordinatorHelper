@@ -199,6 +199,9 @@ namespace MainPrj.Model
 
             // Customer name
             Offset = Offset + (int)size.Height;
+            //++ BUG0051-SPJ (NguyenPT 20160824) Remove "Không rõ" in bill
+            this.CustomerName = this.CustomerName.Replace("Không rõ", "");
+            //-- BUG0051-SPJ (NguyenPT 20160824) Remove "Không rõ" in bill
             text = String.Format("Khách hàng: {0}", this.CustomerName);
             font = new Font(Properties.Settings.Default.BilllFont, 12, FontStyle.Bold);
             size = graphics.MeasureString(text, font, Properties.Settings.Default.BillSizeW);
@@ -207,6 +210,9 @@ namespace MainPrj.Model
                 new SizeF(Properties.Settings.Default.BillSizeW, size.Height)));
 
             // Customer address
+            //++ BUG0051-SPJ (NguyenPT 20160824) Remove "Không rõ" in bill
+            this.CustomerAddress = this.CustomerAddress.Replace(", Không rõ", "");
+            //-- BUG0051-SPJ (NguyenPT 20160824) Remove "Không rõ" in bill
             Offset = Offset + (int)size.Height;
             text = String.Format("ĐC: {0}", this.CustomerAddress);
             font = new Font(Properties.Settings.Default.BilllFont, 12, FontStyle.Bold);

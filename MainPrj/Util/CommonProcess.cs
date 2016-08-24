@@ -31,6 +31,10 @@ namespace MainPrj.Util
         public static string INI_KEY_AGENTID        = "AgentId";
         public static string INI_SECTION_GENERAL = "General";
         //-- BUG0045-SPJ (NguyenPT 20160823) Define constants
+        //++ BUG0046-SPJ (NguyenPT 20160824) Login automatically
+        public static string INI_KEY_USERNAME = "Username";
+        public static string INI_KEY_PASSWORD = "Password";
+        //-- BUG0046-SPJ (NguyenPT 20160824) Login automatically
         #endregion
         #region Static variables
         public static List<string> AGENT_LIST_ZIBO = new List<string>
@@ -776,11 +780,51 @@ namespace MainPrj.Util
         /// <returns>Agent id</returns>
         public static string ReadAgentIdFromSetting()
         {
-            string filepath = String.Format("{0}\\setting.ini", Properties.Settings.Default.SettingFilePath);
-            var iniFile = new INIHandle(filepath);
-            return iniFile.Read(INI_KEY_AGENTID, INI_SECTION_GENERAL);
+            return ReadSetting(INI_KEY_AGENTID, INI_SECTION_GENERAL);
         }
         //-- BUG0045-SPJ (NguyenPT 20160823) Read/Write agent id to setting.ini file
+        /// <summary>
+        /// Write login information to setting.ini file.
+        /// </summary>
+        /// <param name="username">Username</param>
+        /// <param name="password">Password</param>
+        public static void WriteLoginInfoToSetting(string username, string password)
+        {
+            string filepath = String.Format("{0}\\setting.ini", Properties.Settings.Default.SettingFilePath);
+            var iniFile = new INIHandle(filepath);
+            iniFile.Write(INI_KEY_USERNAME, username, INI_SECTION_GENERAL);
+            iniFile.Write(INI_KEY_PASSWORD, password, INI_SECTION_GENERAL);
+        }
+        //++ BUG0046-SPJ (NguyenPT 20160824) Login automatically
+        /// <summary>
+        /// Read username from setting.ini file.
+        /// </summary>
+        /// <returns>Username</returns>
+        public static string ReadUsernameFromSetting()
+        {
+            return ReadSetting(INI_KEY_USERNAME, INI_SECTION_GENERAL);
+        }
+        /// <summary>
+        /// Read password from setting.ini file.
+        /// </summary>
+        /// <returns>Password</returns>
+        public static string ReadPasswordFromSetting()
+        {
+            return ReadSetting(INI_KEY_PASSWORD, INI_SECTION_GENERAL);
+        }
+        /// <summary>
+        /// Read a setting from setting.ini file.
+        /// </summary>
+        /// <param name="key">Key</param>
+        /// <param name="section">Section</param>
+        /// <returns>Value of key</returns>
+        public static string ReadSetting(string key, string section)
+        {
+            string filepath = String.Format("{0}\\setting.ini", Properties.Settings.Default.SettingFilePath);
+            var iniFile = new INIHandle(filepath);
+            return iniFile.Read(key, section);
+        }
+        //-- BUG0046-SPJ (NguyenPT 20160824) Login automatically
         #endregion
 
         #region Common methods

@@ -18,6 +18,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Reflection;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -665,6 +666,10 @@ namespace MainPrj
         /// <param name="e">EventArgs</param>
         private void MainForm_Load(object sender, EventArgs e)
         {
+            //++ BUG0054-SPJ (NguyenPT 20160822) Show version on screen's title
+            // Title
+            this.Text += String.Format(" - Version {0}", Assembly.GetExecutingAssembly().GetName().Version.ToString());
+            //-- BUG0054-SPJ (NguyenPT 20160822) Show version on screen's title
             // Initialize
             this.listChannelControl.Add(this.channelControlLine1);
             this.listChannelControl.Add(this.channelControlLine2);
@@ -693,6 +698,17 @@ namespace MainPrj
             CommonProcess.ReadHistory();
             CommonProcess.ReadSetting();
             CommonProcess.ReadSettingPromote();
+
+            //++ BUG0046-SPJ (NguyenPT 20160824) Login automatically
+            // Check if login automatically
+            string username = CommonProcess.ReadUsernameFromSetting();
+            string pass     = CommonProcess.ReadPasswordFromSetting();
+            if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(pass))
+            {
+                CommonProcess.RequestLogin(
+                username, pass, loginProgressChanged, loginCompleted);
+            }
+            //-- BUG0046-SPJ (NguyenPT 20160824) Login automatically
         }
         /// <summary>
         /// Handle draw tab title.
@@ -1097,6 +1113,9 @@ namespace MainPrj
                 DataPure.Instance.User = new UserLoginModel();
                 pbxAvatar.Image = CommonProcess.CreateAvatar(string.Empty, pbxAvatar.Size.Height);
                 Logout();
+                //++ BUG0046-SPJ (NguyenPT 20160824) Login automatically
+                CommonProcess.WriteLoginInfoToSetting(string.Empty, string.Empty);
+                //-- BUG0046-SPJ (NguyenPT 20160824) Login automatically
             }
         }
         /// <summary>
@@ -1162,33 +1181,69 @@ namespace MainPrj
                         MemoryStream msU = new MemoryStream(encodingBytes);
                         CustomerResponseModel baseResp = (CustomerResponseModel)js.ReadObject(msU);
                         // Check status
-                        if ((baseResp != null)
-                            && (baseResp.Status.Equals("1")))
+                        //++ BUG0012-SPJ (NguyenPT 20160822) Show message from server
+                        //if ((baseResp != null)
+                        //    && (baseResp.Status.Equals("1")))
+                        //{
+                        //    // Create customer is success.
+                        //    toolStripStatusLabel.Text = Properties.Resources.CreateCustomerSuccess;
+                        //    CommonProcess.ShowInformMessage(Properties.Resources.CreateCustomerSuccess,
+                        //        MessageBoxButtons.OK);
+                        //    ChannelControl channelControl = null;
+                        //    try
+                        //    {
+                        //        channelControl = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel);
+                        //    }
+                        //    catch (ArgumentOutOfRangeException)
+                        //    {
+                        //        CommonProcess.ShowErrorMessage(Properties.Resources.ArgumentOutOfRange);
+                        //        return;
+                        //    }
+                        //    if (channelControl != null)
+                        //    {
+                        //        if (baseResp.Record != null)
+                        //        {
+                        //            baseResp.Record[0].ActivePhone = channelControl.GetIncommingPhone();
+                        //            //CommonProcess.SetChannelInformation(channelControl, baseResp.Record[0]);
+                        //            channelControl.SetChannelInformation(baseResp.Record[0]);
+                        //        }
+                        //    }
+                        //}
+                        if (baseResp != null)
                         {
-                            // Create customer is success.
-                            toolStripStatusLabel.Text = Properties.Resources.CreateCustomerSuccess;
-                            CommonProcess.ShowInformMessage(Properties.Resources.CreateCustomerSuccess,
-                                MessageBoxButtons.OK);
-                            ChannelControl channelControl = null;
-                            try
+                            if (baseResp.Status.Equals("1"))
                             {
-                                channelControl = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel);
-                            }
-                            catch (ArgumentOutOfRangeException)
-                            {
-                                CommonProcess.ShowErrorMessage(Properties.Resources.ArgumentOutOfRange);
-                                return;
-                            }
-                            if (channelControl != null)
-                            {
-                                if (baseResp.Record != null)
+                                // Create customer is success.
+                                toolStripStatusLabel.Text = Properties.Resources.CreateCustomerSuccess;
+                                CommonProcess.ShowInformMessage(Properties.Resources.CreateCustomerSuccess,
+                                    MessageBoxButtons.OK);
+                                ChannelControl channelControl = null;
+                                try
                                 {
-                                    baseResp.Record[0].ActivePhone = channelControl.GetIncommingPhone();
-                                    //CommonProcess.SetChannelInformation(channelControl, baseResp.Record[0]);
-                                    channelControl.SetChannelInformation(baseResp.Record[0]);
+                                    channelControl = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel);
+                                }
+                                catch (ArgumentOutOfRangeException)
+                                {
+                                    CommonProcess.ShowErrorMessage(Properties.Resources.ArgumentOutOfRange);
+                                    return;
+                                }
+                                if (channelControl != null)
+                                {
+                                    if (baseResp.Record != null)
+                                    {
+                                        baseResp.Record[0].ActivePhone = channelControl.GetIncommingPhone();
+                                        //CommonProcess.SetChannelInformation(channelControl, baseResp.Record[0]);
+                                        channelControl.SetChannelInformation(baseResp.Record[0]);
+                                    }
                                 }
                             }
+                            else
+                            {
+                                toolStripStatusLabel.Text = baseResp.Message;
+                                CommonProcess.ShowErrorMessage(baseResp.Message);
+                            }
                         }
+                        //-- BUG0012-SPJ (NguyenPT 20160822) Show message from server
                         else
                         {
                             // Create customer is failed.
@@ -1433,6 +1488,108 @@ namespace MainPrj
         {
             CommonProcess.UpdateProgress(e, status, toolStripProgressBarReqServer, toolStripStatusLabel);
         }
+        //++ BUG0046-SPJ (NguyenPT 20160824) Login automatically
+        /// <summary>
+        /// Login completed.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">UploadValuesCompletedEventArgs</param>
+        private void loginCompleted(object sender, UploadValuesCompletedEventArgs e)
+        {
+            if (e.Cancelled)
+            {
+                toolStripStatusLabel.Text = Properties.Resources.ErrorCause + Properties.Resources.Cancel;
+            }
+            else if (e.Error != null)
+            {
+                toolStripStatusLabel.Text = Properties.Resources.ErrorCause + e.Error.Message;
+            }
+            else
+            {
+                toolStripStatusLabel.Text = Properties.Resources.LoginSuccess;
+                Properties.Settings.Default.LastUsername = CommonProcess.ReadUsernameFromSetting();
+                Properties.Settings.Default.Save();
+                toolStripProgressBarReqServer.Value = 0;
+                byte[] response = e.Result;
+                string respStr = String.Empty;
+                respStr = System.Text.Encoding.UTF8.GetString(response);
+                if (!String.IsNullOrEmpty(respStr))
+                {
+                    DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(UserLoginResponseModel));
+                    byte[] encodingBytes = null;
+                    try
+                    {
+                        // Encoding response data
+                        encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);
+                    }
+                    catch (System.Text.EncoderFallbackException)
+                    {
+                        CommonProcess.ShowErrorMessage(Properties.Resources.EncodingError);
+                    }
+                    if (encodingBytes != null)
+                    {
+                        MemoryStream msU = new MemoryStream(encodingBytes);
+                        UserLoginResponseModel baseResp = (UserLoginResponseModel)js.ReadObject(msU);
+                        if (baseResp != null)
+                        {
+                            if (!String.IsNullOrEmpty(baseResp.Token))
+                            {
+                                Properties.Settings.Default.UserToken = baseResp.Token;
+                                Properties.Settings.Default.Save();
+                            }
+                            UserLoginResponseModel userResp = baseResp;
+                            UserLoginModel user = new UserLoginModel();
+                            if (userResp.Status.Equals("1"))
+                            {
+                                // Login success
+                                if (!String.IsNullOrEmpty(userResp.Token))
+                                {
+                                    // Save token
+                                    Properties.Settings.Default.UserToken = userResp.Token;
+                                    Properties.Settings.Default.Save();
+                                }
+                                if (userResp.Record != null)
+                                {
+                                    user = userResp.Record;
+                                }
+                                if (userResp.User_id != null)
+                                {
+                                    user.User_id = userResp.User_id;
+                                }
+                                if (CommonProcess.IsValidNumber(userResp.Role_id))
+                                {
+                                    user.Role = (RoleType)int.Parse(userResp.Role_id);
+                                }
+                                if (!String.IsNullOrEmpty(userResp.Role_name))
+                                {
+                                    user.RoleStr = userResp.Role_name;
+                                }
+                                DataPure.Instance.User = user;
+                                if (!String.IsNullOrEmpty(DataPure.Instance.User.First_name))
+                                {
+                                    Login();
+                                }
+                            }
+                            else
+                            {
+                                CommonProcess.ShowErrorMessage(userResp.Message);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// Handle login progress changed.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">UploadProgressChangedEventArgs</param>
+        private void loginProgressChanged(object sender, UploadProgressChangedEventArgs e)
+        {
+            CommonProcess.UpdateProgress(e, Properties.Resources.RequestingLogin,
+                toolStripProgressBarReqServer, toolStripStatusLabel);
+        }
+        //-- BUG0046-SPJ (NguyenPT 20160824) Login automatically
         #endregion
 
         #region Tansonic UDP handling
@@ -1852,12 +2009,29 @@ namespace MainPrj
             //}
         }
 
+        /// <summary>
+        /// Handle exit application.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
         private void toolStripMenuItemExit_Click(object sender, EventArgs e)
         {
             if (SaveSettingData())
             {
                 Application.Exit();
                 //this.Close();
+            }
+        }
+        /// <summary>
+        /// Handle exit application.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            if (SaveSettingData())
+            {
+                Application.Exit();
             }
         }
 

@@ -125,9 +125,18 @@
     <value>Coordinator.Error</value>
     <comment>Error</comment>
   </data>
+  <data name="AnalyzeTempDataDone" xml:space="preserve">
+    <value>Phân tích dữ liệu hoàn thành!</value>
+  </data>
+  <data name="CardDataStatus5" xml:space="preserve">
+    <value>Nhỡ</value>
+  </data>
   <data name="UdpClientArgumentOutOfRangeException" xml:space="preserve">
     <value>Không thể kết nối đến cổng:</value>
     <comment>Exception connect port</comment>
+  </data>
+  <data name="RequestingLogin" xml:space="preserve">
+    <value>Đang gửi yêu cầu đăng nhập...</value>
   </data>
   <data name="upload_tray" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>upload_tray.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -141,14 +150,18 @@
   <data name="UpdateOrderSuccess" xml:space="preserve">
     <value>Cập nhật đơn hàng thành công!</value>
   </data>
+  <data name="CreateOrderServerError1987" xml:space="preserve">
+    <value>Lỗi xảy ra khi tạo đơn hàng trên web.
+Điều phối hãy thoát ra rồi đăng nhập lại!</value>
+  </data>
   <data name="ErrorLengthOfHostName" xml:space="preserve">
     <value>The length of host name is greater than 255 characters</value>
   </data>
   <data name="ordernow" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>ordernow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="CheckAutoUpdate" xml:space="preserve">
-    <value>http://android.huongminhgroup.com/coordinatorhelper/autoupdate.xml</value>
+  <data name="ErrorIPAddressInvalid" xml:space="preserve">
+    <value>Lỗi địa chỉ IP không hợp lệ</value>
   </data>
   <data name="RequestLogoutSuccess" xml:space="preserve">
     <value>Đăng xuất thành công!</value>
@@ -168,9 +181,6 @@
   <data name="RequestUpdateAgentCellPhone" xml:space="preserve">
     <value>Đang gửi yêu cầu cập nhật thông tin Đại lý...</value>
   </data>
-  <data name="ZiboUdpPort" xml:space="preserve">
-    <value>1972</value>
-  </data>
   <data name="EncodingError" xml:space="preserve">
     <value>Có lỗi xảy ra khi mã hóa dữ liệu trả về.</value>
   </data>
@@ -186,19 +196,19 @@
   <data name="Role" xml:space="preserve">
     <value>Bộ phận</value>
   </data>
-  <data name="NotSelectProducts" xml:space="preserve">
-    <value>Chưa chọn sản phẩm nào.</value>
-  </data>
   <data name="AreYouSureNotSelectCustomer" xml:space="preserve">
     <value>Bạn có chắc chắn khi không chọn Khách hàng nào?
 Nhấn YES để thoát.
 Nhấn NO để chọn lại Khách hàng.</value>
   </data>
-  <data name="RequestAgentInfoSuccess" xml:space="preserve">
-    <value>Cập nhật thông tin Đại Lý thành công!</value>
+  <data name="ZiboUdpPort" xml:space="preserve">
+    <value>1972</value>
   </data>
   <data name="DateTimeFormat" xml:space="preserve">
     <value>dd/MM/yyyy</value>
+  </data>
+  <data name="UpdateAgentCellPhoneError" xml:space="preserve">
+    <value>Số điện thoại không hợp lệ!</value>
   </data>
   <data name="transfer" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>transfer.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -237,11 +247,17 @@ Nhấn NO để chọn lại Khách hàng.</value>
   <data name="cancel_order" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>cancel_order.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="DefaultDateTimeFormat" xml:space="preserve">
+    <value>dd-MM-yyyy</value>
+  </data>
   <data name="IncommingCall" xml:space="preserve">
     <value>Có cuộc gọi đến: {0}</value>
   </data>
   <data name="DecoderError" xml:space="preserve">
     <value>Lỗi decode dữ liệu</value>
+  </data>
+  <data name="NotInputProductPrice" xml:space="preserve">
+    <value>Chưa nhập giá sản phẩm.</value>
   </data>
   <data name="ListOrder" xml:space="preserve">
     <value>Danh sách đơn hàng ngày</value>
@@ -270,11 +286,14 @@ Bạn chắn chắn không?</value>
   <data name="phone" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>phone.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="list" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>list.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="NotSelectMaterial" xml:space="preserve">
+    <value>Chưa chọn loại gas nào!</value>
   </data>
   <data name="MissCustomerInfor" xml:space="preserve">
     <value>Chưa có thông tin Khách hàng, cần phải tạo Khách hàng trước!</value>
+  </data>
+  <data name="RequestTempDataSuccess" xml:space="preserve">
+    <value>Cập nhật data hoàn thành!</value>
   </data>
   <data name="copy" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>copy.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -310,9 +329,6 @@ Bạn chắn chắn không?</value>
   <data name="CardDataStatus1" xml:space="preserve">
     <value>Gọi đến</value>
   </data>
-  <data name="new_Customer" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>new_Customer.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="done_black" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>done_black.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -343,14 +359,17 @@ Bạn chắn chắn không?</value>
   <data name="CallType2" xml:space="preserve">
     <value>Đặt hàng sau</value>
   </data>
+  <data name="CheckAutoUpdate" xml:space="preserve">
+    <value>http://android.huongminhgroup.com/coordinatorhelper/autoupdate.xml</value>
+  </data>
+  <data name="CustomerNameUnknown" xml:space="preserve">
+    <value>Không rõ</value>
+  </data>
   <data name="SelectorTitleCylinder" xml:space="preserve">
     <value>Xin vui lòng chọn vỏ</value>
   </data>
-  <data name="AnalyzeTempDataDone" xml:space="preserve">
-    <value>Phân tích dữ liệu hoàn thành!</value>
-  </data>
-  <data name="DontSave" xml:space="preserve">
-    <value>Không lưu</value>
+  <data name="RequestAgentInfoSuccess" xml:space="preserve">
+    <value>Cập nhật thông tin Đại Lý thành công!</value>
   </data>
   <data name="NewIncommingPhone" xml:space="preserve">
     <value>Số điện thoại mới!</value>
@@ -386,11 +405,14 @@ Bạn chắn chắn không?</value>
   <data name="CallType1" xml:space="preserve">
     <value>Đặt hàng ngay</value>
   </data>
-  <data name="RequestTempDataSuccess" xml:space="preserve">
-    <value>Cập nhật data hoàn thành!</value>
+  <data name="NotSelectProducts" xml:space="preserve">
+    <value>Chưa chọn sản phẩm nào.</value>
   </data>
-  <data name="RequestingLogin" xml:space="preserve">
-    <value>Đang gửi yêu cầu đăng nhập...</value>
+  <data name="list" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>list.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="printer" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>printer.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="CCSSuffix" xml:space="preserve">
     <value> - CCS</value>
@@ -419,8 +441,8 @@ Bạn chắn chắn không?</value>
   <data name="Agent" xml:space="preserve">
     <value>Đại lý</value>
   </data>
-  <data name="CardDataStatus5" xml:space="preserve">
-    <value>Nhỡ</value>
+  <data name="new_Customer" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>new_Customer.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="CallType3" xml:space="preserve">
     <value>Bảo trì</value>
@@ -431,8 +453,8 @@ Bạn chắn chắn không?</value>
   <data name="money_icon_gray" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>money_icon_gray.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ErrorIPAddressInvalid" xml:space="preserve">
-    <value>Lỗi địa chỉ IP không hợp lệ</value>
+  <data name="DontSave" xml:space="preserve">
+    <value>Không lưu</value>
   </data>
   <data name="ordertruck" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>ordertruck.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -440,26 +462,7 @@ Bạn chắn chắn không?</value>
   <data name="RequestingCreateCustomer" xml:space="preserve">
     <value>Đang gửi yêu cầu tạo mới Khách hàng...</value>
   </data>
-  <data name="printer" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>printer.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="CustomerNameUnknown" xml:space="preserve">
-    <value>Không rõ</value>
-  </data>
-  <data name="NotInputProductPrice" xml:space="preserve">
-    <value>Chưa nhập giá sản phẩm.</value>
-  </data>
-  <data name="CreateOrderServerError1987" xml:space="preserve">
-    <value>Lỗi xảy ra khi tạo đơn hàng trên web.
-Điều phối hãy thoát ra rồi đăng nhập lại!</value>
-  </data>
-  <data name="NotSelectMaterial" xml:space="preserve">
-    <value>Chưa chọn loại gas nào!</value>
-  </data>
-  <data name="UpdateAgentCellPhoneError" xml:space="preserve">
-    <value>Số điện thoại không hợp lệ!</value>
-  </data>
-  <data name="DefaultDateTimeFormat" xml:space="preserve">
-    <value>dd-MM-yyyy</value>
+  <data name="close" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>close.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

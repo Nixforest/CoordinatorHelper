@@ -41,6 +41,14 @@ namespace MainPrj.View
             CommonProcess.RequestLogin(
                 tbxUsername.Text.Trim(),
                 tbxPassword.Text.Trim(), loginProgressChanged, loginCompleted);
+            //++ BUG0046-SPJ (NguyenPT 20160824) Login automatically
+            if (chbSaveLogin.Checked)
+            {
+                CommonProcess.WriteLoginInfoToSetting(
+                    tbxUsername.Text.Trim(),
+                    tbxPassword.Text.Trim());
+            }
+            //-- BUG0046-SPJ (NguyenPT 20160824) Login automatically
         }
         /// <summary>
         /// Handle when login request is completed.

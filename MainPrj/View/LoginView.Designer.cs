@@ -40,6 +40,7 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.chbSaveLogin = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -57,7 +58,7 @@
             // 
             this.tbxUsername.Location = new System.Drawing.Point(193, 36);
             this.tbxUsername.Name = "tbxUsername";
-            this.tbxUsername.Size = new System.Drawing.Size(320, 29);
+            this.tbxUsername.Size = new System.Drawing.Size(350, 29);
             this.tbxUsername.TabIndex = 1;
             // 
             // label2
@@ -73,7 +74,7 @@
             // 
             this.tbxPassword.Location = new System.Drawing.Point(193, 95);
             this.tbxPassword.Name = "tbxPassword";
-            this.tbxPassword.Size = new System.Drawing.Size(320, 29);
+            this.tbxPassword.Size = new System.Drawing.Size(350, 29);
             this.tbxPassword.TabIndex = 2;
             this.tbxPassword.UseSystemPasswordChar = true;
             // 
@@ -84,7 +85,7 @@
             this.btnLogin.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnLogin.Location = new System.Drawing.Point(193, 166);
             this.btnLogin.Name = "btnLogin";
-            this.btnLogin.Size = new System.Drawing.Size(186, 60);
+            this.btnLogin.Size = new System.Drawing.Size(210, 60);
             this.btnLogin.TabIndex = 4;
             this.btnLogin.Text = "Đăng nhập";
             this.btnLogin.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -98,9 +99,9 @@
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.Image = global::MainPrj.Properties.Resources.cancel1;
             this.btnCancel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnCancel.Location = new System.Drawing.Point(385, 166);
+            this.btnCancel.Location = new System.Drawing.Point(409, 166);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(128, 60);
+            this.btnCancel.Size = new System.Drawing.Size(134, 60);
             this.btnCancel.TabIndex = 5;
             this.btnCancel.Text = "Hủy";
             this.btnCancel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -136,7 +137,7 @@
             this.toolStripStatusLabel});
             this.statusStrip1.Location = new System.Drawing.Point(0, 238);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(525, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(555, 22);
             this.statusStrip1.TabIndex = 6;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -150,6 +151,19 @@
             this.toolStripStatusLabel.Name = "toolStripStatusLabel";
             this.toolStripStatusLabel.Size = new System.Drawing.Size(0, 17);
             // 
+            // chbSaveLogin
+            // 
+            this.chbSaveLogin.AutoSize = true;
+            this.chbSaveLogin.Checked = true;
+            this.chbSaveLogin.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chbSaveLogin.Location = new System.Drawing.Point(344, 130);
+            this.chbSaveLogin.Name = "chbSaveLogin";
+            this.chbSaveLogin.Size = new System.Drawing.Size(199, 28);
+            this.chbSaveLogin.TabIndex = 3;
+            this.chbSaveLogin.Text = "Tự động đăng nhập";
+            this.chbSaveLogin.UseVisualStyleBackColor = true;
+            this.chbSaveLogin.CheckedChanged += new System.EventHandler(this.chbShowPass_CheckedChanged);
+            // 
             // LoginView
             // 
             this.AcceptButton = this.btnLogin;
@@ -157,8 +171,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(525, 260);
+            this.ClientSize = new System.Drawing.Size(555, 260);
             this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.chbSaveLogin);
             this.Controls.Add(this.chbShowPass);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.btnCancel);
@@ -198,5 +213,6 @@
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel;
+        private System.Windows.Forms.CheckBox chbSaveLogin;
     }
 }

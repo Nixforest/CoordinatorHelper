@@ -96,10 +96,25 @@ namespace MainPrj.View
         private void OrderView_Load(object sender, EventArgs e)
         {
             dtpDate.Value = DateTime.Now;
+            //++ BUG0002-SPJ (NguyenPT 20160824) If active phone is empty, take from Phone list
+            string phone = CustomerInfo != null ? CustomerInfo.ActivePhone : String.Empty;
+            if (string.IsNullOrEmpty(phone))
+            {
+                string[] phoneList = CustomerInfo.PhoneList.Split(Properties.Settings.Default.PhoneListToken.ToCharArray());
+                if ((phoneList != null) && (phoneList.Length > 0))
+                {
+                    phone = phoneList[0];
+                }
+            }
+            //-- BUG0002-SPJ (NguyenPT 20160824) If active phone is empty, take from Phone list
+
             // Customer information
             tbxCustomer.Text = String.Format("{0} - {1}\r\n{2}",
                 CustomerInfo != null ? CustomerInfo.Name : String.Empty,
-                CustomerInfo != null ? CustomerInfo.ActivePhone : String.Empty,
+                //++ BUG0002-SPJ (NguyenPT 20160824) If active phone is empty, take from Phone list
+                //CustomerInfo != null ? CustomerInfo.ActivePhone : String.Empty,
+                phone,
+                //-- BUG0002-SPJ (NguyenPT 20160824) If active phone is empty, take from Phone list
                 CustomerInfo != null ? CustomerInfo.Address : String.Empty);
 
             lblPromote.Text = CommonProcess.FormatMoney(Properties.Settings.Default.PromoteMoney);

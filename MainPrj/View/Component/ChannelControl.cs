@@ -628,10 +628,17 @@ namespace MainPrj.View
                 cbxWard.SelectedIndex = 0;
             }
         }
-
+        /// <summary>
+        /// Reset data.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
         private void btnNewCustomer_Click(object sender, EventArgs e)
         {
             this.ClearData();
+            //++ BUG0014-SPJ (NguyenPT 20160824) Reset Incomming number
+            this.tbxIncommingNumber.Text = string.Empty;
+            //-- BUG0014-SPJ (NguyenPT 20160824) Reset Incomming number
             this.Data = new CustomerModel();
         }
     }
