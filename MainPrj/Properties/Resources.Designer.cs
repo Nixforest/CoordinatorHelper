@@ -1067,6 +1067,16 @@ namespace MainPrj.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap uphold {
+            get {
+                object obj = ResourceManager.GetObject("uphold", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap upload_tray {
             get {
                 object obj = ResourceManager.GetObject("upload_tray", resourceCulture);

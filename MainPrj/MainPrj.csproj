@@ -87,6 +87,8 @@
     <Compile Include="Model\AgentModel.cs" />
     <Compile Include="Model\BaseModel.cs" />
     <Compile Include="Model\BillPrintModel.cs" />
+    <Compile Include="Model\BillPrintOrderModel.cs" />
+    <Compile Include="Model\BillPrintUpholdModel.cs" />
     <Compile Include="Model\MaterialBitmap.cs" />
     <Compile Include="Model\OrderStatus.cs" />
     <Compile Include="Model\CylinderModel.cs" />
@@ -249,6 +251,12 @@
     <Compile Include="View\SettingView.Designer.cs">
       <DependentUpon>SettingView.cs</DependentUpon>
     </Compile>
+    <Compile Include="View\UpholdCreateView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\UpholdCreateView.Designer.cs">
+      <DependentUpon>UpholdCreateView.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\WareHouseView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -334,6 +342,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\SettingView.resx">
       <DependentUpon>SettingView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\UpholdCreateView.resx">
+      <DependentUpon>UpholdCreateView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\WareHouseView.resx">
       <DependentUpon>WareHouseView.cs</DependentUpon>
@@ -468,6 +479,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\close.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\uphold.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

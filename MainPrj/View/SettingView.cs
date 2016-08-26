@@ -54,7 +54,14 @@ namespace MainPrj.View
             Properties.Settings.Default.PhoneCutLength                  = (int)this.nUDPhoneCutLen.Value;
             Properties.Settings.Default.ColorFoundKeywordText           = this.btnSearchResultText.BackColor;
             Properties.Settings.Default.ColorFoundKeywordBackground     = this.btnSearchResultBackground.BackColor;
-            Properties.Settings.Default.BillBrand                       = this.tbxBrand.Text;
+            //++ BUG0055-SPJ (NguyenPT 20160826) Save brand information in setting.ini
+            //Properties.Settings.Default.BillBrand                       = this.tbxBrand.Text;
+            if (!string.IsNullOrEmpty(this.tbxBrand.Text))
+            {
+                CommonProcess.WriteBrandToSetting(this.tbxBrand.Text);
+            }
+            //-- BUG0055-SPJ (NguyenPT 20160826) Save brand information in setting.ini
+            
             Properties.Settings.Default.IsTabColorChange                = this.cbxTabColorChanged.Checked;
             // Save setting
             Properties.Settings.Default.Save();
@@ -108,7 +115,14 @@ namespace MainPrj.View
             this.btnSearchResultText.BackColor         = Properties.Settings.Default.ColorFoundKeywordText;
             this.btnSearchResultBackground.BackColor   = Properties.Settings.Default.ColorFoundKeywordBackground;
             this.nUDPhoneCutLen.Value                  = Properties.Settings.Default.PhoneCutLength;
-            this.tbxBrand.Text                         = Properties.Settings.Default.BillBrand;
+            //++ BUG0055-SPJ (NguyenPT 20160826) Save brand information in setting.ini
+            //this.tbxBrand.Text                         = Properties.Settings.Default.BillBrand;
+            this.tbxBrand.Text = CommonProcess.ReadBrandFromSetting();
+            if (string.IsNullOrEmpty(this.tbxBrand.Text))
+            {
+                this.tbxBrand.Text = Properties.Settings.Default.BillBrand;
+            }
+            //-- BUG0055-SPJ (NguyenPT 20160826) Save brand information in setting.ini
             this.cbxTabColorChanged.Checked            = Properties.Settings.Default.IsTabColorChange;
         }
         /// <summary>

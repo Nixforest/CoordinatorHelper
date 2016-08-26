@@ -909,8 +909,11 @@ namespace MainPrj.View
             if (CreateOrder())
             {
                 // Print
-                BillPrintModel printModel = new BillPrintModel();
-                printModel.Brand = Properties.Settings.Default.BillBrand;
+                //++ BUG0047-SPJ (NguyenPT 20160826) Handle print Uphold
+                //BillPrintModel printModel = new BillPrintModel();
+                BillPrintOrderModel printModel = new BillPrintOrderModel();
+                //-- BUG0047-SPJ (NguyenPT 20160826) Handle print Uphold
+                //printModel.Brand = Properties.Settings.Default.BillBrand;
                 printModel.Phone = DataPure.Instance.Agent.Phone;
                 printModel.CustomerName = CustomerInfo != null ?
                     String.Format("{0}-{1}", CustomerInfo.ActivePhone,

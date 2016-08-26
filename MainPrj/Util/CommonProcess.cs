@@ -35,6 +35,9 @@ namespace MainPrj.Util
         public static string INI_KEY_USERNAME = "Username";
         public static string INI_KEY_PASSWORD = "Password";
         //-- BUG0046-SPJ (NguyenPT 20160824) Login automatically
+        //++ BUG0055-SPJ (NguyenPT 20160826) Save brand information in setting.ini
+        public static string INI_KEY_BRAND = "Brand";
+        //-- BUG0055-SPJ (NguyenPT 20160826) Save brand information in setting.ini
         #endregion
         #region Static variables
         public static List<string> AGENT_LIST_ZIBO = new List<string>
@@ -825,6 +828,27 @@ namespace MainPrj.Util
             return iniFile.Read(key, section);
         }
         //-- BUG0046-SPJ (NguyenPT 20160824) Login automatically
+
+        //++ BUG0055-SPJ (NguyenPT 20160826) Save brand information in setting.ini
+        /// <summary>
+        /// Write brand information to setting.ini.
+        /// </summary>
+        /// <param name="brand">Brand</param>
+        public static void WriteBrandToSetting(string brand)
+        {
+            string filepath = String.Format("{0}\\setting.ini", Properties.Settings.Default.SettingFilePath);
+            var iniFile = new INIHandle(filepath);
+            iniFile.Write(INI_KEY_BRAND, brand, INI_SECTION_GENERAL);
+        }
+        /// <summary>
+        /// Read brand information from setting.
+        /// </summary>
+        /// <returns>Brand setting</returns>
+        public static string ReadBrandFromSetting()
+        {
+            return ReadSetting(INI_KEY_BRAND, INI_SECTION_GENERAL);
+        }
+        //-- BUG0055-SPJ (NguyenPT 20160826) Save brand information in setting.ini
         #endregion
 
         #region Common methods

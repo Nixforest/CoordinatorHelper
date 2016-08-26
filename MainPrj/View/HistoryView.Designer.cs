@@ -55,6 +55,7 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.btnUphold = new System.Windows.Forms.Button();
             this.contextMenuStrip.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -275,6 +276,16 @@
             this.toolStripStatusLabel.Name = "toolStripStatusLabel";
             this.toolStripStatusLabel.Size = new System.Drawing.Size(0, 17);
             // 
+            // btnUphold
+            // 
+            this.btnUphold.Location = new System.Drawing.Point(283, 8);
+            this.btnUphold.Name = "btnUphold";
+            this.btnUphold.Size = new System.Drawing.Size(104, 40);
+            this.btnUphold.TabIndex = 0;
+            this.btnUphold.Text = "Bảo trì";
+            this.btnUphold.UseVisualStyleBackColor = true;
+            this.btnUphold.Click += new System.EventHandler(this.btnUphold_Click);
+            // 
             // HistoryView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
@@ -289,6 +300,7 @@
             this.Controls.Add(this.tbxSearch);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnFinish);
+            this.Controls.Add(this.btnUphold);
             this.Controls.Add(this.btnCreateOrder);
             this.Controls.Add(this.btnOpenFile);
             this.Controls.Add(this.listViewHistory);
@@ -337,5 +349,6 @@
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel;
+        private System.Windows.Forms.Button btnUphold;
     }
 }

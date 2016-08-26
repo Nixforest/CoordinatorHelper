@@ -83,6 +83,7 @@ namespace MainPrj
             this.lblAgent = new System.Windows.Forms.Label();
             this.btnClose = new System.Windows.Forms.Button();
             this.toolTipClose = new System.Windows.Forms.ToolTip(this.components);
+            this.btnUphold = new System.Windows.Forms.Button();
             this.coordinatorOrderView_v2 = new MainPrj.View.Component.CoordinatorOrderView_v2();
             this.coordinatorOrderView = new MainPrj.View.Component.CoordinatorOrderView();
             this.channelControlLine1 = new MainPrj.View.ChannelControl();
@@ -540,6 +541,19 @@ namespace MainPrj
             // 
             this.toolTipClose.IsBalloon = true;
             // 
+            // btnUphold
+            // 
+            this.btnUphold.Image = global::MainPrj.Properties.Resources.uphold;
+            this.btnUphold.Location = new System.Drawing.Point(196, 548);
+            this.btnUphold.Name = "btnUphold";
+            this.btnUphold.Size = new System.Drawing.Size(180, 64);
+            this.btnUphold.TabIndex = 3;
+            this.btnUphold.Text = "Bảo trì (F2)";
+            this.btnUphold.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnUphold.UseVisualStyleBackColor = true;
+            this.btnUphold.Visible = false;
+            this.btnUphold.Click += new System.EventHandler(this.btnUphold_Click);
+            // 
             // coordinatorOrderView_v2
             // 
             this.coordinatorOrderView_v2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
@@ -776,6 +790,7 @@ namespace MainPrj
             this.Controls.Add(this.btnCreateCustomer);
             this.Controls.Add(this.mainTabControl);
             this.Controls.Add(this.btnUpdateCustomer);
+            this.Controls.Add(this.btnUphold);
             this.Controls.Add(this.btnSaveData);
             this.Controls.Add(this.tbxLog);
             this.Controls.Add(this.btnCreateOrder);
@@ -867,6 +882,7 @@ namespace MainPrj
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemExit;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.ToolTip toolTipClose;
+        private System.Windows.Forms.Button btnUphold;
     }
 }
 

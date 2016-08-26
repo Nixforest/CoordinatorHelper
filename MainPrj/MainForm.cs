@@ -355,6 +355,41 @@ namespace MainPrj
                 }
             }
         }
+        //-- BUG0047-SPJ (NguyenPT 20160826) Handle print Uphold
+        /// <summary>
+        /// Handle click on Uphold button.
+        /// </summary>
+        private void HandleClickUpholdButton()
+        {
+            DataPure.Instance.CustomerInfo = this.listChannelControl[DataPure.Instance.CurrentChannel].Data;
+            // Check if customer name is empty
+            if ((DataPure.Instance.CustomerInfo != null)
+                && (!String.IsNullOrEmpty(DataPure.Instance.CustomerInfo.Name)))
+            {
+                RoleType role = RoleType.ROLE_ACCOUNTING_AGENT;
+                if (DataPure.Instance.User != null)
+                {
+                    role = DataPure.Instance.User.Role;
+                }
+                switch (role)
+                {
+                    case RoleType.ROLE_ACCOUNTING_AGENT:
+                    case RoleType.ROLE_ACCOUNTING_ZONE:
+                        UpholdCreateView view = new UpholdCreateView(DataPure.Instance.CustomerInfo);
+                        view.ShowDialog();
+                        break;
+                    case RoleType.ROLE_DIEU_PHOI:
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else
+            {
+                CommonProcess.ShowErrorMessage(Properties.Resources.MissCustomerInfor);
+            }
+        }
+        //-- BUG0047-SPJ (NguyenPT 20160826) Handle print Uphold
         /// <summary>
         /// Update tab page title.
         /// </summary>
@@ -423,6 +458,12 @@ namespace MainPrj
             this.toolStripMenuItemLogout.Enabled = true;
             // Update button enable
             btnCreateOrder.Enabled = DataPure.Instance.IsAccountingAgentRole() || DataPure.Instance.IsCoordinatorRole();
+            //++ BUG0047-SPJ (NguyenPT 20160826) Handle print Uphold
+            btnUphold.Enabled   = DataPure.Instance.IsAccountingAgentRole();
+            btnUphold.Visible   = DataPure.Instance.IsAccountingAgentRole();
+            btnSaveData.Enabled = DataPure.Instance.IsCoordinatorRole();
+            btnSaveData.Visible = DataPure.Instance.IsCoordinatorRole();
+            //-- BUG0047-SPJ (NguyenPT 20160826) Handle print Uphold
             btnOrderList.Enabled = DataPure.Instance.IsAccountingAgentRole();
             btnCreateCustomer.Enabled = DataPure.Instance.IsAccountingAgentRole();
             //coordinatorOrderView.Enabled = DataPure.Instance.IsCoordinatorRole();
@@ -847,7 +888,17 @@ namespace MainPrj
                     HandleClickCreateOrderButton();
                     break;
                 case Keys.F2:
-                    HandleClickSaveDataButton();
+                    //++ BUG0047-SPJ (NguyenPT 20160826) Handle print Uphold
+                    //HandleClickSaveDataButton();
+                    if (DataPure.Instance.IsAccountingAgentRole())
+                    {
+                        HandleClickUpholdButton();
+                    }
+                    else if (DataPure.Instance.IsCoordinatorRole())
+                    {
+                        HandleClickSaveDataButton();
+                    }
+                    //-- BUG0047-SPJ (NguyenPT 20160826) Handle print Uphold
                     break;
                 case Keys.F3:
                     HandleClickUpdateCustomerButton();
@@ -1088,6 +1139,42 @@ namespace MainPrj
             AgentCellPhoneView view = new AgentCellPhoneView();
             view.ShowDialog();
         }
+        /// <summary>
+        /// Handle exit application.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void toolStripMenuItemExit_Click(object sender, EventArgs e)
+        {
+            if (SaveSettingData())
+            {
+                Application.Exit();
+                //this.Close();
+            }
+        }
+        /// <summary>
+        /// Handle exit application.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            if (SaveSettingData())
+            {
+                Application.Exit();
+            }
+        }
+        //++ BUG0047-SPJ (NguyenPT 20160826) Handle print Uphold
+        /// <summary>
+        /// Handle click Uphold button.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void btnUphold_Click(object sender, EventArgs e)
+        {
+            HandleClickUpholdButton();
+        }
+        //-- BUG0047-SPJ (NguyenPT 20160826) Handle print Uphold
         #endregion
 
         #region Request server handler
@@ -2007,32 +2094,6 @@ namespace MainPrj
             //    CommonProcess.ShowErrorMessage(Properties.Resources.OutOfMemory);
             //    this.Close();
             //}
-        }
-
-        /// <summary>
-        /// Handle exit application.
-        /// </summary>
-        /// <param name="sender">Sender</param>
-        /// <param name="e">EventArgs</param>
-        private void toolStripMenuItemExit_Click(object sender, EventArgs e)
-        {
-            if (SaveSettingData())
-            {
-                Application.Exit();
-                //this.Close();
-            }
-        }
-        /// <summary>
-        /// Handle exit application.
-        /// </summary>
-        /// <param name="sender">Sender</param>
-        /// <param name="e">EventArgs</param>
-        private void btnClose_Click(object sender, EventArgs e)
-        {
-            if (SaveSettingData())
-            {
-                Application.Exit();
-            }
         }
 
         //private void ListenThreadHandler()

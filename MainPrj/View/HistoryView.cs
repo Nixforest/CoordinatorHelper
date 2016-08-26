@@ -59,6 +59,9 @@ namespace MainPrj.View
         private void HistoryView_Load(object sender, EventArgs e)
         {
             btnCreateOrder.Enabled = DataPure.Instance.IsAccountingAgentRole() || DataPure.Instance.IsCoordinatorRole();
+            //++ BUG0047-SPJ (NguyenPT 20160826) Handle print Uphold
+            btnUphold.Enabled = DataPure.Instance.IsAccountingAgentRole();
+            //-- BUG0047-SPJ (NguyenPT 20160826) Handle print Uphold
             //listData.Sort();
             //for (int i = listData.Count - 1; i >= 0; i--)
             //{
@@ -721,5 +724,50 @@ namespace MainPrj.View
             }
             this.SearchByKeyword(keyword);
         }
+        //++ BUG0047-SPJ (NguyenPT 20160826) Handle print Uphold
+        /// <summary>
+        /// Handle click Uphold button.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void btnUphold_Click(object sender, EventArgs e)
+        {
+            if (this.listViewHistory.SelectedItems.Count > 0)
+            {
+                string id = this.listViewHistory.SelectedItems[0].Tag.ToString();
+                foreach (CallModel callModel in this.listCurrentData)
+                {
+                    if (callModel.Id.Equals(id))
+                    {
+                        DataPure.Instance.CustomerInfo = callModel.Customer;
+                        // Check if customer name is empty
+                        if ((DataPure.Instance.CustomerInfo != null)
+                            && (!String.IsNullOrEmpty(DataPure.Instance.CustomerInfo.Name)))
+                        {
+                            RoleType role = DataPure.Instance.GetUserRole();
+
+                            switch (role)
+                            {
+                                case RoleType.ROLE_ACCOUNTING_AGENT:
+                                case RoleType.ROLE_ACCOUNTING_ZONE:
+                                    UpholdCreateView view = new UpholdCreateView(DataPure.Instance.CustomerInfo);
+                                    view.ShowDialog();
+                                    break;
+                                case RoleType.ROLE_DIEU_PHOI:
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            CommonProcess.ShowErrorMessage(Properties.Resources.MissCustomerInfor);
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+        //-- BUG0047-SPJ (NguyenPT 20160826) Handle print Uphold
     }
 }
