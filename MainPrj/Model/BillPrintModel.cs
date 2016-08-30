@@ -16,6 +16,10 @@ namespace MainPrj.Model
         //++ BUG0047-SPJ (NguyenPT 20160826) Handle print Uphold
         private string title;
         //-- BUG0047-SPJ (NguyenPT 20160826) Handle print Uphold
+        //++ BUG0056-SPJ (NguyenPT 20160830) Handle order type
+        private OrderType orderType;
+        private double otherMoney;
+        //-- BUG0056-SPJ (NguyenPT 20160830) Handle order type
         private string customerName;
         private string customerAddress;
         private string agentAddress;
@@ -36,7 +40,29 @@ namespace MainPrj.Model
             customerName    = string.Empty;
             customerAddress = string.Empty;
             agentAddress    = string.Empty;
+            //++ BUG0056-SPJ (NguyenPT 20160830) Handle order type
+            orderType       = OrderType.ORDERTYPE_NORMAL;
+            otherMoney      = 0.0;
+            //-- BUG0056-SPJ (NguyenPT 20160830) Handle order type
         }
+        //++ BUG0056-SPJ (NguyenPT 20160830) Handle order type
+        /// <summary>
+        /// Order type.
+        /// </summary>
+        public OrderType OrderType
+        {
+            get { return orderType; }
+            set { orderType = value; }
+        }
+        /// <summary>
+        /// Other money.
+        /// </summary>
+        public double OtherMoney
+        {
+            get { return otherMoney; }
+            set { otherMoney = value; }
+        }
+        //-- BUG0056-SPJ (NguyenPT 20160830) Handle order type
         /// <summary>
         /// Agent address.
         /// </summary>

@@ -325,6 +325,84 @@ namespace MainPrj.Util
             }
             return retVal;
         }
+        //++ BUG0008-SPJ (NguyenPT 20160830) Order history
+        /// <summary>
+        /// Get Material name by Id.
+        /// </summary>
+        /// <param name="materialId">Id of material</param>
+        /// <returns>Name of material</returns>
+        public string GetMaterialNameFromId(string materialId)
+        {
+            if ((tempData != null) && (tempData.Material_gas != null))
+            {
+                foreach (MaterialModel item in tempData.Material_gas)
+                {
+                    if (materialId.Equals(item.Id))
+                    {
+                        return item.Name;
+                    }
+                }
+            }
+            return string.Empty;
+        }
+        /// <summary>
+        /// Get Material No by Id.
+        /// </summary>
+        /// <param name="materialId">Id of material</param>
+        /// <returns>No of material</returns>
+        public string GetMaterialNoFromId(string materialId)
+        {
+            if ((tempData != null) && (tempData.Material_gas != null))
+            {
+                foreach (MaterialModel item in tempData.Material_gas)
+                {
+                    if (materialId.Equals(item.Id))
+                    {
+                        return item.Materials_no;
+                    }
+                }
+            }
+            return string.Empty;
+        }
+        /// <summary>
+        /// Get Promote name by Id.
+        /// </summary>
+        /// <param name="materialId">Id of material</param>
+        /// <returns>Name of promote</returns>
+        public string GetPromoteNameFromId(string materialId)
+        {
+            if ((tempData != null) && (tempData.Material_promotion != null))
+            {
+                foreach (MaterialModel item in tempData.Material_promotion)
+                {
+                    if (materialId.Equals(item.Id))
+                    {
+                        return item.Name;
+                    }
+                }
+            }
+            return string.Empty;
+        }
+        /// <summary>
+        /// Get Promote No by Id.
+        /// </summary>
+        /// <param name="materialId">Id of material</param>
+        /// <returns>No of promote</returns>
+        public string GetPromoteNoFromId(string materialId)
+        {
+            if ((tempData != null) && (tempData.Material_promotion != null))
+            {
+                foreach (MaterialModel item in tempData.Material_promotion)
+                {
+                    if (materialId.Equals(item.Id))
+                    {
+                        return item.Materials_no;
+                    }
+                }
+            }
+            return string.Empty;
+        }
+        //-- BUG0008-SPJ (NguyenPT 20160830) Order history
         #endregion
 
         #region Singleton Instance

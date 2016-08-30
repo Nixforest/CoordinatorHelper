@@ -38,6 +38,9 @@ namespace MainPrj.Util
         //++ BUG0055-SPJ (NguyenPT 20160826) Save brand information in setting.ini
         public static string INI_KEY_BRAND = "Brand";
         //-- BUG0055-SPJ (NguyenPT 20160826) Save brand information in setting.ini
+        //++ BUG0008-SPJ (NguyenPT 20160830) Order history
+        public static string API_ORDER_HISTORY = "/api/default/windowGetCustomerHistory";
+        //-- BUG0008-SPJ (NguyenPT 20160830) Order history
         #endregion
         #region Static variables
         public static List<string> AGENT_LIST_ZIBO = new List<string>
@@ -575,8 +578,15 @@ namespace MainPrj.Util
             if (model == null)
 	        {
                 return;
-	        }
-            List<OrderModel> list = ReadListOrdersByDate(Convert.ToDateTime(model.Created_date));
+            }
+            //++ BUG0057-SPJ (NguyenPT 20160828) Fix bug convert datetime
+            DateTime date = DateTime.ParseExact(
+                model.Created_date,
+                Properties.Resources.DefaultDateTimeFormat,
+                System.Globalization.CultureInfo.InvariantCulture);
+            //List<OrderModel> list = ReadListOrdersByDate(Convert.ToDateTime(model.Created_date));
+            List<OrderModel> list = ReadListOrdersByDate(date);
+            //-- BUG0057-SPJ (NguyenPT 20160828) Fix bug convert datetime
             for (int i = 0; i < list.Count; i++ )
             {
                 if (list[i].Id.Equals(model.Id))
@@ -585,7 +595,10 @@ namespace MainPrj.Util
                     break;
                 }
             }
-            WriteListOrdersByDate(Convert.ToDateTime(model.Created_date), list);
+            //++ BUG0057-SPJ (NguyenPT 20160828) Fix bug convert datetime
+            //WriteListOrdersByDate(Convert.ToDateTime(model.Created_date), list);
+            WriteListOrdersByDate(date, list);
+            //-- BUG0057-SPJ (NguyenPT 20160828) Fix bug convert datetime
         }
         //-- BUG0043-SPJ (NguyenPT 20160822) Write list order
         /// <summary>
@@ -1490,7 +1503,6 @@ namespace MainPrj.Util
         {
             return RequestCustomer(Properties.Settings.Default.URLGetCustomerByKeyword, Properties.Settings.Default.KeywordKey, keyword);
         }
-
         /// <summary>
         /// Request customer information from server by keyword.
         /// </summary>
@@ -1998,6 +2010,14 @@ namespace MainPrj.Util
                         //++ BUG0011-SPJ (NguyenPT 20160822) Add Created date property
                         updateModel.Created_date    = model.Created_date;
                         //-- BUG0011-SPJ (NguyenPT 20160822) Add Created date property
+                        //++ BUG0056-SPJ (NguyenPT 20160830) Handle order type
+                        updateModel.Order_type  = model.Order_type;
+                        updateModel.Type_amount = model.Type_amount;
+                        //-- BUG0056-SPJ (NguyenPT 20160830) Handle order type
+                        //++ BUG0058-SPJ (NguyenPT 20160830) Update Deliver and CCS
+                        updateModel.Employee_maintain_id          = model.DeliverId;
+                        updateModel.Monitor_market_development_id = model.CCSId;
+                        //-- BUG0058-SPJ (NguyenPT 20160830) Update Deliver and CCS
                         updateModel.Order_detail    = new List<OrderDetailModel>();
                         foreach (ProductModel product in model.Products)
                         {
@@ -2121,6 +2141,10 @@ namespace MainPrj.Util
                         //++ BUG0011-SPJ (NguyenPT 20160822) Add Created date property
                         createModel.Created_date = model.Created_date;
                         //-- BUG0011-SPJ (NguyenPT 20160822) Add Created date property
+                        //++ BUG0056-SPJ (NguyenPT 20160830) Handle order type
+                        createModel.Order_type       = model.Order_type;
+                        createModel.Type_amount      = model.Type_amount;
+                        //-- BUG0056-SPJ (NguyenPT 20160830) Handle order type
                         if (DataPure.Instance.Agent != null)
                         {
                             createModel.Agent_id = DataPure.Instance.Agent.Id;
@@ -2265,6 +2289,36 @@ namespace MainPrj.Util
                 }
             }
         }
+        //++ BUG0008-SPJ (NguyenPT 20160830) Order history
+        public static void RequestOrderHistory(string customerId, UploadProgressChangedEventHandler progressChanged,
+            UploadValuesCompletedEventHandler completedHandler)
+        {
+            using (WebClient client = new WebClient())
+            {
+                client.UploadProgressChanged += new UploadProgressChangedEventHandler(progressChanged);
+                client.UploadValuesCompleted += new UploadValuesCompletedEventHandler(completedHandler);
+                string respStr = String.Empty;
+                try
+                {
+                    // Post keyword to server
+                    string value = string.Empty;
+                    value = String.Format("{{\"token\":\"{0}\",\"customer_id\":\"{1}\"}}",
+                        Properties.Settings.Default.UserToken, customerId);
+                    client.UploadValuesAsync(
+                        new Uri(Properties.Settings.Default.ServerURL + API_ORDER_HISTORY),
+                        new System.Collections.Specialized.NameValueCollection()
+                    {
+                        { "q", value}
+                    });
+                }
+                catch (System.Net.WebException)
+                {
+                    ShowErrorMessage(Properties.Resources.InternetConnectionError);
+                    HasError = true;
+                }
+            }
+        }
+        //-- BUG0008-SPJ (NguyenPT 20160830) Order history
         #endregion
     }
 }

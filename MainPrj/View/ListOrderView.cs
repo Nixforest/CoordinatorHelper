@@ -1196,7 +1196,11 @@ namespace MainPrj.View
                             totalPromote = 0.0;
                         }
                         printModel.TotalPromote = totalPromote;
-                        printModel.TotalPay = item.TotalPay;
+                        printModel.TotalPay     = item.TotalPay;
+                        //++ BUG0056-SPJ (NguyenPT 20160830) Handle order type
+                        printModel.OrderType    = (OrderType)item.Order_type;
+                        printModel.OtherMoney   = item.Type_amount;
+                        //-- BUG0056-SPJ (NguyenPT 20160830) Handle order type
                         printModel.Print();
                         break;
                     }

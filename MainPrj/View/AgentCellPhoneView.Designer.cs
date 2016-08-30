@@ -40,25 +40,25 @@
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(12, 9);
+            this.label1.Location = new System.Drawing.Point(11, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(544, 55);
+            this.label1.Size = new System.Drawing.Size(499, 53);
             this.label1.TabIndex = 11;
             this.label1.Text = "Một tin nhắn sẽ gửi về số điện thoại này khi Điều phối tạo đơn hàng cho Khách hàn" +
     "g Bò/Mối:";
             // 
             // tbxPhone
             // 
-            this.tbxPhone.Location = new System.Drawing.Point(17, 67);
+            this.tbxPhone.Location = new System.Drawing.Point(16, 64);
             this.tbxPhone.Name = "tbxPhone";
-            this.tbxPhone.Size = new System.Drawing.Size(420, 30);
+            this.tbxPhone.Size = new System.Drawing.Size(385, 29);
             this.tbxPhone.TabIndex = 0;
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(443, 62);
+            this.btnOK.Location = new System.Drawing.Point(406, 60);
             this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(113, 41);
+            this.btnOK.Size = new System.Drawing.Size(104, 39);
             this.btnOK.TabIndex = 1;
             this.btnOK.Text = "Lưu";
             this.btnOK.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
@@ -70,16 +70,17 @@
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripProgressBar,
             this.toolStripStatusLabel});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 109);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 104);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(568, 22);
+            this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 13, 0);
+            this.statusStrip1.Size = new System.Drawing.Size(521, 22);
             this.statusStrip1.TabIndex = 13;
             this.statusStrip1.Text = "statusStrip1";
             // 
             // toolStripProgressBar
             // 
             this.toolStripProgressBar.Name = "toolStripProgressBar";
-            this.toolStripProgressBar.Size = new System.Drawing.Size(100, 16);
+            this.toolStripProgressBar.Size = new System.Drawing.Size(92, 16);
             // 
             // toolStripStatusLabel
             // 
@@ -90,14 +91,14 @@
             // 
             // AgentCellPhoneView
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(568, 131);
+            this.ClientSize = new System.Drawing.Size(521, 126);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.tbxPhone);
             this.Controls.Add(this.label1);
-            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(6);
             this.MaximizeBox = false;

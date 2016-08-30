@@ -45,9 +45,9 @@
             // 
             this.radioButton1.AutoSize = true;
             this.radioButton1.Checked = true;
-            this.radioButton1.Location = new System.Drawing.Point(11, 36);
+            this.radioButton1.Location = new System.Drawing.Point(10, 35);
             this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(85, 29);
+            this.radioButton1.Size = new System.Drawing.Size(81, 28);
             this.radioButton1.TabIndex = 0;
             this.radioButton1.TabStop = true;
             this.radioButton1.Text = "Xì gas";
@@ -56,9 +56,9 @@
             // radioButton2
             // 
             this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(196, 36);
+            this.radioButton2.Location = new System.Drawing.Point(192, 34);
             this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(123, 29);
+            this.radioButton2.Size = new System.Drawing.Size(118, 28);
             this.radioButton2.TabIndex = 0;
             this.radioButton2.Text = "Bảo trì bếp";
             this.radioButton2.UseVisualStyleBackColor = true;
@@ -66,9 +66,9 @@
             // radioButton3
             // 
             this.radioButton3.AutoSize = true;
-            this.radioButton3.Location = new System.Drawing.Point(11, 71);
+            this.radioButton3.Location = new System.Drawing.Point(10, 68);
             this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(183, 29);
+            this.radioButton3.Size = new System.Drawing.Size(176, 28);
             this.radioButton3.TabIndex = 0;
             this.radioButton3.Text = "Kiểm tra hệ thống";
             this.radioButton3.UseVisualStyleBackColor = true;
@@ -76,9 +76,9 @@
             // radioButton4
             // 
             this.radioButton4.AutoSize = true;
-            this.radioButton4.Location = new System.Drawing.Point(196, 71);
+            this.radioButton4.Location = new System.Drawing.Point(192, 68);
             this.radioButton4.Name = "radioButton4";
-            this.radioButton4.Size = new System.Drawing.Size(93, 29);
+            this.radioButton4.Size = new System.Drawing.Size(91, 28);
             this.radioButton4.TabIndex = 0;
             this.radioButton4.Text = "Hư bếp";
             this.radioButton4.UseVisualStyleBackColor = true;
@@ -86,9 +86,9 @@
             // radioButton5
             // 
             this.radioButton5.AutoSize = true;
-            this.radioButton5.Location = new System.Drawing.Point(11, 106);
+            this.radioButton5.Location = new System.Drawing.Point(10, 102);
             this.radioButton5.Name = "radioButton5";
-            this.radioButton5.Size = new System.Drawing.Size(170, 29);
+            this.radioButton5.Size = new System.Drawing.Size(167, 28);
             this.radioButton5.TabIndex = 0;
             this.radioButton5.Text = "Đi lại đường ống";
             this.radioButton5.UseVisualStyleBackColor = true;
@@ -96,9 +96,9 @@
             // radioButton6
             // 
             this.radioButton6.AutoSize = true;
-            this.radioButton6.Location = new System.Drawing.Point(196, 106);
+            this.radioButton6.Location = new System.Drawing.Point(192, 102);
             this.radioButton6.Name = "radioButton6";
-            this.radioButton6.Size = new System.Drawing.Size(149, 29);
+            this.radioButton6.Size = new System.Drawing.Size(143, 28);
             this.radioButton6.TabIndex = 0;
             this.radioButton6.Text = "Yêu cầu khác";
             this.radioButton6.UseVisualStyleBackColor = true;
@@ -107,17 +107,17 @@
             // tbxOther
             // 
             this.tbxOther.Enabled = false;
-            this.tbxOther.Location = new System.Drawing.Point(11, 141);
+            this.tbxOther.Location = new System.Drawing.Point(10, 135);
             this.tbxOther.Multiline = true;
             this.tbxOther.Name = "tbxOther";
-            this.tbxOther.Size = new System.Drawing.Size(365, 97);
+            this.tbxOther.Size = new System.Drawing.Size(335, 93);
             this.tbxOther.TabIndex = 1;
             // 
             // btnCreate
             // 
-            this.btnCreate.Location = new System.Drawing.Point(221, 256);
+            this.btnCreate.Location = new System.Drawing.Point(202, 246);
             this.btnCreate.Name = "btnCreate";
-            this.btnCreate.Size = new System.Drawing.Size(173, 55);
+            this.btnCreate.Size = new System.Drawing.Size(159, 53);
             this.btnCreate.TabIndex = 2;
             this.btnCreate.Text = "Tạo và in phiếu";
             this.btnCreate.UseVisualStyleBackColor = true;
@@ -132,21 +132,21 @@
             this.groupBox1.Controls.Add(this.radioButton6);
             this.groupBox1.Controls.Add(this.radioButton4);
             this.groupBox1.Controls.Add(this.radioButton5);
-            this.groupBox1.Location = new System.Drawing.Point(12, 4);
+            this.groupBox1.Location = new System.Drawing.Point(11, 4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(382, 246);
+            this.groupBox1.Size = new System.Drawing.Size(350, 236);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Loại sự cố";
             // 
             // UpholdCreateView
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(406, 318);
+            this.ClientSize = new System.Drawing.Size(372, 305);
             this.Controls.Add(this.btnCreate);
             this.Controls.Add(this.groupBox1);
-            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(6);
             this.MaximizeBox = false;

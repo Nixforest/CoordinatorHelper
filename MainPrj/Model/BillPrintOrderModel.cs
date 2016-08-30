@@ -78,8 +78,8 @@ namespace MainPrj.Model
         public override int PrintContent(int Offset, Graphics graphics)
         {
             // Products label Name
-            int nameW = 99;
-            int qtyW = 20;
+            int nameW = 94;
+            int qtyW = 25;
             int moneyW = 63;
             int totalW = 63;
             string text = string.Empty;
@@ -144,6 +144,45 @@ namespace MainPrj.Model
                 graphics.DrawString(text, font, brush, new RectangleF(new PointF(positionX, startY + Offset),
                     new SizeF(nameW, size.Height)));
             }
+            //++ BUG0056-SPJ (NguyenPT 20160830) Handle order type
+            string name = string.Empty;
+            if (this.OrderType.Equals(OrderType.ORDERTYPE_SELLVO))
+            {
+                name = Properties.Resources.Cylinder;
+            }
+            else if (this.OrderType.Equals(OrderType.ORDERTYPE_THECHAN))
+            {
+                name = Properties.Resources.Bond;
+            }
+            if (!string.IsNullOrEmpty(name))
+            {
+                Offset = Offset + (int)size.Height;
+
+                text = "1";
+                size = graphics.MeasureString(text, font, qtyW);
+                positionX = startX + nameW + (qtyW - (int)size.Width) / 2;
+                graphics.DrawString(text, font, brush, new RectangleF(new PointF(positionX, startY + Offset),
+                    new SizeF(qtyW, size.Height)));
+
+                text = CommonProcess.FormatMoney(this.OtherMoney);
+                size = graphics.MeasureString(text, font, moneyW);
+                positionX = startX + nameW + qtyW + (moneyW - (int)size.Width) / 2;
+                graphics.DrawString(text, font, brush, new RectangleF(new PointF(positionX, startY + Offset),
+                    new SizeF(moneyW, size.Height)));
+
+                text = CommonProcess.FormatMoney(this.OtherMoney);
+                size = graphics.MeasureString(text, font, totalW);
+                positionX = startX + nameW + qtyW + moneyW + (totalW - (int)size.Width) / 2;
+                graphics.DrawString(text, font, brush, new RectangleF(new PointF(positionX, startY + Offset),
+                    new SizeF(totalW, size.Height)));
+
+                text = name;
+                size = graphics.MeasureString(text, font, nameW);
+                positionX = startX;
+                graphics.DrawString(text, font, brush, new RectangleF(new PointF(positionX, startY + Offset),
+                    new SizeF(nameW, size.Height)));
+            }
+            //-- BUG0056-SPJ (NguyenPT 20160830) Handle order type
 
             // Promote label
             Offset = Offset + (int)size.Height;
@@ -202,7 +241,10 @@ namespace MainPrj.Model
             positionX = startX;
             graphics.DrawString(text, font, brush, new RectangleF(new PointF(positionX, startY + Offset),
                 new SizeF(Properties.Settings.Default.BillSizeW, size.Height)));
-            text = CommonProcess.FormatMoney(this.TotalMoney);
+            //++ BUG0056-SPJ (NguyenPT 20160830) Handle order type
+            //text = CommonProcess.FormatMoney(this.TotalMoney);
+            text = CommonProcess.FormatMoney(this.TotalMoney + this.OtherMoney);
+            //-- BUG0056-SPJ (NguyenPT 20160830) Handle order type
             font = new Font(Properties.Settings.Default.BilllFont, 12, FontStyle.Bold);
             size = graphics.MeasureString(text, font, Properties.Settings.Default.BillSizeW);
             positionX = (Properties.Settings.Default.BillSizeW - (int)size.Width) - startX;

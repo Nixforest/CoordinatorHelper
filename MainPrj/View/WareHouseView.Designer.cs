@@ -62,10 +62,10 @@
             // 
             this.tabControl.Controls.Add(this.tabPage1);
             this.tabControl.Controls.Add(this.tabPage2);
-            this.tabControl.Location = new System.Drawing.Point(12, 12);
+            this.tabControl.Location = new System.Drawing.Point(11, 12);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(667, 647);
+            this.tabControl.Size = new System.Drawing.Size(611, 621);
             this.tabControl.TabIndex = 0;
             // 
             // tabPage1
@@ -78,10 +78,10 @@
             this.tabPage1.Controls.Add(this.btnRemove);
             this.tabPage1.Controls.Add(this.btnAdd);
             this.tabPage1.Controls.Add(this.label1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 34);
+            this.tabPage1.Location = new System.Drawing.Point(4, 33);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(659, 609);
+            this.tabPage1.Size = new System.Drawing.Size(603, 584);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Vật tư";
             // 
@@ -90,9 +90,9 @@
             this.listViewSelectedProduct.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listViewSelectedProduct.LabelEdit = true;
             this.listViewSelectedProduct.LabelWrap = false;
-            this.listViewSelectedProduct.Location = new System.Drawing.Point(429, 67);
+            this.listViewSelectedProduct.Location = new System.Drawing.Point(393, 64);
             this.listViewSelectedProduct.Name = "listViewSelectedProduct";
-            this.listViewSelectedProduct.Size = new System.Drawing.Size(224, 535);
+            this.listViewSelectedProduct.Size = new System.Drawing.Size(206, 514);
             this.listViewSelectedProduct.TabIndex = 6;
             this.listViewSelectedProduct.UseCompatibleStateImageBehavior = false;
             this.listViewSelectedProduct.AfterLabelEdit += new System.Windows.Forms.LabelEditEventHandler(this.listViewSelected_AfterLabelEdit);
@@ -100,9 +100,9 @@
             // 
             // btnAll
             // 
-            this.btnAll.Location = new System.Drawing.Point(266, 30);
+            this.btnAll.Location = new System.Drawing.Point(244, 29);
             this.btnAll.Name = "btnAll";
-            this.btnAll.Size = new System.Drawing.Size(99, 32);
+            this.btnAll.Size = new System.Drawing.Size(91, 31);
             this.btnAll.TabIndex = 5;
             this.btnAll.Text = "Tất cả";
             this.btnAll.UseVisualStyleBackColor = true;
@@ -111,9 +111,9 @@
             // tbxSearch
             // 
             this.tbxSearch.ForeColor = System.Drawing.Color.Gray;
-            this.tbxSearch.Location = new System.Drawing.Point(11, 31);
+            this.tbxSearch.Location = new System.Drawing.Point(10, 30);
             this.tbxSearch.Name = "tbxSearch";
-            this.tbxSearch.Size = new System.Drawing.Size(249, 30);
+            this.tbxSearch.Size = new System.Drawing.Size(229, 29);
             this.tbxSearch.TabIndex = 4;
             this.tbxSearch.Text = "Tìm kiếm";
             this.tbxSearch.TextChanged += new System.EventHandler(this.tbxSearch_TextChanged);
@@ -128,11 +128,11 @@
             this.listViewSourceProduct.FullRowSelect = true;
             this.listViewSourceProduct.GridLines = true;
             this.listViewSourceProduct.HideSelection = false;
-            this.listViewSourceProduct.Location = new System.Drawing.Point(11, 67);
+            this.listViewSourceProduct.Location = new System.Drawing.Point(10, 64);
             this.listViewSourceProduct.MultiSelect = false;
             this.listViewSourceProduct.Name = "listViewSourceProduct";
             this.listViewSourceProduct.ShowItemToolTips = true;
-            this.listViewSourceProduct.Size = new System.Drawing.Size(354, 535);
+            this.listViewSourceProduct.Size = new System.Drawing.Size(325, 514);
             this.listViewSourceProduct.TabIndex = 3;
             this.listViewSourceProduct.UseCompatibleStateImageBehavior = false;
             this.listViewSourceProduct.View = System.Windows.Forms.View.Details;
@@ -149,9 +149,9 @@
             // 
             // btnRemove
             // 
-            this.btnRemove.Location = new System.Drawing.Point(371, 105);
+            this.btnRemove.Location = new System.Drawing.Point(340, 101);
             this.btnRemove.Name = "btnRemove";
-            this.btnRemove.Size = new System.Drawing.Size(52, 32);
+            this.btnRemove.Size = new System.Drawing.Size(48, 31);
             this.btnRemove.TabIndex = 2;
             this.btnRemove.Text = "X";
             this.btnRemove.UseVisualStyleBackColor = true;
@@ -159,9 +159,9 @@
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(371, 67);
+            this.btnAdd.Location = new System.Drawing.Point(340, 64);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(52, 32);
+            this.btnAdd.Size = new System.Drawing.Size(48, 31);
             this.btnAdd.TabIndex = 2;
             this.btnAdd.Text = "→";
             this.btnAdd.UseVisualStyleBackColor = true;
@@ -172,7 +172,7 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(6, 3);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(315, 25);
+            this.label1.Size = new System.Drawing.Size(303, 24);
             this.label1.TabIndex = 1;
             this.label1.Text = "Chọn các vật tư đang có trong kho:";
             // 
@@ -186,10 +186,10 @@
             this.tabPage2.Controls.Add(this.btnRemovePromote);
             this.tabPage2.Controls.Add(this.btnAddPromote);
             this.tabPage2.Controls.Add(this.label2);
-            this.tabPage2.Location = new System.Drawing.Point(4, 34);
+            this.tabPage2.Location = new System.Drawing.Point(4, 33);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(659, 609);
+            this.tabPage2.Size = new System.Drawing.Size(603, 584);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Hàng khuyến mãi";
             // 
@@ -197,9 +197,9 @@
             // 
             this.listViewSelectedPromote.LabelEdit = true;
             this.listViewSelectedPromote.LabelWrap = false;
-            this.listViewSelectedPromote.Location = new System.Drawing.Point(429, 67);
+            this.listViewSelectedPromote.Location = new System.Drawing.Point(393, 64);
             this.listViewSelectedPromote.Name = "listViewSelectedPromote";
-            this.listViewSelectedPromote.Size = new System.Drawing.Size(224, 535);
+            this.listViewSelectedPromote.Size = new System.Drawing.Size(206, 514);
             this.listViewSelectedPromote.TabIndex = 13;
             this.listViewSelectedPromote.UseCompatibleStateImageBehavior = false;
             this.listViewSelectedPromote.AfterLabelEdit += new System.Windows.Forms.LabelEditEventHandler(this.listViewSelectedPromote_AfterLabelEdit);
@@ -207,9 +207,9 @@
             // 
             // btnAllPromote
             // 
-            this.btnAllPromote.Location = new System.Drawing.Point(266, 30);
+            this.btnAllPromote.Location = new System.Drawing.Point(244, 29);
             this.btnAllPromote.Name = "btnAllPromote";
-            this.btnAllPromote.Size = new System.Drawing.Size(99, 32);
+            this.btnAllPromote.Size = new System.Drawing.Size(91, 31);
             this.btnAllPromote.TabIndex = 12;
             this.btnAllPromote.Text = "Tất cả";
             this.btnAllPromote.UseVisualStyleBackColor = true;
@@ -218,9 +218,9 @@
             // tbxSearchPromote
             // 
             this.tbxSearchPromote.ForeColor = System.Drawing.Color.Gray;
-            this.tbxSearchPromote.Location = new System.Drawing.Point(11, 31);
+            this.tbxSearchPromote.Location = new System.Drawing.Point(10, 30);
             this.tbxSearchPromote.Name = "tbxSearchPromote";
-            this.tbxSearchPromote.Size = new System.Drawing.Size(249, 30);
+            this.tbxSearchPromote.Size = new System.Drawing.Size(229, 29);
             this.tbxSearchPromote.TabIndex = 11;
             this.tbxSearchPromote.Text = "Tìm kiếm";
             this.tbxSearchPromote.TextChanged += new System.EventHandler(this.tbxSearchPromote_TextChanged);
@@ -235,11 +235,11 @@
             this.listViewSourcePromote.FullRowSelect = true;
             this.listViewSourcePromote.GridLines = true;
             this.listViewSourcePromote.HideSelection = false;
-            this.listViewSourcePromote.Location = new System.Drawing.Point(11, 67);
+            this.listViewSourcePromote.Location = new System.Drawing.Point(10, 64);
             this.listViewSourcePromote.MultiSelect = false;
             this.listViewSourcePromote.Name = "listViewSourcePromote";
             this.listViewSourcePromote.ShowItemToolTips = true;
-            this.listViewSourcePromote.Size = new System.Drawing.Size(354, 535);
+            this.listViewSourcePromote.Size = new System.Drawing.Size(325, 514);
             this.listViewSourcePromote.TabIndex = 10;
             this.listViewSourcePromote.UseCompatibleStateImageBehavior = false;
             this.listViewSourcePromote.View = System.Windows.Forms.View.Details;
@@ -256,9 +256,9 @@
             // 
             // btnRemovePromote
             // 
-            this.btnRemovePromote.Location = new System.Drawing.Point(371, 105);
+            this.btnRemovePromote.Location = new System.Drawing.Point(340, 101);
             this.btnRemovePromote.Name = "btnRemovePromote";
-            this.btnRemovePromote.Size = new System.Drawing.Size(52, 32);
+            this.btnRemovePromote.Size = new System.Drawing.Size(48, 31);
             this.btnRemovePromote.TabIndex = 8;
             this.btnRemovePromote.Text = "X";
             this.btnRemovePromote.UseVisualStyleBackColor = true;
@@ -266,9 +266,9 @@
             // 
             // btnAddPromote
             // 
-            this.btnAddPromote.Location = new System.Drawing.Point(371, 67);
+            this.btnAddPromote.Location = new System.Drawing.Point(340, 64);
             this.btnAddPromote.Name = "btnAddPromote";
-            this.btnAddPromote.Size = new System.Drawing.Size(52, 32);
+            this.btnAddPromote.Size = new System.Drawing.Size(48, 31);
             this.btnAddPromote.TabIndex = 9;
             this.btnAddPromote.Text = "→";
             this.btnAddPromote.UseVisualStyleBackColor = true;
@@ -279,16 +279,16 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(6, 3);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(417, 25);
+            this.label2.Size = new System.Drawing.Size(405, 24);
             this.label2.TabIndex = 7;
             this.label2.Text = "Chọn các hàng khuyến mãi đang có trong kho:";
             // 
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(563, 665);
+            this.btnCancel.Location = new System.Drawing.Point(516, 638);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(112, 48);
+            this.btnCancel.Size = new System.Drawing.Size(103, 46);
             this.btnCancel.TabIndex = 1;
             this.btnCancel.Text = "Hủy";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -296,9 +296,9 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(445, 665);
+            this.btnSave.Location = new System.Drawing.Point(408, 638);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(112, 48);
+            this.btnSave.Size = new System.Drawing.Size(103, 46);
             this.btnSave.TabIndex = 1;
             this.btnSave.Text = "Lưu";
             this.btnSave.UseVisualStyleBackColor = true;
@@ -307,14 +307,14 @@
             // WareHouseView
             // 
             this.AcceptButton = this.btnSave;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(691, 725);
+            this.ClientSize = new System.Drawing.Size(633, 696);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.tabControl);
-            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(6);

@@ -89,6 +89,7 @@
     <Compile Include="Model\BillPrintModel.cs" />
     <Compile Include="Model\BillPrintOrderModel.cs" />
     <Compile Include="Model\BillPrintUpholdModel.cs" />
+    <Compile Include="Model\ListViewColumn\OrderHistoryColumns.cs" />
     <Compile Include="Model\MaterialBitmap.cs" />
     <Compile Include="Model\OrderStatus.cs" />
     <Compile Include="Model\CylinderModel.cs" />
@@ -115,6 +116,7 @@
     <Compile Include="Model\Response\TempDataResponseModel.cs" />
     <Compile Include="Model\RoleType.cs" />
     <Compile Include="Model\TempDataModel.cs" />
+    <Compile Include="Model\Response\OrderHistoryResponseModel.cs" />
     <Compile Include="Model\Update\UpdateOrderModel.cs" />
     <Compile Include="Model\Update\CreateOrderModel.cs" />
     <Compile Include="Model\Update\OrderDetailModel.cs" />
@@ -160,6 +162,12 @@
     </Compile>
     <Compile Include="View\Component\CoordinatorOrderView_v2.Designer.cs">
       <DependentUpon>CoordinatorOrderView_v2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Component\OrderHistoryControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Component\OrderHistoryControl.Designer.cs">
+      <DependentUpon>OrderHistoryControl.cs</DependentUpon>
     </Compile>
     <Compile Include="View\Component\WordWrapListView.cs">
       <SubType>Component</SubType>
@@ -208,6 +216,12 @@
     </Compile>
     <Compile Include="View\LoginView.Designer.cs">
       <DependentUpon>LoginView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\MoneyInputView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\MoneyInputView.Designer.cs">
+      <DependentUpon>MoneyInputView.cs</DependentUpon>
     </Compile>
     <Compile Include="View\OrderCarView.cs">
       <SubType>Form</SubType>
@@ -303,6 +317,9 @@
     <EmbeddedResource Include="View\CancelOrderView.resx">
       <DependentUpon>CancelOrderView.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="View\Component\OrderHistoryControl.resx">
+      <DependentUpon>OrderHistoryControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\HistoryView1.resx">
       <DependentUpon>HistoryView1.cs</DependentUpon>
     </EmbeddedResource>
@@ -320,6 +337,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\LoginView.resx">
       <DependentUpon>LoginView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\MoneyInputView.resx">
+      <DependentUpon>MoneyInputView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\OrderCarView.resx">
       <DependentUpon>OrderCarView.cs</DependentUpon>

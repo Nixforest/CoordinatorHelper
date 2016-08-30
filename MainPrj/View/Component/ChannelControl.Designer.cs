@@ -44,15 +44,15 @@
             this.tbxCustomerTel1 = new System.Windows.Forms.TextBox();
             this.tbxSaleName = new System.Windows.Forms.TextBox();
             this.tbxCustomerType = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
+            this.lblSale = new System.Windows.Forms.Label();
             this.tbxContact = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
+            this.lblCustomerType = new System.Windows.Forms.Label();
             this.tbxAgencyNearest = new System.Windows.Forms.TextBox();
             this.tbxNote = new System.Windows.Forms.TextBox();
             this.tbxAgency = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
+            this.lblContact = new System.Windows.Forms.Label();
+            this.lblAgentNearest = new System.Windows.Forms.Label();
+            this.lblNote = new System.Windows.Forms.Label();
             this.tbxAddress = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.tbxCustomerName = new System.Windows.Forms.TextBox();
@@ -62,6 +62,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.btnNewCustomer = new System.Windows.Forms.Button();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.orderHistoryControl = new MainPrj.View.Component.OrderHistoryControl();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -79,6 +80,9 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBox1.Controls.Add(this.orderHistoryControl);
             this.groupBox1.Controls.Add(this.cbxCity);
             this.groupBox1.Controls.Add(this.cbxDistrict);
             this.groupBox1.Controls.Add(this.cbxWard);
@@ -92,15 +96,15 @@
             this.groupBox1.Controls.Add(this.tbxCustomerTel1);
             this.groupBox1.Controls.Add(this.tbxSaleName);
             this.groupBox1.Controls.Add(this.tbxCustomerType);
-            this.groupBox1.Controls.Add(this.label10);
+            this.groupBox1.Controls.Add(this.lblSale);
             this.groupBox1.Controls.Add(this.tbxContact);
-            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Controls.Add(this.lblCustomerType);
             this.groupBox1.Controls.Add(this.tbxAgencyNearest);
             this.groupBox1.Controls.Add(this.tbxNote);
             this.groupBox1.Controls.Add(this.tbxAgency);
-            this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Controls.Add(this.label7);
-            this.groupBox1.Controls.Add(this.label8);
+            this.groupBox1.Controls.Add(this.lblContact);
+            this.groupBox1.Controls.Add(this.lblAgentNearest);
+            this.groupBox1.Controls.Add(this.lblNote);
             this.groupBox1.Controls.Add(this.tbxAddress);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.tbxCustomerName);
@@ -251,15 +255,15 @@
             this.tbxCustomerType.Size = new System.Drawing.Size(676, 29);
             this.tbxCustomerType.TabIndex = 18;
             // 
-            // label10
+            // lblSale
             // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(6, 392);
-            this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(52, 24);
-            this.label10.TabIndex = 0;
-            this.label10.Text = "Sale:";
+            this.lblSale.AutoSize = true;
+            this.lblSale.Location = new System.Drawing.Point(6, 392);
+            this.lblSale.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblSale.Name = "lblSale";
+            this.lblSale.Size = new System.Drawing.Size(52, 24);
+            this.lblSale.TabIndex = 0;
+            this.lblSale.Text = "Sale:";
             // 
             // tbxContact
             // 
@@ -270,15 +274,15 @@
             this.tbxContact.Size = new System.Drawing.Size(676, 29);
             this.tbxContact.TabIndex = 17;
             // 
-            // label6
+            // lblCustomerType
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 314);
-            this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(160, 24);
-            this.label6.TabIndex = 0;
-            this.label6.Text = "Loại Khách Hàng:";
+            this.lblCustomerType.AutoSize = true;
+            this.lblCustomerType.Location = new System.Drawing.Point(6, 314);
+            this.lblCustomerType.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblCustomerType.Name = "lblCustomerType";
+            this.lblCustomerType.Size = new System.Drawing.Size(160, 24);
+            this.lblCustomerType.TabIndex = 0;
+            this.lblCustomerType.Text = "Loại Khách Hàng:";
             // 
             // tbxAgencyNearest
             // 
@@ -308,35 +312,35 @@
             this.tbxAgency.Size = new System.Drawing.Size(676, 29);
             this.tbxAgency.TabIndex = 15;
             // 
-            // label5
+            // lblContact
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 280);
-            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(128, 24);
-            this.label5.TabIndex = 0;
-            this.label5.Text = "Người liên hệ:";
+            this.lblContact.AutoSize = true;
+            this.lblContact.Location = new System.Drawing.Point(6, 280);
+            this.lblContact.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblContact.Name = "lblContact";
+            this.lblContact.Size = new System.Drawing.Size(128, 24);
+            this.lblContact.TabIndex = 0;
+            this.lblContact.Text = "Người liên hệ:";
             // 
-            // label7
+            // lblAgentNearest
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(6, 239);
-            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(144, 24);
-            this.label7.TabIndex = 0;
-            this.label7.Text = "Đại Lý gần nhất:";
+            this.lblAgentNearest.AutoSize = true;
+            this.lblAgentNearest.Location = new System.Drawing.Point(6, 239);
+            this.lblAgentNearest.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblAgentNearest.Name = "lblAgentNearest";
+            this.lblAgentNearest.Size = new System.Drawing.Size(144, 24);
+            this.lblAgentNearest.TabIndex = 0;
+            this.lblAgentNearest.Text = "Đại Lý gần nhất:";
             // 
-            // label8
+            // lblNote
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(6, 350);
-            this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(81, 24);
-            this.label8.TabIndex = 0;
-            this.label8.Text = "Ghi chú:";
+            this.lblNote.AutoSize = true;
+            this.lblNote.Location = new System.Drawing.Point(6, 350);
+            this.lblNote.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblNote.Name = "lblNote";
+            this.lblNote.Size = new System.Drawing.Size(81, 24);
+            this.lblNote.TabIndex = 0;
+            this.lblNote.Text = "Ghi chú:";
             // 
             // tbxAddress
             // 
@@ -425,6 +429,17 @@
             this.btnNewCustomer.UseVisualStyleBackColor = true;
             this.btnNewCustomer.Click += new System.EventHandler(this.btnNewCustomer_Click);
             // 
+            // orderHistoryControl
+            // 
+            this.orderHistoryControl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.orderHistoryControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.orderHistoryControl.Location = new System.Drawing.Point(8, 235);
+            this.orderHistoryControl.Margin = new System.Windows.Forms.Padding(6);
+            this.orderHistoryControl.Name = "orderHistoryControl";
+            this.orderHistoryControl.Size = new System.Drawing.Size(830, 190);
+            this.orderHistoryControl.TabIndex = 21;
+            // 
             // ChannelControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
@@ -456,13 +471,13 @@
         private System.Windows.Forms.TextBox tbxCustomerTel1;
         private System.Windows.Forms.TextBox tbxCustomerType;
         private System.Windows.Forms.TextBox tbxContact;
-        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label lblCustomerType;
         private System.Windows.Forms.TextBox tbxAgencyNearest;
         private System.Windows.Forms.TextBox tbxNote;
         private System.Windows.Forms.TextBox tbxAgency;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label lblContact;
+        private System.Windows.Forms.Label lblAgentNearest;
+        private System.Windows.Forms.Label lblNote;
         private System.Windows.Forms.TextBox tbxAddress;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox tbxCustomerName;
@@ -471,7 +486,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox tbxSaleName;
-        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label lblSale;
         private System.Windows.Forms.TextBox tbxSearchCustomer;
         private System.Windows.Forms.ComboBox cbxCity;
         private System.Windows.Forms.ComboBox cbxDistrict;
@@ -479,5 +494,6 @@
         private System.Windows.Forms.ComboBox cbxStreet;
         private System.Windows.Forms.Button btnNewCustomer;
         private System.Windows.Forms.ToolTip toolTip;
+        private Component.OrderHistoryControl orderHistoryControl;
     }
 }

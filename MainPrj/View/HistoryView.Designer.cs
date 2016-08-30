@@ -73,6 +73,8 @@
             // 
             // listViewHistory
             // 
+            this.listViewHistory.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.listViewHistory.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2,
@@ -85,7 +87,6 @@
             this.listViewHistory.FullRowSelect = true;
             this.listViewHistory.GridLines = true;
             this.listViewHistory.HideSelection = false;
-            this.listViewHistory.LabelEdit = true;
             this.listViewHistory.Location = new System.Drawing.Point(12, 58);
             this.listViewHistory.MultiSelect = false;
             this.listViewHistory.Name = "listViewHistory";

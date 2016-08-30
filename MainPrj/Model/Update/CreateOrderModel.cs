@@ -31,6 +31,12 @@ namespace MainPrj.Model.Update
         protected string note;
         [DataMember(Name = "status", IsRequired = false)]
         protected int status;
+        //++ BUG0056-SPJ (NguyenPT 20160828) Handle sell group of cylinders
+        [DataMember(Name = "order_type", IsRequired = false)]
+        protected int order_type;
+        [DataMember(Name = "type_amount", IsRequired = false)]
+        protected double type_amount;
+        //-- BUG0056-SPJ (NguyenPT 20160828) Handle sell group of cylinders
         //++ BUG0011-SPJ (NguyenPT 20160822) Add Created date property
         [DataMember(Name = "created_date", IsRequired = false)]
         private string created_date;
@@ -44,6 +50,28 @@ namespace MainPrj.Model.Update
             set { created_date = value; }
         }
         //-- BUG0011-SPJ (NguyenPT 20160822) Add Created date property
+
+        //++ BUG0056-SPJ (NguyenPT 20160828) Handle sell group of cylinders
+        /// <summary>
+        /// Order type:
+        /// 1. Normal
+        /// 2. Sell_vo
+        /// 3. The chan
+        /// </summary>
+        public int Order_type
+        {
+            get { return order_type; }
+            set { order_type = value; }
+        }
+        /// <summary>
+        /// Sell vo or The chan amount.
+        /// </summary>
+        public double Type_amount
+        {
+            get { return type_amount; }
+            set { type_amount = value; }
+        }
+        //-- BUG0056-SPJ (NguyenPT 20160828) Handle sell group of cylinders
         /// <summary>
         /// Status of order.
         /// </summary>

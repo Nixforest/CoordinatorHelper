@@ -28,15 +28,20 @@ namespace MainPrj.View
         /// <summary>
         /// Total pay money.
         /// </summary>
-        private double totalPay = 0.0;
-        double total = 0.0;
-        double totalPromote = 0.0;
-        private SerialPort port = new SerialPort();
-        private ImageList _listProductImg = new ImageList();
-        private ImageList _listPromoteImg = new ImageList();
+        private double totalPay            = 0.0;
+        double total                       = 0.0;
+        double totalPromote                = 0.0;
+        private SerialPort port            = new SerialPort();
+        private ImageList _listProductImg  = new ImageList();
+        private ImageList _listPromoteImg  = new ImageList();
         private CustomerModel customerInfo = null;
-        private bool _isUpdateMode = false;
-        private OrderModel _data = null;
+        private bool _isUpdateMode         = false;
+        private OrderModel _data           = null;
+        //++ BUG0056-SPJ (NguyenPT 20160830) Handle order type
+        private double otherMoney          = 0.0;
+        private OrderType _orderType       = OrderType.ORDERTYPE_NORMAL;
+        //-- BUG0056-SPJ (NguyenPT 20160830) Handle order type
+        //private OrderModel _bkData       = null;
         /// <summary>
         /// Is in update mode.
         /// </summary>
@@ -76,6 +81,10 @@ namespace MainPrj.View
         /// <param name="e">EventArgs</param>
         private void btnCancel_Click(object sender, EventArgs e)
         {
+            if (this._isUpdateMode)
+            {
+
+            }
             this.Close();
         }
 
@@ -198,9 +207,11 @@ namespace MainPrj.View
             {
                 AddPromoteSelected(DataPure.Instance.ListRecentPromotesImg[item]);
             }
+            this.Text = Properties.Resources.CreateOrderTitle;
             // Update data
             if (_isUpdateMode && (_data != null))
             {
+                this.Text = Properties.Resources.UpdateOrderTitle;
                 // Set deliver
                 if (!String.IsNullOrEmpty(_data.DeliverId))
                 {
@@ -217,12 +228,36 @@ namespace MainPrj.View
                 ReloadListPromotes();
                 if (_data.Created_date != null)
                 {
-                    dtpDate.Value = Convert.ToDateTime(_data.Created_date);
+                    //++ BUG0057-SPJ (NguyenPT 20160828) Fix bug convert datetime
+                    //dtpDate.Value = Convert.ToDateTime(_data.Created_date);
+                    dtpDate.Value = Convert.ToDateTime(DateTime.ParseExact(
+                        _data.Created_date,
+                        Properties.Resources.DefaultDateTimeFormat,
+                        System.Globalization.CultureInfo.InvariantCulture));
+                    //-- BUG0057-SPJ (NguyenPT 20160828) Fix bug convert datetime
                 }
                 else
                 {
                     dtpDate.Value = DateTime.Now;
                 }
+                //++ BUG0056-SPJ (NguyenPT 20160830) Handle order type
+                this._orderType = (OrderType)_data.Order_type;
+                this.otherMoney = _data.Type_amount;
+                switch (this._orderType)
+                {
+                    case OrderType.ORDERTYPE_NORMAL:
+                        rbOrderTypeNormal.Checked = true;
+                        break;
+                    case OrderType.ORDERTYPE_SELLVO:
+                        rbOrderTypeSellvo.Checked = true;
+                        break;
+                    case OrderType.ORDERTYPE_THECHAN:
+                        rbOrderTypeTheChan.Checked = true;
+                        break;
+                    default:
+                        break;
+                }
+                //-- BUG0056-SPJ (NguyenPT 20160830) Handle order type
                 UpdateMoney();
             }
         }
@@ -722,13 +757,15 @@ namespace MainPrj.View
                     model.Cylinders.Add(new CylinderModel());
                 }
                 model.Promotes.AddRange(promotes);
-                model.TotalPay = totalPay;
-                model.TotalMoney = total;
+                model.TotalPay     = totalPay;
+                model.TotalMoney   = total;
                 model.PromoteMoney = totalPromote;
+                model.Order_type   = (int)this._orderType;
+                model.Type_amount  = this.otherMoney;
                 model.Created_date = dtpDate.Value.ToString(Properties.Resources.DefaultDateTimeFormat);
-                //model.Id = System.DateTime.Now.ToString(Properties.Settings.Default.CallIdFormat);
-                model.Id = dtpDate.Value.ToString(Properties.Settings.Default.CallIdFormat);
-                string ret = CommonProcess.CreateOrderToServer(model);
+                //model.Id         = System.DateTime.Now.ToString(Properties.Settings.Default.CallIdFormat);
+                model.Id           = dtpDate.Value.ToString(Properties.Settings.Default.CallIdFormat);
+                string ret         = CommonProcess.CreateOrderToServer(model);
                 if (CommonProcess.HasError)
                 {
                     CommonProcess.HasError = false;
@@ -838,7 +875,8 @@ namespace MainPrj.View
             //{
             //    totalPromote = Properties.Settings.Default.PromoteMoney;
             //}
-            totalPay = total - totalPromote;
+            //totalPay = total - totalPromote;
+            totalPay = total - totalPromote + otherMoney;
 
             // Update UI
             lblTotal.Text    = CommonProcess.FormatMoney(total);
@@ -925,10 +963,16 @@ namespace MainPrj.View
                 printModel.TotalMoney   = this.total;
                 printModel.TotalPromote = this.totalPromote;
                 printModel.TotalPay     = this.totalPay;
+                printModel.OrderType = this._orderType;
+                printModel.OtherMoney = this.otherMoney;
                 printModel.Print();
             }
         }
-
+        /// <summary>
+        /// Double click on listview.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void listViewRecentProduct_DoubleClick(object sender, EventArgs e)
         {
             if (this.listViewRecentProduct.SelectedItems.Count > 0)
@@ -1021,6 +1065,7 @@ namespace MainPrj.View
                 return;
             }
             _data = model;
+            //_bkData = new OrderModel();
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
@@ -1040,6 +1085,8 @@ namespace MainPrj.View
                     _data.TotalPay     = totalPay;
                     _data.TotalMoney   = total;
                     _data.PromoteMoney = totalPromote;
+                    _data.Order_type = (int)this._orderType;
+                    _data.Type_amount = this.otherMoney;
                     string retId = CommonProcess.UpdateOrderToServer(_data);
                     if (!String.IsNullOrEmpty(retId))
                     {
@@ -1049,6 +1096,76 @@ namespace MainPrj.View
                         this.Close();
                     }
                 }
+            }
+        }
+        private void rbOrderTypeSellvo_CheckedChanged(object sender, EventArgs e)
+        {
+        }
+
+        /// <summary>
+        /// Handle when changed check value in Normal radio button.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void rbOrderTypeNormal_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rbOrderTypeNormal.Checked)
+            {
+                otherMoney = 0.0;
+                UpdateMoney();
+                this._orderType = OrderType.ORDERTYPE_NORMAL;
+            }
+        }
+
+        /// <summary>
+        /// Handle when changed check value in Sell Vo radio button.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void rbOrderTypeSellvo_Click(object sender, EventArgs e)
+        {
+            if (rbOrderTypeSellvo.Checked)
+            {
+                MoneyInputView view = new MoneyInputView();
+                view.Title = Properties.Resources.InputCylinderPrice;
+                if (this.otherMoney == 0.0)
+                {
+                    view.Money = 300000.0;
+                }
+                else
+                {
+                    view.Money = this.otherMoney;
+                }
+                view.ShowDialog();
+                this.otherMoney = view.Money;
+                this._orderType = OrderType.ORDERTYPE_SELLVO;
+                UpdateMoney();
+            }
+        }
+
+        /// <summary>
+        /// Handle when changed check value in The chan radio button.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void rbOrderTypeTheChan_Click(object sender, EventArgs e)
+        {
+            if (rbOrderTypeTheChan.Checked)
+            {
+                MoneyInputView view = new MoneyInputView();
+                view.Title = Properties.Resources.InputTheChanValue;
+                if (this.otherMoney == 0.0)
+                {
+                    view.Money = 300000.0;
+                }
+                else
+                {
+                    view.Money = this.otherMoney;
+                }
+                view.ShowDialog();
+                this.otherMoney = view.Money;
+                this._orderType = OrderType.ORDERTYPE_THECHAN;
+                UpdateMoney();
             }
         }
     }

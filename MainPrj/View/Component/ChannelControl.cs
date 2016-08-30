@@ -302,8 +302,22 @@ namespace MainPrj.View
         /// </summary>
         /// <param name="sender">Sender</param>
         /// <param name="e">EventArgs</param>
-        private void ChannelControl_Load(object sender, EventArgs e)
+        public void ChannelControl_Load(object sender, EventArgs e)
         {
+            //++ BUG0008-SPJ (NguyenPT 20160830) Order history
+            bool isAccounting        = DataPure.Instance.IsAccountingAgentRole();
+            lblAgentNearest.Visible  = !isAccounting;
+            lblContact.Visible       = !isAccounting;
+            lblCustomerType.Visible  = !isAccounting;
+            lblNote.Visible          = !isAccounting;
+            lblSale.Visible          = !isAccounting;
+            tbxAgencyNearest.Visible = !isAccounting;
+            tbxContact.Visible       = !isAccounting;
+            tbxCustomerType.Visible  = !isAccounting;
+            tbxNote.Visible          = !isAccounting;
+            tbxSaleName.Visible      = !isAccounting;
+            orderHistoryControl.Visible = isAccounting;
+            //-- BUG0008-SPJ (NguyenPT 20160830) Order history
         }
         /// <summary>
         /// Handle when change text of note.
@@ -641,5 +655,16 @@ namespace MainPrj.View
             //-- BUG0014-SPJ (NguyenPT 20160824) Reset Incomming number
             this.Data = new CustomerModel();
         }
+        //++ BUG0008-SPJ (NguyenPT 20160830) Order history
+        /// <summary>
+        /// Set history.
+        /// </summary>
+        /// <param name="data">Data of history</param>
+        public void SetHistory(OrderHistoryResponseModel data)
+        {
+            this.orderHistoryControl.Data = data;
+            this.orderHistoryControl.UpdateData();
+        }
+        //-- BUG0008-SPJ (NguyenPT 20160830) Order history
     }
 }

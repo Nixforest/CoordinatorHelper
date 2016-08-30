@@ -16,4 +16,19 @@ namespace MainPrj.Model
         ORDERSTATUS_CANCEL,             // Cancel
         ORDERSTATUS_NUM
     }
+    //++ BUG0056-SPJ (NguyenPT 20160830) Handle order type
+    /// <summary>
+    /// Order type:
+    /// 1. Normal
+    /// 2. Sell_vo
+    /// 3. The chan
+    /// </summary>
+    public enum OrderType
+    {
+        ORDERTYPE_NORMAL = 1,
+        ORDERTYPE_SELLVO,
+        ORDERTYPE_THECHAN,
+        ORDERTYPE_NUM
+    }
+    //-- BUG0056-SPJ (NguyenPT 20160830) Handle order type
 }

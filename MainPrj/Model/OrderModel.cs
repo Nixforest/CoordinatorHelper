@@ -49,6 +49,12 @@ namespace MainPrj.Model
         [DataMember(Name = "created_date", IsRequired = false)]
         private string created_date;
         //-- BUG0011-SPJ (NguyenPT 20160822) Add Created date property
+        //++ BUG0056-SPJ (NguyenPT 20160828) Handle sell group of cylinders
+        [DataMember(Name = "order_type", IsRequired = false)]
+        protected int order_type;
+        [DataMember(Name = "type_amount", IsRequired = false)]
+        protected double type_amount;
+        //-- BUG0056-SPJ (NguyenPT 20160828) Handle sell group of cylinders
 
         /// <summary>
         /// Constructor.
@@ -73,7 +79,40 @@ namespace MainPrj.Model
             //++ BUG0011-SPJ (NguyenPT 20160822) Add Created date property
             created_date = DateTime.Now.ToString(Properties.Resources.DefaultDateTimeFormat);
             //-- BUG0011-SPJ (NguyenPT 20160822) Add Created date property
+            //++ BUG0056-SPJ (NguyenPT 20160828) Handle sell group of cylinders
+            order_type  = (int)OrderType.ORDERTYPE_NORMAL;
+            type_amount = 0.0;
+            //-- BUG0056-SPJ (NguyenPT 20160828) Handle sell group of cylinders
         }
+        //public OrderModel(OrderModel copy)
+        //{
+        //    this.id = copy.id;
+        //    this.creatorId = copy.creatorId;
+        //    this.deliverId = copy.deliverId;
+        //    this.ccsId = copy.ccsId;
+        //    this.products = copy.products;
+        //}
+        //++ BUG0056-SPJ (NguyenPT 20160828) Handle sell group of cylinders
+        /// <summary>
+        /// Order type:
+        /// 1. Normal
+        /// 2. Sell_vo
+        /// 3. The chan
+        /// </summary>
+        public int Order_type
+        {
+            get { return order_type; }
+            set { order_type = value; }
+        }
+        /// <summary>
+        /// Sell vo or The chan amount.
+        /// </summary>
+        public double Type_amount
+        {
+            get { return type_amount; }
+            set { type_amount = value; }
+        }
+        //-- BUG0056-SPJ (NguyenPT 20160828) Handle sell group of cylinders
         //++ BUG0011-SPJ (NguyenPT 20160822) Add Created date property
         /// <summary>
         /// Created date.

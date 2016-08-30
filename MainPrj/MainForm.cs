@@ -164,6 +164,13 @@ namespace MainPrj
             //-- BUG0043-SPJ (NguyenPT 20160822) Fix bug lost all history when program down
             DataPure.Instance.ListCalls.Add(call);
             CommonProcess.SetChannelInformation(channel, call.Customer);
+            //++ BUG0008-SPJ (NguyenPT 20160830) Order history
+            // Request orders history
+            if (!string.IsNullOrEmpty(customer.Id))
+            {
+                CommonProcess.RequestOrderHistory(customer.Id, orderHistoryProgressChanged, orderHistoryCompleted);
+            }
+            //-- BUG0008-SPJ (NguyenPT 20160830) Order history
         }
 
         /// <summary>
@@ -479,6 +486,13 @@ namespace MainPrj
                 this.mainTabControl.DrawMode = TabDrawMode.OwnerDrawFixed;
                 this.mainTabControl.DrawItem += mainTabControl_DrawItem;
             }
+            //++ BUG0008-SPJ (NguyenPT 20160830) Order history
+            // Reload channel control after login
+            foreach (ChannelControl item in this.listChannelControl)
+            {
+                item.ChannelControl_Load(null, null);
+            }
+            //-- BUG0008-SPJ (NguyenPT 20160830) Order history
         }
         /// <summary>
         /// Re-locate label.
@@ -812,25 +826,25 @@ namespace MainPrj
         private void btnSearch_Click(object sender, EventArgs e)
         {
             #region Test get customer information
-            //string phone = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel).GetIncommingPhone();
-            //double n = 0;
-            //// Get incomming number information
-            //if (!String.IsNullOrEmpty(phone) && double.TryParse(phone, out n))
-            //{
-            //    // Insert value into current channel
-            //    try
-            //    {
-            //        ChannelControl tab = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel);
-            //        tab.SetIncommingPhone(phone);
-            //        // Request server and update data from server
-            //        UpdateData(phone, (int)CardDataStatus.CARDDATA_RINGING, DataPure.Instance.CurrentChannel);
-            //    }
-            //    catch (ArgumentOutOfRangeException)
-            //    {
-            //        CommonProcess.ShowErrorMessage(Properties.Resources.ArgumentOutOfRange);
-            //    }
-            //}
-            PrintData("<CRMV1               0002     2016-08-02 16:15:00                               01689908271                    >                                          172.16.1.64                                       {RAWCID:[0939331371]}{DETAILDES:[]}");
+            string phone = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel).GetIncommingPhone();
+            double n = 0;
+            // Get incomming number information
+            if (!String.IsNullOrEmpty(phone) && double.TryParse(phone, out n))
+            {
+                // Insert value into current channel
+                try
+                {
+                    ChannelControl tab = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel);
+                    tab.SetIncommingPhone(phone);
+                    // Request server and update data from server
+                    UpdateData(phone, (int)CardDataStatus.CARDDATA_RINGING, DataPure.Instance.CurrentChannel);
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    CommonProcess.ShowErrorMessage(Properties.Resources.ArgumentOutOfRange);
+                }
+            }
+            //PrintData("<CRMV1               0002     2016-08-02 16:15:00                               01689908271                    >                                          172.16.1.64                                       {RAWCID:[0939331371]}{DETAILDES:[]}");
             #endregion
             //_TestServer test = new _TestServer();
             //test.ShowDialog();
@@ -1677,6 +1691,80 @@ namespace MainPrj
                 toolStripProgressBarReqServer, toolStripStatusLabel);
         }
         //-- BUG0046-SPJ (NguyenPT 20160824) Login automatically
+        //++ BUG0008-SPJ (NguyenPT 20160830) Order history
+        /// <summary>
+        /// Handle after request order history completed.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">UploadValuesCompletedEventArgs</param>
+        private void orderHistoryCompleted(object sender, UploadValuesCompletedEventArgs e)
+        {
+            if (e.Cancelled)
+            {
+                toolStripStatusLabel.Text = Properties.Resources.ErrorCause + Properties.Resources.Cancel;
+            }
+            else if (e.Error != null)
+            {
+                toolStripStatusLabel.Text = Properties.Resources.ErrorCause + e.Error.Message;
+            }
+            else
+            {
+                toolStripProgressBarReqServer.Value = 0;
+                byte[] response = e.Result;
+                string respStr = String.Empty;
+                respStr = System.Text.Encoding.UTF8.GetString(response);
+                if (!String.IsNullOrEmpty(respStr))
+                {
+                    DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(OrderHistoryResponseModel));
+                    byte[] encodingBytes = null;
+                    try
+                    {
+                        // Encoding response data
+                        encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);
+                    }
+                    catch (System.Text.EncoderFallbackException)
+                    {
+                        CommonProcess.ShowErrorMessage(Properties.Resources.EncodingError);
+                    }
+                    if (encodingBytes != null)
+                    {
+                        MemoryStream msU = new MemoryStream(encodingBytes);
+                        OrderHistoryResponseModel baseResp = (OrderHistoryResponseModel)js.ReadObject(msU);
+                        if (baseResp != null)
+                        {
+                            if (baseResp.Status.Equals("1"))
+                            {
+                                ChannelControl channelControl = null;
+                                try
+                                {
+                                    channelControl = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel);
+                                }
+                                catch (ArgumentOutOfRangeException)
+                                {
+                                    CommonProcess.ShowErrorMessage(Properties.Resources.ArgumentOutOfRange);
+                                    return;
+                                }
+                                if (channelControl != null)
+                                {
+                                    channelControl.SetHistory(baseResp);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// Handle when requesting order history.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">UploadProgressChangedEventArgs</param>
+        private void orderHistoryProgressChanged(object sender, UploadProgressChangedEventArgs e)
+        {
+            CommonProcess.UpdateProgress(e, Properties.Resources.RequestingOrderHistory,
+                toolStripProgressBarReqServer, toolStripStatusLabel);
+        }
+        //-- BUG0008-SPJ (NguyenPT 20160830) Order history
         #endregion
 
         #region Tansonic UDP handling

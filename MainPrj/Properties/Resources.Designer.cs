@@ -137,6 +137,15 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Thế chân.
+        /// </summary>
+        internal static string Bond {
+            get {
+                return ResourceManager.GetString("Bond", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Đặt hàng ngay.
         /// </summary>
         internal static string CallType1 {
@@ -341,6 +350,15 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tạo đơn đặt hàng.
+        /// </summary>
+        internal static string CreateOrderTitle {
+            get {
+                return ResourceManager.GetString("CreateOrderTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bạn đang tạo đơn hàng cho Khách hàng {0}:
         ///{1}
         ///tại {2}.
@@ -358,6 +376,15 @@ namespace MainPrj.Properties {
         internal static string CustomerNameUnknown {
             get {
                 return ResourceManager.GetString("CustomerNameUnknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vỏ.
+        /// </summary>
+        internal static string Cylinder {
+            get {
+                return ResourceManager.GetString("Cylinder", resourceCulture);
             }
         }
         
@@ -554,6 +581,24 @@ namespace MainPrj.Properties {
         internal static string Inform {
             get {
                 return ResourceManager.GetString("Inform", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nhập giá vỏ:.
+        /// </summary>
+        internal static string InputCylinderPrice {
+            get {
+                return ResourceManager.GetString("InputCylinderPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nhập tiền thế chân:.
+        /// </summary>
+        internal static string InputTheChanValue {
+            get {
+                return ResourceManager.GetString("InputTheChanValue", resourceCulture);
             }
         }
         
@@ -874,6 +919,15 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Đang gửi yêu cầu lịch sử giao dịch....
+        /// </summary>
+        internal static string RequestingOrderHistory {
+            get {
+                return ResourceManager.GetString("RequestingOrderHistory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Đang gửi yêu cầu cập nhật data....
         /// </summary>
         internal static string RequestingTempData {
@@ -888,6 +942,15 @@ namespace MainPrj.Properties {
         internal static string RequestLogoutSuccess {
             get {
                 return ResourceManager.GetString("RequestLogoutSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cập nhật lịch sử giao dịch thành công!.
+        /// </summary>
+        internal static string RequestOrderHistorySuccess {
+            get {
+                return ResourceManager.GetString("RequestOrderHistorySuccess", resourceCulture);
             }
         }
         
@@ -1061,6 +1124,15 @@ namespace MainPrj.Properties {
         internal static string UpdateOrderSuccess {
             get {
                 return ResourceManager.GetString("UpdateOrderSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cập nhật đơn hàng.
+        /// </summary>
+        internal static string UpdateOrderTitle {
+            get {
+                return ResourceManager.GetString("UpdateOrderTitle", resourceCulture);
             }
         }
         

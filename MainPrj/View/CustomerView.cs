@@ -183,6 +183,70 @@ namespace MainPrj.View
             //this.channelControl.SetCity(city);
             //this.channelControl.SetStreet(DataPure.Instance.TempData.List_street);
             //this.channelControl.SetStreet(street);
+            //++ BUG0008-SPJ (NguyenPT 20160830) Order history
+            // Request orders history
+            if (!string.IsNullOrEmpty(this.channelControl.Data.Id))
+            {
+                CommonProcess.RequestOrderHistory(this.channelControl.Data.Id, orderHistoryProgressChanged, orderHistoryCompleted);
+            }
+            //-- BUG0008-SPJ (NguyenPT 20160830) Order history
         }
+
+        //++ BUG0008-SPJ (NguyenPT 20160830) Order history
+        private void orderHistoryCompleted(object sender, System.Net.UploadValuesCompletedEventArgs e)
+        {
+            if (e.Cancelled)
+            {
+                toolStripStatusLabel.Text = Properties.Resources.ErrorCause + Properties.Resources.Cancel;
+            }
+            else if (e.Error != null)
+            {
+                toolStripStatusLabel.Text = Properties.Resources.ErrorCause + e.Error.Message;
+            }
+            else
+            {
+                toolStripStatusLabel.Text = Properties.Resources.RequestOrderHistorySuccess;
+                toolStripProgressBar.Value = 0;
+                byte[] response = e.Result;
+                string respStr = String.Empty;
+                respStr = System.Text.Encoding.UTF8.GetString(response);
+                if (!String.IsNullOrEmpty(respStr))
+                {
+                    DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(OrderHistoryResponseModel));
+                    byte[] encodingBytes = null;
+                    try
+                    {
+                        // Encoding response data
+                        encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);
+                    }
+                    catch (System.Text.EncoderFallbackException)
+                    {
+                        CommonProcess.ShowErrorMessage(Properties.Resources.EncodingError);
+                    }
+                    if (encodingBytes != null)
+                    {
+                        MemoryStream msU = new MemoryStream(encodingBytes);
+                        OrderHistoryResponseModel baseResp = (OrderHistoryResponseModel)js.ReadObject(msU);
+                        if (baseResp != null)
+                        {
+                            if (baseResp.Status.Equals("1"))
+                            {
+                                if (this.channelControl != null)
+                                {
+                                    channelControl.SetHistory(baseResp);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void orderHistoryProgressChanged(object sender, System.Net.UploadProgressChangedEventArgs e)
+        {
+            CommonProcess.UpdateProgress(e, Properties.Resources.RequestingOrderHistory,
+                toolStripProgressBar, toolStripStatusLabel);
+        }
+        //-- BUG0008-SPJ (NguyenPT 20160830) Order history
     }
 }

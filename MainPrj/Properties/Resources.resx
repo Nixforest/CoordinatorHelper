@@ -468,4 +468,28 @@ Bạn chắn chắn không?</value>
   <data name="uphold" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>uphold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="RequestingOrderHistory" xml:space="preserve">
+    <value>Đang gửi yêu cầu lịch sử giao dịch...</value>
+  </data>
+  <data name="InputCylinderPrice" xml:space="preserve">
+    <value>Nhập giá vỏ:</value>
+  </data>
+  <data name="InputTheChanValue" xml:space="preserve">
+    <value>Nhập tiền thế chân:</value>
+  </data>
+  <data name="CreateOrderTitle" xml:space="preserve">
+    <value>Tạo đơn đặt hàng</value>
+  </data>
+  <data name="UpdateOrderTitle" xml:space="preserve">
+    <value>Cập nhật đơn hàng</value>
+  </data>
+  <data name="Bond" xml:space="preserve">
+    <value>Thế chân</value>
+  </data>
+  <data name="Cylinder" xml:space="preserve">
+    <value>Vỏ</value>
+  </data>
+  <data name="RequestOrderHistorySuccess" xml:space="preserve">
+    <value>Cập nhật lịch sử giao dịch thành công!</value>
+  </data>
 </root>
