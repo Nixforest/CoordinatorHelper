@@ -94,6 +94,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "OrderCoordinatorView";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Tạo đơn hàng";
             this.ResumeLayout(false);
 

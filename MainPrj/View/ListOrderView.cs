@@ -22,13 +22,31 @@ namespace MainPrj.View
         //private int totalGas      = 0;
         //private int totalGasStove = 0;
         //private int totalVan = 0;
+        /// <summary>
+        /// Total number of gas.
+        /// </summary>
         private double totalGas      = 0.0;
+        /// <summary>
+        /// Total number of gas stove.
+        /// </summary>
         private double totalGasStove = 0.0;
+        /// <summary>
+        /// Total number of Van.
+        /// </summary>
         private double totalVan      = 0.0;
         //-- BUG0044-SPJ (NguyenPT 20160822) Change quantity data type to double
+        /// <summary>
+        /// Total money.
+        /// </summary>
         private double totalPay   = 0.0;
+        /// <summary>
+        /// Total cylinder.
+        /// </summary>
         private int totalCylinder = 0;
         //++ BUG0010-SPJ (NguyenPT 20160818) Add total promote money
+        /// <summary>
+        /// Total promote money.
+        /// </summary>
         private double totalPromote = 0.0;
         //-- BUG0010-SPJ (NguyenPT 20160818) Add total promote money
         /// <summary>
@@ -59,6 +77,7 @@ namespace MainPrj.View
         /// </summary>
         private void UpdateTotal()
         {
+            // Reset value
             totalGas      = 0;
             totalGasStove = 0;
             totalVan      = 0;
@@ -67,36 +86,43 @@ namespace MainPrj.View
             //++ BUG0010-SPJ (NguyenPT 20160818) Add total promote money
             totalPromote = 0.0;
             //-- BUG0010-SPJ (NguyenPT 20160818) Add total promote money
-
+            // Re-calculate values from list current data
             foreach (OrderModel item in listCurrentData)
             {
+                // Ignore Cancelled order
                 if (item.Status.Equals(OrderStatus.ORDERSTATUS_CANCEL))
                 {
                     continue;
                 }
                 // Total gas
-                foreach (ProductModel product in item.Products)
+                if (item.Products != null)
                 {
-                    if (product.IsGas())
+                    foreach (ProductModel product in item.Products)
                     {
-                        totalGas += product.Quantity;
-                    }
-                    else if (product.IsGasStove())
-                    {
-                        totalGasStove += product.Quantity;
-                    }
-                    else if (product.IsVan())
-                    {
-                        totalVan += product.Quantity;
+                        if (product.IsGas())
+                        {
+                            totalGas += product.Quantity;
+                        }
+                        else if (product.IsGasStove())
+                        {
+                            totalGasStove += product.Quantity;
+                        }
+                        else if (product.IsVan())
+                        {
+                            totalVan += product.Quantity;
+                        }
                     }
                 }
 
                 // Total Cylinder
-                foreach (CylinderModel cylinder in item.Cylinders)
+                if (item.Cylinders != null)
                 {
-                    if (!String.IsNullOrEmpty(cylinder.Id))
+                    foreach (CylinderModel cylinder in item.Cylinders)
                     {
-                        totalCylinder += cylinder.Quantity;
+                        if (!String.IsNullOrEmpty(cylinder.Id))
+                        {
+                            totalCylinder += cylinder.Quantity;
+                        }
                     }
                 }
                 
@@ -121,12 +147,15 @@ namespace MainPrj.View
         /// <param name="listOrder">List orders</param>
         private void UpdateTotal(List<OrderModel> listOrders)
         {
+            // Reset value
             totalGas      = 0;
             totalGasStove = 0;
             totalVan      = 0;
             totalPay      = 0.0;
             totalCylinder = 0;
+            totalPromote  = 0.0;
 
+            // Re-calculate values from list orders
             foreach (OrderModel item in listOrders)
             {
                 if (item.Status.Equals(OrderStatus.ORDERSTATUS_CANCEL))
@@ -134,38 +163,46 @@ namespace MainPrj.View
                     continue;
                 }
                 // Total gas
-                foreach (ProductModel product in item.Products)
+                if (item.Products != null)
                 {
-                    if (product.IsGas())
+                    foreach (ProductModel product in item.Products)
                     {
-                        totalGas += product.Quantity;
-                    }
-                    else if (product.IsGasStove())
-                    {
-                        totalGasStove += product.Quantity;
-                    }
-                    else if (product.IsVan())
-                    {
-                        totalVan += product.Quantity;
+                        if (product.IsGas())
+                        {
+                            totalGas += product.Quantity;
+                        }
+                        else if (product.IsGasStove())
+                        {
+                            totalGasStove += product.Quantity;
+                        }
+                        else if (product.IsVan())
+                        {
+                            totalVan += product.Quantity;
+                        }
                     }
                 }
 
                 // Total Cylinder
-                foreach (CylinderModel cylinder in item.Cylinders)
+                if (item.Cylinders != null)
                 {
-                    if (!String.IsNullOrEmpty(cylinder.Id))
+                    foreach (CylinderModel cylinder in item.Cylinders)
                     {
-                        totalCylinder += cylinder.Quantity;
+                        if (!String.IsNullOrEmpty(cylinder.Id))
+                        {
+                            totalCylinder += cylinder.Quantity;
+                        }
                     }
                 }
                 // Total pay
+                totalPromote += item.PromoteMoney;
                 totalPay += item.TotalPay;
             }
-            lblTotalGas.Text = totalGas.ToString();
-            lblGasStove.Text = totalGasStove.ToString();
-            lblVan.Text      = totalVan.ToString();
-            lblCylinder.Text = totalCylinder.ToString();
-            lblTotalPay.Text = CommonProcess.FormatMoney(totalPay);
+            lblTotalGas.Text     = totalGas.ToString();
+            lblGasStove.Text     = totalGasStove.ToString();
+            lblVan.Text          = totalVan.ToString();
+            lblCylinder.Text     = totalCylinder.ToString();
+            lblTotalPay.Text     = CommonProcess.FormatMoney(totalPay);
+            lblTotalPromote.Text = CommonProcess.FormatMoney(totalPromote);
         }
         /// <summary>
         /// Handle click button Clear.
@@ -174,8 +211,10 @@ namespace MainPrj.View
         /// <param name="e">EventArgs</param>
         private void btnClear_Click(object sender, EventArgs e)
         {
+            // Reset text in search textbox
             tbxSearch.Text      = Properties.Resources.SearchString;
             tbxSearch.ForeColor = SystemColors.GrayText;
+            // Clear list current data
             this.listCurrentData.Clear();
             //LoadListView(DataPure.Instance.ListOrders);
             int dayNum = (dtpFilterTo.Value - dtpFilterFrom.Value).Days;
@@ -403,6 +442,9 @@ namespace MainPrj.View
                 _listDeliverItems = new List<object>();
                 _listDeliverItems.Add(new { Text = string.Empty, Value = string.Empty });
             }
+            //++ BUG0066-SPJ (NguyenPT 20160903) Handle FLICKERING on ListView
+            this.listViewListOrder.BeginUpdate();
+            //-- BUG0066-SPJ (NguyenPT 20160903) Handle FLICKERING on ListView
             this.listViewListOrder.Items.Clear();
 
             // Loop through all orders
@@ -438,6 +480,9 @@ namespace MainPrj.View
                     }
                 }
             }
+            //++ BUG0066-SPJ (NguyenPT 20160903) Handle FLICKERING on ListView
+            this.listViewListOrder.EndUpdate();
+            //-- BUG0066-SPJ (NguyenPT 20160903) Handle FLICKERING on ListView
         }
         /// <summary>
         /// Handle load form.

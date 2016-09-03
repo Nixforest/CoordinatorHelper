@@ -67,11 +67,12 @@
             // 
             // btnFinish
             // 
+            this.btnFinish.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnFinish.Image = global::MainPrj.Properties.Resources.finish;
             this.btnFinish.Location = new System.Drawing.Point(483, 236);
             this.btnFinish.Name = "btnFinish";
             this.btnFinish.Size = new System.Drawing.Size(141, 151);
-            this.btnFinish.TabIndex = 3;
+            this.btnFinish.TabIndex = 4;
             this.btnFinish.Text = "Đã thu tiền";
             this.btnFinish.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.btnFinish.UseVisualStyleBackColor = true;
@@ -99,6 +100,7 @@
             // 
             // label3
             // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(233, 9);
             this.label3.Name = "label3";
@@ -108,6 +110,7 @@
             // 
             // cbxDeliver
             // 
+            this.cbxDeliver.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbxDeliver.DisplayMember = "Text";
             this.cbxDeliver.FormattingEnabled = true;
             this.cbxDeliver.Location = new System.Drawing.Point(370, 6);
@@ -122,13 +125,16 @@
             this.chbPromote.Location = new System.Drawing.Point(16, 279);
             this.chbPromote.Name = "chbPromote";
             this.chbPromote.Size = new System.Drawing.Size(255, 28);
-            this.chbPromote.TabIndex = 12;
+            this.chbPromote.TabIndex = 3;
             this.chbPromote.Text = "Không lấy quà Khuyến mãi";
             this.chbPromote.UseVisualStyleBackColor = true;
             // 
             // listViewCylinder
             // 
             this.listViewCylinder.AllowColumnReorder = true;
+            this.listViewCylinder.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.listViewCylinder.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2,
@@ -189,7 +195,7 @@
             this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "FinishOrderView";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Hoàn tất đơn hàng";
             this.Load += new System.EventHandler(this.FinishOrderView_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FinishOrderView_KeyDown);

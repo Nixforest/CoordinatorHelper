@@ -73,32 +73,35 @@ namespace MainPrj.View
             // 
             // btnClear
             // 
+            this.btnClear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnClear.Location = new System.Drawing.Point(1213, 6);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(93, 39);
-            this.btnClear.TabIndex = 4;
+            this.btnClear.TabIndex = 9;
             this.btnClear.Text = "Hủy";
             this.btnClear.UseVisualStyleBackColor = true;
             this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
             // tbxSearch
             // 
+            this.tbxSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.tbxSearch.ForeColor = System.Drawing.SystemColors.GrayText;
             this.tbxSearch.Location = new System.Drawing.Point(936, 10);
             this.tbxSearch.Name = "tbxSearch";
             this.tbxSearch.Size = new System.Drawing.Size(271, 29);
-            this.tbxSearch.TabIndex = 3;
+            this.tbxSearch.TabIndex = 8;
             this.tbxSearch.Text = "Tìm kiếm";
             this.tbxSearch.Enter += new System.EventHandler(this.tbxSearch_Enter);
             this.tbxSearch.Leave += new System.EventHandler(this.tbxSearch_Leave);
             // 
             // btnClose
             // 
+            this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnClose.Location = new System.Drawing.Point(1190, 597);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(116, 36);
-            this.btnClose.TabIndex = 6;
+            this.btnClose.TabIndex = 12;
             this.btnClose.Text = "Đóng";
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
@@ -109,7 +112,7 @@ namespace MainPrj.View
             this.btnUpdateData.Location = new System.Drawing.Point(507, 6);
             this.btnUpdateData.Name = "btnUpdateData";
             this.btnUpdateData.Size = new System.Drawing.Size(124, 39);
-            this.btnUpdateData.TabIndex = 0;
+            this.btnUpdateData.TabIndex = 4;
             this.btnUpdateData.Text = "Cập nhật";
             this.btnUpdateData.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnUpdateData.UseVisualStyleBackColor = true;
@@ -129,6 +132,7 @@ namespace MainPrj.View
             // 
             // lblTotalGas
             // 
+            this.lblTotalGas.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblTotalGas.AutoSize = true;
             this.lblTotalGas.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTotalGas.ForeColor = System.Drawing.Color.Red;
@@ -140,6 +144,7 @@ namespace MainPrj.View
             // 
             // lblGasStove
             // 
+            this.lblGasStove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblGasStove.AutoSize = true;
             this.lblGasStove.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblGasStove.ForeColor = System.Drawing.Color.Blue;
@@ -151,6 +156,7 @@ namespace MainPrj.View
             // 
             // lblVan
             // 
+            this.lblVan.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblVan.AutoSize = true;
             this.lblVan.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblVan.ForeColor = System.Drawing.Color.Fuchsia;
@@ -162,7 +168,7 @@ namespace MainPrj.View
             // 
             // lblCylinder
             // 
-            this.lblCylinder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblCylinder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblCylinder.AutoSize = true;
             this.lblCylinder.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCylinder.ForeColor = System.Drawing.Color.Red;
@@ -174,7 +180,7 @@ namespace MainPrj.View
             // 
             // lblTotalPay
             // 
-            this.lblTotalPay.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblTotalPay.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblTotalPay.AutoSize = true;
             this.lblTotalPay.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTotalPay.ForeColor = System.Drawing.Color.DarkGreen;
@@ -202,7 +208,7 @@ namespace MainPrj.View
             this.btnCancelOrder.Location = new System.Drawing.Point(315, 6);
             this.btnCancelOrder.Name = "btnCancelOrder";
             this.btnCancelOrder.Size = new System.Drawing.Size(186, 39);
-            this.btnCancelOrder.TabIndex = 2;
+            this.btnCancelOrder.TabIndex = 3;
             this.btnCancelOrder.Text = "Hủy đơn hàng";
             this.btnCancelOrder.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnCancelOrder.UseVisualStyleBackColor = true;
@@ -218,24 +224,27 @@ namespace MainPrj.View
             this.cbxDeliver.Location = new System.Drawing.Point(866, 22);
             this.cbxDeliver.Name = "cbxDeliver";
             this.cbxDeliver.Size = new System.Drawing.Size(131, 24);
-            this.cbxDeliver.TabIndex = 12;
+            this.cbxDeliver.TabIndex = 0;
             this.cbxDeliver.ValueMember = "Value";
             this.cbxDeliver.SelectedIndexChanged += new System.EventHandler(this.cbxDeliver_SelectedIndexChanged);
             // 
             // groupBox1
             // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.BackColor = System.Drawing.SystemColors.Control;
             this.groupBox1.Controls.Add(this.cbxDeliver);
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.Location = new System.Drawing.Point(16, 51);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(1290, 55);
-            this.groupBox1.TabIndex = 13;
+            this.groupBox1.TabIndex = 10;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Bộ lọc";
             // 
             // label2
             // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(486, 586);
@@ -246,6 +255,7 @@ namespace MainPrj.View
             // 
             // label3
             // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(487, 603);
@@ -256,6 +266,7 @@ namespace MainPrj.View
             // 
             // label4
             // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.Location = new System.Drawing.Point(579, 586);
@@ -266,6 +277,7 @@ namespace MainPrj.View
             // 
             // label5
             // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.Location = new System.Drawing.Point(587, 603);
@@ -276,6 +288,7 @@ namespace MainPrj.View
             // 
             // label6
             // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.ForeColor = System.Drawing.Color.Fuchsia;
@@ -291,7 +304,7 @@ namespace MainPrj.View
             this.btnPrint.Location = new System.Drawing.Point(637, 6);
             this.btnPrint.Name = "btnPrint";
             this.btnPrint.Size = new System.Drawing.Size(71, 39);
-            this.btnPrint.TabIndex = 1;
+            this.btnPrint.TabIndex = 5;
             this.btnPrint.Text = "In";
             this.btnPrint.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnPrint.UseVisualStyleBackColor = true;
@@ -299,7 +312,7 @@ namespace MainPrj.View
             // 
             // lblTotalPromote
             // 
-            this.lblTotalPromote.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblTotalPromote.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblTotalPromote.AutoSize = true;
             this.lblTotalPromote.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTotalPromote.ForeColor = System.Drawing.Color.DarkGreen;
@@ -311,6 +324,7 @@ namespace MainPrj.View
             // 
             // label1
             // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(834, 9);
             this.label1.Name = "label1";
@@ -320,27 +334,32 @@ namespace MainPrj.View
             // 
             // dtpFilterTo
             // 
+            this.dtpFilterTo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.dtpFilterTo.CustomFormat = "dd/MM";
             this.dtpFilterTo.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dtpFilterTo.Location = new System.Drawing.Point(865, 10);
             this.dtpFilterTo.Name = "dtpFilterTo";
             this.dtpFilterTo.Size = new System.Drawing.Size(65, 29);
-            this.dtpFilterTo.TabIndex = 14;
+            this.dtpFilterTo.TabIndex = 7;
             this.dtpFilterTo.ValueChanged += new System.EventHandler(this.dtpFilterTo_ValueChanged);
             // 
             // dtpFilterFrom
             // 
+            this.dtpFilterFrom.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.dtpFilterFrom.CustomFormat = "dd/MM";
             this.dtpFilterFrom.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dtpFilterFrom.Location = new System.Drawing.Point(765, 9);
             this.dtpFilterFrom.Name = "dtpFilterFrom";
             this.dtpFilterFrom.Size = new System.Drawing.Size(66, 29);
-            this.dtpFilterFrom.TabIndex = 15;
+            this.dtpFilterFrom.TabIndex = 6;
             this.dtpFilterFrom.ValueChanged += new System.EventHandler(this.dtpFilterFrom_ValueChanged);
             // 
             // listViewListOrder
             // 
             this.listViewListOrder.AllowColumnReorder = true;
+            this.listViewListOrder.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.listViewListOrder.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2,
@@ -366,7 +385,7 @@ namespace MainPrj.View
             this.listViewListOrder.Name = "listViewListOrder";
             this.listViewListOrder.ShowItemToolTips = true;
             this.listViewListOrder.Size = new System.Drawing.Size(1290, 471);
-            this.listViewListOrder.TabIndex = 5;
+            this.listViewListOrder.TabIndex = 11;
             this.listViewListOrder.UseCompatibleStateImageBehavior = false;
             this.listViewListOrder.View = System.Windows.Forms.View.Details;
             this.listViewListOrder.SubItemEndEditing += new MainPrj.View.SubItemEndEditingEventHandler(this.listViewListOrder_SubItemEndEditing);

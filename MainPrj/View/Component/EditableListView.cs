@@ -172,7 +172,30 @@ namespace MainPrj.View
             base.AllowColumnReorder = true;
             this.SubItemClicked += new SubItemEventHandler(Handler_SubItemClicked);
             this._combobox.SelectedIndexChanged += new EventHandler(combobox_SelectedValueChanged);
+
+            //++ BUG0066-SPJ (NguyenPT 20160903) Handle FLICKERING on ListView
+            // Activate double buffering
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint, true);
+            // Enable the OnNotifyMessage event so we get a chance to filter out
+            // Windows messages before they get to the form's WndProc
+            this.SetStyle(ControlStyles.EnableNotifyMessage, true);
+            //-- BUG0066-SPJ (NguyenPT 20160903) Handle FLICKERING on ListView
         }
+
+        //++ BUG0066-SPJ (NguyenPT 20160903) Handle FLICKERING on ListView
+        /// <summary>
+        /// Handle Notify message.
+        /// </summary>
+        /// <param name="m">Message</param>
+        protected override void OnNotifyMessage(Message m)
+        {
+            // Filter out the WM_ERASEBKGND msg
+            if (m.Msg != 0x14)
+            {
+                base.OnNotifyMessage(m);
+            }
+        }
+        //-- BUG0066-SPJ (NguyenPT 20160903) Handle FLICKERING on ListView
 
         /// <summary>
         /// Set columns editors.
