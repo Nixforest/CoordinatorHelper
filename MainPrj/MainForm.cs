@@ -244,7 +244,10 @@ namespace MainPrj
                             {
                                 DialogResult result = CommonProcess.ShowInformMessage(
                                     String.Format(Properties.Resources.CreatingOrder,
-                                        DataPure.Instance.CustomerInfo.Name, note, DataPure.Instance.GetAgentNameById(selectorId)),
+                                    //++ BUG0063-SPJ (NguyenPT 20160831) Add phone number
+                                        DataPure.Instance.CustomerInfo.Name, note, DataPure.Instance.GetAgentNameById(selectorId),
+                                        DataPure.Instance.CustomerInfo.ActivePhone),
+                                    //-- BUG0063-SPJ (NguyenPT 20160831) Add phone number
                                     MessageBoxButtons.OKCancel);
                                 if (result.Equals(DialogResult.OK))
                                 {
@@ -947,6 +950,13 @@ namespace MainPrj
                                 current.Customer.Contact_note = channelControl.Data.Contact_note;
                             }
                         }
+
+                        //++ BUG0062-SPJ (NguyenPT 20160831) Request order history
+                        if ((channelControl.Data != null) && (!string.IsNullOrEmpty(channelControl.Data.Id)))
+                        {
+                            CommonProcess.RequestOrderHistory(channelControl.Data.Id, orderHistoryProgressChanged, orderHistoryCompleted);
+                        }
+                        //-- BUG0062-SPJ (NguyenPT 20160831) Request order history
                     }
                     break;
                 case Keys.F7:
@@ -1549,19 +1559,28 @@ namespace MainPrj
                     {
                         MemoryStream msU = new MemoryStream(encodingBytes);
                         OrderResponseModel baseResp = (OrderResponseModel)js.ReadObject(msU);
-                        if (baseResp != null && baseResp.Status.Equals("1"))
+                        if (baseResp != null)
                         {
-                            string id = baseResp.Id;
-                            if (!String.IsNullOrEmpty(id))
-                            {
-                                toolStripStatusLabel.Text = Properties.Resources.CreateOrderSuccess;
-                                CommonProcess.ShowInformMessage(Properties.Resources.CreateOrderSuccess, MessageBoxButtons.OK);
-                            }
+                            toolStripStatusLabel.Text = baseResp.Message;
+                            CommonProcess.ShowInformMessage(baseResp.Message, MessageBoxButtons.OK);
                         }
                         else
                         {
                             CommonProcess.ShowInformMessage(Properties.Resources.CreateOrderServerError, MessageBoxButtons.OK);
                         }
+                        //if (baseResp != null && baseResp.Status.Equals("1"))
+                        //{
+                        //    string id = baseResp.Id;
+                        //    if (!String.IsNullOrEmpty(id))
+                        //    {
+                        //        toolStripStatusLabel.Text = Properties.Resources.CreateOrderSuccess;
+                        //        CommonProcess.ShowInformMessage(Properties.Resources.CreateOrderSuccess, MessageBoxButtons.OK);
+                        //    }
+                        //}
+                        //else
+                        //{
+                        //    CommonProcess.ShowInformMessage(Properties.Resources.CreateOrderServerError, MessageBoxButtons.OK);
+                        //}
                     }
                 }
             }
@@ -1709,6 +1728,7 @@ namespace MainPrj
             }
             else
             {
+                toolStripStatusLabel.Text = Properties.Resources.RequestOrderHistorySuccess;
                 toolStripProgressBarReqServer.Value = 0;
                 byte[] response = e.Result;
                 string respStr = String.Empty;

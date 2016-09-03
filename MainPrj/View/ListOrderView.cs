@@ -575,15 +575,22 @@ namespace MainPrj.View
             arr[(int)ListOrderColumns.LISTORDER_COLUMN_NAME]              = model.Customer.Name;
             arr[(int)ListOrderColumns.LISTORDER_COLUMN_PHONE]             = model.Customer.ActivePhone;
             arr[(int)ListOrderColumns.LISTORDER_COLUMN_ADDRESS]           = model.Customer.Address;
-            arr[(int)ListOrderColumns.LISTORDER_COLUMN_PRODUCTS]          = model.Products[0].Name;
-            if (model.Products[0].Quantity != 0)
+            //++ BUG0059-SPJ (NguyenPT 20160831) Handle show record without product
+            ProductModel product = new ProductModel();
+            if (model.Products.Count > 0)
             {
-                arr[(int)ListOrderColumns.LISTORDER_COLUMN_PRODUCTS_QUANTITY] = model.Products[0].Quantity.ToString();
+                product = model.Products[0];
+            }
+            arr[(int)ListOrderColumns.LISTORDER_COLUMN_PRODUCTS] = product.Name;
+            if (product.Quantity != 0)
+            {
+                arr[(int)ListOrderColumns.LISTORDER_COLUMN_PRODUCTS_QUANTITY] = product.Quantity.ToString();
             }
             else
             {
                 arr[(int)ListOrderColumns.LISTORDER_COLUMN_PRODUCTS_QUANTITY] = String.Empty;
             }
+            //-- BUG0059-SPJ (NguyenPT 20160831) Handle show record without product
             string promoteStr = string.Empty;
             if (model.Promotes.Count != 0)
             {
@@ -988,15 +995,24 @@ namespace MainPrj.View
                     {
                         if (item.Id.Equals(id))
                         {
-                            OrderView order = new OrderView(item.Customer, true);
-                            order.SetData(item);
-                            order.ShowDialog();
-                            //++ BUG0010-SPJ (NguyenPT 20160818) Show total promote money
-                            UpdateTotal();
-                            //-- BUG0010-SPJ (NguyenPT 20160818) Show total promote money
-                            //LoadListView(DataPure.Instance.ListOrders);
-                            ReloadListView(this.listCurrentData);
-                            return;
+                            //++ BUG0059-SPJ (NguyenPT 20160831) Handle show record without product
+                            if (!item.Order_type.Equals((int)OrderType.ORDERTYPE_THUVO))
+                            {
+                                OrderView order = new OrderView(item.Customer, true);
+                                order.SetData(item);
+                                order.ShowDialog();
+                                //++ BUG0010-SPJ (NguyenPT 20160818) Show total promote money
+                                UpdateTotal();
+                                //-- BUG0010-SPJ (NguyenPT 20160818) Show total promote money
+                                //LoadListView(DataPure.Instance.ListOrders);
+                                ReloadListView(this.listCurrentData);
+                                return;
+                            }
+                            else
+                            {
+                                CommonProcess.ShowInformMessage(Properties.Resources.CanNotUpdateOrder, MessageBoxButtons.OK);
+                            }
+                            //-- BUG0059-SPJ (NguyenPT 20160831) Handle show record without product
                         }
                     }
                 }

@@ -28,6 +28,9 @@ namespace MainPrj.Model
         ORDERTYPE_NORMAL = 1,
         ORDERTYPE_SELLVO,
         ORDERTYPE_THECHAN,
+        //++ BUG0059-SPJ (NguyenPT 20160831) Return cylinder
+        ORDERTYPE_THUVO,
+        //-- BUG0059-SPJ (NguyenPT 20160831) Return cylinder
         ORDERTYPE_NUM
     }
     //-- BUG0056-SPJ (NguyenPT 20160830) Handle order type

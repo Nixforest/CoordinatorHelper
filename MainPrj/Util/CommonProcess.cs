@@ -1330,10 +1330,12 @@ namespace MainPrj.Util
         /// <returns>String after format</returns>
         public static string FormatMoney(double money)
         {
-            if (money < 0.0)
-            {
-                money = 0.0;
-            }
+            //++ BUG0059-SPJ (NguyenPT 20160831) Can show negative money value
+            //if (money < 0.0)
+            //{
+            //    money = 0.0;
+            //}
+            //-- BUG0059-SPJ (NguyenPT 20160831) Can show negative money value
             string retVal = String.Empty;
             NumberFormatInfo nfi = new CultureInfo("vi-VN", false).NumberFormat;
             nfi.CurrencyDecimalDigits = 0;

@@ -202,6 +202,15 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Không thể cập nhật đơn hàng này!.
+        /// </summary>
+        internal static string CanNotUpdateOrder {
+            get {
+                return ResourceManager.GetString("CanNotUpdateOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Gọi đến.
         /// </summary>
         internal static string CardDataStatus1 {
@@ -359,7 +368,7 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bạn đang tạo đơn hàng cho Khách hàng {0}:
+        ///   Looks up a localized string similar to Bạn đang tạo đơn hàng cho Khách hàng {0} - {3}:
         ///{1}
         ///tại {2}.
         ///Bạn chắn chắn không?.
@@ -594,6 +603,15 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Nhập tiền trả lại KH:.
+        /// </summary>
+        internal static string InputCylinderReturn {
+            get {
+                return ResourceManager.GetString("InputCylinderReturn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nhập tiền thế chân:.
         /// </summary>
         internal static string InputTheChanValue {
@@ -743,7 +761,9 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Chưa nhập giá sản phẩm..
+        ///   Looks up a localized string similar to Chưa nhập giá sản phẩm.
+        ///OK: Xác nhận không cần nhập giá.
+        ///Cancel: Quay lại nhập giá..
         /// </summary>
         internal static string NotInputProductPrice {
             get {

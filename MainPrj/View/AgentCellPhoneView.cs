@@ -41,6 +41,9 @@ namespace MainPrj.View
             if (!DataPure.Instance.Agent.Agent_cell_phone.Equals(tbxPhone.Text))
             {
                 tbxPhone.Enabled = false;
+                //++ BUG0060-SPJ (NguyenPT 20160831) Handle disable OK button
+                btnOK.Enabled = false;
+                //-- BUG0060-SPJ (NguyenPT 20160831) Handle disable OK button
                 CommonProcess.UpdateAgentCellPhone(DataPure.Instance.Agent.Id,
                     tbxPhone.Text,
                     updateAgentProgressChanged,
@@ -113,6 +116,9 @@ namespace MainPrj.View
                 }
             }
             tbxPhone.Enabled = true;
+            //++ BUG0060-SPJ (NguyenPT 20160831) Handle enable OK button
+            btnOK.Enabled = true;
+            //-- BUG0060-SPJ (NguyenPT 20160831) Handle enable OK button
         }
         /// <summary>
         /// Update agent progress changed handler.

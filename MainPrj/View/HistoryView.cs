@@ -515,10 +515,14 @@ namespace MainPrj.View
                 {
                     if (callModel.Id.Equals(id))
                     {
-                        DataPure.Instance.CustomerInfo = callModel.Customer;
+                        //++ BUG0065-SPJ (NguyenPT 20160901) Use callMode.Customer instead of DataPure.Instance.CustomerInfo
+                        //DataPure.Instance.CustomerInfo = callModel.Customer;
                         // Check if customer name is empty
-                        if ((DataPure.Instance.CustomerInfo != null)
-                            && (!String.IsNullOrEmpty(DataPure.Instance.CustomerInfo.Name)))
+                        //if ((DataPure.Instance.CustomerInfo != null)
+                        //    && (!String.IsNullOrEmpty(DataPure.Instance.CustomerInfo.Name)))
+                        if ((callModel.Customer != null)
+                            && (!String.IsNullOrEmpty(callModel.Customer.Name)))
+                        //-- BUG0065-SPJ (NguyenPT 20160901) Use callMode.Customer instead of DataPure.Instance.CustomerInfo
                         {
                             RoleType role = DataPure.Instance.GetUserRole();
 
@@ -526,7 +530,10 @@ namespace MainPrj.View
                             {
                                 case RoleType.ROLE_ACCOUNTING_AGENT:
                                 case RoleType.ROLE_ACCOUNTING_ZONE:
-                                    OrderView order = new OrderView(DataPure.Instance.CustomerInfo);
+                                    //++ BUG0065-SPJ (NguyenPT 20160901) Use callMode.Customer instead of DataPure.Instance.CustomerInfo
+                                    //OrderView order = new OrderView(DataPure.Instance.CustomerInfo);
+                                    OrderView order = new OrderView(callModel.Customer);
+                                    //-- BUG0065-SPJ (NguyenPT 20160901) Use callMode.Customer instead of DataPure.Instance.CustomerInfo
                                     order.ShowDialog();
                                     break;
                                 case RoleType.ROLE_DIEU_PHOI:
@@ -537,7 +544,10 @@ namespace MainPrj.View
                                         string note = view.Note;
                                         if (!String.IsNullOrEmpty(note))
                                         {
-                                            SelectAgent(note);
+                                            //++ BUG0065-SPJ (NguyenPT 20160901) Use callMode.Customer instead of DataPure.Instance.CustomerInfo
+                                            //SelectAgent(note);
+                                            SelectAgent(note, callModel.Customer);
+                                            //-- BUG0065-SPJ (NguyenPT 20160901) Use callMode.Customer instead of DataPure.Instance.CustomerInfo
                                         }
                                         else
                                         {
@@ -562,7 +572,10 @@ namespace MainPrj.View
         /// Select agent for create order.
         /// </summary>
         /// <param name="note">Note</param>
-        private void SelectAgent(string note)
+        //++ BUG0065-SPJ (NguyenPT 20160901) Use callMode.Customer instead of DataPure.Instance.CustomerInfo
+        //private void SelectAgent(string note)
+        private void SelectAgent(string note, CustomerModel customerInfo)
+        //-- BUG0065-SPJ (NguyenPT 20160901) Use callMode.Customer instead of DataPure.Instance.CustomerInfo
         {
             List<SelectorModel> listSelector = new List<SelectorModel>();
             foreach (SelectorModel item in DataPure.Instance.GetListAgents())
@@ -579,7 +592,10 @@ namespace MainPrj.View
             // Set header text
             selectorView.SetHeaderText(SelectorColumns.SELECTOR_COLUMN_ADDRESS, string.Empty);
             // Set default selection
-            selectorView.SetSelection(DataPure.Instance.CustomerInfo.Agent_id);
+            //++ BUG0065-SPJ (NguyenPT 20160901) Use callMode.Customer instead of DataPure.Instance.CustomerInfo
+            //selectorView.SetSelection(DataPure.Instance.CustomerInfo.Agent_id);
+            selectorView.SetSelection(customerInfo.Agent_id);
+            //-- BUG0065-SPJ (NguyenPT 20160901) Use callMode.Customer instead of DataPure.Instance.CustomerInfo
             // Show dialog
             selectorView.ShowDialog();
             string selectorId = selectorView.SelectedId;
@@ -587,11 +603,17 @@ namespace MainPrj.View
             {
                 DialogResult result = CommonProcess.ShowInformMessage(
                     String.Format(Properties.Resources.CreatingOrder,
-                        DataPure.Instance.CustomerInfo.Name, note, DataPure.Instance.GetAgentNameById(selectorId)),
+                    //++ BUG0065-SPJ (NguyenPT 20160901) Use callMode.Customer instead of DataPure.Instance.CustomerInfo
+                        //DataPure.Instance.CustomerInfo.Name, note, DataPure.Instance.GetAgentNameById(selectorId),),
+                        customerInfo.Name, note, DataPure.Instance.GetAgentNameById(selectorId), customerInfo.ActivePhone),
+                    //-- BUG0065-SPJ (NguyenPT 20160901) Use callMode.Customer instead of DataPure.Instance.CustomerInfo
                     MessageBoxButtons.OKCancel);
                 if (result.Equals(DialogResult.OK))
                 {
-                    CommonProcess.RequestCreateOrderCoordinator(selectorId, DataPure.Instance.CustomerInfo.Id, note,
+                    //++ BUG0065-SPJ (NguyenPT 20160901) Use callMode.Customer instead of DataPure.Instance.CustomerInfo
+                    //CommonProcess.RequestCreateOrderCoordinator(selectorId, DataPure.Instance.CustomerInfo.Id, note,
+                    CommonProcess.RequestCreateOrderCoordinator(selectorId, customerInfo.Id, note,
+                    //++ BUG0065-SPJ (NguyenPT 20160901) Use callMode.Customer instead of DataPure.Instance.CustomerInfo
                         createOrderProgressChanged, createOrderCompleted);
                 }
             }
@@ -602,7 +624,10 @@ namespace MainPrj.View
                     Properties.Resources.YouMustSelectAnAgent, MessageBoxButtons.RetryCancel);
                 if (result.Equals(DialogResult.Retry))
                 {
-                    SelectAgent(note);
+                    //++ BUG0065-SPJ (NguyenPT 20160901) Use callMode.Customer instead of DataPure.Instance.CustomerInfo
+                    //SelectAgent(note);
+                    SelectAgent(note, customerInfo);
+                    //++ BUG0065-SPJ (NguyenPT 20160901) Use callMode.Customer instead of DataPure.Instance.CustomerInfo
                 }
             }
         }

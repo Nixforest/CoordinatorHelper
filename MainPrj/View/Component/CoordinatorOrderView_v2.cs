@@ -41,7 +41,10 @@ namespace MainPrj.View.Component
             }
             if (nUDQuantityB6.Value != 0)
             {
-                b6 = String.Format("{0} bình 6kg", nUDQuantityB12.Value);
+                //++ BUG0064-SPJ (NguyenPT 20160831) Get 6kg value
+                //b6 = String.Format("{0} bình 6kg", nUDQuantityB12.Value);
+                b6 = String.Format("{0} bình 6kg", nUDQuantityB6.Value);
+                //-- BUG0064-SPJ (NguyenPT 20160831) Get 6kg value
             }
             if (!String.IsNullOrEmpty(b50))
             {

@@ -254,6 +254,11 @@ namespace MainPrj.View
                     case OrderType.ORDERTYPE_THECHAN:
                         rbOrderTypeTheChan.Checked = true;
                         break;
+                    //++ BUG0059-SPJ (NguyenPT 20160831) Return cylinder
+                    case OrderType.ORDERTYPE_THUVO:
+                        rbReturnCylinder.Checked = true;
+                        break;
+                    //-- BUG0059-SPJ (NguyenPT 20160831) Return cylinder
                     default:
                         break;
                 }
@@ -752,7 +757,21 @@ namespace MainPrj.View
                 }
                 model.Customer = new CustomerModel(CustomerInfo);
                 model.Products.AddRange(products);
-                foreach (ProductModel item in products)
+                //++ BUG0059-SPJ (NguyenPT 20160831) Return cylinder
+                if (model.Products[0].IsCylinder())
+                {
+                    CylinderModel cylinder = new CylinderModel();
+                    cylinder.Id = model.Products[0].Id;
+                    cylinder.Name = model.Products[0].Name;
+                    cylinder.Materials_no = model.Products[0].Materials_no;
+                    cylinder.Quantity = (int)model.Products[0].Quantity;
+                    cylinder.TypeId = model.Products[0].TypeId;
+                    model.Cylinders.Insert(0, cylinder);
+                    model.Products.RemoveAt(0);
+                }
+                //foreach (ProductModel item in products)
+                foreach (ProductModel item in model.Products)
+                //-- BUG0059-SPJ (NguyenPT 20160831) Return cylinder
                 {
                     model.Cylinders.Add(new CylinderModel());
                 }
@@ -838,8 +857,14 @@ namespace MainPrj.View
             }
             if (total == 0)
             {
-                CommonProcess.ShowErrorMessage(Properties.Resources.NotInputProductPrice);
-                return false;
+                //++ BUG0059-SPJ (NguyenPT 20160831) Return cylinder
+                //CommonProcess.ShowErrorMessage(Properties.Resources.NotInputProductPrice);
+                DialogResult result = CommonProcess.ShowInformMessage(Properties.Resources.NotInputProductPrice, MessageBoxButtons.OKCancel);
+                if (result.Equals(DialogResult.Cancel))
+                {
+                    return false;
+                }
+                //-- BUG0059-SPJ (NguyenPT 20160831) Return cylinder
             }
             return retVal;
         }
@@ -859,24 +884,21 @@ namespace MainPrj.View
                     totalPromote += Properties.Settings.Default.PromoteMoney * item.Quantity;
                 }
             }
-            //foreach (PromoteModel item in promotes)
-            //{
-            //    totalPromote -= Properties.Settings.Default.PromoteMoney * item.Quantity;
-            //}
             if (promotes.Count != 0)
             {
                 totalPromote = 0.0;
             }
-            //if (promotes.Count != 0)    // Customer take promote
-            //{
-            //    totalPromote = 0.0;
-            //}
-            //else                        // Customer don't take promote
-            //{
-            //    totalPromote = Properties.Settings.Default.PromoteMoney;
-            //}
+            //++ BUG0059-SPJ (NguyenPT 20160831) Return cylinder
             //totalPay = total - totalPromote;
-            totalPay = total - totalPromote + otherMoney;
+            if (this._orderType.Equals(OrderType.ORDERTYPE_THUVO))
+            {
+                totalPay = total - totalPromote - otherMoney;
+            }
+            else
+            {
+                totalPay = total - totalPromote + otherMoney;
+            }
+            //-- BUG0059-SPJ (NguyenPT 20160831) Return cylinder
 
             // Update UI
             lblTotal.Text    = CommonProcess.FormatMoney(total);
@@ -1168,5 +1190,28 @@ namespace MainPrj.View
                 UpdateMoney();
             }
         }
+
+        //++ BUG0059-SPJ (NguyenPT 20160831) Return cylinder
+        private void rbReturnCylinder_Click(object sender, EventArgs e)
+        {
+            if (rbReturnCylinder.Checked)
+            {
+                MoneyInputView view = new MoneyInputView();
+                view.Title = Properties.Resources.InputCylinderReturn;
+                if (this.otherMoney == 0.0)
+                {
+                    view.Money = 300000.0;
+                }
+                else
+                {
+                    view.Money = this.otherMoney;
+                }
+                view.ShowDialog();
+                this.otherMoney = view.Money;
+                this._orderType = OrderType.ORDERTYPE_THUVO;
+                UpdateMoney();
+            }
+        }
+        //++ BUG0059-SPJ (NguyenPT 20160831) Return cylinder
     }
 }

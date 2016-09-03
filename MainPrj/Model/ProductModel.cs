@@ -146,6 +146,23 @@ namespace MainPrj.Model
             }
             return false;
         }
+        //++ BUG0059-SPJ (NguyenPT 20160831) Return cylinder
+        /// <summary>
+        /// Check if material is cylinder.
+        /// </summary>
+        /// <returns>True if material is cylinder, false otherwise</returns>
+        public bool IsCylinder()
+        {
+            if (TypeId.Equals("1")
+                || TypeId.Equals("12")
+                || TypeId.Equals("10")
+                || TypeId.Equals("14"))
+            {
+                return true;
+            }
+            return false;
+        }
+        //-- BUG0059-SPJ (NguyenPT 20160831) Return cylinder
         /// <summary>
         /// Convert to string.
         /// </summary>

@@ -57,6 +57,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.cbxDeliver = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.rbReturnCylinder = new System.Windows.Forms.RadioButton();
             this.rbOrderTypeTheChan = new System.Windows.Forms.RadioButton();
             this.rbOrderTypeSellvo = new System.Windows.Forms.RadioButton();
             this.rbOrderTypeNormal = new System.Windows.Forms.RadioButton();
@@ -358,6 +359,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.rbReturnCylinder);
             this.groupBox1.Controls.Add(this.rbOrderTypeTheChan);
             this.groupBox1.Controls.Add(this.rbOrderTypeSellvo);
             this.groupBox1.Controls.Add(this.rbOrderTypeNormal);
@@ -367,10 +369,22 @@
             this.groupBox1.TabIndex = 13;
             this.groupBox1.TabStop = false;
             // 
+            // rbReturnCylinder
+            // 
+            this.rbReturnCylinder.AutoSize = true;
+            this.rbReturnCylinder.Location = new System.Drawing.Point(6, 105);
+            this.rbReturnCylinder.Name = "rbReturnCylinder";
+            this.rbReturnCylinder.Size = new System.Drawing.Size(81, 28);
+            this.rbReturnCylinder.TabIndex = 1;
+            this.rbReturnCylinder.TabStop = true;
+            this.rbReturnCylinder.Text = "Trả vỏ";
+            this.rbReturnCylinder.UseVisualStyleBackColor = true;
+            this.rbReturnCylinder.Click += new System.EventHandler(this.rbReturnCylinder_Click);
+            // 
             // rbOrderTypeTheChan
             // 
             this.rbOrderTypeTheChan.AutoSize = true;
-            this.rbOrderTypeTheChan.Location = new System.Drawing.Point(6, 97);
+            this.rbOrderTypeTheChan.Location = new System.Drawing.Point(6, 75);
             this.rbOrderTypeTheChan.Name = "rbOrderTypeTheChan";
             this.rbOrderTypeTheChan.Size = new System.Drawing.Size(109, 28);
             this.rbOrderTypeTheChan.TabIndex = 1;
@@ -382,7 +396,7 @@
             // rbOrderTypeSellvo
             // 
             this.rbOrderTypeSellvo.AutoSize = true;
-            this.rbOrderTypeSellvo.Location = new System.Drawing.Point(7, 63);
+            this.rbOrderTypeSellvo.Location = new System.Drawing.Point(6, 45);
             this.rbOrderTypeSellvo.Name = "rbOrderTypeSellvo";
             this.rbOrderTypeSellvo.Size = new System.Drawing.Size(93, 28);
             this.rbOrderTypeSellvo.TabIndex = 0;
@@ -394,7 +408,7 @@
             // 
             this.rbOrderTypeNormal.AutoSize = true;
             this.rbOrderTypeNormal.Checked = true;
-            this.rbOrderTypeNormal.Location = new System.Drawing.Point(7, 29);
+            this.rbOrderTypeNormal.Location = new System.Drawing.Point(6, 15);
             this.rbOrderTypeNormal.Name = "rbOrderTypeNormal";
             this.rbOrderTypeNormal.Size = new System.Drawing.Size(95, 28);
             this.rbOrderTypeNormal.TabIndex = 0;
@@ -594,5 +608,6 @@
         private System.Windows.Forms.RadioButton rbOrderTypeSellvo;
         private System.Windows.Forms.RadioButton rbOrderTypeNormal;
         private System.Windows.Forms.RadioButton rbOrderTypeTheChan;
+        private System.Windows.Forms.RadioButton rbReturnCylinder;
     }
 }
