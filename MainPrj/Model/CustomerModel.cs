@@ -43,6 +43,19 @@ namespace MainPrj.Model
         private string activePhone;
         [DataMember(Name = "agent_id", IsRequired = false)]
         private string agent_id;
+        //++ BUG0069-SPJ (NguyenPT 20160905) Choose delivery agent
+        [DataMember(Name = "customer_delivery_agent_id", IsRequired = false)]
+        private string customer_delivery_agent_id;
+
+        /// <summary>
+        /// Id of agent delivery.
+        /// </summary>
+        public string Customer_delivery_agent_id
+        {
+            get { return customer_delivery_agent_id; }
+            set { customer_delivery_agent_id = value; }
+        }
+        //-- BUG0069-SPJ (NguyenPT 20160905) Choose delivery agent
         /// <summary>
         /// Agent id.
         /// </summary>
@@ -68,7 +81,10 @@ namespace MainPrj.Model
 
         public string Address
         {
-            get { return customer_address; }
+            //++ BUG0067-SPJ (NguyenPT 20160904) Replace html character
+            //get { return customer_address; }
+            get { return customer_address.Replace("&gt;", ">").Replace("&lt;", "<"); }
+            //-- BUG0067-SPJ (NguyenPT 20160904) Replace html character
             set { customer_address = value; }
         }
 
@@ -128,7 +144,20 @@ namespace MainPrj.Model
 
         public string ActivePhone
         {
-            get { return activePhone; }
+            get
+            {
+                //++ BUG0002-SPJ (NguyenPT 20160904) If active phone is not exist, take phonelist
+                if (string.IsNullOrEmpty(activePhone))
+                {
+                    string[] phoneList = PhoneList.Split(Properties.Settings.Default.PhoneListToken.ToCharArray());
+                    if ((phoneList != null) && (phoneList.Length > 0))
+                    {
+                        return phoneList[0];
+                    }
+                }
+                //-- BUG0002-SPJ (NguyenPT 20160904) If active phone is not exist, take phonelist
+                return activePhone;
+            }
             set { activePhone = value; }
         }
 
@@ -163,20 +192,24 @@ namespace MainPrj.Model
         /// <param name="copy">Copy object</param>
         public CustomerModel(CustomerModel copy)
         {
-            this.customer_id      = copy.customer_id      ;
-            this.customer_name    = copy.customer_name    ;
-            this.customer_address = copy.customer_address ;
-            this.customer_phone   = copy.customer_phone   ;
-            this.customer_agent   = copy.customer_agent   ;
-            this.customer_type    = copy.customer_type;
-            this.contact          = copy.contact          ;
-            this.contact_note     = copy.contact_note     ;
-            this.sale_name        = copy.sale_name        ;
-            this.sale_phone       = copy.sale_phone       ;
-            this.sale_type        = copy.sale_type        ;
-            this.agencyNearest    = copy.agencyNearest;
-            this.activePhone      = copy.activePhone;
-            //this.note           = copy;
+            this.customer_id                = copy.customer_id      ;
+            this.customer_name              = copy.customer_name    ;
+            this.customer_address           = copy.customer_address ;
+            this.customer_phone             = copy.customer_phone   ;
+            this.customer_agent             = copy.customer_agent   ;
+            this.customer_type              = copy.customer_type;
+            this.contact                    = copy.contact          ;
+            this.contact_note               = copy.contact_note     ;
+            this.sale_name                  = copy.sale_name        ;
+            this.sale_phone                 = copy.sale_phone       ;
+            this.sale_type                  = copy.sale_type        ;
+            this.agencyNearest              = copy.agencyNearest;
+            this.activePhone                = copy.activePhone;
+            //this.note                     = copy;
+            //++ BUG0069-SPJ (NguyenPT 20160905) Choose delivery agent
+            this.agent_id                   = copy.agent_id;
+            this.customer_delivery_agent_id = copy.customer_delivery_agent_id;
+            //-- BUG0069-SPJ (NguyenPT 20160905) Choose delivery agent
         }
         /// <summary>
         /// Convert to string.

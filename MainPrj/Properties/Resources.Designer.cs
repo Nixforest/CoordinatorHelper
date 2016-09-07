@@ -482,6 +482,16 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap edit {
+            get {
+                object obj = ResourceManager.GetObject("edit", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Có lỗi xảy ra khi mã hóa dữ liệu trả về..
         /// </summary>
         internal static string EncodingError {
@@ -524,6 +534,16 @@ namespace MainPrj.Properties {
         internal static string ErrorLengthOfHostName {
             get {
                 return ResourceManager.GetString("ErrorLengthOfHostName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap exit {
+            get {
+                object obj = ResourceManager.GetObject("exit", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

@@ -231,7 +231,17 @@ namespace MainPrj
                         // Set header text
                         selectorView.SetHeaderText(SelectorColumns.SELECTOR_COLUMN_ADDRESS, string.Empty);
                         // Set default selection
-                        selectorView.SetSelection(DataPure.Instance.CustomerInfo.Agent_id);
+                        //++ BUG0069-SPJ (NguyenPT 20160905) Choose delivery agent
+                        //selectorView.SetSelection(DataPure.Instance.CustomerInfo.Agent_id);
+                        if (!string.IsNullOrEmpty(DataPure.Instance.CustomerInfo.Customer_delivery_agent_id))
+                        {
+                            selectorView.SetSelection(DataPure.Instance.CustomerInfo.Customer_delivery_agent_id);
+                        }
+                        else
+                        {
+                            selectorView.SetSelection(DataPure.Instance.CustomerInfo.Agent_id);
+                        }
+                        //-- BUG0069-SPJ (NguyenPT 20160905) Choose delivery agent
                         // Show dialog
                         selectorView.ShowDialog();
                         string selectorId = selectorView.SelectedId;
@@ -239,7 +249,10 @@ namespace MainPrj
                         {
                             string note = string.Empty;
                             //note = coordinatorOrderView.GetData();
-                            note = coordinatorOrderView_v2.GetData();
+                            //++ BUG0063-SPJ (NguyenPT 20160831) Add phone number
+                            //note = coordinatorOrderView_v2.GetData()
+                            note = coordinatorOrderView_v2.GetData() + " - ĐT: " + DataPure.Instance.CustomerInfo.ActivePhone;
+                            //-- BUG0063-SPJ (NguyenPT 20160831) Add phone number
                             if (!String.IsNullOrEmpty(note))
                             {
                                 DialogResult result = CommonProcess.ShowInformMessage(
@@ -343,7 +356,10 @@ namespace MainPrj
             //++ BUG0011-SPJ (NguyenPT 20160822) Add list data to List Order screen
             view.ListTodayData.AddRange(DataPure.Instance.ListOrders);
             //-- BUG0011-SPJ (NguyenPT 20160822) Add list data to List Order screen
-            view.Show();
+            //++ BUG0066-SPJ (NguyenPT 20160904) Increate List Order view performance
+            //view.Show();
+            view.ShowDialog();
+            //-- BUG0066-SPJ (NguyenPT 20160904) Increate List Order view performance
         }
         /// <summary>
         /// Handle when click History button.

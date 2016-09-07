@@ -454,6 +454,12 @@ namespace MainPrj.Util
         {
             List<OrderModel> result = new List<OrderModel>();
             string date = dateValue.ToString(Properties.Settings.Default.CallIdFormat).Substring(0, 8);
+            //++ BUG0066-SPJ (NguyenPT 20160904) Increate List Order view performance
+            //if (DataPure.Instance.ListOrderHistory.ContainsKey(date))
+            //{
+            //    return DataPure.Instance.ListOrderHistory[date];
+            //}
+            //-- BUG0066-SPJ (NguyenPT 20160904) Increate List Order view performance
 
             string filepath = String.Format("{0}\\{1}_{2}", Properties.Settings.Default.SettingFilePath,
                 date, Properties.Settings.Default.OrdersFileName);
@@ -495,6 +501,9 @@ namespace MainPrj.Util
                         }
                     }
                 }
+                //++ BUG0066-SPJ (NguyenPT 20160904) Increate List Order view performance
+                //DataPure.Instance.ListOrderHistory.Add(date, result);
+                //-- BUG0066-SPJ (NguyenPT 20160904) Increate List Order view performance
             }
             catch (DirectoryNotFoundException)
             {
@@ -2020,6 +2029,16 @@ namespace MainPrj.Util
                         updateModel.Employee_maintain_id          = model.DeliverId;
                         updateModel.Monitor_market_development_id = model.CCSId;
                         //-- BUG0058-SPJ (NguyenPT 20160830) Update Deliver and CCS
+                        //++ BUG0068-SPJ (NguyenPT 20160905) Change promote money
+                        if (model.IsManualChangePromote)
+                        {
+                            updateModel.Amount_discount = model.PromoteMoney;
+                        }
+                        else
+                        {
+                            updateModel.Amount_discount = 0.0;
+                        }
+                        //-- BUG0068-SPJ (NguyenPT 20160905) Change promote money
                         updateModel.Order_detail    = new List<OrderDetailModel>();
                         foreach (ProductModel product in model.Products)
                         {
@@ -2147,6 +2166,16 @@ namespace MainPrj.Util
                         createModel.Order_type       = model.Order_type;
                         createModel.Type_amount      = model.Type_amount;
                         //-- BUG0056-SPJ (NguyenPT 20160830) Handle order type
+                        //++ BUG0068-SPJ (NguyenPT 20160905) Change promote money
+                        if (model.IsManualChangePromote)
+                        {
+                            createModel.Amount_discount = model.PromoteMoney;
+                        }
+                        else
+                        {
+                            createModel.Amount_discount = 0.0;
+                        }
+                        //-- BUG0068-SPJ (NguyenPT 20160905) Change promote money
                         if (DataPure.Instance.Agent != null)
                         {
                             createModel.Agent_id = DataPure.Instance.Agent.Id;

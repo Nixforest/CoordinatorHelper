@@ -24,6 +24,9 @@ namespace MainPrj.Util
         private List<OrderModel> listOrders                              = null;
         private Dictionary<string, MaterialBitmap> listRecentProductsImg = null;
         private Dictionary<string, MaterialBitmap> listRecentPromotesImg = null;
+        //++ BUG0066-SPJ (NguyenPT 20160904) Increate List Order view performance
+        private Dictionary<string, List<OrderModel>> listOrderHistory    = null;
+        //-- BUG0066-SPJ (NguyenPT 20160904) Increate List Order view performance
         #region SIP handling
         private PacketDevice netDevice = null;
         /// <summary>
@@ -33,8 +36,18 @@ namespace MainPrj.Util
         {
             get { return netDevice; }
             set { netDevice = value; }
-        } 
+        }
         #endregion
+        //++ BUG0066-SPJ (NguyenPT 20160904) Increate List Order view performance
+        /// <summary>
+        /// List order histories.
+        /// </summary>
+        public Dictionary<string, List<OrderModel>> ListOrderHistory
+        {
+            get { return listOrderHistory; }
+            set { listOrderHistory = value; }
+        }
+        //-- BUG0066-SPJ (NguyenPT 20160904) Increate List Order view performance
         /// <summary>
         /// List of recent promtes (BITMAP.)
         /// </summary>
@@ -421,6 +434,9 @@ namespace MainPrj.Util
             this.tempData              = new TempDataModel();
             this.listRecentProductsImg = new Dictionary<string, MaterialBitmap>();
             this.listRecentPromotesImg = new Dictionary<string, MaterialBitmap>();
+            //++ BUG0066-SPJ (NguyenPT 20160904) Increate List Order view performance
+            this.listOrderHistory      = new Dictionary<string, List<OrderModel>>();
+            //-- BUG0066-SPJ (NguyenPT 20160904) Increate List Order view performance
         }
         /// <summary>
         /// Get instance

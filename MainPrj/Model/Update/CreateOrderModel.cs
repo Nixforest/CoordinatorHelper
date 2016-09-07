@@ -37,6 +37,10 @@ namespace MainPrj.Model.Update
         [DataMember(Name = "type_amount", IsRequired = false)]
         protected double type_amount;
         //-- BUG0056-SPJ (NguyenPT 20160828) Handle sell group of cylinders
+        //++ BUG0068-SPJ (NguyenPT 20160905) Change promote money
+        [DataMember(Name = "amount_discount", IsRequired = false)]
+        private double amount_discount;
+        //-- BUG0068-SPJ (NguyenPT 20160905) Change promote money
         //++ BUG0011-SPJ (NguyenPT 20160822) Add Created date property
         [DataMember(Name = "created_date", IsRequired = false)]
         private string created_date;
@@ -50,6 +54,14 @@ namespace MainPrj.Model.Update
             set { created_date = value; }
         }
         //-- BUG0011-SPJ (NguyenPT 20160822) Add Created date property
+
+        //++ BUG0068-SPJ (NguyenPT 20160905) Change promote money
+        public double Amount_discount
+        {
+            get { return amount_discount; }
+            set { amount_discount = value; }
+        }
+        //-- BUG0068-SPJ (NguyenPT 20160905) Change promote money
 
         //++ BUG0056-SPJ (NguyenPT 20160828) Handle sell group of cylinders
         /// <summary>

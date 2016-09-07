@@ -93,6 +93,8 @@
             this.tbxBrand = new System.Windows.Forms.TextBox();
             this.cbxTabColorChanged = new System.Windows.Forms.CheckBox();
             this.btnAccess = new System.Windows.Forms.Button();
+            this.btnInputExcel = new System.Windows.Forms.Button();
+            this.progressBar = new System.Windows.Forms.ProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.nUDMainPort)).BeginInit();
             this.groupBoxServer.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -692,11 +694,31 @@
             this.btnAccess.UseVisualStyleBackColor = true;
             this.btnAccess.Click += new System.EventHandler(this.btnAccess_Click);
             // 
+            // btnInputExcel
+            // 
+            this.btnInputExcel.Location = new System.Drawing.Point(596, 600);
+            this.btnInputExcel.Name = "btnInputExcel";
+            this.btnInputExcel.Size = new System.Drawing.Size(60, 23);
+            this.btnInputExcel.TabIndex = 9;
+            this.btnInputExcel.Text = "Nhập excel";
+            this.btnInputExcel.UseVisualStyleBackColor = true;
+            this.btnInputExcel.Visible = false;
+            this.btnInputExcel.Click += new System.EventHandler(this.btnInputExcel_Click);
+            // 
+            // progressBar
+            // 
+            this.progressBar.Location = new System.Drawing.Point(385, 600);
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(205, 23);
+            this.progressBar.TabIndex = 10;
+            // 
             // SettingView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(906, 635);
+            this.Controls.Add(this.progressBar);
+            this.Controls.Add(this.btnInputExcel);
             this.Controls.Add(this.btnAccess);
             this.Controls.Add(this.btnSearchResultBackground);
             this.Controls.Add(this.btnSearchResultText);
@@ -826,5 +848,7 @@
         private System.Windows.Forms.TextBox tbxBrand;
         private System.Windows.Forms.CheckBox cbxTabColorChanged;
         private System.Windows.Forms.Button btnAccess;
+        private System.Windows.Forms.Button btnInputExcel;
+        private System.Windows.Forms.ProgressBar progressBar;
     }
 }

@@ -55,6 +55,10 @@ namespace MainPrj.Model
         [DataMember(Name = "type_amount", IsRequired = false)]
         protected double type_amount;
         //-- BUG0056-SPJ (NguyenPT 20160828) Handle sell group of cylinders
+        //++ BUG0068-SPJ (NguyenPT 20160905) Change promote money
+        [DataMember(Name = "isManualChangePromote", IsRequired = false)]
+        protected bool isManualChangePromote;
+        //-- BUG0068-SPJ (NguyenPT 20160905) Change promote money
 
         /// <summary>
         /// Constructor.
@@ -83,6 +87,9 @@ namespace MainPrj.Model
             order_type  = (int)OrderType.ORDERTYPE_NORMAL;
             type_amount = 0.0;
             //-- BUG0056-SPJ (NguyenPT 20160828) Handle sell group of cylinders
+            //++ BUG0068-SPJ (NguyenPT 20160905) Change promote money
+            isManualChangePromote = false;
+            //-- BUG0068-SPJ (NguyenPT 20160905) Change promote money
         }
         //public OrderModel(OrderModel copy)
         //{
@@ -92,6 +99,16 @@ namespace MainPrj.Model
         //    this.ccsId = copy.ccsId;
         //    this.products = copy.products;
         //}
+        //++ BUG0068-SPJ (NguyenPT 20160905) Change promote money
+        /// <summary>
+        /// Flag is manual change promote money.
+        /// </summary>
+        public bool IsManualChangePromote
+        {
+            get { return isManualChangePromote; }
+            set { isManualChangePromote = value; }
+        }
+        //-- BUG0068-SPJ (NguyenPT 20160905) Change promote money
         //++ BUG0056-SPJ (NguyenPT 20160828) Handle sell group of cylinders
         /// <summary>
         /// Order type:

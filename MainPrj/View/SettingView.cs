@@ -1,4 +1,5 @@
-﻿using MainPrj.Util;
+﻿using MainPrj.Model;
+using MainPrj.Util;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -7,6 +8,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Management;
+using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -258,6 +260,122 @@ namespace MainPrj.View
             nUDMainPort.Enabled    = true;
             chbTestingMode.Visible = true;
             groupBoxServer.Visible = true;
+        }
+
+        private void btnInputExcel_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog fileDialog = new OpenFileDialog())
+            {
+                if (fileDialog.ShowDialog().Equals(DialogResult.OK))
+                {
+                    try
+                    {
+                        string sheet      = "";
+                        dataTable = ExcelHandle.GetDataTableFromExcel(fileDialog.FileName, ref sheet);
+                        HandleRequestCreateCustomer();
+                    }
+                    catch (Exception ex)
+                    {
+                        CommonProcess.ShowErrorMessage(Properties.Resources.ErrorCause + ex.Message);
+                    }
+                }
+            }
+        }
+        private void HandleRequestCreateCustomer()
+        {
+            string phone = string.Empty;
+            string address = string.Empty;
+            string agent = string.Empty;
+            string defaultVal = "0";
+            string defaultName = "Không rõ";
+            string tpHCM = "1";
+            string HocMon = "22";
+            for (int i = index; i < dataTable.Rows.Count; i++)
+            {
+                if (dataTable.Rows[i].ItemArray[6].ToString().Equals("DL009"))
+                {
+                    index = i;
+                    DataRow item = dataTable.Rows[index++];
+                    {
+                        phone = item.ItemArray[0].ToString();
+                        address = item.ItemArray[2].ToString();
+                        address = address.Replace(", ", " ");
+                        address = address.Replace(",", " ");
+                        agent = item.ItemArray[6].ToString();
+                        if (agent.Equals("DL009") && !string.IsNullOrEmpty(phone))
+                        {
+                            CommonProcess.RequestCreateNewCustomer(defaultName,
+                                phone,
+                                tpHCM,
+                                HocMon,
+                                defaultVal,
+                                defaultVal,
+                                address,
+                                createCustomerProgressChanged,
+                                createCustomerCompleted);
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+        private DataTable dataTable = null;
+        private int index = 0;
+
+        private void createCustomerCompleted(object sender, System.Net.UploadValuesCompletedEventArgs e)
+        {
+            if (e.Cancelled)
+            {
+
+            }
+            else if (e.Error != null)
+            {
+
+            }
+            else
+            {
+                byte[] response = e.Result;
+                string respStr = String.Empty;
+                respStr = System.Text.Encoding.UTF8.GetString(response);
+                //// Response string is not null
+                if (!String.IsNullOrEmpty(respStr))
+                { }
+                //{
+                //    DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(CustomerResponseModel));
+                //    byte[] encodingBytes = null;
+                //    try
+                //    {
+                //        // Encoding response data
+                //        encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);
+                //    }
+                //    catch (System.Text.EncoderFallbackException)
+                //    {
+                //        CommonProcess.ShowErrorMessage(Properties.Resources.EncodingError);
+                //    }
+                //    if (encodingBytes != null)
+                //    {
+                //        MemoryStream msU = new MemoryStream(encodingBytes);
+                //        CustomerResponseModel baseResp = (CustomerResponseModel)js.ReadObject(msU);
+                //        if (baseResp != null)
+                //        {
+                //            if (baseResp.Status.Equals("1"))
+                //            {
+                //            }
+                //        }
+                //    }
+                //}
+
+                HandleRequestCreateCustomer();
+            }
+        }
+
+        private void createCustomerProgressChanged(object sender, System.Net.UploadProgressChangedEventArgs e)
+        {
+            if ((e.ProgressPercentage <= 50)
+                && (e.ProgressPercentage >= 0))
+            {
+                progressBar.Value = e.ProgressPercentage * 2;
+            }
         }
     }
 }

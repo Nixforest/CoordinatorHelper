@@ -41,6 +41,12 @@ namespace MainPrj.View
         private double otherMoney          = 0.0;
         private OrderType _orderType       = OrderType.ORDERTYPE_NORMAL;
         //-- BUG0056-SPJ (NguyenPT 20160830) Handle order type
+        //++ BUG0068-SPJ (NguyenPT 20160905) Change promote money
+        /// <summary>
+        /// Flag is manual change promote money.
+        /// </summary>
+        private bool _isManualChangePromoteMoney = false;
+        //-- BUG0068-SPJ (NguyenPT 20160905) Change promote money
         //private OrderModel _bkData       = null;
         /// <summary>
         /// Is in update mode.
@@ -208,6 +214,9 @@ namespace MainPrj.View
                 AddPromoteSelected(DataPure.Instance.ListRecentPromotesImg[item]);
             }
             this.Text = Properties.Resources.CreateOrderTitle;
+            //++ BUG0068-SPJ (NguyenPT 20160905) Change promote money
+            this._isManualChangePromoteMoney = false;
+            //-- BUG0068-SPJ (NguyenPT 20160905) Change promote money
             // Update data
             if (_isUpdateMode && (_data != null))
             {
@@ -263,8 +272,15 @@ namespace MainPrj.View
                         break;
                 }
                 //-- BUG0056-SPJ (NguyenPT 20160830) Handle order type
-                UpdateMoney();
+                //++ BUG0068-SPJ (NguyenPT 20160905) Change promote money
+                //UpdateMoney();
+                this._isManualChangePromoteMoney = _data.IsManualChangePromote;
+                UpdateMoney(this._isManualChangePromoteMoney);
+                //-- BUG0068-SPJ (NguyenPT 20160905) Change promote money
             }
+            //++ BUG0068-SPJ (NguyenPT 20160904) Can change promote money
+            totalPromote = Properties.Settings.Default.PromoteMoney;
+            //-- BUG0068-SPJ (NguyenPT 20160904) Can change promote money
         }
 
         /// <summary>
@@ -498,6 +514,12 @@ namespace MainPrj.View
                     {
                         HandleAddPromote();
                     }
+                    //++ BUG0068-SPJ (NguyenPT 20160904) Can change promote money
+                    else if (tbxPromoteMoney.Focused)
+                    {
+                        btnCreatePrint.Focus();
+                    }
+                    //-- BUG0068-SPJ (NguyenPT 20160904) Can change promote money
                     break;
                 case Keys.Delete:                       // Hit delete
                     if (listViewProduct.Focused)
@@ -776,15 +798,18 @@ namespace MainPrj.View
                     model.Cylinders.Add(new CylinderModel());
                 }
                 model.Promotes.AddRange(promotes);
-                model.TotalPay     = totalPay;
-                model.TotalMoney   = total;
-                model.PromoteMoney = totalPromote;
-                model.Order_type   = (int)this._orderType;
-                model.Type_amount  = this.otherMoney;
-                model.Created_date = dtpDate.Value.ToString(Properties.Resources.DefaultDateTimeFormat);
-                //model.Id         = System.DateTime.Now.ToString(Properties.Settings.Default.CallIdFormat);
-                model.Id           = dtpDate.Value.ToString(Properties.Settings.Default.CallIdFormat);
-                string ret         = CommonProcess.CreateOrderToServer(model);
+                model.TotalPay              = totalPay;
+                model.TotalMoney            = total;
+                model.PromoteMoney          = totalPromote;
+                //++ BUG0068-SPJ (NguyenPT 20160905) Change promote money
+                model.IsManualChangePromote = this._isManualChangePromoteMoney;
+                //-- BUG0068-SPJ (NguyenPT 20160905) Change promote money
+                model.Order_type            = (int)this._orderType;
+                model.Type_amount           = this.otherMoney;
+                model.Created_date          = dtpDate.Value.ToString(Properties.Resources.DefaultDateTimeFormat);
+                //model.Id                  = System.DateTime.Now.ToString(Properties.Settings.Default.CallIdFormat);
+                model.Id                    = dtpDate.Value.ToString(Properties.Settings.Default.CallIdFormat);
+                string ret                  = CommonProcess.CreateOrderToServer(model);
                 if (CommonProcess.HasError)
                 {
                     CommonProcess.HasError = false;
@@ -808,6 +833,14 @@ namespace MainPrj.View
                 {
                     DataPure.Instance.ListOrders.Add(model);
                 }
+                //else
+                //{
+                //    if (!DataPure.Instance.ListOrderHistory.ContainsKey(model.Created_date))
+                //    {
+                //        DataPure.Instance.ListOrderHistory.Add(model.Created_date, new List<OrderModel>());
+                //    }
+                //    DataPure.Instance.ListOrderHistory[model.Created_date].Add(model);
+                //}
                 // Write order to file
                 CommonProcess.WriteOrderByDate(dtpDate.Value, model);
                 
@@ -871,22 +904,44 @@ namespace MainPrj.View
         /// <summary>
         /// Update money field.
         /// </summary>
-        private void UpdateMoney()
+        //++ BUG0068-SPJ (NguyenPT 20160904) Can change promote money
+        //private void UpdateMoney()
+        private void UpdateMoney(bool isManualChangePromote = false)
+        //-- BUG0068-SPJ (NguyenPT 20160904) Can change promote money
         {
-            total        = 0.0;
-            totalPromote = 0.0;
+            total = 0.0;
+            //++ BUG0068-SPJ (NguyenPT 20160904) Can change promote money
+            //totalPromote = 0.0;
+            this._isManualChangePromoteMoney = isManualChangePromote;
+            if (!isManualChangePromote)
+            {
+                totalPromote = 0.0;
+            }
+            //-- BUG0068-SPJ (NguyenPT 20160904) Can change promote money
             totalPay     = 0.0;
             foreach (ProductModel item in products)
             {
                 total += item.Money;
                 if (item.IsGas())
                 {
-                    totalPromote += Properties.Settings.Default.PromoteMoney * item.Quantity;
+                    //++ BUG0068-SPJ (NguyenPT 20160904) Can change promote money
+                    //totalPromote += Properties.Settings.Default.PromoteMoney * item.Quantity;
+                    if (!isManualChangePromote)
+                    {
+                        totalPromote += Properties.Settings.Default.PromoteMoney * item.Quantity;
+                    }
+                    //-- BUG0068-SPJ (NguyenPT 20160904) Can change promote money
                 }
             }
             if (promotes.Count != 0)
             {
-                totalPromote = 0.0;
+                //++ BUG0068-SPJ (NguyenPT 20160904) Can change promote money
+                //totalPromote = 0.0;
+                if (!isManualChangePromote)
+                {
+                    totalPromote = 0.0;
+                }
+                //-- BUG0068-SPJ (NguyenPT 20160904) Can change promote money
             }
             //++ BUG0059-SPJ (NguyenPT 20160831) Return cylinder
             //totalPay = total - totalPromote;
@@ -1213,5 +1268,39 @@ namespace MainPrj.View
             }
         }
         //++ BUG0059-SPJ (NguyenPT 20160831) Return cylinder
+
+        //++ BUG0068-SPJ (NguyenPT 20160904) Can change promote money
+        private void lblPromote_DoubleClick(object sender, EventArgs e)
+        {
+            tbxPromoteMoney.Visible = true;
+            tbxPromoteMoney.Text    = totalPromote.ToString();
+            lblPromote.Visible      = false;
+            tbxPromoteMoney.Focus();
+        }
+
+        private void tbxPromoteMoney_Leave(object sender, EventArgs e)
+        {
+            double money = 0.0;
+            if (Double.TryParse(tbxPromoteMoney.Text, out money))
+            {
+                totalPromote = money;
+                tbxPromoteMoney.Visible = false;
+                lblPromote.Visible = true;
+                UpdateMoney(true);
+            }
+            else
+            {
+                CommonProcess.ShowErrorMessage("Hãy nhập số tiền hợp lệ");
+            }
+        }
+
+        private void btnChangePromote_Click(object sender, EventArgs e)
+        {
+            tbxPromoteMoney.Visible = true;
+            tbxPromoteMoney.Text    = totalPromote.ToString();
+            lblPromote.Visible      = false;
+            tbxPromoteMoney.Focus();
+        }
+        //-- BUG0068-SPJ (NguyenPT 20160904) Can change promote money
     }
 }

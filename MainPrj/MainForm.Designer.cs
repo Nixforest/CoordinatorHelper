@@ -135,7 +135,7 @@ namespace MainPrj
             // 
             this.toolStripMenuItemLogin.Image = global::MainPrj.Properties.Resources.done_small;
             this.toolStripMenuItemLogin.Name = "toolStripMenuItemLogin";
-            this.toolStripMenuItemLogin.Size = new System.Drawing.Size(132, 22);
+            this.toolStripMenuItemLogin.Size = new System.Drawing.Size(152, 22);
             this.toolStripMenuItemLogin.Text = "Đăng nhập";
             this.toolStripMenuItemLogin.Click += new System.EventHandler(this.toolStripMenuItemLogin_Click);
             // 
@@ -144,19 +144,20 @@ namespace MainPrj
             this.toolStripMenuItemLogout.Enabled = false;
             this.toolStripMenuItemLogout.Image = global::MainPrj.Properties.Resources.cancel1;
             this.toolStripMenuItemLogout.Name = "toolStripMenuItemLogout";
-            this.toolStripMenuItemLogout.Size = new System.Drawing.Size(132, 22);
+            this.toolStripMenuItemLogout.Size = new System.Drawing.Size(152, 22);
             this.toolStripMenuItemLogout.Text = "Đăng xuất";
             this.toolStripMenuItemLogout.Click += new System.EventHandler(this.toolStripMenuItemLogout_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(129, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(149, 6);
             // 
             // toolStripMenuItemExit
             // 
+            this.toolStripMenuItemExit.Image = global::MainPrj.Properties.Resources.exit;
             this.toolStripMenuItemExit.Name = "toolStripMenuItemExit";
-            this.toolStripMenuItemExit.Size = new System.Drawing.Size(132, 22);
+            this.toolStripMenuItemExit.Size = new System.Drawing.Size(152, 22);
             this.toolStripMenuItemExit.Text = "Thoát";
             this.toolStripMenuItemExit.Click += new System.EventHandler(this.toolStripMenuItemExit_Click);
             // 
@@ -289,6 +290,7 @@ namespace MainPrj
             customerModel1.Agent_id = null;
             customerModel1.Contact = "";
             customerModel1.Contact_note = "";
+            customerModel1.Customer_delivery_agent_id = null;
             customerModel1.CustomerType = "";
             customerModel1.Id = "";
             customerModel1.Name = "";
@@ -324,6 +326,7 @@ namespace MainPrj
             customerModel2.Agent_id = null;
             customerModel2.Contact = "";
             customerModel2.Contact_note = "";
+            customerModel2.Customer_delivery_agent_id = null;
             customerModel2.CustomerType = "";
             customerModel2.Id = "";
             customerModel2.Name = "";
@@ -358,6 +361,7 @@ namespace MainPrj
             customerModel3.Agent_id = null;
             customerModel3.Contact = "";
             customerModel3.Contact_note = "";
+            customerModel3.Customer_delivery_agent_id = null;
             customerModel3.CustomerType = "";
             customerModel3.Id = "";
             customerModel3.Name = "";
@@ -392,6 +396,7 @@ namespace MainPrj
             customerModel4.Agent_id = null;
             customerModel4.Contact = "";
             customerModel4.Contact_note = "";
+            customerModel4.Customer_delivery_agent_id = null;
             customerModel4.CustomerType = "";
             customerModel4.Id = "";
             customerModel4.Name = "";
@@ -426,6 +431,7 @@ namespace MainPrj
             customerModel5.Agent_id = null;
             customerModel5.Contact = "";
             customerModel5.Contact_note = "";
+            customerModel5.Customer_delivery_agent_id = null;
             customerModel5.CustomerType = "";
             customerModel5.Id = "";
             customerModel5.Name = "";
@@ -460,6 +466,7 @@ namespace MainPrj
             customerModel6.Agent_id = null;
             customerModel6.Contact = "";
             customerModel6.Contact_note = "";
+            customerModel6.Customer_delivery_agent_id = null;
             customerModel6.CustomerType = "";
             customerModel6.Id = "";
             customerModel6.Name = "";
@@ -494,6 +501,7 @@ namespace MainPrj
             customerModel7.Agent_id = null;
             customerModel7.Contact = "";
             customerModel7.Contact_note = "";
+            customerModel7.Customer_delivery_agent_id = null;
             customerModel7.CustomerType = "";
             customerModel7.Id = "";
             customerModel7.Name = "";
@@ -528,6 +536,7 @@ namespace MainPrj
             customerModel8.Agent_id = null;
             customerModel8.Contact = "";
             customerModel8.Contact_note = "";
+            customerModel8.Customer_delivery_agent_id = null;
             customerModel8.CustomerType = "";
             customerModel8.Id = "";
             customerModel8.Name = "";

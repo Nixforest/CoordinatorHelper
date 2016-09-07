@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OrderView));
             this.label1 = new System.Windows.Forms.Label();
             this.lblCreator = new System.Windows.Forms.Label();
@@ -73,6 +74,9 @@
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.tbxPromoteMoney = new System.Windows.Forms.TextBox();
+            this.btnChangePromote = new System.Windows.Forms.Button();
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -194,6 +198,7 @@
             this.lblPromote.Size = new System.Drawing.Size(29, 31);
             this.lblPromote.TabIndex = 0;
             this.lblPromote.Text = "0";
+            this.lblPromote.DoubleClick += new System.EventHandler(this.lblPromote_DoubleClick);
             // 
             // lblTotalPay
             // 
@@ -363,7 +368,7 @@
             this.groupBox1.Controls.Add(this.rbOrderTypeTheChan);
             this.groupBox1.Controls.Add(this.rbOrderTypeSellvo);
             this.groupBox1.Controls.Add(this.rbOrderTypeNormal);
-            this.groupBox1.Location = new System.Drawing.Point(846, 240);
+            this.groupBox1.Location = new System.Drawing.Point(842, 240);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(118, 153);
             this.groupBox1.TabIndex = 13;
@@ -509,11 +514,35 @@
             this.columnHeader6.Text = "Tiền";
             this.columnHeader6.Width = 140;
             // 
+            // tbxPromoteMoney
+            // 
+            this.tbxPromoteMoney.ForeColor = System.Drawing.Color.Red;
+            this.tbxPromoteMoney.Location = new System.Drawing.Point(607, 398);
+            this.tbxPromoteMoney.Name = "tbxPromoteMoney";
+            this.tbxPromoteMoney.Size = new System.Drawing.Size(100, 29);
+            this.tbxPromoteMoney.TabIndex = 14;
+            this.tbxPromoteMoney.Visible = false;
+            this.tbxPromoteMoney.Leave += new System.EventHandler(this.tbxPromoteMoney_Leave);
+            // 
+            // btnChangePromote
+            // 
+            this.btnChangePromote.BackgroundImage = global::MainPrj.Properties.Resources.edit;
+            this.btnChangePromote.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnChangePromote.Location = new System.Drawing.Point(932, 396);
+            this.btnChangePromote.Name = "btnChangePromote";
+            this.btnChangePromote.Size = new System.Drawing.Size(29, 29);
+            this.btnChangePromote.TabIndex = 15;
+            this.toolTip.SetToolTip(this.btnChangePromote, "Click button này để thay đổi tiền chiết khấu.\r\nChỉ thay đổi tiền chiết khấu khi c" +
+        "ần thiết và khi đã làm xong các bước khác.");
+            this.btnChangePromote.UseVisualStyleBackColor = true;
+            this.btnChangePromote.Click += new System.EventHandler(this.btnChangePromote_Click);
+            // 
             // OrderView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(967, 716);
+            this.Controls.Add(this.btnChangePromote);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.tbxCustomer);
             this.Controls.Add(this.dtpDate);
@@ -544,6 +573,7 @@
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label1);
+            this.Controls.Add(this.tbxPromoteMoney);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
@@ -609,5 +639,8 @@
         private System.Windows.Forms.RadioButton rbOrderTypeNormal;
         private System.Windows.Forms.RadioButton rbOrderTypeTheChan;
         private System.Windows.Forms.RadioButton rbReturnCylinder;
+        private System.Windows.Forms.TextBox tbxPromoteMoney;
+        private System.Windows.Forms.Button btnChangePromote;
+        private System.Windows.Forms.ToolTip toolTip;
     }
 }
