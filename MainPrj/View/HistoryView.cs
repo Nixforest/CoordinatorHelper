@@ -524,6 +524,7 @@ namespace MainPrj.View
                             && (!String.IsNullOrEmpty(callModel.Customer.Name)))
                         //-- BUG0065-SPJ (NguyenPT 20160901) Use callMode.Customer instead of DataPure.Instance.CustomerInfo
                         {
+                            CustomerModel customerInfo = new CustomerModel(callModel.Customer);
                             RoleType role = DataPure.Instance.GetUserRole();
 
                             switch (role)
@@ -542,11 +543,13 @@ namespace MainPrj.View
                                     if (result.Equals(DialogResult.OK))
                                     {
                                         string note = view.Note;
+                                        //string note = view.Note +" - ĐT: " + customerInfo.ActivePhone;
                                         if (!String.IsNullOrEmpty(note))
                                         {
                                             //++ BUG0065-SPJ (NguyenPT 20160901) Use callMode.Customer instead of DataPure.Instance.CustomerInfo
                                             //SelectAgent(note);
-                                            SelectAgent(note, callModel.Customer);
+                                            //SelectAgent(note, callModel.Customer);
+                                            SelectAgent(note + " - ĐT: " + customerInfo.ActivePhone, customerInfo);
                                             //-- BUG0065-SPJ (NguyenPT 20160901) Use callMode.Customer instead of DataPure.Instance.CustomerInfo
                                         }
                                         else

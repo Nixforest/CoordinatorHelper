@@ -72,7 +72,9 @@ namespace MainPrj.View
             //}
             if (_data != null)
             {
-                _data.Status           = OrderStatus.ORDERSTATUS_CANCEL;
+                //++ BUG0072-SPJ (NguyenPT 20160909) Handle Cancel order is not success
+                //_data.Status = OrderStatus.ORDERSTATUS_CANCEL;
+                //-- BUG0072-SPJ (NguyenPT 20160909) Handle Cancel order is not success
                 _data.IsUpdateToServer = false;
                 _data.Note             = tbxReason.Text.Trim();
 
@@ -80,6 +82,9 @@ namespace MainPrj.View
                 string retId = CommonProcess.UpdateOrderToServer(_data);
                 if (!String.IsNullOrEmpty(retId))
                 {
+                    //++ BUG0072-SPJ (NguyenPT 20160909) Handle Cancel order is not success
+                    _data.Status = OrderStatus.ORDERSTATUS_CANCEL;
+                    //-- BUG0072-SPJ (NguyenPT 20160909) Handle Cancel order is not success
                     _data.IsUpdateToServer = true;
                     CommonProcess.UpdateOrderToFile(_data);
                 }

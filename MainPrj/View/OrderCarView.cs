@@ -18,7 +18,8 @@ namespace MainPrj.View
 
         private void OrderCarView_Load(object sender, EventArgs e)
         {
-            webBrowser.Navigate("http://spj.daukhimiennam.com/admin/gasOrders/create");
+            //webBrowser.Navigate("http://spj.daukhimiennam.com/admin/gasOrders/create");
+            webBrowser.Navigate("https://docs.google.com/spreadsheets/d/1LdQLXMPeUGBXnKKegBwupGi25wbria9Xr8qul0N--Ow/edit?usp=sharing");
         }
     }
 }

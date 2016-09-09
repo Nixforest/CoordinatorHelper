@@ -196,9 +196,18 @@ namespace MainPrj
         /// <summary>
         /// Handle when click Create order button.
         /// </summary>
-        private void HandleClickCreateOrderButton()
+        //++ BUG0069-SPJ (NguyenPT 20160908) Fix bug select wrong customer information
+        //private void HandleClickCreateOrderButton()
+        private void HandleClickCreateOrderButton(CustomerModel customerInfo = null)
         {
+        //-- BUG0069-SPJ (NguyenPT 20160908) Fix bug select wrong customer information
             DataPure.Instance.CustomerInfo = this.listChannelControl[DataPure.Instance.CurrentChannel].Data;
+            //++ BUG0069-SPJ (NguyenPT 20160908) Fix bug select wrong customer information
+            if (customerInfo == null)
+            {
+                customerInfo = new CustomerModel(this.listChannelControl[DataPure.Instance.CurrentChannel].Data);
+            }
+            //-- BUG0069-SPJ (NguyenPT 20160908) Fix bug select wrong customer information
             // Check if customer name is empty
             if ((DataPure.Instance.CustomerInfo != null)
                 && (!String.IsNullOrEmpty(DataPure.Instance.CustomerInfo.Name)))
@@ -216,6 +225,13 @@ namespace MainPrj
                         order.ShowDialog();
                         break;
                     case RoleType.ROLE_DIEU_PHOI:
+                        //++ BUG0070-SPJ (NguyenPT 20160908) Reset data
+                        // Get data from order view
+                        string note = string.Empty;
+                        //note = coordinatorOrderView_v2.GetData() + " - ĐT: " + customerInfo.ActivePhone;
+                        note = coordinatorOrderView_v2.GetData();
+                        //-- BUG0070-SPJ (NguyenPT 20160908) Reset data
+
                         List<SelectorModel> listSelector = new List<SelectorModel>();
                         foreach (SelectorModel item in DataPure.Instance.GetListAgents())
                         {
@@ -233,13 +249,13 @@ namespace MainPrj
                         // Set default selection
                         //++ BUG0069-SPJ (NguyenPT 20160905) Choose delivery agent
                         //selectorView.SetSelection(DataPure.Instance.CustomerInfo.Agent_id);
-                        if (!string.IsNullOrEmpty(DataPure.Instance.CustomerInfo.Customer_delivery_agent_id))
+                        if (!string.IsNullOrEmpty(customerInfo.Customer_delivery_agent_id))
                         {
-                            selectorView.SetSelection(DataPure.Instance.CustomerInfo.Customer_delivery_agent_id);
+                            selectorView.SetSelection(customerInfo.Customer_delivery_agent_id);
                         }
                         else
                         {
-                            selectorView.SetSelection(DataPure.Instance.CustomerInfo.Agent_id);
+                            selectorView.SetSelection(customerInfo.Agent_id);
                         }
                         //-- BUG0069-SPJ (NguyenPT 20160905) Choose delivery agent
                         // Show dialog
@@ -247,25 +263,33 @@ namespace MainPrj
                         string selectorId = selectorView.SelectedId;
                         if (!String.IsNullOrEmpty(selectorId))
                         {
-                            string note = string.Empty;
+                            //++ BUG0070-SPJ (NguyenPT 20160908) Reset data
+                            //string note = string.Empty;
                             //note = coordinatorOrderView.GetData();
                             //++ BUG0063-SPJ (NguyenPT 20160831) Add phone number
                             //note = coordinatorOrderView_v2.GetData()
-                            note = coordinatorOrderView_v2.GetData() + " - ĐT: " + DataPure.Instance.CustomerInfo.ActivePhone;
+                            //note = coordinatorOrderView_v2.GetData() + " - ĐT: " + customerInfo.ActivePhone;
+                            //++ BUG0070-SPJ (NguyenPT 20160908) Reset data
                             //-- BUG0063-SPJ (NguyenPT 20160831) Add phone number
                             if (!String.IsNullOrEmpty(note))
                             {
+                                note += " - ĐT: " + customerInfo.ActivePhone;
                                 DialogResult result = CommonProcess.ShowInformMessage(
                                     String.Format(Properties.Resources.CreatingOrder,
                                     //++ BUG0063-SPJ (NguyenPT 20160831) Add phone number
-                                        DataPure.Instance.CustomerInfo.Name, note, DataPure.Instance.GetAgentNameById(selectorId),
-                                        DataPure.Instance.CustomerInfo.ActivePhone),
+                                        //DataPure.Instance.CustomerInfo.Name, note, DataPure.Instance.GetAgentNameById(selectorId),
+                                        //DataPure.Instance.CustomerInfo.ActivePhone),
+                                        customerInfo.Name, note, DataPure.Instance.GetAgentNameById(selectorId),
+                                        customerInfo.ActivePhone),
                                     //-- BUG0063-SPJ (NguyenPT 20160831) Add phone number
                                     MessageBoxButtons.OKCancel);
                                 if (result.Equals(DialogResult.OK))
                                 {
                                     CommonProcess.RequestCreateOrderCoordinator(selectorId,
-                                        DataPure.Instance.CustomerInfo.Id, note,
+                                        //++ BUG0069-SPJ (NguyenPT 20160905) Choose delivery agent
+                                        //DataPure.Instance.CustomerInfo.Id, note,
+                                        customerInfo.Id, note,
+                                        //-- BUG0069-SPJ (NguyenPT 20160905) Choose delivery agent
                                         createOrderProgressChanged, createOrderCompleted);
                                 }
                             }
@@ -281,7 +305,10 @@ namespace MainPrj
                                 Properties.Resources.YouMustSelectAnAgent, MessageBoxButtons.RetryCancel);
                             if (result.Equals(DialogResult.Retry))
                             {
-                                HandleClickCreateOrderButton();
+                                //++ BUG0069-SPJ (NguyenPT 20160905) Choose delivery agent
+                                //HandleClickCreateOrderButton();
+                                HandleClickCreateOrderButton(customerInfo);
+                                //-- BUG0069-SPJ (NguyenPT 20160905) Choose delivery agent
                             }
                         }
                         break;
@@ -836,6 +863,9 @@ namespace MainPrj
         {
             DataPure.Instance.CurrentChannel = this.mainTabControl.SelectedIndex;
             DataPure.Instance.CustomerInfo = this.listChannelControl[this.mainTabControl.SelectedIndex].Data;
+            //++ BUG0070-SPJ (NguyenPT 20160908) Reset data
+            this.coordinatorOrderView_v2.Reset();
+            //-- BUG0070-SPJ (NguyenPT 20160908) Reset data
         }
         /// <summary>
         /// Handle when click button search.
@@ -1126,7 +1156,11 @@ namespace MainPrj
         /// <param name="e">EventArgs</param>
         private void toolStripMenuItemGuideline_Click(object sender, EventArgs e)
         {
-            CommonProcess.ShowInformMessageProcessing();
+            //CommonProcess.ShowInformMessageProcessing();
+
+            OrderCarView order = new OrderCarView();
+            order.Text = "Hướng dẫn sử dụng";
+            order.Show();
         }
         /// <summary>
         /// Handle when click Update data menu.

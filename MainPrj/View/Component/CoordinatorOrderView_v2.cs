@@ -99,6 +99,19 @@ namespace MainPrj.View.Component
 
             return retVal;
         }
+        //++ BUG0070-SPJ (NguyenPT 20160908) Reset data
+        /// <summary>
+        /// Reset data.
+        /// </summary>
+        internal void Reset()
+        {
+            tbxNote.Text = string.Empty;
+            nUDQuantityB50.Value = 0;
+            nUDQuantityB45.Value = 0;
+            nUDQuantityB12.Value = 0;
+            nUDQuantityB6.Value = 0;
+        }
+        //-- BUG0070-SPJ (NguyenPT 20160908) Reset data
 
         private void label4_Click(object sender, EventArgs e)
         {

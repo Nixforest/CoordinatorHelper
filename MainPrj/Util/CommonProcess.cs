@@ -1732,8 +1732,12 @@ namespace MainPrj.Util
                 {
                     // Post keyword to server
                     string value = string.Empty;
-                    value = String.Format("{{\"token\":\"{0}\"}}",
-                        Properties.Settings.Default.UserToken);
+                    //++ BUG0071-SPJ (NguyenPT 20160908) Add agent_id into message request server
+                    //value = String.Format("{{\"token\":\"{0}\"}}",
+                    //    Properties.Settings.Default.UserToken);
+                    value = String.Format("{{\"token\":\"{0}\",\"agent_id\":\"{1}\"}}",
+                        Properties.Settings.Default.UserToken, CommonProcess.ReadAgentIdFromSetting());
+                    //-- BUG0071-SPJ (NguyenPT 20160908) Add agent_id into message request server
                     client.UploadValuesAsync(
                         new Uri(Properties.Settings.Default.ServerURL + Properties.Settings.Default.URLGetConfig),
                         new System.Collections.Specialized.NameValueCollection()
@@ -1896,30 +1900,30 @@ namespace MainPrj.Util
                     HasError = true;
                 }
 
-                if (!String.IsNullOrEmpty(respStr))
-                {
-                    DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(OrderResponseModel));
-                    byte[] encodingBytes = null;
-                    try
-                    {
-                        // Encoding response data
-                        encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);
-                    }
-                    catch (System.Text.EncoderFallbackException)
-                    {
-                        ShowErrorMessage(Properties.Resources.EncodingError);
-                        HasError = true;
-                    }
-                    if (encodingBytes != null)
-                    {
-                        MemoryStream msU = new MemoryStream(encodingBytes);
-                        OrderResponseModel baseResp = (OrderResponseModel)js.ReadObject(msU);
-                        if (baseResp != null && baseResp.Status.Equals("1"))
-                        {
-                            retVal = baseResp.Id;
-                        }
-                    }
-                }
+                //if (!String.IsNullOrEmpty(respStr))
+                //{
+                //    DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(OrderResponseModel));
+                //    byte[] encodingBytes = null;
+                //    try
+                //    {
+                //        // Encoding response data
+                //        encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);
+                //    }
+                //    catch (System.Text.EncoderFallbackException)
+                //    {
+                //        ShowErrorMessage(Properties.Resources.EncodingError);
+                //        HasError = true;
+                //    }
+                //    if (encodingBytes != null)
+                //    {
+                //        MemoryStream msU = new MemoryStream(encodingBytes);
+                //        OrderResponseModel baseResp = (OrderResponseModel)js.ReadObject(msU);
+                //        if (baseResp != null && baseResp.Status.Equals("1"))
+                //        {
+                //            retVal = baseResp.Id;
+                //        }
+                //    }
+                //}
             }
             return retVal;
         }
