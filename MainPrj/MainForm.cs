@@ -73,9 +73,24 @@ namespace MainPrj
                 this.mainTabControl.DrawItem += mainTabControl_DrawItem;
             }
             // Start thread
+            //++ BUG0074-SPJ (NguyenPT 20160913) Handle turn on/off SIP thread
+            string packetSIP = CommonProcess.ReadPacketSIPFromSetting();
+            bool isStartSIP = false;
+            //-- BUG0074-SPJ (NguyenPT 20160913) Handle turn on/off SIP thread
             StartUdpThread();
             //StartListeningThread();
-            //StartSIPThread();
+            //++ BUG0074-SPJ (NguyenPT 20160913) Handle turn on/off SIP thread
+            if (!string.IsNullOrEmpty(packetSIP))
+            {
+                if (bool.TryParse(packetSIP, out isStartSIP))
+                {
+                    if (isStartSIP)
+                    {
+                        StartSIPThread();
+                    }
+                }
+            }
+            //-- BUG0074-SPJ (NguyenPT 20160913) Handle turn on/off SIP thread
         }
         /// <summary>
         /// Update data to channel tab.
@@ -157,6 +172,9 @@ namespace MainPrj
                     break;
             }
 
+            //++ BUG0070-SPJ (NguyenPT 20160908) Reset data
+            this.coordinatorOrderView_v2.Reset();
+            //-- BUG0070-SPJ (NguyenPT 20160908) Reset data
             customer.ActivePhone = phone;
             CallModel call = new CallModel(System.DateTime.Now, channelIdx, customer, phone, status);
             //++ BUG0043-SPJ (NguyenPT 20160822) Fix bug lost all history when program down
@@ -752,6 +770,9 @@ namespace MainPrj
         /// <param name="e">EventArgs</param>
         private void toolStripMenuItemSetting_Click(object sender, EventArgs e)
         {
+            //++ BUG0074-SPJ (NguyenPT 20160913) Handle turn on/off SIP thread
+            string packetSIP = CommonProcess.ReadPacketSIPFromSetting();
+            //-- BUG0074-SPJ (NguyenPT 20160913) Handle turn on/off SIP thread
             SettingView setting = new SettingView();
             DialogResult result = setting.ShowDialog();
             //if (result.Equals(DialogResult.OK))
@@ -759,6 +780,24 @@ namespace MainPrj
                 // For test
                 TurnOnOffTestingMode(Properties.Settings.Default.TestingMode);
             }
+            //++ BUG0074-SPJ (NguyenPT 20160913) Handle turn on/off SIP thread
+            string packetSIPAfter = CommonProcess.ReadPacketSIPFromSetting();
+            if (!packetSIP.Equals(packetSIPAfter))
+            {
+                bool isStartSIP = false;
+                if (bool.TryParse(packetSIPAfter, out isStartSIP))
+                {
+                    if (isStartSIP)
+                    {
+                        StartSIPThread();
+                    }
+                    else
+                    {
+                        StopSIPThread();
+                    }
+                }
+            }
+            //-- BUG0074-SPJ (NguyenPT 20160913) Handle turn on/off SIP thread
         }
         /// <summary>
         /// Handle when loading form
@@ -864,7 +903,7 @@ namespace MainPrj
             DataPure.Instance.CurrentChannel = this.mainTabControl.SelectedIndex;
             DataPure.Instance.CustomerInfo = this.listChannelControl[this.mainTabControl.SelectedIndex].Data;
             //++ BUG0070-SPJ (NguyenPT 20160908) Reset data
-            this.coordinatorOrderView_v2.Reset();
+            //this.coordinatorOrderView_v2.Reset();
             //-- BUG0070-SPJ (NguyenPT 20160908) Reset data
         }
         /// <summary>
@@ -1983,6 +2022,12 @@ namespace MainPrj
                                 UpdateStatus(String.Format(Properties.Resources.IncommingCall, model.Phone));
                                 statusStr = Properties.Resources.CardDataStatus1;
                                 color = Color.DarkGreen;
+                                //++ BUG0073-SPJ (NguyenPT 20160909) Update tab if user is accounting
+                                if (DataPure.Instance.IsAccountingAgentRole())
+                                {
+                                    needUpdate = true;
+                                }
+                                //-- BUG0073-SPJ (NguyenPT 20160909) Update tab if user is accounting
                                 break;
                             case (int)CardDataStatus.CARDDATA_CALLING:
                                 //statusStr = Properties.Resources.CardDataStatus2;
@@ -2093,6 +2138,16 @@ namespace MainPrj
             }
         }
         /// <summary>
+        /// Stop SIP thread
+        /// </summary>
+        private void StopSIPThread()
+        {
+            if ((sipThread != null) && (sipThread.IsAlive))
+            {
+                sipThread.Abort();
+            }
+        }
+        /// <summary>
         /// Collect packet data handler.
         /// </summary>
         private void CollectingPacket()
@@ -2176,7 +2231,7 @@ namespace MainPrj
             UdpDatagram udp = ip.Udp;
             ushort srcPort = udp.SourcePort;
             ushort destPort = udp.DestinationPort;
-            string format = "1,{0},1,1,{1},End";
+            string format = "txIP,{0},1,1,{1},End";
             if (srcPort == 5060 || destPort == 5060)
             {
                 MemoryStream ms = packet.Ethernet.IpV4.Udp.Payload.ToMemoryStream();

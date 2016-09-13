@@ -41,6 +41,10 @@ namespace MainPrj.Util
         //++ BUG0008-SPJ (NguyenPT 20160830) Order history
         public static string API_ORDER_HISTORY = "/api/default/windowGetCustomerHistory";
         //-- BUG0008-SPJ (NguyenPT 20160830) Order history
+        //++ BUG0074-SPJ (NguyenPT 20160913) Handle turn on/off SIP thread
+        public static string INI_KEY_PACKET_UDP = "PacketUDP";
+        public static string INI_KEY_PACKET_SIP = "PacketSIP";
+        //-- BUG0074-SPJ (NguyenPT 20160913) Handle turn on/off SIP thread
         #endregion
         #region Static variables
         public static List<string> AGENT_LIST_ZIBO = new List<string>
@@ -871,6 +875,44 @@ namespace MainPrj.Util
             return ReadSetting(INI_KEY_BRAND, INI_SECTION_GENERAL);
         }
         //-- BUG0055-SPJ (NguyenPT 20160826) Save brand information in setting.ini
+        //++ BUG0074-SPJ (NguyenPT 20160913) Handle turn on/off SIP thread
+        /// <summary>
+        /// Write Packet UDP flag.
+        /// </summary>
+        /// <param name="packetUDP">Packet UDP</param>
+        public static void WritePacketUDPToSetting(bool packetUDP)
+        {
+            string filepath = String.Format("{0}\\setting.ini", Properties.Settings.Default.SettingFilePath);
+            var iniFile = new INIHandle(filepath);
+            iniFile.Write(INI_KEY_PACKET_UDP, packetUDP.ToString(), INI_SECTION_GENERAL);
+        }
+        /// <summary>
+        /// Read packet UDP flag.
+        /// </summary>
+        /// <returns>Packet UDP flag</returns>
+        public static string ReadPacketUDPFromSetting()
+        {
+            return ReadSetting(INI_KEY_PACKET_UDP, INI_SECTION_GENERAL);
+        }
+        /// <summary>
+        /// Write Packet SIP flag.
+        /// </summary>
+        /// <param name="packetSIP">Packet SIP</param>
+        public static void WritePacketSIPToSetting(bool packetSIP)
+        {
+            string filepath = String.Format("{0}\\setting.ini", Properties.Settings.Default.SettingFilePath);
+            var iniFile = new INIHandle(filepath);
+            iniFile.Write(INI_KEY_PACKET_SIP, packetSIP.ToString(), INI_SECTION_GENERAL);
+        }
+        /// <summary>
+        /// Read packet SIP flag.
+        /// </summary>
+        /// <returns>Packet SIP flag</returns>
+        public static string ReadPacketSIPFromSetting()
+        {
+            return ReadSetting(INI_KEY_PACKET_SIP, INI_SECTION_GENERAL);
+        }
+        //-- BUG0074-SPJ (NguyenPT 20160913) Handle turn on/off SIP thread
         #endregion
 
         #region Common methods

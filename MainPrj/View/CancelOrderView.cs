@@ -73,8 +73,9 @@ namespace MainPrj.View
             if (_data != null)
             {
                 //++ BUG0072-SPJ (NguyenPT 20160909) Handle Cancel order is not success
-                //_data.Status = OrderStatus.ORDERSTATUS_CANCEL;
+                OrderStatus status = _data.Status;
                 //-- BUG0072-SPJ (NguyenPT 20160909) Handle Cancel order is not success
+                _data.Status = OrderStatus.ORDERSTATUS_CANCEL;
                 _data.IsUpdateToServer = false;
                 _data.Note             = tbxReason.Text.Trim();
 
@@ -82,12 +83,15 @@ namespace MainPrj.View
                 string retId = CommonProcess.UpdateOrderToServer(_data);
                 if (!String.IsNullOrEmpty(retId))
                 {
-                    //++ BUG0072-SPJ (NguyenPT 20160909) Handle Cancel order is not success
-                    _data.Status = OrderStatus.ORDERSTATUS_CANCEL;
-                    //-- BUG0072-SPJ (NguyenPT 20160909) Handle Cancel order is not success
                     _data.IsUpdateToServer = true;
                     CommonProcess.UpdateOrderToFile(_data);
                 }
+                //++ BUG0072-SPJ (NguyenPT 20160909) Handle Cancel order is not success
+                else
+                {
+                    _data.Status = status;
+                }
+                //-- BUG0072-SPJ (NguyenPT 20160909) Handle Cancel order is not success
             }
             this.Close();
             //-- BUG0011-SPJ (NguyenPT 20160822) Add Created date property

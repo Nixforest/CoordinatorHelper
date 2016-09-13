@@ -62,6 +62,7 @@ namespace MainPrj.View
             {
                 CommonProcess.WriteBrandToSetting(this.tbxBrand.Text);
             }
+            CommonProcess.WritePacketSIPToSetting(chbSIP.Checked);
             //-- BUG0055-SPJ (NguyenPT 20160826) Save brand information in setting.ini
             
             Properties.Settings.Default.IsTabColorChange                = this.cbxTabColorChanged.Checked;
@@ -126,6 +127,13 @@ namespace MainPrj.View
             }
             //-- BUG0055-SPJ (NguyenPT 20160826) Save brand information in setting.ini
             this.cbxTabColorChanged.Checked            = Properties.Settings.Default.IsTabColorChange;
+            string packetSIP = CommonProcess.ReadPacketSIPFromSetting();
+            bool isStartSIP = false;
+            if (!string.IsNullOrEmpty(packetSIP))
+            {
+                bool.TryParse(packetSIP, out isStartSIP);
+            }
+            chbSIP.Checked = isStartSIP;
         }
         /// <summary>
         /// Handle when click on button Open file.

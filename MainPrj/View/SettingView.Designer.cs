@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingView));
             this.label1 = new System.Windows.Forms.Label();
             this.nUDMainPort = new System.Windows.Forms.NumericUpDown();
@@ -95,11 +96,16 @@
             this.btnAccess = new System.Windows.Forms.Button();
             this.btnInputExcel = new System.Windows.Forms.Button();
             this.progressBar = new System.Windows.Forms.ProgressBar();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.chbUDP = new System.Windows.Forms.CheckBox();
+            this.chbSIP = new System.Windows.Forms.CheckBox();
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.nUDMainPort)).BeginInit();
             this.groupBoxServer.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nUDTimeAutoCloseMsgBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDPhoneCutLen)).BeginInit();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -712,11 +718,47 @@
             this.progressBar.Size = new System.Drawing.Size(205, 23);
             this.progressBar.TabIndex = 10;
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.chbSIP);
+            this.groupBox1.Controls.Add(this.chbUDP);
+            this.groupBox1.Location = new System.Drawing.Point(12, 438);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(367, 48);
+            this.groupBox1.TabIndex = 11;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Các loại gói tin";
+            // 
+            // chbUDP
+            // 
+            this.chbUDP.AutoSize = true;
+            this.chbUDP.Checked = true;
+            this.chbUDP.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chbUDP.Location = new System.Drawing.Point(7, 20);
+            this.chbUDP.Name = "chbUDP";
+            this.chbUDP.Size = new System.Drawing.Size(49, 17);
+            this.chbUDP.TabIndex = 0;
+            this.chbUDP.Text = "UDP";
+            this.toolTip.SetToolTip(this.chbUDP, "Chạy thread đọc xử lý gói tin UDP nhận từ card ghi âm.");
+            this.chbUDP.UseVisualStyleBackColor = true;
+            // 
+            // chbSIP
+            // 
+            this.chbSIP.AutoSize = true;
+            this.chbSIP.Location = new System.Drawing.Point(138, 19);
+            this.chbSIP.Name = "chbSIP";
+            this.chbSIP.Size = new System.Drawing.Size(43, 17);
+            this.chbSIP.TabIndex = 0;
+            this.chbSIP.Text = "SIP";
+            this.toolTip.SetToolTip(this.chbSIP, "Chạy thread xử lý gói tin SIP (VoIP) nhận từ mạng.");
+            this.chbSIP.UseVisualStyleBackColor = true;
+            // 
             // SettingView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(906, 635);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.btnInputExcel);
             this.Controls.Add(this.btnAccess);
@@ -777,6 +819,8 @@
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nUDTimeAutoCloseMsgBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDPhoneCutLen)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -850,5 +894,9 @@
         private System.Windows.Forms.Button btnAccess;
         private System.Windows.Forms.Button btnInputExcel;
         private System.Windows.Forms.ProgressBar progressBar;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.CheckBox chbSIP;
+        private System.Windows.Forms.CheckBox chbUDP;
+        private System.Windows.Forms.ToolTip toolTip;
     }
 }
