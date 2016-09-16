@@ -16,6 +16,9 @@ namespace MainPrj.View
         //++ BUG0011-SPJ (NguyenPT 20160822) Add Created date property
         //private string id = string.Empty;
         private OrderModel _data = null;
+        //++ BUG0072-SPJ (NguyenPT 20160909) Handle Cancel order is not success
+        private OrderModel _bkData = null;
+        //-- BUG0072-SPJ (NguyenPT 20160909) Handle Cancel order is not success
 
         ///// <summary>
         ///// Order's id.
@@ -39,6 +42,9 @@ namespace MainPrj.View
             //this.Id = id;
             _data = data;
             //-- BUG0011-SPJ (NguyenPT 20160822) Add Created date property
+            //++ BUG0072-SPJ (NguyenPT 20160909) Handle Cancel order is not success
+            _bkData = new OrderModel(_data);
+            //-- BUG0072-SPJ (NguyenPT 20160909) Handle Cancel order is not success
         }
         /// <summary>
         /// Handle when click Finish button.
@@ -89,7 +95,9 @@ namespace MainPrj.View
                 //++ BUG0072-SPJ (NguyenPT 20160909) Handle Cancel order is not success
                 else
                 {
-                    _data.Status = status;
+                    _data.Status           = _bkData.Status;
+                    _data.IsUpdateToServer = _bkData.IsUpdateToServer;
+                    _data.Note             = _bkData.Note;
                 }
                 //-- BUG0072-SPJ (NguyenPT 20160909) Handle Cancel order is not success
             }

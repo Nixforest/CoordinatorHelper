@@ -17,6 +17,16 @@ namespace MainPrj.View
         //private string id = string.Empty;
         private OrderModel _data = null;
         //-- BUG0011-SPJ (NguyenPT 20160822) Add Created date property
+        //++ BUG0075-SPJ (NguyenPT 20160915) Data object
+        /// <summary>
+        /// Data.
+        /// </summary>
+        public OrderModel Data
+        {
+            get { return _data; }
+            set { _data = value; }
+        }
+        //-- BUG0075-SPJ (NguyenPT 20160915) Data object
         private string deliverId = string.Empty;
         /// <summary>
         /// Deliver id.
@@ -99,40 +109,81 @@ namespace MainPrj.View
 
             //    this.Close();
             //}
-            if (_data != null)
+            if (Data != null)
             {
-                _data.Cylinders.Clear();
-                _data.Cylinders.AddRange(cylinders);
-                if (cylinders.Count < _data.Products.Count)
-                {
-                    for (int i = 0; i < (_data.Products.Count - cylinders.Count); i++)
-                    {
-                        _data.Cylinders.Add(new CylinderModel());
-                    }
-                }
-                _data.Status           = OrderStatus.ORDERSTATUS_PAID;
-                _data.IsUpdateToServer = false;
-                if (cbxDeliver.SelectedValue != null)
-                {
-                    _data.DeliverId = cbxDeliver.SelectedValue.ToString();
-                }
-                if (chbPromote.Checked)
-                {
-                    _data.Promotes.Clear();
-                    _data.PromoteMoney = Properties.Settings.Default.PromoteMoney;
-                    _data.TotalPay -= _data.PromoteMoney;
-                }
-                // Update to server
-                string retId = CommonProcess.UpdateOrderToServer(_data);
+                //++ BUG0075-SPJ (NguyenPT 20160915) Use backup object instead
+                OrderModel bkData = new OrderModel(Data);
+                //Data.Cylinders.Clear();
+                //Data.Cylinders.AddRange(cylinders);
+                //if (cylinders.Count < Data.Products.Count)
+                //{
+                //    for (int i = 0; i < (Data.Products.Count - cylinders.Count); i++)
+                //    {
+                //        Data.Cylinders.Add(new CylinderModel());
+                //    }
+                //}
+                //Data.Status           = OrderStatus.ORDERSTATUS_PAID;
+                //Data.IsUpdateToServer = false;
+                //if (cbxDeliver.SelectedValue != null)
+                //{
+                //    Data.DeliverId = cbxDeliver.SelectedValue.ToString();
+                //}
+                //if (chbPromote.Checked)
+                //{
+                //    Data.Promotes.Clear();
+                //    Data.PromoteMoney = Properties.Settings.Default.PromoteMoney;
+                //    Data.TotalPay -= Data.PromoteMoney;
+                //}
+                //// Update to server
+                //string retId = CommonProcess.UpdateOrderToServer(Data);
+                ChangeValue(bkData);
+                string retId = CommonProcess.UpdateOrderToServer(bkData);
+                //-- BUG0075-SPJ (NguyenPT 20160915) Use backup object instead
                 if (!String.IsNullOrEmpty(retId))
                 {
-                    _data.IsUpdateToServer = true;
-                    CommonProcess.UpdateOrderToFile(_data);
+                    //++ BUG0075-SPJ (NguyenPT 20160915) Use backup object instead
+                    //_data.IsUpdateToServer = true;
+                    //CommonProcess.UpdateOrderToFile(_data);
+                    bkData.IsUpdateToServer = true;
+                    CommonProcess.UpdateOrderToFile(bkData);
+                    Data.IsUpdateToServer = true;
+                    ChangeValue(Data);
+                    //-- BUG0075-SPJ (NguyenPT 20160915) Use backup object instead
                 }
             }
             this.Close();
             //-- BUG0011-SPJ (NguyenPT 20160822) Add Created date property
         }
+        //++ BUG0075-SPJ (NguyenPT 20160915) Use backup object instead
+        /// <summary>
+        /// Change value of Order model.
+        /// </summary>
+        /// <param name="model">Model to change</param>
+        private void ChangeValue(OrderModel model)
+        {
+            model.Cylinders.Clear();
+            model.Cylinders.AddRange(cylinders);
+            if (cylinders.Count < model.Products.Count)
+            {
+                for (int i = 0; i < (model.Products.Count - cylinders.Count); i++)
+                {
+                    model.Cylinders.Add(new CylinderModel());
+                }
+            }
+            model.Status = OrderStatus.ORDERSTATUS_PAID;
+            model.IsUpdateToServer = false;
+            if (cbxDeliver.SelectedValue != null)
+            {
+                model.DeliverId = cbxDeliver.SelectedValue.ToString();
+            }
+            if (chbPromote.Checked)
+            {
+                model.Promotes.Clear();
+                model.PromoteMoney = Properties.Settings.Default.PromoteMoney;
+                model.TotalPay    -= model.PromoteMoney;
+            }
+        }
+        //-- BUG0075-SPJ (NguyenPT 20160915) Use backup object instead
         /// <summary>
         /// Handle when open form
         /// </summary>
@@ -165,18 +216,18 @@ namespace MainPrj.View
             //        }
             //    }
             //}
-            if (_data != null)
+            if (Data != null)
             {
-                foreach (CylinderModel cylinder in _data.Cylinders)
+                foreach (CylinderModel cylinder in Data.Cylinders)
                 {
                     if (!String.IsNullOrEmpty(cylinder.Id))
                     {
                         cylinders.Add(cylinder);
                     }
                 }
-                lblTotalPay.Text = CommonProcess.FormatMoney(_data.TotalPay);
-                this.deliverId = !String.IsNullOrEmpty(_data.DeliverId) ? _data.DeliverId : _data.CCSId;
-                if (_data.Promotes.Count == 0)
+                lblTotalPay.Text = CommonProcess.FormatMoney(Data.TotalPay);
+                this.deliverId = !String.IsNullOrEmpty(Data.DeliverId) ? Data.DeliverId : Data.CCSId;
+                if (Data.Promotes.Count == 0)
                 {
                     chbPromote.Enabled = false;
                 }

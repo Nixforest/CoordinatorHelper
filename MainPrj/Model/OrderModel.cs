@@ -91,14 +91,53 @@ namespace MainPrj.Model
             isManualChangePromote = false;
             //-- BUG0068-SPJ (NguyenPT 20160905) Change promote money
         }
-        //public OrderModel(OrderModel copy)
-        //{
-        //    this.id = copy.id;
-        //    this.creatorId = copy.creatorId;
-        //    this.deliverId = copy.deliverId;
-        //    this.ccsId = copy.ccsId;
-        //    this.products = copy.products;
-        //}
+        /// <summary>
+        /// Copy constructor.
+        /// </summary>
+        /// <param name="copy">Copied</param>
+        public OrderModel(OrderModel copy)
+        {
+            this.id            = copy.id;
+            this.creatorId     = copy.creatorId;
+            this.deliverId     = copy.deliverId;
+            this.ccsId         = copy.ccsId;
+            this.products      = new List<ProductModel>();
+            if (copy.products != null)
+            {
+                foreach (ProductModel product in copy.products)
+                {
+                    this.products.Add(new ProductModel(product));
+                }
+            }
+            this.promotes = new List<PromoteModel>();
+            if (copy.promotes != null)
+            {
+                foreach (PromoteModel promote in copy.promotes)
+                {
+                    this.promotes.Add(new PromoteModel(promote));
+                }
+            }
+            this.totalMoney     = copy.totalMoney;
+            this.promoteMoney   = copy.promoteMoney;
+            this.totalPay       = copy.totalPay;
+            this.customer       = new CustomerModel(copy.customer);
+            this.cylinders      = new List<CylinderModel>();
+            if (copy.cylinders != null)
+            {
+                foreach (CylinderModel cylinder in copy.cylinders)
+                {
+                    this.cylinders.Add(new CylinderModel(cylinder));
+                }
+            }
+            this.note                  = copy.note;
+            this.webId                 = copy.webId;
+            this.isUpdateToServer      = copy.isUpdateToServer;
+            this.status                = copy.status;
+            this.created_date          = copy.created_date;
+            this.order_type            = copy.order_type;
+            this.type_amount           = copy.type_amount;
+            this.isManualChangePromote = copy.isManualChangePromote;
+        }
         //++ BUG0068-SPJ (NguyenPT 20160905) Change promote money
         /// <summary>
         /// Flag is manual change promote money.

@@ -88,6 +88,19 @@ namespace MainPrj.Model
             this.materials_no = string.Empty;
         }
         /// <summary>
+        /// Copy constructor.
+        /// </summary>
+        /// <param name="copy">Copied</param>
+        public CylinderModel(CylinderModel copy)
+        {
+            this.id           = copy.id;
+            this.name         = copy.name;
+            this.quantity     = copy.quantity;
+            this.serial       = copy.serial;
+            this.materials_no = copy.materials_no;
+            this.typeId       = copy.typeId;
+        }
+        /// <summary>
         /// Convert to string.
         /// </summary>
         /// <returns>String object</returns>

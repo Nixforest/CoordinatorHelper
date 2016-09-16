@@ -37,6 +37,18 @@ namespace MainPrj.Model
             typeId       = string.Empty;
         }
         /// <summary>
+        /// Copy constructor.
+        /// </summary>
+        /// <param name="copy">Copied</param>
+        public PromoteModel(PromoteModel copy)
+        {
+            this.id           = copy.id;
+            this.name         = copy.name;
+            this.quantity     = copy.quantity;
+            this.materials_no = copy.materials_no;
+            this.typeId       = copy.typeId;
+        }
+        /// <summary>
         /// Material type id.
         /// </summary>
         public string TypeId

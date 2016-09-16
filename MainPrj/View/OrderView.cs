@@ -47,7 +47,9 @@ namespace MainPrj.View
         /// </summary>
         private bool _isManualChangePromoteMoney = false;
         //-- BUG0068-SPJ (NguyenPT 20160905) Change promote money
-        //private OrderModel _bkData       = null;
+        //++ BUG0075-SPJ (NguyenPT 20160915) Use backup object instead
+        private OrderModel _bkData = null;
+        //-- BUG0075-SPJ (NguyenPT 20160915) Use backup object instead
         /// <summary>
         /// Is in update mode.
         /// </summary>
@@ -89,7 +91,15 @@ namespace MainPrj.View
         {
             if (this._isUpdateMode)
             {
-
+                // Reset data value
+                _data.DeliverId    = _bkData.DeliverId;
+                _data.CCSId        = _bkData.CCSId;
+                _data.TotalPay     = _bkData.TotalPay;
+                _data.TotalMoney   = _bkData.TotalMoney;
+                _data.PromoteMoney = _bkData.PromoteMoney;
+                _data.Order_type   = _bkData.Order_type;
+                _data.Type_amount  = _bkData.Type_amount;
+                _data.Promotes     = _bkData.Promotes;
             }
             this.Close();
         }
@@ -1142,7 +1152,9 @@ namespace MainPrj.View
                 return;
             }
             _data = model;
-            //_bkData = new OrderModel();
+            //++ BUG0075-SPJ (NguyenPT 20160915) Use backup object instead
+            _bkData = new OrderModel(_data);
+            //-- BUG0075-SPJ (NguyenPT 20160915) Use backup object instead
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
@@ -1169,7 +1181,9 @@ namespace MainPrj.View
                     {
                         _data.IsUpdateToServer = true;
                         CommonProcess.ShowInformMessage(Properties.Resources.UpdateOrderSuccess, MessageBoxButtons.OK);
-
+                        //++ BUG0075-SPJ (NguyenPT 20160915) Write to file
+                        CommonProcess.UpdateOrderToFile(_data);
+                        //-- BUG0075-SPJ (NguyenPT 20160915) Write to file
                         this.Close();
                     }
                 }
