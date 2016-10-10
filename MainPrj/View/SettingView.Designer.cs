@@ -97,9 +97,13 @@
             this.btnInputExcel = new System.Windows.Forms.Button();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.chbUDP = new System.Windows.Forms.CheckBox();
             this.chbSIP = new System.Windows.Forms.CheckBox();
+            this.chbUDP = new System.Windows.Forms.CheckBox();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.label28 = new System.Windows.Forms.Label();
+            this.tbxUpholdPhone = new System.Windows.Forms.TextBox();
+            this.label29 = new System.Windows.Forms.Label();
+            this.btnNewNotifyColor = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.nUDMainPort)).BeginInit();
             this.groupBoxServer.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -722,12 +726,23 @@
             // 
             this.groupBox1.Controls.Add(this.chbSIP);
             this.groupBox1.Controls.Add(this.chbUDP);
-            this.groupBox1.Location = new System.Drawing.Point(12, 438);
+            this.groupBox1.Location = new System.Drawing.Point(12, 460);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(367, 48);
             this.groupBox1.TabIndex = 11;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Các loại gói tin";
+            // 
+            // chbSIP
+            // 
+            this.chbSIP.AutoSize = true;
+            this.chbSIP.Location = new System.Drawing.Point(138, 19);
+            this.chbSIP.Name = "chbSIP";
+            this.chbSIP.Size = new System.Drawing.Size(43, 17);
+            this.chbSIP.TabIndex = 0;
+            this.chbSIP.Text = "SIP";
+            this.toolTip.SetToolTip(this.chbSIP, "Chạy thread xử lý gói tin SIP (VoIP) nhận từ mạng.");
+            this.chbSIP.UseVisualStyleBackColor = true;
             // 
             // chbUDP
             // 
@@ -742,16 +757,41 @@
             this.toolTip.SetToolTip(this.chbUDP, "Chạy thread đọc xử lý gói tin UDP nhận từ card ghi âm.");
             this.chbUDP.UseVisualStyleBackColor = true;
             // 
-            // chbSIP
+            // label28
             // 
-            this.chbSIP.AutoSize = true;
-            this.chbSIP.Location = new System.Drawing.Point(138, 19);
-            this.chbSIP.Name = "chbSIP";
-            this.chbSIP.Size = new System.Drawing.Size(43, 17);
-            this.chbSIP.TabIndex = 0;
-            this.chbSIP.Text = "SIP";
-            this.toolTip.SetToolTip(this.chbSIP, "Chạy thread xử lý gói tin SIP (VoIP) nhận từ mạng.");
-            this.chbSIP.UseVisualStyleBackColor = true;
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(10, 434);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(105, 13);
+            this.label28.TabIndex = 0;
+            this.label28.Text = "Số điện thoại CSKH:";
+            // 
+            // tbxUpholdPhone
+            // 
+            this.tbxUpholdPhone.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.tbxUpholdPhone.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbxUpholdPhone.Location = new System.Drawing.Point(150, 431);
+            this.tbxUpholdPhone.Name = "tbxUpholdPhone";
+            this.tbxUpholdPhone.Size = new System.Drawing.Size(229, 20);
+            this.tbxUpholdPhone.TabIndex = 1;
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Location = new System.Drawing.Point(187, 207);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(122, 13);
+            this.label29.TabIndex = 0;
+            this.label29.Text = "Màu nền thông báo mới:";
+            // 
+            // btnNewNotifyColor
+            // 
+            this.btnNewNotifyColor.Location = new System.Drawing.Point(315, 202);
+            this.btnNewNotifyColor.Name = "btnNewNotifyColor";
+            this.btnNewNotifyColor.Size = new System.Drawing.Size(23, 23);
+            this.btnNewNotifyColor.TabIndex = 7;
+            this.btnNewNotifyColor.UseVisualStyleBackColor = true;
+            this.btnNewNotifyColor.Click += new System.EventHandler(this.btnNewNotifyColor_Click);
             // 
             // SettingView
             // 
@@ -771,6 +811,7 @@
             this.Controls.Add(this.btnTabFinishCallTextColor);
             this.Controls.Add(this.btnTabHandleCallTextColor);
             this.Controls.Add(this.btnTabIncommingTextColor);
+            this.Controls.Add(this.btnNewNotifyColor);
             this.Controls.Add(this.btnTabActiveBackgroundColor);
             this.Controls.Add(this.btnMissCallTextColor);
             this.Controls.Add(this.cbxTabColorChanged);
@@ -794,9 +835,12 @@
             this.Controls.Add(this.label24);
             this.Controls.Add(this.label20);
             this.Controls.Add(this.label15);
+            this.Controls.Add(this.label29);
             this.Controls.Add(this.label19);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.label14);
+            this.Controls.Add(this.tbxUpholdPhone);
+            this.Controls.Add(this.label28);
             this.Controls.Add(this.tbxBrand);
             this.Controls.Add(this.label27);
             this.Controls.Add(this.tbxCallIdFormat);
@@ -898,5 +942,9 @@
         private System.Windows.Forms.CheckBox chbSIP;
         private System.Windows.Forms.CheckBox chbUDP;
         private System.Windows.Forms.ToolTip toolTip;
+        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.TextBox tbxUpholdPhone;
+        private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.Button btnNewNotifyColor;
     }
 }

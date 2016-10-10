@@ -60,8 +60,12 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.rbReturnCylinder = new System.Windows.Forms.RadioButton();
             this.rbOrderTypeTheChan = new System.Windows.Forms.RadioButton();
-            this.rbOrderTypeSellvo = new System.Windows.Forms.RadioButton();
+            this.rbOrderTypeFullOrder = new System.Windows.Forms.RadioButton();
             this.rbOrderTypeNormal = new System.Windows.Forms.RadioButton();
+            this.tbxPromoteMoney = new System.Windows.Forms.TextBox();
+            this.btnChangePromote = new System.Windows.Forms.Button();
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.rbOrderTypeSellVo = new System.Windows.Forms.RadioButton();
             this.listViewPromote = new MainPrj.View.EditableListView();
             this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -74,9 +78,6 @@
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.tbxPromoteMoney = new System.Windows.Forms.TextBox();
-            this.btnChangePromote = new System.Windows.Forms.Button();
-            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -364,9 +365,10 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.rbOrderTypeSellVo);
             this.groupBox1.Controls.Add(this.rbReturnCylinder);
             this.groupBox1.Controls.Add(this.rbOrderTypeTheChan);
-            this.groupBox1.Controls.Add(this.rbOrderTypeSellvo);
+            this.groupBox1.Controls.Add(this.rbOrderTypeFullOrder);
             this.groupBox1.Controls.Add(this.rbOrderTypeNormal);
             this.groupBox1.Location = new System.Drawing.Point(842, 240);
             this.groupBox1.Name = "groupBox1";
@@ -377,7 +379,7 @@
             // rbReturnCylinder
             // 
             this.rbReturnCylinder.AutoSize = true;
-            this.rbReturnCylinder.Location = new System.Drawing.Point(6, 105);
+            this.rbReturnCylinder.Location = new System.Drawing.Point(6, 93);
             this.rbReturnCylinder.Name = "rbReturnCylinder";
             this.rbReturnCylinder.Size = new System.Drawing.Size(81, 28);
             this.rbReturnCylinder.TabIndex = 1;
@@ -389,7 +391,7 @@
             // rbOrderTypeTheChan
             // 
             this.rbOrderTypeTheChan.AutoSize = true;
-            this.rbOrderTypeTheChan.Location = new System.Drawing.Point(6, 75);
+            this.rbOrderTypeTheChan.Location = new System.Drawing.Point(6, 67);
             this.rbOrderTypeTheChan.Name = "rbOrderTypeTheChan";
             this.rbOrderTypeTheChan.Size = new System.Drawing.Size(109, 28);
             this.rbOrderTypeTheChan.TabIndex = 1;
@@ -398,16 +400,16 @@
             this.rbOrderTypeTheChan.UseVisualStyleBackColor = true;
             this.rbOrderTypeTheChan.Click += new System.EventHandler(this.rbOrderTypeTheChan_Click);
             // 
-            // rbOrderTypeSellvo
+            // rbOrderTypeFullOrder
             // 
-            this.rbOrderTypeSellvo.AutoSize = true;
-            this.rbOrderTypeSellvo.Location = new System.Drawing.Point(6, 45);
-            this.rbOrderTypeSellvo.Name = "rbOrderTypeSellvo";
-            this.rbOrderTypeSellvo.Size = new System.Drawing.Size(93, 28);
-            this.rbOrderTypeSellvo.TabIndex = 0;
-            this.rbOrderTypeSellvo.Text = "Bộ bình";
-            this.rbOrderTypeSellvo.UseVisualStyleBackColor = true;
-            this.rbOrderTypeSellvo.Click += new System.EventHandler(this.rbOrderTypeSellvo_Click);
+            this.rbOrderTypeFullOrder.AutoSize = true;
+            this.rbOrderTypeFullOrder.Location = new System.Drawing.Point(6, 41);
+            this.rbOrderTypeFullOrder.Name = "rbOrderTypeFullOrder";
+            this.rbOrderTypeFullOrder.Size = new System.Drawing.Size(93, 28);
+            this.rbOrderTypeFullOrder.TabIndex = 0;
+            this.rbOrderTypeFullOrder.Text = "Bộ bình";
+            this.rbOrderTypeFullOrder.UseVisualStyleBackColor = true;
+            this.rbOrderTypeFullOrder.Click += new System.EventHandler(this.rbOrderTypeSellvo_Click);
             // 
             // rbOrderTypeNormal
             // 
@@ -421,6 +423,41 @@
             this.rbOrderTypeNormal.Text = "Thường";
             this.rbOrderTypeNormal.UseVisualStyleBackColor = true;
             this.rbOrderTypeNormal.CheckedChanged += new System.EventHandler(this.rbOrderTypeNormal_CheckedChanged);
+            // 
+            // tbxPromoteMoney
+            // 
+            this.tbxPromoteMoney.ForeColor = System.Drawing.Color.Red;
+            this.tbxPromoteMoney.Location = new System.Drawing.Point(607, 398);
+            this.tbxPromoteMoney.Name = "tbxPromoteMoney";
+            this.tbxPromoteMoney.Size = new System.Drawing.Size(100, 29);
+            this.tbxPromoteMoney.TabIndex = 14;
+            this.tbxPromoteMoney.Visible = false;
+            this.tbxPromoteMoney.Leave += new System.EventHandler(this.tbxPromoteMoney_Leave);
+            // 
+            // btnChangePromote
+            // 
+            this.btnChangePromote.BackgroundImage = global::MainPrj.Properties.Resources.edit;
+            this.btnChangePromote.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnChangePromote.Location = new System.Drawing.Point(932, 396);
+            this.btnChangePromote.Name = "btnChangePromote";
+            this.btnChangePromote.Size = new System.Drawing.Size(29, 29);
+            this.btnChangePromote.TabIndex = 15;
+            this.toolTip.SetToolTip(this.btnChangePromote, "Click button này để thay đổi tiền chiết khấu.\r\nChỉ thay đổi tiền chiết khấu khi c" +
+        "ần thiết và khi đã làm xong các bước khác.");
+            this.btnChangePromote.UseVisualStyleBackColor = true;
+            this.btnChangePromote.Click += new System.EventHandler(this.btnChangePromote_Click);
+            // 
+            // rbOrderTypeSellVo
+            // 
+            this.rbOrderTypeSellVo.AutoSize = true;
+            this.rbOrderTypeSellVo.Location = new System.Drawing.Point(6, 119);
+            this.rbOrderTypeSellVo.Name = "rbOrderTypeSellVo";
+            this.rbOrderTypeSellVo.Size = new System.Drawing.Size(86, 28);
+            this.rbOrderTypeSellVo.TabIndex = 1;
+            this.rbOrderTypeSellVo.TabStop = true;
+            this.rbOrderTypeSellVo.Text = "Bán vỏ";
+            this.rbOrderTypeSellVo.UseVisualStyleBackColor = true;
+            this.rbOrderTypeSellVo.Click += new System.EventHandler(this.rbOrderTypeSellvo_Click);
             // 
             // listViewPromote
             // 
@@ -513,29 +550,6 @@
             // 
             this.columnHeader6.Text = "Tiền";
             this.columnHeader6.Width = 140;
-            // 
-            // tbxPromoteMoney
-            // 
-            this.tbxPromoteMoney.ForeColor = System.Drawing.Color.Red;
-            this.tbxPromoteMoney.Location = new System.Drawing.Point(607, 398);
-            this.tbxPromoteMoney.Name = "tbxPromoteMoney";
-            this.tbxPromoteMoney.Size = new System.Drawing.Size(100, 29);
-            this.tbxPromoteMoney.TabIndex = 14;
-            this.tbxPromoteMoney.Visible = false;
-            this.tbxPromoteMoney.Leave += new System.EventHandler(this.tbxPromoteMoney_Leave);
-            // 
-            // btnChangePromote
-            // 
-            this.btnChangePromote.BackgroundImage = global::MainPrj.Properties.Resources.edit;
-            this.btnChangePromote.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnChangePromote.Location = new System.Drawing.Point(932, 396);
-            this.btnChangePromote.Name = "btnChangePromote";
-            this.btnChangePromote.Size = new System.Drawing.Size(29, 29);
-            this.btnChangePromote.TabIndex = 15;
-            this.toolTip.SetToolTip(this.btnChangePromote, "Click button này để thay đổi tiền chiết khấu.\r\nChỉ thay đổi tiền chiết khấu khi c" +
-        "ần thiết và khi đã làm xong các bước khác.");
-            this.btnChangePromote.UseVisualStyleBackColor = true;
-            this.btnChangePromote.Click += new System.EventHandler(this.btnChangePromote_Click);
             // 
             // OrderView
             // 
@@ -635,12 +649,13 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox cbxDeliver;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.RadioButton rbOrderTypeSellvo;
+        private System.Windows.Forms.RadioButton rbOrderTypeFullOrder;
         private System.Windows.Forms.RadioButton rbOrderTypeNormal;
         private System.Windows.Forms.RadioButton rbOrderTypeTheChan;
         private System.Windows.Forms.RadioButton rbReturnCylinder;
         private System.Windows.Forms.TextBox tbxPromoteMoney;
         private System.Windows.Forms.Button btnChangePromote;
         private System.Windows.Forms.ToolTip toolTip;
+        private System.Windows.Forms.RadioButton rbOrderTypeSellVo;
     }
 }

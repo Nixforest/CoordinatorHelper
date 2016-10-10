@@ -44,6 +44,9 @@ namespace MainPrj
             this.toolStripMenuItemLogin = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemLogout = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuItemConnect = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemDisConnect = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuItemExit = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemConfig = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemSetting = new System.Windows.Forms.ToolStripMenuItem();
@@ -58,21 +61,13 @@ namespace MainPrj
             this.tbxLog = new System.Windows.Forms.TextBox();
             this.mainTabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.channelControlLine1 = new MainPrj.View.ChannelControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.channelControlLine2 = new MainPrj.View.ChannelControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.channelControlLine3 = new MainPrj.View.ChannelControl();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.channelControlLine4 = new MainPrj.View.ChannelControl();
             this.tabPage5 = new System.Windows.Forms.TabPage();
-            this.channelControlLine5 = new MainPrj.View.ChannelControl();
             this.tabPage6 = new System.Windows.Forms.TabPage();
-            this.channelControlLine6 = new MainPrj.View.ChannelControl();
             this.tabPage7 = new System.Windows.Forms.TabPage();
-            this.channelControlLine7 = new MainPrj.View.ChannelControl();
             this.tabPage8 = new System.Windows.Forms.TabPage();
-            this.channelControlLine8 = new MainPrj.View.ChannelControl();
             this.btnSearch = new System.Windows.Forms.Button();
             this.chbListenFromCard = new System.Windows.Forms.CheckBox();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
@@ -91,9 +86,20 @@ namespace MainPrj
             this.lblAgent = new System.Windows.Forms.Label();
             this.btnClose = new System.Windows.Forms.Button();
             this.toolTipClose = new System.Windows.Forms.ToolTip(this.components);
+            this.btnNotification = new System.Windows.Forms.Button();
+            this.lblNotification = new System.Windows.Forms.Label();
             this.btnUphold = new System.Windows.Forms.Button();
+            this.btnTestNotification = new System.Windows.Forms.Button();
             this.coordinatorOrderView_v2 = new MainPrj.View.Component.CoordinatorOrderView_v2();
             this.coordinatorOrderView = new MainPrj.View.Component.CoordinatorOrderView();
+            this.channelControlLine1 = new MainPrj.View.ChannelControl();
+            this.channelControlLine2 = new MainPrj.View.ChannelControl();
+            this.channelControlLine3 = new MainPrj.View.ChannelControl();
+            this.channelControlLine4 = new MainPrj.View.ChannelControl();
+            this.channelControlLine5 = new MainPrj.View.ChannelControl();
+            this.channelControlLine6 = new MainPrj.View.ChannelControl();
+            this.channelControlLine7 = new MainPrj.View.ChannelControl();
+            this.channelControlLine8 = new MainPrj.View.ChannelControl();
             this.mainMenuStrip.SuspendLayout();
             this.mainTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -126,6 +132,9 @@ namespace MainPrj
             this.toolStripMenuItemLogin,
             this.toolStripMenuItemLogout,
             this.toolStripSeparator3,
+            this.toolStripMenuItemConnect,
+            this.toolStripMenuItemDisConnect,
+            this.toolStripSeparator4,
             this.toolStripMenuItemExit});
             this.toolStripMenuItemLoginLogout.Name = "toolStripMenuItemLoginLogout";
             this.toolStripMenuItemLoginLogout.Size = new System.Drawing.Size(77, 20);
@@ -135,29 +144,50 @@ namespace MainPrj
             // 
             this.toolStripMenuItemLogin.Image = global::MainPrj.Properties.Resources.done_small;
             this.toolStripMenuItemLogin.Name = "toolStripMenuItemLogin";
-            this.toolStripMenuItemLogin.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItemLogin.Size = new System.Drawing.Size(272, 22);
             this.toolStripMenuItemLogin.Text = "Đăng nhập";
             this.toolStripMenuItemLogin.Click += new System.EventHandler(this.toolStripMenuItemLogin_Click);
             // 
             // toolStripMenuItemLogout
             // 
             this.toolStripMenuItemLogout.Enabled = false;
-            this.toolStripMenuItemLogout.Image = global::MainPrj.Properties.Resources.cancel1;
+            this.toolStripMenuItemLogout.Image = global::MainPrj.Properties.Resources.logout;
             this.toolStripMenuItemLogout.Name = "toolStripMenuItemLogout";
-            this.toolStripMenuItemLogout.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItemLogout.Size = new System.Drawing.Size(272, 22);
             this.toolStripMenuItemLogout.Text = "Đăng xuất";
             this.toolStripMenuItemLogout.Click += new System.EventHandler(this.toolStripMenuItemLogout_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(269, 6);
+            // 
+            // toolStripMenuItemConnect
+            // 
+            this.toolStripMenuItemConnect.Image = global::MainPrj.Properties.Resources.connect;
+            this.toolStripMenuItemConnect.Name = "toolStripMenuItemConnect";
+            this.toolStripMenuItemConnect.Size = new System.Drawing.Size(272, 22);
+            this.toolStripMenuItemConnect.Text = "Kết nối với trung tâm thông báo";
+            this.toolStripMenuItemConnect.Click += new System.EventHandler(this.toolStripMenuItemConnect_Click);
+            // 
+            // toolStripMenuItemDisConnect
+            // 
+            this.toolStripMenuItemDisConnect.Image = global::MainPrj.Properties.Resources.disconnect;
+            this.toolStripMenuItemDisConnect.Name = "toolStripMenuItemDisConnect";
+            this.toolStripMenuItemDisConnect.Size = new System.Drawing.Size(272, 22);
+            this.toolStripMenuItemDisConnect.Text = "Ngắt kết nối với trung tâm thông báo";
+            this.toolStripMenuItemDisConnect.Click += new System.EventHandler(this.toolStripMenuItemDisConnect_Click);
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(269, 6);
             // 
             // toolStripMenuItemExit
             // 
             this.toolStripMenuItemExit.Image = global::MainPrj.Properties.Resources.exit;
             this.toolStripMenuItemExit.Name = "toolStripMenuItemExit";
-            this.toolStripMenuItemExit.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItemExit.Size = new System.Drawing.Size(272, 22);
             this.toolStripMenuItemExit.Text = "Thoát";
             this.toolStripMenuItemExit.Click += new System.EventHandler(this.toolStripMenuItemExit_Click);
             // 
@@ -281,31 +311,6 @@ namespace MainPrj
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "1 :";
             // 
-            // channelControlLine1
-            // 
-            customerModel1.ActivePhone = "";
-            customerModel1.Address = "";
-            customerModel1.AgencyName = "";
-            customerModel1.AgencyNearest = "";
-            customerModel1.Agent_id = null;
-            customerModel1.Contact = "";
-            customerModel1.Contact_note = "";
-            customerModel1.Customer_delivery_agent_id = null;
-            customerModel1.CustomerType = "";
-            customerModel1.Id = "";
-            customerModel1.Name = "";
-            customerModel1.PhoneList = "";
-            customerModel1.Sale_name = "";
-            customerModel1.Sale_phone = "";
-            customerModel1.Sale_type = "";
-            this.channelControlLine1.Data = customerModel1;
-            this.channelControlLine1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.channelControlLine1.Location = new System.Drawing.Point(0, 0);
-            this.channelControlLine1.Margin = new System.Windows.Forms.Padding(6);
-            this.channelControlLine1.Name = "channelControlLine1";
-            this.channelControlLine1.Size = new System.Drawing.Size(1316, 482);
-            this.channelControlLine1.TabIndex = 1;
-            // 
             // tabPage2
             // 
             this.tabPage2.BackColor = System.Drawing.SystemColors.Control;
@@ -317,31 +322,6 @@ namespace MainPrj
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "2 :";
             // 
-            // channelControlLine2
-            // 
-            customerModel2.ActivePhone = "";
-            customerModel2.Address = "";
-            customerModel2.AgencyName = "";
-            customerModel2.AgencyNearest = "";
-            customerModel2.Agent_id = null;
-            customerModel2.Contact = "";
-            customerModel2.Contact_note = "";
-            customerModel2.Customer_delivery_agent_id = null;
-            customerModel2.CustomerType = "";
-            customerModel2.Id = "";
-            customerModel2.Name = "";
-            customerModel2.PhoneList = "";
-            customerModel2.Sale_name = "";
-            customerModel2.Sale_phone = "";
-            customerModel2.Sale_type = "";
-            this.channelControlLine2.Data = customerModel2;
-            this.channelControlLine2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.channelControlLine2.Location = new System.Drawing.Point(0, 0);
-            this.channelControlLine2.Margin = new System.Windows.Forms.Padding(6);
-            this.channelControlLine2.Name = "channelControlLine2";
-            this.channelControlLine2.Size = new System.Drawing.Size(1316, 482);
-            this.channelControlLine2.TabIndex = 0;
-            // 
             // tabPage3
             // 
             this.tabPage3.BackColor = System.Drawing.SystemColors.Control;
@@ -351,31 +331,6 @@ namespace MainPrj
             this.tabPage3.Size = new System.Drawing.Size(1308, 479);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "3 :";
-            // 
-            // channelControlLine3
-            // 
-            customerModel3.ActivePhone = "";
-            customerModel3.Address = "";
-            customerModel3.AgencyName = "";
-            customerModel3.AgencyNearest = "";
-            customerModel3.Agent_id = null;
-            customerModel3.Contact = "";
-            customerModel3.Contact_note = "";
-            customerModel3.Customer_delivery_agent_id = null;
-            customerModel3.CustomerType = "";
-            customerModel3.Id = "";
-            customerModel3.Name = "";
-            customerModel3.PhoneList = "";
-            customerModel3.Sale_name = "";
-            customerModel3.Sale_phone = "";
-            customerModel3.Sale_type = "";
-            this.channelControlLine3.Data = customerModel3;
-            this.channelControlLine3.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.channelControlLine3.Location = new System.Drawing.Point(0, 0);
-            this.channelControlLine3.Margin = new System.Windows.Forms.Padding(6);
-            this.channelControlLine3.Name = "channelControlLine3";
-            this.channelControlLine3.Size = new System.Drawing.Size(1316, 482);
-            this.channelControlLine3.TabIndex = 0;
             // 
             // tabPage4
             // 
@@ -387,31 +342,6 @@ namespace MainPrj
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "4 :";
             // 
-            // channelControlLine4
-            // 
-            customerModel4.ActivePhone = "";
-            customerModel4.Address = "";
-            customerModel4.AgencyName = "";
-            customerModel4.AgencyNearest = "";
-            customerModel4.Agent_id = null;
-            customerModel4.Contact = "";
-            customerModel4.Contact_note = "";
-            customerModel4.Customer_delivery_agent_id = null;
-            customerModel4.CustomerType = "";
-            customerModel4.Id = "";
-            customerModel4.Name = "";
-            customerModel4.PhoneList = "";
-            customerModel4.Sale_name = "";
-            customerModel4.Sale_phone = "";
-            customerModel4.Sale_type = "";
-            this.channelControlLine4.Data = customerModel4;
-            this.channelControlLine4.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.channelControlLine4.Location = new System.Drawing.Point(0, 0);
-            this.channelControlLine4.Margin = new System.Windows.Forms.Padding(6);
-            this.channelControlLine4.Name = "channelControlLine4";
-            this.channelControlLine4.Size = new System.Drawing.Size(1316, 482);
-            this.channelControlLine4.TabIndex = 0;
-            // 
             // tabPage5
             // 
             this.tabPage5.BackColor = System.Drawing.SystemColors.Control;
@@ -421,31 +351,6 @@ namespace MainPrj
             this.tabPage5.Size = new System.Drawing.Size(1308, 479);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "5 :";
-            // 
-            // channelControlLine5
-            // 
-            customerModel5.ActivePhone = "";
-            customerModel5.Address = "";
-            customerModel5.AgencyName = "";
-            customerModel5.AgencyNearest = "";
-            customerModel5.Agent_id = null;
-            customerModel5.Contact = "";
-            customerModel5.Contact_note = "";
-            customerModel5.Customer_delivery_agent_id = null;
-            customerModel5.CustomerType = "";
-            customerModel5.Id = "";
-            customerModel5.Name = "";
-            customerModel5.PhoneList = "";
-            customerModel5.Sale_name = "";
-            customerModel5.Sale_phone = "";
-            customerModel5.Sale_type = "";
-            this.channelControlLine5.Data = customerModel5;
-            this.channelControlLine5.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.channelControlLine5.Location = new System.Drawing.Point(0, 0);
-            this.channelControlLine5.Margin = new System.Windows.Forms.Padding(6);
-            this.channelControlLine5.Name = "channelControlLine5";
-            this.channelControlLine5.Size = new System.Drawing.Size(1316, 482);
-            this.channelControlLine5.TabIndex = 0;
             // 
             // tabPage6
             // 
@@ -457,31 +362,6 @@ namespace MainPrj
             this.tabPage6.TabIndex = 5;
             this.tabPage6.Text = "6 :";
             // 
-            // channelControlLine6
-            // 
-            customerModel6.ActivePhone = "";
-            customerModel6.Address = "";
-            customerModel6.AgencyName = "";
-            customerModel6.AgencyNearest = "";
-            customerModel6.Agent_id = null;
-            customerModel6.Contact = "";
-            customerModel6.Contact_note = "";
-            customerModel6.Customer_delivery_agent_id = null;
-            customerModel6.CustomerType = "";
-            customerModel6.Id = "";
-            customerModel6.Name = "";
-            customerModel6.PhoneList = "";
-            customerModel6.Sale_name = "";
-            customerModel6.Sale_phone = "";
-            customerModel6.Sale_type = "";
-            this.channelControlLine6.Data = customerModel6;
-            this.channelControlLine6.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.channelControlLine6.Location = new System.Drawing.Point(0, 0);
-            this.channelControlLine6.Margin = new System.Windows.Forms.Padding(6);
-            this.channelControlLine6.Name = "channelControlLine6";
-            this.channelControlLine6.Size = new System.Drawing.Size(1316, 482);
-            this.channelControlLine6.TabIndex = 0;
-            // 
             // tabPage7
             // 
             this.tabPage7.BackColor = System.Drawing.SystemColors.Control;
@@ -492,31 +372,6 @@ namespace MainPrj
             this.tabPage7.TabIndex = 6;
             this.tabPage7.Text = "7 :";
             // 
-            // channelControlLine7
-            // 
-            customerModel7.ActivePhone = "";
-            customerModel7.Address = "";
-            customerModel7.AgencyName = "";
-            customerModel7.AgencyNearest = "";
-            customerModel7.Agent_id = null;
-            customerModel7.Contact = "";
-            customerModel7.Contact_note = "";
-            customerModel7.Customer_delivery_agent_id = null;
-            customerModel7.CustomerType = "";
-            customerModel7.Id = "";
-            customerModel7.Name = "";
-            customerModel7.PhoneList = "";
-            customerModel7.Sale_name = "";
-            customerModel7.Sale_phone = "";
-            customerModel7.Sale_type = "";
-            this.channelControlLine7.Data = customerModel7;
-            this.channelControlLine7.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.channelControlLine7.Location = new System.Drawing.Point(0, 0);
-            this.channelControlLine7.Margin = new System.Windows.Forms.Padding(6);
-            this.channelControlLine7.Name = "channelControlLine7";
-            this.channelControlLine7.Size = new System.Drawing.Size(1316, 482);
-            this.channelControlLine7.TabIndex = 0;
-            // 
             // tabPage8
             // 
             this.tabPage8.BackColor = System.Drawing.SystemColors.Control;
@@ -526,31 +381,6 @@ namespace MainPrj
             this.tabPage8.Size = new System.Drawing.Size(1308, 479);
             this.tabPage8.TabIndex = 7;
             this.tabPage8.Text = "8 :";
-            // 
-            // channelControlLine8
-            // 
-            customerModel8.ActivePhone = "";
-            customerModel8.Address = "";
-            customerModel8.AgencyName = "";
-            customerModel8.AgencyNearest = "";
-            customerModel8.Agent_id = null;
-            customerModel8.Contact = "";
-            customerModel8.Contact_note = "";
-            customerModel8.Customer_delivery_agent_id = null;
-            customerModel8.CustomerType = "";
-            customerModel8.Id = "";
-            customerModel8.Name = "";
-            customerModel8.PhoneList = "";
-            customerModel8.Sale_name = "";
-            customerModel8.Sale_phone = "";
-            customerModel8.Sale_type = "";
-            this.channelControlLine8.Data = customerModel8;
-            this.channelControlLine8.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.channelControlLine8.Location = new System.Drawing.Point(0, 0);
-            this.channelControlLine8.Margin = new System.Windows.Forms.Padding(6);
-            this.channelControlLine8.Name = "channelControlLine8";
-            this.channelControlLine8.Size = new System.Drawing.Size(1316, 482);
-            this.channelControlLine8.TabIndex = 0;
             // 
             // btnSearch
             // 
@@ -610,12 +440,11 @@ namespace MainPrj
             // 
             // lblUsername
             // 
-            this.lblUsername.AutoSize = true;
             this.lblUsername.ForeColor = System.Drawing.Color.Blue;
-            this.lblUsername.Location = new System.Drawing.Point(751, 557);
+            this.lblUsername.Location = new System.Drawing.Point(592, 557);
             this.lblUsername.Name = "lblUsername";
             this.lblUsername.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.lblUsername.Size = new System.Drawing.Size(90, 24);
+            this.lblUsername.Size = new System.Drawing.Size(249, 24);
             this.lblUsername.TabIndex = 16;
             this.lblUsername.Text = "Họ và tên";
             // 
@@ -742,6 +571,32 @@ namespace MainPrj
             // 
             this.toolTipClose.IsBalloon = true;
             // 
+            // btnNotification
+            // 
+            this.btnNotification.Enabled = false;
+            this.btnNotification.FlatAppearance.BorderSize = 0;
+            this.btnNotification.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnNotification.Image = global::MainPrj.Properties.Resources.notification___Copy;
+            this.btnNotification.Location = new System.Drawing.Point(798, 643);
+            this.btnNotification.Name = "btnNotification";
+            this.btnNotification.Size = new System.Drawing.Size(39, 39);
+            this.btnNotification.TabIndex = 21;
+            this.toolTipClose.SetToolTip(this.btnNotification, "Thông báo");
+            this.btnNotification.UseVisualStyleBackColor = true;
+            this.btnNotification.Click += new System.EventHandler(this.btnNotification_Click);
+            // 
+            // lblNotification
+            // 
+            this.lblNotification.AutoSize = true;
+            this.lblNotification.BackColor = System.Drawing.Color.Red;
+            this.lblNotification.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblNotification.ForeColor = System.Drawing.Color.White;
+            this.lblNotification.Location = new System.Drawing.Point(821, 645);
+            this.lblNotification.Name = "lblNotification";
+            this.lblNotification.Size = new System.Drawing.Size(0, 13);
+            this.lblNotification.TabIndex = 22;
+            this.toolTipClose.SetToolTip(this.lblNotification, "Thông báo");
+            // 
             // btnUphold
             // 
             this.btnUphold.Image = global::MainPrj.Properties.Resources.uphold;
@@ -754,6 +609,17 @@ namespace MainPrj
             this.btnUphold.UseVisualStyleBackColor = true;
             this.btnUphold.Visible = false;
             this.btnUphold.Click += new System.EventHandler(this.btnUphold_Click);
+            // 
+            // btnTestNotification
+            // 
+            this.btnTestNotification.Location = new System.Drawing.Point(974, 624);
+            this.btnTestNotification.Name = "btnTestNotification";
+            this.btnTestNotification.Size = new System.Drawing.Size(94, 34);
+            this.btnTestNotification.TabIndex = 1;
+            this.btnTestNotification.Text = "Notify";
+            this.btnTestNotification.UseVisualStyleBackColor = true;
+            this.btnTestNotification.Visible = false;
+            this.btnTestNotification.Click += new System.EventHandler(this.btnTestNotification_Click);
             // 
             // coordinatorOrderView_v2
             // 
@@ -778,11 +644,214 @@ namespace MainPrj
             this.coordinatorOrderView.TabIndex = 2;
             this.coordinatorOrderView.Visible = false;
             // 
+            // channelControlLine1
+            // 
+            this.channelControlLine1.BackColor = System.Drawing.Color.Transparent;
+            customerModel1.ActivePhone = "";
+            customerModel1.Address = "";
+            customerModel1.AgencyName = "";
+            customerModel1.AgencyNearest = "";
+            customerModel1.Agent_id = null;
+            customerModel1.Contact = "";
+            customerModel1.Contact_note = "";
+            customerModel1.Customer_delivery_agent_id = null;
+            customerModel1.CustomerType = "";
+            customerModel1.Id = "";
+            customerModel1.Name = "";
+            customerModel1.PhoneList = "";
+            customerModel1.Sale_name = "";
+            customerModel1.Sale_phone = "";
+            customerModel1.Sale_type = "";
+            this.channelControlLine1.Data = customerModel1;
+            this.channelControlLine1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.channelControlLine1.Location = new System.Drawing.Point(0, 0);
+            this.channelControlLine1.Margin = new System.Windows.Forms.Padding(6);
+            this.channelControlLine1.Name = "channelControlLine1";
+            this.channelControlLine1.Size = new System.Drawing.Size(1316, 482);
+            this.channelControlLine1.TabIndex = 1;
+            // 
+            // channelControlLine2
+            // 
+            customerModel2.ActivePhone = "";
+            customerModel2.Address = "";
+            customerModel2.AgencyName = "";
+            customerModel2.AgencyNearest = "";
+            customerModel2.Agent_id = null;
+            customerModel2.Contact = "";
+            customerModel2.Contact_note = "";
+            customerModel2.Customer_delivery_agent_id = null;
+            customerModel2.CustomerType = "";
+            customerModel2.Id = "";
+            customerModel2.Name = "";
+            customerModel2.PhoneList = "";
+            customerModel2.Sale_name = "";
+            customerModel2.Sale_phone = "";
+            customerModel2.Sale_type = "";
+            this.channelControlLine2.Data = customerModel2;
+            this.channelControlLine2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.channelControlLine2.Location = new System.Drawing.Point(0, 0);
+            this.channelControlLine2.Margin = new System.Windows.Forms.Padding(6);
+            this.channelControlLine2.Name = "channelControlLine2";
+            this.channelControlLine2.Size = new System.Drawing.Size(1316, 482);
+            this.channelControlLine2.TabIndex = 0;
+            // 
+            // channelControlLine3
+            // 
+            customerModel3.ActivePhone = "";
+            customerModel3.Address = "";
+            customerModel3.AgencyName = "";
+            customerModel3.AgencyNearest = "";
+            customerModel3.Agent_id = null;
+            customerModel3.Contact = "";
+            customerModel3.Contact_note = "";
+            customerModel3.Customer_delivery_agent_id = null;
+            customerModel3.CustomerType = "";
+            customerModel3.Id = "";
+            customerModel3.Name = "";
+            customerModel3.PhoneList = "";
+            customerModel3.Sale_name = "";
+            customerModel3.Sale_phone = "";
+            customerModel3.Sale_type = "";
+            this.channelControlLine3.Data = customerModel3;
+            this.channelControlLine3.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.channelControlLine3.Location = new System.Drawing.Point(0, 0);
+            this.channelControlLine3.Margin = new System.Windows.Forms.Padding(6);
+            this.channelControlLine3.Name = "channelControlLine3";
+            this.channelControlLine3.Size = new System.Drawing.Size(1316, 482);
+            this.channelControlLine3.TabIndex = 0;
+            // 
+            // channelControlLine4
+            // 
+            customerModel4.ActivePhone = "";
+            customerModel4.Address = "";
+            customerModel4.AgencyName = "";
+            customerModel4.AgencyNearest = "";
+            customerModel4.Agent_id = null;
+            customerModel4.Contact = "";
+            customerModel4.Contact_note = "";
+            customerModel4.Customer_delivery_agent_id = null;
+            customerModel4.CustomerType = "";
+            customerModel4.Id = "";
+            customerModel4.Name = "";
+            customerModel4.PhoneList = "";
+            customerModel4.Sale_name = "";
+            customerModel4.Sale_phone = "";
+            customerModel4.Sale_type = "";
+            this.channelControlLine4.Data = customerModel4;
+            this.channelControlLine4.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.channelControlLine4.Location = new System.Drawing.Point(0, 0);
+            this.channelControlLine4.Margin = new System.Windows.Forms.Padding(6);
+            this.channelControlLine4.Name = "channelControlLine4";
+            this.channelControlLine4.Size = new System.Drawing.Size(1316, 482);
+            this.channelControlLine4.TabIndex = 0;
+            // 
+            // channelControlLine5
+            // 
+            customerModel5.ActivePhone = "";
+            customerModel5.Address = "";
+            customerModel5.AgencyName = "";
+            customerModel5.AgencyNearest = "";
+            customerModel5.Agent_id = null;
+            customerModel5.Contact = "";
+            customerModel5.Contact_note = "";
+            customerModel5.Customer_delivery_agent_id = null;
+            customerModel5.CustomerType = "";
+            customerModel5.Id = "";
+            customerModel5.Name = "";
+            customerModel5.PhoneList = "";
+            customerModel5.Sale_name = "";
+            customerModel5.Sale_phone = "";
+            customerModel5.Sale_type = "";
+            this.channelControlLine5.Data = customerModel5;
+            this.channelControlLine5.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.channelControlLine5.Location = new System.Drawing.Point(0, 0);
+            this.channelControlLine5.Margin = new System.Windows.Forms.Padding(6);
+            this.channelControlLine5.Name = "channelControlLine5";
+            this.channelControlLine5.Size = new System.Drawing.Size(1316, 482);
+            this.channelControlLine5.TabIndex = 0;
+            // 
+            // channelControlLine6
+            // 
+            customerModel6.ActivePhone = "";
+            customerModel6.Address = "";
+            customerModel6.AgencyName = "";
+            customerModel6.AgencyNearest = "";
+            customerModel6.Agent_id = null;
+            customerModel6.Contact = "";
+            customerModel6.Contact_note = "";
+            customerModel6.Customer_delivery_agent_id = null;
+            customerModel6.CustomerType = "";
+            customerModel6.Id = "";
+            customerModel6.Name = "";
+            customerModel6.PhoneList = "";
+            customerModel6.Sale_name = "";
+            customerModel6.Sale_phone = "";
+            customerModel6.Sale_type = "";
+            this.channelControlLine6.Data = customerModel6;
+            this.channelControlLine6.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.channelControlLine6.Location = new System.Drawing.Point(0, 0);
+            this.channelControlLine6.Margin = new System.Windows.Forms.Padding(6);
+            this.channelControlLine6.Name = "channelControlLine6";
+            this.channelControlLine6.Size = new System.Drawing.Size(1316, 482);
+            this.channelControlLine6.TabIndex = 0;
+            // 
+            // channelControlLine7
+            // 
+            customerModel7.ActivePhone = "";
+            customerModel7.Address = "";
+            customerModel7.AgencyName = "";
+            customerModel7.AgencyNearest = "";
+            customerModel7.Agent_id = null;
+            customerModel7.Contact = "";
+            customerModel7.Contact_note = "";
+            customerModel7.Customer_delivery_agent_id = null;
+            customerModel7.CustomerType = "";
+            customerModel7.Id = "";
+            customerModel7.Name = "";
+            customerModel7.PhoneList = "";
+            customerModel7.Sale_name = "";
+            customerModel7.Sale_phone = "";
+            customerModel7.Sale_type = "";
+            this.channelControlLine7.Data = customerModel7;
+            this.channelControlLine7.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.channelControlLine7.Location = new System.Drawing.Point(0, 0);
+            this.channelControlLine7.Margin = new System.Windows.Forms.Padding(6);
+            this.channelControlLine7.Name = "channelControlLine7";
+            this.channelControlLine7.Size = new System.Drawing.Size(1316, 482);
+            this.channelControlLine7.TabIndex = 0;
+            // 
+            // channelControlLine8
+            // 
+            customerModel8.ActivePhone = "";
+            customerModel8.Address = "";
+            customerModel8.AgencyName = "";
+            customerModel8.AgencyNearest = "";
+            customerModel8.Agent_id = null;
+            customerModel8.Contact = "";
+            customerModel8.Contact_note = "";
+            customerModel8.Customer_delivery_agent_id = null;
+            customerModel8.CustomerType = "";
+            customerModel8.Id = "";
+            customerModel8.Name = "";
+            customerModel8.PhoneList = "";
+            customerModel8.Sale_name = "";
+            customerModel8.Sale_phone = "";
+            customerModel8.Sale_type = "";
+            this.channelControlLine8.Data = customerModel8;
+            this.channelControlLine8.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.channelControlLine8.Location = new System.Drawing.Point(0, 0);
+            this.channelControlLine8.Margin = new System.Windows.Forms.Padding(6);
+            this.channelControlLine8.Name = "channelControlLine8";
+            this.channelControlLine8.Size = new System.Drawing.Size(1316, 482);
+            this.channelControlLine8.TabIndex = 0;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1596, 873);
+            this.Controls.Add(this.lblNotification);
+            this.Controls.Add(this.btnNotification);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.coordinatorOrderView_v2);
             this.Controls.Add(this.coordinatorOrderView);
@@ -791,6 +860,7 @@ namespace MainPrj
             this.Controls.Add(this.lblUsername);
             this.Controls.Add(this.pbxAvatar);
             this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.btnTestNotification);
             this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.chbUpdatePhone);
             this.Controls.Add(this.chbListenFromCard);
@@ -892,6 +962,12 @@ namespace MainPrj
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.ToolTip toolTipClose;
         private System.Windows.Forms.Button btnUphold;
+        private System.Windows.Forms.Button btnNotification;
+        private System.Windows.Forms.Label lblNotification;
+        private System.Windows.Forms.Button btnTestNotification;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemConnect;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemDisConnect;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
     }
 }
 

@@ -267,8 +267,8 @@ namespace MainPrj.View
                     case OrderType.ORDERTYPE_NORMAL:
                         rbOrderTypeNormal.Checked = true;
                         break;
-                    case OrderType.ORDERTYPE_SELLVO:
-                        rbOrderTypeSellvo.Checked = true;
+                    case OrderType.ORDERTYPE_FULLORDER:
+                        rbOrderTypeFullOrder.Checked = true;
                         break;
                     case OrderType.ORDERTYPE_THECHAN:
                         rbOrderTypeTheChan.Checked = true;
@@ -278,6 +278,11 @@ namespace MainPrj.View
                         rbReturnCylinder.Checked = true;
                         break;
                     //-- BUG0059-SPJ (NguyenPT 20160831) Return cylinder
+                    //++ BUG0079-SPJ (NguyenPT 20160928) Add order type sell cylinder
+                    case OrderType.ORDERTYPE_SELLVO:
+                        rbOrderTypeSellVo.Checked = true;
+                        break;
+                    //-- BUG0079-SPJ (NguyenPT 20160928) Add order type sell cylinder
                     default:
                         break;
                 }
@@ -1215,7 +1220,25 @@ namespace MainPrj.View
         /// <param name="e">EventArgs</param>
         private void rbOrderTypeSellvo_Click(object sender, EventArgs e)
         {
-            if (rbOrderTypeSellvo.Checked)
+            if (rbOrderTypeFullOrder.Checked)
+            {
+                MoneyInputView view = new MoneyInputView();
+                view.Title = Properties.Resources.InputCylinderPrice;
+                if (this.otherMoney == 0.0)
+                {
+                    view.Money = 300000.0;
+                }
+                else
+                {
+                    view.Money = this.otherMoney;
+                }
+                view.ShowDialog();
+                this.otherMoney = view.Money;
+                this._orderType = OrderType.ORDERTYPE_FULLORDER;
+                UpdateMoney();
+            }
+            //++ BUG0079-SPJ (NguyenPT 20160928) Add order type sell cylinder
+            else if (rbOrderTypeSellVo.Checked)
             {
                 MoneyInputView view = new MoneyInputView();
                 view.Title = Properties.Resources.InputCylinderPrice;
@@ -1232,6 +1255,7 @@ namespace MainPrj.View
                 this._orderType = OrderType.ORDERTYPE_SELLVO;
                 UpdateMoney();
             }
+            //-- BUG0079-SPJ (NguyenPT 20160928) Add order type sell cylinder
         }
 
         /// <summary>

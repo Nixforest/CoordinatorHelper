@@ -1,4 +1,5 @@
 ﻿using MainPrj.Model;
+using MainPrj.Model.Response;
 using MainPrj.Util;
 using MainPrj.View;
 using PcapDotNet.Core;
@@ -16,9 +17,11 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.IO;
 using System.Linq;
+using System.Media;
 using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
+using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -91,6 +94,9 @@ namespace MainPrj
                 }
             }
             //-- BUG0074-SPJ (NguyenPT 20160913) Handle turn on/off SIP thread
+            //++ BUG0084-SPJ (NguyenPT 20161004) Web socket Notification
+            DataPure.Instance.MainForm = this;
+            //-- BUG0084-SPJ (NguyenPT 20161004) Web socket Notification
         }
         /// <summary>
         /// Update data to channel tab.
@@ -201,6 +207,7 @@ namespace MainPrj
             tbxLog.Visible = onoff;
             chbListenFromCard.Visible = onoff;
             chbUpdatePhone.Visible = onoff;
+            btnTestNotification.Visible = onoff;
 
             if (onoff)
             {
@@ -357,6 +364,12 @@ namespace MainPrj
             this.listChannelControl[DataPure.Instance.CurrentChannel].SaveNote();
             UpdateStatus(Properties.Resources.NoteSaved);
         }
+        //++ BUG0081-SPJ (NguyenPT 20160928) Handle double line jump
+        private void HandleDoubleLineJump()
+        {
+            this.listChannelControl[DataPure.Instance.CurrentChannel].SaveNote(this.listChannelControl[DataPure.Instance.CurrentChannel].GetFullInformation());
+        }
+        //-- BUG0081-SPJ (NguyenPT 20160928) Handle double line jump
         /// <summary>
         /// Handle when click Transfer To Sale button.
         /// </summary>
@@ -557,6 +570,7 @@ namespace MainPrj
                 item.ChannelControl_Load(null, null);
             }
             //-- BUG0008-SPJ (NguyenPT 20160830) Order history
+            //WebSocketUtility.StartWebSocket(openSocket, errorSocket, receiveDataSocket, closeSocket);
         }
         /// <summary>
         /// Re-locate label.
@@ -914,29 +928,34 @@ namespace MainPrj
         private void btnSearch_Click(object sender, EventArgs e)
         {
             #region Test get customer information
-            string phone = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel).GetIncommingPhone();
-            double n = 0;
-            // Get incomming number information
-            if (!String.IsNullOrEmpty(phone) && double.TryParse(phone, out n))
-            {
-                // Insert value into current channel
-                try
-                {
-                    ChannelControl tab = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel);
-                    tab.SetIncommingPhone(phone);
-                    // Request server and update data from server
-                    UpdateData(phone, (int)CardDataStatus.CARDDATA_RINGING, DataPure.Instance.CurrentChannel);
-                }
-                catch (ArgumentOutOfRangeException)
-                {
-                    CommonProcess.ShowErrorMessage(Properties.Resources.ArgumentOutOfRange);
-                }
-            }
+            //string phone = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel).GetIncommingPhone();
+            //double n = 0;
+            //// Get incomming number information
+            //if (!String.IsNullOrEmpty(phone) && double.TryParse(phone, out n))
+            //{
+            //    // Insert value into current channel
+            //    try
+            //    {
+            //        ChannelControl tab = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel);
+            //        //HandleDoubleLineJump();
+            //        tab.SetIncommingPhone(phone);
+            //        // Request server and update data from server
+            //        UpdateData(phone, (int)CardDataStatus.CARDDATA_RINGING, DataPure.Instance.CurrentChannel);
+            //    }
+            //    catch (ArgumentOutOfRangeException)
+            //    {
+            //        CommonProcess.ShowErrorMessage(Properties.Resources.ArgumentOutOfRange);
+            //    }
+            //}
             //PrintData("<CRMV1               0002     2016-08-02 16:15:00                               01689908271                    >                                          172.16.1.64                                       {RAWCID:[0939331371]}{DETAILDES:[]}");
             #endregion
             //_TestServer test = new _TestServer();
             //test.ShowDialog();
             //CommonProcess.GetAgentExt();
+            //WebSocketUtility.StartWebSocket(openSocket, errorSocket, receiveDataSocket, closeSocket);
+
+            SoundPlayer simpleSound = new SoundPlayer(Properties.Resources.notifySound2);
+            simpleSound.PlayLooping();
         }
         /// <summary>
         /// Handle when click Create order button
@@ -1127,6 +1146,9 @@ namespace MainPrj
             }
             Properties.Settings.Default.UserToken = String.Empty;
             Properties.Settings.Default.Save();
+            //++ BUG0084-SPJ (NguyenPT 20161004) Web socket Notification
+            CloseWebSocketConnection();
+            //-- BUG0084-SPJ (NguyenPT 20161004) Web socket Notification
             return true;
         }
         /// <summary>
@@ -1288,6 +1310,165 @@ namespace MainPrj
             HandleClickUpholdButton();
         }
         //-- BUG0047-SPJ (NguyenPT 20160826) Handle print Uphold
+
+        //++ BUG0084-SPJ (NguyenPT 20161004) Web socket Notification
+        /// <summary>
+        /// Handle close connection with web socket event.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">CloseEventArgs</param>
+        private void closeSocket(object sender, WebSocketSharp.CloseEventArgs e)
+        {
+            UpdateStatus(Properties.Resources.ConnectedWithNotifyCenterClosed);
+            //CommonProcess.ShowErrorMessage(Properties.Resources.ConnectedWithNotifyCenterClosed);
+
+            // Disable notification button
+            SetControlEnable(this.btnNotification, false);
+            if (!DataPure.Instance.IsCloseWebSocketConnection)
+            {
+                StartReconnectWebSocket();
+            }
+        }
+
+        /// <summary>
+        /// Handle data received from web socket.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">MessageEventArgs</param>
+        private void receiveDataSocket(object sender, WebSocketSharp.MessageEventArgs e)
+        {
+            UpdateStatus(Properties.Resources.ConnectedWithNotifyCenterReceivedData + ": " + e.Data);
+            // Play sound if user is accounting
+            if (DataPure.Instance.IsAccountingAgentRole())
+            {
+                CommonProcess.NotificationSound.PlayLooping();
+            }
+            if (!String.IsNullOrEmpty(e.Data))
+            {
+                DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(NotificationResponseModel));
+                byte[] encodingBytes = null;
+                try
+                {
+                    // Encoding response data
+                    encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(e.Data);
+                }
+                catch (System.Text.EncoderFallbackException)
+                {
+                    CommonProcess.ShowErrorMessage(Properties.Resources.EncodingError);
+                }
+                if (encodingBytes != null)
+                {
+                    MemoryStream msU = new MemoryStream(encodingBytes);
+                    NotificationResponseModel baseResp = null;
+                    try
+                    {
+                        baseResp = (NotificationResponseModel)js.ReadObject(msU);
+                    }
+                    catch (SerializationException)
+                    {
+                        CommonProcess.ShowErrorMessage(Properties.Resources.ConvertJsonError);
+                    }
+                    if (baseResp != null)
+                    {
+                        if (baseResp.Status.Equals("1"))
+                        {
+                            baseResp.Record.IsNew = true;
+                            // Check if id is not existed in list notification
+                            if (!DataPure.Instance.ListNotification.ContainsKey(baseResp.Record.Id))
+                            {
+                                DataPure.Instance.ListNotification.Add(baseResp.Record.Id, baseResp.Record);
+                            }
+                        }
+                    }
+                }
+            }
+            SetNotificationLabel(DataPure.Instance.GetNewNotificationCount().ToString());
+        }
+
+        /// <summary>
+        /// Set control status.
+        /// </summary>
+        /// <param name="control">Control</param>
+        /// <param name="isEnable">Enable/Disable</param>
+        private void SetControlEnable(Control control, bool isEnable)
+        {
+            if (control.InvokeRequired)
+            {
+                CrossThreadUtility.EnableCallBack callback = new CrossThreadUtility.EnableCallBack(
+                    SetControlEnable);
+                this.Invoke(callback, new object[] { control, isEnable });
+            }
+            else
+            {
+                control.Enabled = isEnable;
+            }
+        }
+
+        /// <summary>
+        /// Set text for control (cross-thread).
+        /// </summary>
+        /// <param name="control">Control</param>
+        /// <param name="text">Sext</param>
+        private void SetControlText(Control control, string text)
+        {
+            if (control.InvokeRequired)
+            {
+                CrossThreadUtility.SetTextCallBack callback = new CrossThreadUtility.SetTextCallBack(
+                    SetControlText);
+                this.Invoke(callback, new object[] { control, text });
+            }
+            else
+            {
+                control.Text = text;
+            }
+        }
+
+        /// <summary>
+        /// Set label notification.
+        /// </summary>
+        /// <param name="text">Label content</param>
+        public void SetNotificationLabel(string text)
+        {
+            if (text.Equals("0"))
+            {
+                SetControlText(this.lblNotification, string.Empty);
+            }
+            else
+            {
+                SetControlText(this.lblNotification, text);
+            }
+        }
+
+        /// <summary>
+        /// Handle error connection event.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void errorSocket(object sender, WebSocketSharp.ErrorEventArgs e)
+        {
+            UpdateStatus(Properties.Resources.ConnectedWithNotifyCenterError);
+            CommonProcess.ShowErrorMessage(Properties.Resources.ConnectedWithNotifyCenterError);
+            // Disable notification button
+            SetControlEnable(this.btnNotification, false);
+            if (!DataPure.Instance.IsCloseWebSocketConnection)
+            {
+                StartReconnectWebSocket();
+            }
+        }
+
+        /// <summary>
+        /// Handle open connection event.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void openSocket(object sender, EventArgs e)
+        {
+            UpdateStatus(Properties.Resources.ConnectedWithNotifyCenter);
+            //CommonProcess.ShowInformMessage(Properties.Resources.ConnectedWithNotifyCenter, MessageBoxButtons.OK);
+            // Enable notification button
+            SetControlEnable(this.btnNotification, true);
+        }
+        //-- BUG0084-SPJ (NguyenPT 20161004) Web socket Notification
         #endregion
 
         #region Request server handler
@@ -1580,6 +1761,9 @@ namespace MainPrj
                     SelectAgent();
                 }
                 ReLocateLabel();
+                //++ BUG0084-SPJ (NguyenPT 20161004) Web socket Notification
+                StartReconnectWebSocket();
+                //-- BUG0084-SPJ (NguyenPT 20161004) Web socket Notification
             }
             // Update address data
             if (DataPure.Instance.IsAccountingAgentRole())
@@ -2066,6 +2250,7 @@ namespace MainPrj
             {
                 if (this.listChannelControl[DataPure.Instance.CurrentChannel].CanChangeTab())
                 {
+                    // Difference line
                     if (!model.Channel.Equals(DataPure.Instance.CurrentChannel))
                     {
                         DataPure.Instance.CurrentChannel = model.Channel;
@@ -2076,6 +2261,12 @@ namespace MainPrj
                             this.mainTabControl.SelectedIndex = DataPure.Instance.CurrentChannel;
                         }
                     }
+                    //++ BUG0081-SPJ (NguyenPT 20160928) Handle double line jump
+                    //else    // Same line
+                    //{
+                    //    HandleDoubleLineJump();
+                    //}
+                    //-- BUG0081-SPJ (NguyenPT 20160928) Handle double line jump
                     if (channel != null)
                     {
                         channel.SetIncommingPhone(model.Phone);
@@ -2325,6 +2516,195 @@ namespace MainPrj
         //    }
         //    timer.Stop();
         //}
+
+        //++ BUG0084-SPJ (NguyenPT 20161004) Web socket Notification
+        /// <summary>
+        /// Notification view.
+        /// </summary>
+        private NotificationView view = null;
+        /// <summary>
+        /// Handle click Notification button.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void btnNotification_Click(object sender, EventArgs e)
+        {
+            // Get location of notification button
+            Point location = this.PointToScreen(btnNotification.Location);
+            //
+            view = new NotificationView(location.X + btnNotification.Size.Width,
+                location.Y);
+            view.ListData = DataPure.Instance.ListNotification;
+            view.Deactivate += delegate
+            {
+                view.Close();
+            };
+            view.Show();
+        }
+
+        /// <summary>
+        /// Handle click test notification button.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void btnTestNotification_Click(object sender, EventArgs e)
+        {
+            //int count = DataPure.Instance.GetNewNotificationCount();
+            //if (count != 0)
+            //{
+            //    lblNotification.Text = count.ToString();
+            //}
+            //else
+            //{
+            //    lblNotification.Text = string.Empty;
+            //}
+            //string retVal = string.Empty;
+            //using (WebClient client = new WebClient())
+            //{
+            //    string respStr = String.Empty;
+            //    try
+            //    {
+            //        // Post keyword to server
+            //        string value = string.Empty;
+            //        value = String.Format("{{\"token\":\"{0}\",\"agent_id\":\"{1}\"}}",
+            //            Properties.Settings.Default.UserToken, DataPure.Instance.Agent.Id);
+            //            //"3e9d4bbc6eb88773b737a65f6a2d901c", DataPure.Instance.Agent.Id);
+            //        byte[] response = client.UploadValues(
+            //            @"http://spj.daukhimiennam.com/api/socket/notifyDevTest",
+            //            new System.Collections.Specialized.NameValueCollection()
+            //        {
+            //            { "q", value}
+            //        });
+            //        // Get response
+            //        respStr = System.Text.Encoding.UTF8.GetString(response);
+            //    }
+            //    catch (System.Net.WebException)
+            //    {
+            //        CommonProcess.ShowErrorMessage(Properties.Resources.InternetConnectionError);
+            //        CommonProcess.HasError = true;
+            //    }
+            //    if (!String.IsNullOrEmpty(respStr))
+            //    {
+            //        //CommonProcess.ShowErrorMessage(respStr);
+            //    }
+            //}
+            DataPure.Instance.WebSocket.CloseAsync();
+        }
+        /// <summary>
+        /// Connect with socket server.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void toolStripMenuItemConnect_Click(object sender, EventArgs e)
+        {
+            // Object is not null
+            if (DataPure.Instance.WebSocket != null)
+            {
+                // Status is closed
+                if (DataPure.Instance.WebSocket.ReadyState.Equals(WebSocketSharp.WebSocketState.Closed))
+                {
+                    // Reconnect
+                    WebSocketUtility.StartWebSocket(openSocket, errorSocket, receiveDataSocket, closeSocket);
+                }
+                else
+                {
+                    // Show error.
+                    CommonProcess.ShowErrorMessage(Properties.Resources.ConnectionWithNotifyCenterOpened);
+                }
+            }
+            else    // Object is null
+            {
+                // Start connect
+                WebSocketUtility.StartWebSocket(openSocket, errorSocket, receiveDataSocket, closeSocket);
+            }
+        }
+        /// <summary>
+        /// Disconnect with socket server.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void toolStripMenuItemDisConnect_Click(object sender, EventArgs e)
+        {
+            CloseWebSocketConnection();
+            DataPure.Instance.IsCloseWebSocketConnection = true;
+        }
+        /// <summary>
+        /// Close connect.
+        /// </summary>
+        private void CloseWebSocketConnection()
+        {
+            if (DataPure.Instance.WebSocket != null)
+            {
+                DataPure.Instance.WebSocket.CloseAsync(WebSocketSharp.CloseStatusCode.Normal);
+            }
+        }
+        /// <summary>
+        /// Start reconnect with web socket.
+        /// </summary>
+        private void StartReconnectWebSocket()
+        {
+            try
+            {
+                listenThread = new Thread(ReconnectWebSocket);
+                listenThread.Start();
+                listenThread.IsBackground = true;
+            }
+            catch (System.ArgumentNullException)
+            {
+                this.Close();
+            }
+            catch (System.Threading.ThreadStateException)
+            {
+                CommonProcess.ShowErrorMessage(Properties.Resources.ThreadStateError);
+                this.Close();
+            }
+            catch (System.OutOfMemoryException)
+            {
+                CommonProcess.ShowErrorMessage(Properties.Resources.OutOfMemory);
+                this.Close();
+            }
+        }
+
+        /// <summary>
+        /// Reconnect with web socket.
+        /// </summary>
+        /// <param name="obj"></param>
+        private void ReconnectWebSocket(object obj)
+        {
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
+            int count = 0;
+            // Get elapsed time
+            int elapsedTime = CommonProcess.RECONNECT_WEBSOCKET_MIN_TIME;
+            Random rnd = new Random();
+            // Random elapsed time between MIN-MAX
+            elapsedTime = rnd.Next(CommonProcess.RECONNECT_WEBSOCKET_MIN_TIME, CommonProcess.RECONNECT_WEBSOCKET_MAX_TIME);
+            while (true)
+            {
+                if (timer.ElapsedMilliseconds == elapsedTime * 1000)
+                {
+                    count++;
+                    Console.WriteLine("Đã qua {0}s", count);
+                    //timer.Restart();
+                    // Start connect
+                    WebSocketUtility.StartWebSocket(openSocket, errorSocket, receiveDataSocket, closeSocket);
+                    // Stop thread
+                    StopReconnectWebSocketThread();
+                    return;
+                }
+            }
+        }
+        /// <summary>
+        /// Stop ReconnectWebSocket thread.
+        /// </summary>
+        private void StopReconnectWebSocketThread()
+        {
+            if ((listenThread != null) && (listenThread.IsAlive))
+            {
+                listenThread.Abort();
+            }
+        }
+        //-- BUG0084-SPJ (NguyenPT 20161004) Web socket Notification
         #endregion
     }
 }

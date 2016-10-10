@@ -48,6 +48,15 @@ namespace MainPrj.View.Component
                 }
             }
         }
+        //++ BUG0080-SPJ (NguyenPT 20160928) Clear order history
+        /// <summary>
+        /// Clear all data on listview.
+        /// </summary>
+        public void ClearData()
+        {
+            this.listView.Items.Clear();
+        }
+        //-- BUG0080-SPJ (NguyenPT 20160928) Clear order history
 
         private ListViewItem CreateListViewItem(CreateOrderModel model, int index)
         {

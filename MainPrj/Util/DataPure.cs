@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
 namespace MainPrj.Util
 {
@@ -27,6 +28,61 @@ namespace MainPrj.Util
         //++ BUG0066-SPJ (NguyenPT 20160904) Increate List Order view performance
         private Dictionary<string, List<OrderModel>> listOrderHistory    = null;
         //-- BUG0066-SPJ (NguyenPT 20160904) Increate List Order view performance
+
+        //++ BUG0084-SPJ (NguyenPT 20161004) Web socket Notification
+        private Dictionary<string, NotificationModel> listNotification = null;
+        private bool isCloseWebSocketConnection                        = false;
+        private WebSocketSharp.WebSocket webSocket                     = null;
+        private Form _mainForm                                         = null;
+        /// <summary>
+        /// Flag check if websocket is connecting.
+        /// </summary>
+        public bool IsCloseWebSocketConnection
+        {
+            get { return isCloseWebSocketConnection; }
+            set { isCloseWebSocketConnection = value; }
+        }
+        /// <summary>
+        /// Return main form.
+        /// </summary>
+        public Form MainForm
+        {
+            get { return _mainForm; }
+            set { _mainForm = value; }
+        }
+        /// <summary>
+        /// List notification
+        /// </summary>
+        internal Dictionary<string, NotificationModel> ListNotification
+        {
+            get { return listNotification; }
+            set { listNotification = value; }
+        }
+        /// <summary>
+        /// Get count of new notifications.
+        /// </summary>
+        /// <returns>Count of new notifications</returns>
+        public int GetNewNotificationCount()
+        {
+            int retVal = 0;
+            foreach (var item in this.listNotification.Values)
+            {
+                if (item.IsNew)
+                {
+                    retVal += 1;
+                }
+            }
+            return retVal;
+        }
+        /// <summary>
+        /// Websocket object.
+        /// </summary>
+        public WebSocketSharp.WebSocket WebSocket
+        {
+            get { return webSocket; }
+            set { webSocket = value; }
+        }
+        //-- BUG0084-SPJ (NguyenPT 20161004) Web socket Notification
         #region SIP handling
         private PacketDevice netDevice = null;
         /// <summary>
@@ -416,6 +472,19 @@ namespace MainPrj.Util
             return string.Empty;
         }
         //-- BUG0008-SPJ (NguyenPT 20160830) Order history
+        //++ BUG0084-SPJ (NguyenPT 20161004) Web socket Notification
+        /// <summary>
+        /// Mard notification as read.
+        /// </summary>
+        /// <param name="id">Notify id</param>
+        public void MarkNotificationAsRead(string id)
+        {
+            if (this.ListNotification.ContainsKey(id))
+            {
+                this.ListNotification[id].IsNew = false;
+            }
+        }
+        //-- BUG0084-SPJ (NguyenPT 20161004) Web socket Notification
         #endregion
 
         #region Singleton Instance
@@ -437,6 +506,107 @@ namespace MainPrj.Util
             //++ BUG0066-SPJ (NguyenPT 20160904) Increate List Order view performance
             this.listOrderHistory      = new Dictionary<string, List<OrderModel>>();
             //-- BUG0066-SPJ (NguyenPT 20160904) Increate List Order view performance
+            //++ BUG0084-SPJ (NguyenPT 20161004) Web socket Notification
+            this.listNotification = new Dictionary<string, NotificationModel>();
+            this._mainForm        = new Form();
+            //-- BUG0084-SPJ (NguyenPT 20161004) Web socket Notification
+            //NotificationModel model = new NotificationModel();
+            //model.Id = "1";
+            //model.Sender = "Trần Quang Chương";
+            //model.Role = "17";
+            //model.Message = "đã tạo một đơn hàng mới cho Khách hàng Quán Biển Đông";
+            //string dateTime = "30/09/2016 12:50:50.42";
+            ////model.NotifyTime = Convert.ToDateTime(dateTime);
+            //model.NotifyTime = dateTime;
+            //this.listNotification.Add(model.Id, model);
+            //model = new NotificationModel();
+            //model.Id = "2";
+            //model.Sender = "Phạm Thị Nguyệt";
+            //model.Role = "9";
+            //model.Message = "đã xác nhận đơn hàng mới cho Khách hàng Quán Biển Đông";
+            //dateTime = "30/09/2016 13:50:50.42";
+            ////model.NotifyTime = Convert.ToDateTime(dateTime);
+            //model.NotifyTime = dateTime;
+            //model.IsNew = false;
+            //this.listNotification.Add(model.Id, model);
+            //model = new NotificationModel();
+            //model.Id = "3";
+            //model.Sender = "Đường Thị Thảo";
+            //model.Role = "9";
+            //model.Message = "đã xác nhận đơn hàng mới cho Khách hàng Quán Hủ Tiếu Nam Vang";
+            //dateTime = "30/09/2016 14:30:50.42";
+            ////model.NotifyTime = Convert.ToDateTime(dateTime);
+            //model.NotifyTime = dateTime;
+            //this.listNotification.Add(model.Id, model);
+            //model = new NotificationModel();
+            //model.Id = "4";
+            //model.Sender = "Đường Thị Thảo";
+            //model.Role = "9";
+            //model.Message = "đã xác nhận đơn hàng mới cho Khách hàng Quán Hủ Tiếu Nam Vang";
+            //dateTime = "30/09/2016 14:50:50.42";
+            ////model.NotifyTime = Convert.ToDateTime(dateTime);
+            //model.NotifyTime = dateTime;
+            //this.listNotification.Add(model.Id, model);
+            //model = new NotificationModel();
+            //model.Id = "5";
+            //model.Sender = "Phạm Ngọc Thùy Trang";
+            //model.Role = "17";
+            //model.Message = "đã tạo một đơn hàng mới cho Khách hàng Lẩu Dê 79";
+            //dateTime = "30/09/2016 17:50:50.42";
+            ////model.NotifyTime = Convert.ToDateTime(dateTime);
+            //model.NotifyTime = dateTime;
+            //model.IsNew = false;
+            //this.listNotification.Add(model.Id, model);
+            //model = new NotificationModel();
+            //model.Id = "6";
+            //model.Sender = "Trần Thị Phượng";
+            //model.Role = "9";
+            //model.Message = "đã xác nhận đơn hàng mới cho Khách hàng Lẩu Dê 79";
+            //dateTime = "01/10/2016 11:15:50.42";
+            ////model.NotifyTime = Convert.ToDateTime(dateTime);
+            //model.NotifyTime = dateTime;
+            //model.IsNew = true;
+            //this.listNotification.Add(model.Id, model);
+            //model = new NotificationModel();
+            //model.Id = "7";
+            //model.Sender = "Trần Thị Phượng";
+            //model.Role = "9";
+            //model.Message = "đã xác nhận đơn hàng mới cho Khách hàng Lẩu Dê 79";
+            //dateTime = "01/10/2016 11:15:50.42";
+            ////model.NotifyTime = Convert.ToDateTime(dateTime);
+            //model.NotifyTime = dateTime;
+            //model.IsNew = true;
+            //this.listNotification.Add(model.Id, model);
+            //model = new NotificationModel();
+            //model.Id = "8";
+            //model.Sender = "Trần Thị Phượng";
+            //model.Role = "9";
+            //model.Message = "đã xác nhận đơn hàng mới cho Khách hàng Lẩu Dê 79";
+            //dateTime = "01/10/2016 11:15:50.42";
+            ////model.NotifyTime = Convert.ToDateTime(dateTime);
+            //model.NotifyTime = dateTime;
+            //model.IsNew = true;
+            //this.listNotification.Add(model.Id, model);
+            //model = new NotificationModel();
+            //model.Id = "9";
+            //model.Sender = "Trần Thị Phượng";
+            //model.Role = "9";
+            //model.Message = "đã xác nhận đơn hàng mới cho Khách hàng Lẩu Dê 79";
+            //dateTime = "01/10/2016 11:15:50.42";
+            ////model.NotifyTime = Convert.ToDateTime(dateTime);
+            //model.NotifyTime = dateTime;
+            //model.IsNew = true;
+            //this.listNotification.Add(model.Id, model);
+            //model = new NotificationModel();
+            //model.Id = "10";
+            //model.Sender = "Trần Thị Phượng";
+            //model.Role = "9";
+            //model.Message = "đã xác nhận đơn hàng mới cho Khách hàng Lẩu Dê 79";
+            //dateTime = "01/10/2016 11:15:50.42";
+            ////model.NotifyTime = Convert.ToDateTime(dateTime);
+            //model.NotifyTime = dateTime;
+            //model.IsNew = true;
+            //this.listNotification.Add(model.Id, model); model = new NotificationModel();
         }
         /// <summary>
         /// Get instance

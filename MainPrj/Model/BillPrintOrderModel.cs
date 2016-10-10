@@ -146,7 +146,7 @@ namespace MainPrj.Model
             }
             //++ BUG0056-SPJ (NguyenPT 20160830) Handle order type
             string name = string.Empty;
-            if (this.OrderType.Equals(OrderType.ORDERTYPE_SELLVO))
+            if (this.OrderType.Equals(OrderType.ORDERTYPE_FULLORDER))
             {
                 name = Properties.Resources.Cylinder;
             }

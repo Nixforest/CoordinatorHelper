@@ -66,6 +66,12 @@ namespace MainPrj.View
             //-- BUG0055-SPJ (NguyenPT 20160826) Save brand information in setting.ini
             
             Properties.Settings.Default.IsTabColorChange                = this.cbxTabColorChanged.Checked;
+            //++ BUG0083-SPJ (NguyenPT 20160928) Add Uphold phone setting
+            if (!string.IsNullOrEmpty(this.tbxUpholdPhone.Text))
+            {
+                CommonProcess.WriteUpholdPhoneToSetting(this.tbxUpholdPhone.Text);
+            }
+            //-- BUG0083-SPJ (NguyenPT 20160928) Add Uphold phone setting
             // Save setting
             Properties.Settings.Default.Save();
             // Close form
@@ -133,7 +139,16 @@ namespace MainPrj.View
             {
                 bool.TryParse(packetSIP, out isStartSIP);
             }
+            //++ BUG0083-SPJ (NguyenPT 20160928) Add Uphold phone setting
+            this.tbxUpholdPhone.Text = CommonProcess.ReadUpholdPhoneFromSetting();
+            if (string.IsNullOrEmpty(this.tbxUpholdPhone.Text))
+            {
+                this.tbxUpholdPhone.Text = CommonProcess.UPHOLD_PHONE_HCM;
+            }
+            //-- BUG0083-SPJ (NguyenPT 20160928) Add Uphold phone setting
             chbSIP.Checked = isStartSIP;
+
+            this.btnNewNotifyColor.BackColor = CommonProcess.ConvertColorFromString(CommonProcess.FACEBOOK_NEW_ITEM_COLOR);
         }
         /// <summary>
         /// Handle when click on button Open file.
@@ -383,6 +398,18 @@ namespace MainPrj.View
                 && (e.ProgressPercentage >= 0))
             {
                 progressBar.Value = e.ProgressPercentage * 2;
+            }
+        }
+
+        private void btnNewNotifyColor_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = this.colorDialog.ShowDialog();
+            if (dialogResult.Equals(DialogResult.OK))
+            {
+                CommonProcess.FACEBOOK_NEW_ITEM_COLOR = this.colorDialog.Color.R.ToString("X2")
+                    + this.colorDialog.Color.G.ToString("X2")
+                    + this.colorDialog.Color.B.ToString("X2");
+                this.btnNewNotifyColor.BackColor = this.colorDialog.Color;
             }
         }
     }

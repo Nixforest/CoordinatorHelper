@@ -10,9 +10,11 @@ using System.Drawing.Text;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Media;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -28,27 +30,43 @@ namespace MainPrj.Util
     {
         #region Constant
         //++ BUG0045-SPJ (NguyenPT 20160823) Define constants
-        public static string INI_KEY_AGENTID        = "AgentId";
-        public static string INI_SECTION_GENERAL = "General";
+        public const string INI_KEY_AGENTID        = "AgentId";
+        public const string INI_SECTION_GENERAL = "General";
         //-- BUG0045-SPJ (NguyenPT 20160823) Define constants
         //++ BUG0046-SPJ (NguyenPT 20160824) Login automatically
-        public static string INI_KEY_USERNAME = "Username";
-        public static string INI_KEY_PASSWORD = "Password";
+        public const string INI_KEY_USERNAME = "Username";
+        public const string INI_KEY_PASSWORD = "Password";
         //-- BUG0046-SPJ (NguyenPT 20160824) Login automatically
         //++ BUG0055-SPJ (NguyenPT 20160826) Save brand information in setting.ini
-        public static string INI_KEY_BRAND = "Brand";
+        public const string INI_KEY_BRAND = "Brand";
         //-- BUG0055-SPJ (NguyenPT 20160826) Save brand information in setting.ini
         //++ BUG0008-SPJ (NguyenPT 20160830) Order history
-        public static string API_ORDER_HISTORY = "/api/default/windowGetCustomerHistory";
+        public const string API_ORDER_HISTORY = "/api/default/windowGetCustomerHistory";
         //-- BUG0008-SPJ (NguyenPT 20160830) Order history
         //++ BUG0074-SPJ (NguyenPT 20160913) Handle turn on/off SIP thread
-        public static string INI_KEY_PACKET_UDP = "PacketUDP";
-        public static string INI_KEY_PACKET_SIP = "PacketSIP";
+        public const string INI_KEY_PACKET_UDP = "PacketUDP";
+        public const string INI_KEY_PACKET_SIP = "PacketSIP";
         //-- BUG0074-SPJ (NguyenPT 20160913) Handle turn on/off SIP thread
+        //++ BUG0083-SPJ (NguyenPT 20160928) Add Uphold phone setting
+        public const string INI_KEY_UPHOLD_PHONE = "UpholdPhone";
+        public const string UPHOLD_PHONE_HCM     = "0838 408 408";
+        //-- BUG0083-SPJ (NguyenPT 20160928) Add Uphold phone setting
+        ////++ BUG0082-SPJ (NguyenPT 20160928) Handle save Setting data path on Setting
+        //public static string INI_KEY_SETTING_DIRECTORY = "SettingDirectory";
+        ////-- BUG0082-SPJ (NguyenPT 20160928) Handle save Setting data path on Setting
+        /// <summary>
+        /// API: inform received notification.
+        /// </summary>
+        public const string API_NOTIFY_RECEIVED = @"http://spj.daukhimiennam.com/api/socket/notifyReceived";
         #endregion
         #region Static variables
+        public static SoundPlayer NotificationSound = new SoundPlayer(Properties.Resources.notifySound3);
         public static List<string> AGENT_LIST_ZIBO = new List<string>
         {
+            "1311",		    // Cửa hàng 1
+            "1312",		    // Cửa hàng 2
+            "1313",		    // Cửa hàng 3
+            "125798",		// Đại lý Trạm Vĩnh Long 1
             "30753",		// Cửa hàng Cần Thơ 1
             "138544",		// Cửa hàng Cần Thơ 2
             "262526",		// Cửa Hàng Ô Môn
@@ -117,6 +135,23 @@ namespace MainPrj.Util
         /// Flag check if has error in processing.
         /// </summary>
         public static bool HasError = false;
+        ///// <summary>
+        ///// Setting directory.
+        ///// </summary>
+        //public static string SettingDirectory = String.Empty;
+
+        public static string FACEBOOK_COLOR = "3B5998";
+        //public static string FACEBOOK_NEW_ITEM_COLOR = "EDF2FA";
+        public static string FACEBOOK_NEW_ITEM_COLOR = "0080FF";
+        public static string FACEBOOK_ITEM_HOVER_COLOR = "F6F7F9";
+        /// <summary>
+        /// Minximum time to reconnect with web socket.
+        /// </summary>
+        public const int RECONNECT_WEBSOCKET_MIN_TIME = 10;
+        /// <summary>
+        /// Maximum time to reconnect with web socket.
+        /// </summary>
+        public const int RECONNECT_WEBSOCKET_MAX_TIME = 20;
         #endregion
 
         #region Show message
@@ -127,7 +162,91 @@ namespace MainPrj.Util
         /// </summary>
         /// <param name="msg">Message content</param>
         /// <returns>Dialog result</returns>
-        public static DialogResult ShowErrorMessage(string msg)
+        public static DialogResult ShowErrorMessage(string msg, Form parent = null)
+        {
+            HandlerTimer();
+            if (parent == null)
+            {
+                return MessageBox.Show(msg, Properties.Resources.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                if (parent.InvokeRequired)
+                {
+                    return (DialogResult)parent.Invoke((Action)delegate
+                    {
+                        MessageBox.Show(parent, msg, Properties.Resources.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    });
+                }
+                else
+                {
+                    return MessageBox.Show(parent, msg, Properties.Resources.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+        /// <summary>
+        /// Show inform message box.
+        /// </summary>
+        /// <param name="msg">Message content</param>
+        /// <returns>Dialog result</returns>
+        public static DialogResult ShowInformMessage(string msg, Form parent = null)
+        {
+            if (parent == null)
+            {
+                return MessageBox.Show(msg, Properties.Resources.Inform, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            }
+            else
+            {
+                if (parent.InvokeRequired)
+                {
+                    return (DialogResult)parent.Invoke((Action)delegate
+                    {
+                        MessageBox.Show(parent, msg, Properties.Resources.Inform, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    });
+                }
+                else
+                {
+                    return MessageBox.Show(parent, msg, Properties.Resources.Inform, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                }
+            }
+        }
+        /// <summary>
+        /// Show inform message box.
+        /// </summary>
+        /// <param name="msg">Message content</param>
+        /// <param name="buttons"></param>
+        /// <returns>Dialog result</returns>
+        public static DialogResult ShowInformMessage(string msg, MessageBoxButtons buttons, Form parent = null)
+        {
+            if (parent == null)
+            {
+                return MessageBox.Show(msg, Properties.Resources.Inform, buttons, MessageBoxIcon.Information);
+            }
+            else
+            {
+                if (parent.InvokeRequired)
+                {
+                    return (DialogResult)parent.Invoke((Action)delegate
+                    {
+                        MessageBox.Show(parent, msg, Properties.Resources.Inform, buttons, MessageBoxIcon.Information);
+                    });
+                }
+                else
+                {
+                    return MessageBox.Show(parent, msg, Properties.Resources.Inform, buttons, MessageBoxIcon.Information);
+                }
+            }
+        }
+        /// <summary>
+        /// Show message box inform about function processing.
+        /// </summary>
+        /// <returns>Dialog result</returns>
+        public static DialogResult ShowInformMessageProcessing()
+        {
+            return MessageBox.Show(Properties.Resources.FunctionProcessing, Properties.Resources.Inform,
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        public static void HandlerTimer()
         {
             System.Timers.Timer timer = new System.Timers.Timer(Properties.Settings.Default.TimeAutoCloseMsgBox)
             {
@@ -142,35 +261,6 @@ namespace MainPrj.Util
                 }
             };
             timer.Enabled = true;
-            return MessageBox.Show(msg, Properties.Resources.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
-        /// <summary>
-        /// Show inform message box.
-        /// </summary>
-        /// <param name="msg">Message content</param>
-        /// <returns>Dialog result</returns>
-        public static DialogResult ShowInformMessage(string msg)
-        {
-            return MessageBox.Show(msg, Properties.Resources.Inform, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-        }
-        /// <summary>
-        /// Show inform message box.
-        /// </summary>
-        /// <param name="msg">Message content</param>
-        /// <param name="buttons"></param>
-        /// <returns>Dialog result</returns>
-        public static DialogResult ShowInformMessage(string msg, MessageBoxButtons buttons)
-        {
-            return MessageBox.Show(msg, Properties.Resources.Inform, buttons, MessageBoxIcon.Warning);
-        }
-        /// <summary>
-        /// Show message box inform about function processing.
-        /// </summary>
-        /// <returns>Dialog result</returns>
-        public static DialogResult ShowInformMessageProcessing()
-        {
-            return MessageBox.Show(Properties.Resources.FunctionProcessing, Properties.Resources.Inform,
-                MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         #endregion
 
@@ -913,6 +1003,46 @@ namespace MainPrj.Util
             return ReadSetting(INI_KEY_PACKET_SIP, INI_SECTION_GENERAL);
         }
         //-- BUG0074-SPJ (NguyenPT 20160913) Handle turn on/off SIP thread
+        ////++ BUG0082-SPJ (NguyenPT 20160928) Handle save Setting data path on Setting
+        ///// <summary>
+        ///// Write setting directory to setting.ini.
+        ///// </summary>
+        ///// <param name="path">Setting directory</param>
+        //public static void WriteSettingDirectoryToSetting(string path)
+        //{
+        //    string filepath = String.Format("{0}\\setting.ini", Properties.Settings.Default.SettingFilePath);
+        //    var iniFile = new INIHandle(filepath);
+        //    iniFile.Write(INI_KEY_SETTING_DIRECTORY, path, INI_SECTION_GENERAL);
+        //}
+        ///// <summary>
+        ///// Read setting directory from setting.ini.
+        ///// </summary>
+        ///// <returns>Setting directory</returns>
+        //public static string ReadSettingDirectoryFromSetting()
+        //{
+        //    return ReadSetting(INI_KEY_SETTING_DIRECTORY, INI_SECTION_GENERAL);
+        //}
+        ////-- BUG0082-SPJ (NguyenPT 20160928) Handle save Setting data path on Setting
+        //++ BUG0083-SPJ (NguyenPT 20160928) Add Uphold phone setting
+        /// <summary>
+        /// Write uphold phone to setting.ini.
+        /// </summary>
+        /// <param name="path">Uphold phone</param>
+        public static void WriteUpholdPhoneToSetting(string phone)
+        {
+            string filepath = String.Format("{0}\\setting.ini", Properties.Settings.Default.SettingFilePath);
+            var iniFile = new INIHandle(filepath);
+            iniFile.Write(INI_KEY_UPHOLD_PHONE, phone, INI_SECTION_GENERAL);
+        }
+        /// <summary>
+        /// Read uphold phone from setting.ini.
+        /// </summary>
+        /// <returns>Uphold phone</returns>
+        public static string ReadUpholdPhoneFromSetting()
+        {
+            return ReadSetting(INI_KEY_UPHOLD_PHONE, INI_SECTION_GENERAL);
+        }
+        //-- BUG0083-SPJ (NguyenPT 20160928) Add Uphold phone setting
         #endregion
 
         #region Common methods
@@ -1187,6 +1317,14 @@ namespace MainPrj.Util
                     break;
             }
             return retVal;
+        }
+        public static string GetRoleString(string roleId)
+        {
+            if (CommonProcess.IsValidNumber(roleId))
+            {
+                return GetRoleString((RoleType)int.Parse(roleId));
+            }
+            return string.Empty;
         }
         /// <summary>
         /// Set data to channel tab.
@@ -1535,6 +1673,36 @@ namespace MainPrj.Util
             return false;
         }
         //-- BUG0045-SPJ (NguyenPT 20160823) Check if agent id is exist inside List agents
+        public static string NormalizationStringJson(string data)
+        {
+            return data.Replace("\\", "/");
+        }
+        public static Color ConvertColorFromString(string color)
+        {
+            return (Color)new ColorConverter().ConvertFromString("#" + color);
+        }
+        ///// <summary>
+        ///// Get setting directory.
+        ///// </summary>
+        ///// <returns>Setting directory</returns>
+        //public static string GetSettingDirectory()
+        //{
+        //    // Read the first time
+        //    if (String.IsNullOrEmpty(SettingDirectory))
+        //    {
+        //        // Read from
+        //        string temp = ReadSettingDirectoryFromSetting();
+        //        if (!string.IsNullOrEmpty(temp))
+        //        {
+        //            SettingDirectory = temp;
+        //        }
+        //        else
+        //        {
+        //            SettingDirectory = Properties.Settings.Default.SettingFilePath;
+        //        }
+        //    }
+        //    return SettingDirectory;
+        //}
         #endregion
 
         #region Request Server
@@ -2078,7 +2246,18 @@ namespace MainPrj.Util
                         //++ BUG0068-SPJ (NguyenPT 20160905) Change promote money
                         if (model.IsManualChangePromote)
                         {
-                            updateModel.Amount_discount = model.PromoteMoney;
+                            //++ BUG0078-SPJ (NguyenPT 20160925) Check if user change promote money manual to 0
+                            //updateModel.Amount_discount = model.PromoteMoney;
+                            if (model.PromoteMoney != 0.0)
+                            {
+                                updateModel.Amount_discount = model.PromoteMoney;
+                            }
+                            else
+                            {
+                                // Push 1.0 to server
+                                updateModel.Amount_discount = 1.0;
+                            }
+                            //-- BUG0078-SPJ (NguyenPT 20160925) Check if user change promote money manual to 0
                         }
                         else
                         {
@@ -2215,7 +2394,18 @@ namespace MainPrj.Util
                         //++ BUG0068-SPJ (NguyenPT 20160905) Change promote money
                         if (model.IsManualChangePromote)
                         {
-                            createModel.Amount_discount = model.PromoteMoney;
+                            //++ BUG0078-SPJ (NguyenPT 20160925) Check if user change promote money manual to 0
+                            //createModel.Amount_discount = model.PromoteMoney;
+                            if (model.PromoteMoney != 0.0)
+                            {
+                                createModel.Amount_discount = model.PromoteMoney;
+                            }
+                            else
+                            {
+                                // Push 1.0 to server
+                                createModel.Amount_discount = 1.0;
+                            }
+                            //-- BUG0078-SPJ (NguyenPT 20160925) Check if user change promote money manual to 0
                         }
                         else
                         {
@@ -2396,6 +2586,99 @@ namespace MainPrj.Util
             }
         }
         //-- BUG0008-SPJ (NguyenPT 20160830) Order history
+        public static void RequestNotifyReceived(string notifyId, string receiveId, string receivedName, string note)
+        {
+            using (WebClient client = new WebClient())
+            {
+                string respStr = String.Empty;
+                try
+                {
+                    // Post keyword to server
+                    string value = string.Empty;
+                    value = String.Format("{{\"token\":\"{0}\", \"notify_id\":\"{1}\", \"received_id\":\"{2}\", \"received_name\":\"{3}\", \"note\":\"{4}\"}}",
+                        Properties.Settings.Default.UserToken,
+                        notifyId, receiveId, receivedName, note);
+                    byte[] response = client.UploadValues(
+                        API_NOTIFY_RECEIVED,
+                        new System.Collections.Specialized.NameValueCollection()
+                    {
+                        { "q", value}
+                    });
+                    // Get response
+                    respStr = System.Text.Encoding.UTF8.GetString(response);
+                }
+                catch (System.Net.WebException)
+                {
+                    ShowErrorMessage(Properties.Resources.InternetConnectionError);
+                    HasError = true;
+                }
+
+                if (!String.IsNullOrEmpty(respStr))
+                {
+                    DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(BaseResponseModel));
+                    byte[] encodingBytes = null;
+                    try
+                    {
+                        // Encoding response data
+                        encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);
+                    }
+                    catch (System.Text.EncoderFallbackException)
+                    {
+                        ShowErrorMessage(Properties.Resources.EncodingError);
+                        HasError = true;
+                    }
+                    if (encodingBytes != null)
+                    {
+                        MemoryStream msU = new MemoryStream(encodingBytes);
+                        BaseResponseModel baseResp = null;
+                        try
+                        {
+                            baseResp = (BaseResponseModel)js.ReadObject(msU);
+                        }
+                        catch (SerializationException e)
+                        {
+                            //ShowErrorMessage(Properties.Resources.ConvertJsonError, DataPure.Instance.MainForm);
+                            HasError = true;
+                        }
+                        if (baseResp != null)
+                        {
+                            if (baseResp.Status == "1")
+                            {
+                                //ShowInformMessage("Đã xác nhận thành công", MessageBoxButtons.OK);
+                                //ShowInformMessage("Đã xác nhận thành công", DataPure.Instance.MainForm);
+                            }
+                            else
+                            {
+                                //ShowErrorMessage(baseResp.Message, DataPure.Instance.MainForm);
+                                HasError = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        public static void HandleInformReceivedNotificationSuccess(string notifyId)
+        {
+            DataPure.Instance.MarkNotificationAsRead(notifyId);
+            //if (DataPure.Instance.ListNotification.ContainsKey(notifyId))
+            //{
+            //    DataPure.Instance.ListNotification[notifyId].IsNew = false;
+            //}
+            ShowInformMessage(Properties.Resources.InformReceivedNotification, DataPure.Instance.MainForm);
+            //int count = DataPure.Instance.GetNewNotificationCount();
+            //if (count != 0)
+            //{
+            //    // Update notification label
+            //    ((MainForm)DataPure.Instance.MainForm).SetNotificationLabel(count.ToString());
+            //}
+            //else
+            //{
+            //    // Update notification label
+            //    ((MainForm)DataPure.Instance.MainForm).SetNotificationLabel(string.Empty);
+            //}
+            // Update notification label
+            ((MainForm)DataPure.Instance.MainForm).SetNotificationLabel(DataPure.Instance.GetNewNotificationCount().ToString());
+        }
         #endregion
     }
 }

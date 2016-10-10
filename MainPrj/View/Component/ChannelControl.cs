@@ -135,7 +135,10 @@ namespace MainPrj.View
         /// <returns>Return city</returns>
         public string GetCity()
         {
-            return cbxCity.SelectedText != null ? cbxCity.SelectedText : string.Empty;
+            //++ BUG0081-SPJ (NguyenPT 20160928) Handle double line jump
+            //return cbxCity.SelectedText != null ? cbxCity.SelectedText : string.Empty;
+            return cbxCity.Text != null ? cbxCity.Text : string.Empty;
+            //-- BUG0081-SPJ (NguyenPT 20160928) Handle double line jump
         }
         /// <summary>
         /// Set data for Street combobox.
@@ -166,7 +169,10 @@ namespace MainPrj.View
         /// <returns>Return street</returns>
         public string GetStreet()
         {
-            return cbxStreet.SelectedText != null ? cbxStreet.SelectedText : string.Empty;
+            //++ BUG0081-SPJ (NguyenPT 20160928) Handle double line jump
+            //return cbxStreet.SelectedText != null ? cbxStreet.SelectedText : string.Empty;
+            return cbxStreet.Text != null ? cbxStreet.Text : string.Empty;
+            //-- BUG0081-SPJ (NguyenPT 20160928) Handle double line jump
         }
         /// <summary>
         /// Set list of phone number
@@ -287,6 +293,10 @@ namespace MainPrj.View
             this.tbxCustomerType.Text  = String.Empty;
             this.tbxNote.Text          = String.Empty;
             this.tbxSaleName.Text      = String.Empty;
+
+            //++ BUG0080-SPJ (NguyenPT 20160928) Clear order history
+            this.orderHistoryControl.ClearData();
+            //-- BUG0080-SPJ (NguyenPT 20160928) Clear order history
         }
         /// <summary>
         /// Handle when change text value.
@@ -674,5 +684,76 @@ namespace MainPrj.View
             this.orderHistoryControl.UpdateData();
         }
         //-- BUG0008-SPJ (NguyenPT 20160830) Order history
+        //++ BUG0081-SPJ (NguyenPT 20160928) Handle double line jump
+        /// <summary>
+        /// Get ward string.
+        /// </summary>
+        /// <returns>Return ward</returns>
+        public string GetWard()
+        {
+            return cbxWard.Text != null ? cbxWard.Text : string.Empty;
+        }
+        /// <summary>
+        /// Get district string.
+        /// </summary>
+        /// <returns>Return district</returns>
+        public string GetDistrict()
+        {
+            return cbxDistrict.Text != null ? cbxDistrict.Text : string.Empty;
+        }
+        public string GetFullInformation()
+        {
+            string retVal = string.Empty;
+            if (!String.IsNullOrEmpty(tbxCustomerName.Text))
+            {
+                retVal += tbxCustomerName.Text;
+            }
+            if (!String.IsNullOrEmpty(tbxAddress.Text))
+            {
+                if (!String.IsNullOrEmpty(retVal))
+                {
+                    retVal += " - ";
+                }
+                retVal += tbxAddress.Text;
+            }
+            if (!String.IsNullOrEmpty(GetStreet()))
+            {
+                if (!String.IsNullOrEmpty(retVal))
+                {
+                    retVal += ", ";
+                }
+                retVal += GetStreet();
+            }
+            if (!String.IsNullOrEmpty(GetWard()))
+            {
+                if (!String.IsNullOrEmpty(retVal))
+                {
+                    retVal += ", ";
+                }
+                retVal += GetWard();
+            }
+            if (!String.IsNullOrEmpty(GetDistrict()))
+            {
+                if (!String.IsNullOrEmpty(retVal))
+                {
+                    retVal += ", ";
+                }
+                retVal += GetDistrict();
+            }
+            if (!String.IsNullOrEmpty(GetCity()))
+            {
+                if (!String.IsNullOrEmpty(retVal))
+                {
+                    retVal += ", ";
+                }
+                retVal += GetCity();
+            }
+            return  retVal;
+        }
+        public void SaveNote(string note)
+        {
+            data.Contact_note = note;
+        }
+        //-- BUG0081-SPJ (NguyenPT 20160928) Handle double line jump
     }
 }

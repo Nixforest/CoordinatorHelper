@@ -305,6 +305,70 @@ namespace MainPrj.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap connect {
+            get {
+                object obj = ResourceManager.GetObject("connect", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đã kết nối với Trung tâm thông báo.
+        /// </summary>
+        internal static string ConnectedWithNotifyCenter {
+            get {
+                return ResourceManager.GetString("ConnectedWithNotifyCenter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đã đóng kết nối tới Trung tâm thông báo.
+        /// </summary>
+        internal static string ConnectedWithNotifyCenterClosed {
+            get {
+                return ResourceManager.GetString("ConnectedWithNotifyCenterClosed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lỗi kết nối với Trung tâm thông báo.
+        /// </summary>
+        internal static string ConnectedWithNotifyCenterError {
+            get {
+                return ResourceManager.GetString("ConnectedWithNotifyCenterError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đã nhận dữ liệu từ Trung tâm thông báo.
+        /// </summary>
+        internal static string ConnectedWithNotifyCenterReceivedData {
+            get {
+                return ResourceManager.GetString("ConnectedWithNotifyCenterReceivedData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kết nối với Trung tâm thông báo đã được mở.
+        /// </summary>
+        internal static string ConnectionWithNotifyCenterOpened {
+            get {
+                return ResourceManager.GetString("ConnectionWithNotifyCenterOpened", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lỗi xảy ra khi convert JSON object.
+        /// </summary>
+        internal static string ConvertJsonError {
+            get {
+                return ResourceManager.GetString("ConvertJsonError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap copy {
             get {
                 object obj = ResourceManager.GetObject("copy", resourceCulture);
@@ -439,6 +503,16 @@ namespace MainPrj.Properties {
         internal static string Detail {
             get {
                 return ResourceManager.GetString("Detail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap disconnect {
+            get {
+                object obj = ResourceManager.GetObject("disconnect", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -614,6 +688,15 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Xác nhận đã đọc được thông báo đơn hàng.
+        /// </summary>
+        internal static string InformReceivedNotification {
+            get {
+                return ResourceManager.GetString("InformReceivedNotification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nhập giá vỏ:.
         /// </summary>
         internal static string InputCylinderPrice {
@@ -697,12 +780,42 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap logout {
+            get {
+                object obj = ResourceManager.GetObject("logout", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon main {
             get {
                 object obj = ResourceManager.GetObject("main", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap markedread {
+            get {
+                object obj = ResourceManager.GetObject("markedread", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap markread {
+            get {
+                object obj = ResourceManager.GetObject("markread", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -777,6 +890,53 @@ namespace MainPrj.Properties {
         internal static string NoteSaved {
             get {
                 return ResourceManager.GetString("NoteSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap notification {
+            get {
+                object obj = ResourceManager.GetObject("notification", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap notification___Copy {
+            get {
+                object obj = ResourceManager.GetObject("notification - Copy", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream notifySound1 {
+            get {
+                return ResourceManager.GetStream("notifySound1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream notifySound2 {
+            get {
+                return ResourceManager.GetStream("notifySound2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream notifySound3 {
+            get {
+                return ResourceManager.GetStream("notifySound3", resourceCulture);
             }
         }
         
@@ -1117,6 +1277,16 @@ namespace MainPrj.Properties {
         internal static string ThreadStateError {
             get {
                 return ResourceManager.GetString("ThreadStateError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap timer {
+            get {
+                object obj = ResourceManager.GetObject("timer", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

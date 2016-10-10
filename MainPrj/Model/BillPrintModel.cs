@@ -23,6 +23,9 @@ namespace MainPrj.Model
         private string customerName;
         private string customerAddress;
         private string agentAddress;
+        //++ BUG0083-SPJ (NguyenPT 20160928) Add Uphold phone setting
+        private string upholdPhone;
+        //-- BUG0083-SPJ (NguyenPT 20160928) Add Uphold phone setting
         public BillPrintModel()
         {
             //++ BUG0055-SPJ (NguyenPT 20160826) Save brand information in setting.ini
@@ -44,6 +47,13 @@ namespace MainPrj.Model
             orderType       = OrderType.ORDERTYPE_NORMAL;
             otherMoney      = 0.0;
             //-- BUG0056-SPJ (NguyenPT 20160830) Handle order type
+            //++ BUG0083-SPJ (NguyenPT 20160928) Add Uphold phone setting
+            upholdPhone = CommonProcess.ReadUpholdPhoneFromSetting();
+            if (string.IsNullOrEmpty(upholdPhone))
+            {
+                upholdPhone = CommonProcess.UPHOLD_PHONE_HCM;
+            }
+            //-- BUG0083-SPJ (NguyenPT 20160928) Add Uphold phone setting
         }
         //++ BUG0056-SPJ (NguyenPT 20160830) Handle order type
         /// <summary>
@@ -415,7 +425,10 @@ namespace MainPrj.Model
             graphics.DrawString(text, font, brush, positionX, startY + Offset);
             // Glad
             Offset = Offset + (int)size.Height;
-            text = "ĐT: 0838 408 408";
+            //++ BUG0083-SPJ (NguyenPT 20160928) Add Uphold phone setting
+            //text = "ĐT: 0838 408 408";
+            text = "ĐT: " + upholdPhone;
+            //-- BUG0083-SPJ (NguyenPT 20160928) Add Uphold phone setting
             font = new Font(Properties.Settings.Default.BilllFont, 12);
             size = graphics.MeasureString(text, font);
             positionX = startX + (Properties.Settings.Default.BillSizeW - (int)size.Width) / 2;

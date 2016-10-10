@@ -78,6 +78,10 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="websocket-sharp, Version=1.0.2.59611, Culture=neutral, PublicKeyToken=5660b08a1845a91e, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebSocketSharp.1.0.3-rc11\lib\websocket-sharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\Address\StreetModel.cs" />
@@ -91,6 +95,7 @@
     <Compile Include="Model\BillPrintUpholdModel.cs" />
     <Compile Include="Model\ListViewColumn\OrderHistoryColumns.cs" />
     <Compile Include="Model\MaterialBitmap.cs" />
+    <Compile Include="Model\NotificationModel.cs" />
     <Compile Include="Model\OrderStatus.cs" />
     <Compile Include="Model\CylinderModel.cs" />
     <Compile Include="Model\ListViewColumn\ListOrderColumns.cs" />
@@ -112,6 +117,7 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\CardDataStatus.cs" />
+    <Compile Include="Model\Response\NotificationResponseModel.cs" />
     <Compile Include="Model\Response\OrderResponseModel.cs" />
     <Compile Include="Model\Response\TempDataResponseModel.cs" />
     <Compile Include="Model\RoleType.cs" />
@@ -130,10 +136,12 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\CommonProcess.cs" />
+    <Compile Include="Util\CrossThreadUtility.cs" />
     <Compile Include="Util\DataPure.cs" />
     <Compile Include="Util\ExcelHandle.cs" />
     <Compile Include="Util\FlashWindowHelper.cs" />
     <Compile Include="Util\INIHandle.cs" />
+    <Compile Include="Util\WebSocketUtility.cs" />
     <Compile Include="View\AboutBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -163,6 +171,12 @@
     </Compile>
     <Compile Include="View\Component\CoordinatorOrderView_v2.Designer.cs">
       <DependentUpon>CoordinatorOrderView_v2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Component\NotificationItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Component\NotificationItem.Designer.cs">
+      <DependentUpon>NotificationItem.cs</DependentUpon>
     </Compile>
     <Compile Include="View\Component\OrderHistoryControl.cs">
       <SubType>UserControl</SubType>
@@ -223,6 +237,12 @@
     </Compile>
     <Compile Include="View\MoneyInputView.Designer.cs">
       <DependentUpon>MoneyInputView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\NotificationView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\NotificationView.Designer.cs">
+      <DependentUpon>NotificationView.cs</DependentUpon>
     </Compile>
     <Compile Include="View\OrderCarView.cs">
       <SubType>Form</SubType>
@@ -318,6 +338,9 @@
     <EmbeddedResource Include="View\CancelOrderView.resx">
       <DependentUpon>CancelOrderView.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="View\Component\NotificationItem.resx">
+      <DependentUpon>NotificationItem.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\Component\OrderHistoryControl.resx">
       <DependentUpon>OrderHistoryControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -341,6 +364,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\MoneyInputView.resx">
       <DependentUpon>MoneyInputView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\NotificationView.resx">
+      <DependentUpon>NotificationView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\OrderCarView.resx">
       <DependentUpon>OrderCarView.cs</DependentUpon>
@@ -374,6 +400,7 @@
       <DependentUpon>_TestServer.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="ClassDiagram1.cd" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -509,6 +536,39 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\exit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\notification.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\notification - Copy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\timer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\markread.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\markedread.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\connect.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\logout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\disconnect.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\notifySound1.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\notifySound2.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\nhac-iphone5.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
