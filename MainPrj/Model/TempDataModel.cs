@@ -43,6 +43,19 @@ namespace MainPrj.Model
         protected string agent_province;
         [DataMember(Name = "agent_district", IsRequired = false)]
         protected string agent_district;
+        //++ BUG0006-SPJ (NguyenPT 20161111) Call history
+        [DataMember(Name = "list_order_reason", IsRequired = false)]
+        protected List<SelectorModel> list_order_reason;
+
+        /// <summary>
+        /// List type of call.
+        /// </summary>
+        public List<SelectorModel> List_order_reason
+        {
+            get { return list_order_reason; }
+            set { list_order_reason = value; }
+        }
+        //-- BUG0006-SPJ (NguyenPT 20161111) Call history
         /// <summary>
         /// District of agent.
         /// </summary>

@@ -306,6 +306,39 @@ namespace MainPrj.Util
             }
             return new List<SelectorModel>();
         }
+
+        //++ BUG0006-SPJ (NguyenPT 20161111) Call history
+        /// <summary>
+        /// Get list of type call.
+        /// </summary>
+        /// <returns>List of type call</returns>
+        public List<SelectorModel> GetListCallType()
+        {
+            if ((tempData != null) && (tempData.List_order_reason != null))
+            {
+                return tempData.List_order_reason;
+            }
+            return new List<SelectorModel>();
+        }
+
+        /// <summary>
+        /// Get type call string.
+        /// </summary>
+        /// <param name="id">Id of type call</param>
+        /// <returns>Name of type call</returns>
+        public string GetTypeCallString(string id)
+        {
+            foreach (SelectorModel item in this.GetListCallType())
+            {
+                if (item.Id.Equals(id))
+                {
+                    return item.Name;
+                }
+            }
+            return string.Empty;
+        }
+        //-- BUG0006-SPJ (NguyenPT 20161111) Call history
+
         /// <summary>
         /// Get name of agent by Agent id.
         /// </summary>
@@ -485,6 +518,92 @@ namespace MainPrj.Util
             }
         }
         //-- BUG0084-SPJ (NguyenPT 20161004) Web socket Notification
+
+        //++ BUG0006-SPJ (NguyenPT 20161111) Call history
+        /// <summary>
+        /// Upate order id value to call model.
+        /// </summary>
+        /// <param name="callId">Id of call model</param>
+        /// <param name="orderId">Order id</param>
+        public void UpdateOrderIdToCallModel(string callId, string orderId)
+        {
+            if (!String.IsNullOrEmpty(callId))
+            {
+                foreach (CallModel item in this.listCalls)
+                {
+                    if (item.Id.Equals(callId))
+                    {
+                        item.Order_id = orderId;
+
+                        CommonProcess.RequestCreateCallHistory(item);
+                        break;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Upate type of call value to call model.
+        /// </summary>
+        /// <param name="callId">Id of call model</param>
+        /// <param name="typeCall">Order id</param>
+        public void UpdateTypeCallToCallModel(string callId, string typeCall)
+        {
+            if (!String.IsNullOrEmpty(callId))
+            {
+                foreach (CallModel item in this.listCalls)
+                {
+                    if (item.Id.Equals(callId))
+                    {
+                        item.Type_call = typeCall;
+                        CommonProcess.RequestCreateCallHistory(item);
+                        break;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Get type call string from call id.
+        /// </summary>
+        /// <param name="callId">Id of call</param>
+        /// <returns>Type call</returns>
+        public string GetTypeCallByCallId(string callId)
+        {
+            if (!String.IsNullOrEmpty(callId))
+            {
+                foreach (CallModel item in this.listCalls)
+                {
+                    if (item.Id.Equals(callId))
+                    {
+                        return item.Type_call;
+                    }
+                }
+            }
+            return string.Empty;
+        }
+
+        /// <summary>
+        /// Upate type of call value to call model.
+        /// </summary>
+        /// <param name="callId">Id of call model</param>
+        /// <param name="typeCall">Order id</param>
+        public void UpdateRecordToCallModel(string callId, string recordName)
+        {
+            if (!String.IsNullOrEmpty(callId))
+            {
+                foreach (CallModel item in this.listCalls)
+                {
+                    if (item.Id.Equals(callId))
+                    {
+                        item.File_record_name = recordName;
+                        CommonProcess.RequestCreateCallHistory(item);
+                        break;
+                    }
+                }
+            }
+        }
+        //-- BUG0006-SPJ (NguyenPT 20161111) Call history
         #endregion
 
         #region Singleton Instance

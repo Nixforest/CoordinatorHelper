@@ -183,11 +183,20 @@ namespace MainPrj
             //-- BUG0070-SPJ (NguyenPT 20160908) Reset data
             customer.ActivePhone = phone;
             CallModel call = new CallModel(System.DateTime.Now, channelIdx, customer, phone, status);
-            //++ BUG0043-SPJ (NguyenPT 20160822) Fix bug lost all history when program down
-            CommonProcess.WriteHistory(call);
-            //-- BUG0043-SPJ (NguyenPT 20160822) Fix bug lost all history when program down
-            DataPure.Instance.ListCalls.Add(call);
+            //++ BUG0006-SPJ (NguyenPT 20161111) Call history
+            ////++ BUG0043-SPJ (NguyenPT 20160822) Fix bug lost all history when program down
+            //CommonProcess.WriteHistory(call);
+            ////-- BUG0043-SPJ (NguyenPT 20160822) Fix bug lost all history when program down
+            //DataPure.Instance.ListCalls.Add(call);
+            if (status.Equals((int)CardDataStatus.CARDDATA_HANDLING) || status.Equals((int)CardDataStatus.CARDDATA_MISS))
+            {
+                CommonProcess.WriteHistory(call);
+                DataPure.Instance.ListCalls.Add(call);
+                CommonProcess.RequestCreateCallHistory(call);
+            }
             CommonProcess.SetChannelInformation(channel, call.Customer);
+            channel.CallId = call.Id;
+            //-- BUG0006-SPJ (NguyenPT 20161111) Call history
             //++ BUG0008-SPJ (NguyenPT 20160830) Order history
             // Request orders history
             if (!string.IsNullOrEmpty(customer.Id))
@@ -248,6 +257,15 @@ namespace MainPrj
                     case RoleType.ROLE_ACCOUNTING_ZONE:
                         OrderView order = new OrderView(DataPure.Instance.CustomerInfo);
                         order.ShowDialog();
+                        //++ BUG0006-SPJ (NguyenPT 20161111) Call history
+                        if (!String.IsNullOrEmpty(order.OrderId))
+                        {
+                            // Update id of order to current call
+                            DataPure.Instance.UpdateOrderIdToCallModel(
+                                this.listChannelControl[DataPure.Instance.CurrentChannel].CallId,
+                                order.OrderId);
+                        }
+                        //-- BUG0006-SPJ (NguyenPT 20161111) Call history
                         break;
                     case RoleType.ROLE_DIEU_PHOI:
                         //++ BUG0070-SPJ (NguyenPT 20160908) Reset data
@@ -367,6 +385,28 @@ namespace MainPrj
         //++ BUG0081-SPJ (NguyenPT 20160928) Handle double line jump
         private void HandleDoubleLineJump()
         {
+            //// Get channel control
+            //ChannelControl channel = this.listChannelControl[DataPure.Instance.CurrentChannel];
+            //// Customer does not created
+            //if (String.IsNullOrEmpty(channel.Data.Name))
+            //{
+            //    CustomerModel newInfo = new CustomerModel();
+            //    List<String> customerInfo = channel.GetNewCustomerInfo();
+            //    newInfo.ActivePhone = channel.GetIncommingPhone();
+                
+            //    if (String.IsNullOrEmpty(customerInfo[0]))
+            //    {
+            //        newInfo.Name = Properties.Resources.CustomerNameUnknown;
+            //    }
+            //    else
+            //    {
+            //        newInfo.Name = customerInfo[0];
+            //    }
+            //    newInfo.Address = channel.GetAddress();
+            //    channel.SetChannelInformation(newInfo);
+            //    //this.listChannelControl[DataPure.Instance.CurrentChannel].SaveNote(this.listChannelControl[DataPure.Instance.CurrentChannel].GetFullInformation());
+
+            //}
             this.listChannelControl[DataPure.Instance.CurrentChannel].SaveNote(this.listChannelControl[DataPure.Instance.CurrentChannel].GetFullInformation());
         }
         //-- BUG0081-SPJ (NguyenPT 20160928) Handle double line jump
@@ -852,6 +892,24 @@ namespace MainPrj
             CommonProcess.ReadHistory();
             CommonProcess.ReadSetting();
             CommonProcess.ReadSettingPromote();
+            
+            //++ BUG0086-SPJ (NguyenPT 20161024d Promote money setting
+            // Get promote money value from setting.ini
+            string promoteMoney = CommonProcess.ReadPromoteMoneyFromSetting();
+            // Check if promote money value is not empty
+            if (!String.IsNullOrEmpty(promoteMoney))
+            {
+                // Set default value for output value
+                double outValue = Properties.Settings.Default.PromoteMoney;
+                // Try parse promote money to double value
+                if (double.TryParse(promoteMoney, out outValue))
+                {
+                    // Parse is success -> Save to Properties.Settings
+                    Properties.Settings.Default.PromoteMoney = outValue;
+                    Properties.Settings.Default.Save();
+                }
+            }
+            //-- BUG0086-SPJ (NguyenPT 20161024d Promote money setting
 
             //++ BUG0046-SPJ (NguyenPT 20160824) Login automatically
             // Check if login automatically
@@ -928,25 +986,25 @@ namespace MainPrj
         private void btnSearch_Click(object sender, EventArgs e)
         {
             #region Test get customer information
-            //string phone = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel).GetIncommingPhone();
-            //double n = 0;
-            //// Get incomming number information
+            string phone = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel).GetIncommingPhone();
+            double n = 0;
+            // Get incomming number information
             //if (!String.IsNullOrEmpty(phone) && double.TryParse(phone, out n))
-            //{
-            //    // Insert value into current channel
-            //    try
-            //    {
-            //        ChannelControl tab = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel);
-            //        //HandleDoubleLineJump();
-            //        tab.SetIncommingPhone(phone);
-            //        // Request server and update data from server
-            //        UpdateData(phone, (int)CardDataStatus.CARDDATA_RINGING, DataPure.Instance.CurrentChannel);
-            //    }
-            //    catch (ArgumentOutOfRangeException)
-            //    {
-            //        CommonProcess.ShowErrorMessage(Properties.Resources.ArgumentOutOfRange);
-            //    }
-            //}
+            {
+                // Insert value into current channel
+                try
+                {
+                    ChannelControl tab = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel);
+                    //HandleDoubleLineJump();
+                    tab.SetIncommingPhone(phone);
+                    // Request server and update data from server
+                    UpdateData(phone, (int)CardDataStatus.CARDDATA_HANDLING, DataPure.Instance.CurrentChannel);
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    CommonProcess.ShowErrorMessage(Properties.Resources.ArgumentOutOfRange);
+                }
+            }
             //PrintData("<CRMV1               0002     2016-08-02 16:15:00                               01689908271                    >                                          172.16.1.64                                       {RAWCID:[0939331371]}{DETAILDES:[]}");
             #endregion
             //_TestServer test = new _TestServer();
@@ -954,8 +1012,12 @@ namespace MainPrj
             //CommonProcess.GetAgentExt();
             //WebSocketUtility.StartWebSocket(openSocket, errorSocket, receiveDataSocket, closeSocket);
 
-            SoundPlayer simpleSound = new SoundPlayer(Properties.Resources.notifySound2);
-            simpleSound.PlayLooping();
+            //SoundPlayer simpleSound = new SoundPlayer(Properties.Resources.notifySound2);
+            //simpleSound.PlayLooping();
+            //CommonProcess.ShowInformMessage(DataPure.Instance.WebSocket.ReadyState.ToString());
+            //CommonProcess.ShowInformMessage(
+            //    CommonProcess.GetPhoneFromRecordFilePath(@"C:\REC\REC201610\20161025\01--A-0838964703---20161025090533.wav") + " - "
+            //    + CommonProcess.GetFileNameFromRecordFilePath(@"C:\REC\REC201610\20161025\01--A-0838964703---20161025090533.wav"));
         }
         /// <summary>
         /// Handle when click Create order button
@@ -1319,7 +1381,7 @@ namespace MainPrj
         /// <param name="e">CloseEventArgs</param>
         private void closeSocket(object sender, WebSocketSharp.CloseEventArgs e)
         {
-            UpdateStatus(Properties.Resources.ConnectedWithNotifyCenterClosed);
+            //UpdateStatus(Properties.Resources.ConnectedWithNotifyCenterClosed);
             //CommonProcess.ShowErrorMessage(Properties.Resources.ConnectedWithNotifyCenterClosed);
 
             // Disable notification button
@@ -1834,6 +1896,10 @@ namespace MainPrj
                         OrderResponseModel baseResp = (OrderResponseModel)js.ReadObject(msU);
                         if (baseResp != null)
                         {
+                            //++ BUG0006-SPJ (NguyenPT 20161111) Call history
+                            // Update id of order to current call (Coordinator)
+                            DataPure.Instance.UpdateOrderIdToCallModel(this.listChannelControl[DataPure.Instance.CurrentChannel].CallId, baseResp.Id);
+                            //-- BUG0006-SPJ (NguyenPT 20161111) Call history
                             toolStripStatusLabel.Text = baseResp.Message;
                             CommonProcess.ShowInformMessage(baseResp.Message, MessageBoxButtons.OK);
                         }
@@ -2181,6 +2247,30 @@ namespace MainPrj
             CardDataModel model = new CardDataModel(data);          // Data model
             bool needUpdate = false;                                // Flag need update UI
             ChannelControl channel = null;                          // Channel incomming
+            //++ BUG0006-SPJ (NguyenPT 20161111) Call history
+            // Receive record packet
+            if (model.Status.Equals((int)CardDataStatus.CARDDATA_RECORD))
+            {
+                // Get phone number from record file name
+                string phone = CommonProcess.GetPhoneFromRecordFilePath(model.Phone);
+                // Success
+                if (!String.IsNullOrEmpty(phone))
+                {
+                    // Add record file name to call model
+                    foreach (CallModel item in DataPure.Instance.ListCalls)
+                    {
+                        if (item.Phone.Equals(phone) && item.Channel.Equals(model.Channel))
+                        {
+                            //item.File_record_name = CommonProcess.GetFileNameFromRecordFilePath(model.Phone);
+                            item.File_record_name = model.Phone;
+                            CommonProcess.RequestCreateCallHistory(item);
+                        }
+                    }
+                }
+                this.tbxLog.Text = data + "\r\n" + this.tbxLog.Text;
+                return;
+            }
+            //-- BUG0006-SPJ (NguyenPT 20161111) Call history
             // Get incomming number information
             if (!String.IsNullOrEmpty(model.Phone))
             {
@@ -2262,10 +2352,10 @@ namespace MainPrj
                         }
                     }
                     //++ BUG0081-SPJ (NguyenPT 20160928) Handle double line jump
-                    //else    // Same line
-                    //{
-                    //    HandleDoubleLineJump();
-                    //}
+                    else    // Same line
+                    {
+                        HandleDoubleLineJump();
+                    }
                     //-- BUG0081-SPJ (NguyenPT 20160928) Handle double line jump
                     if (channel != null)
                     {

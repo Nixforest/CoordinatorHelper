@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Media;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Windows.Forms;
@@ -18,6 +19,12 @@ namespace MainPrj.View
     {
         private List<CallModel> listTodayData = new List<CallModel>();
         private string selectedId = String.Empty;
+        //++ BUG0006-SPJ (NguyenPT 20161111) Call history
+        /// <summary>
+        /// Record player view.
+        /// </summary>
+        private RecordPlayerView view = null;
+        //-- BUG0006-SPJ (NguyenPT 20161111) Call history
         /// <summary>
         /// List of data which search result.
         /// </summary>
@@ -205,7 +212,26 @@ namespace MainPrj.View
             arr[(int)HistoryColumns.HISTORY_COLUMN_PHONE] = callModel.Phone;
             arr[(int)HistoryColumns.HISTORY_COLUMN_CHANNEL] = String.Format("{0}", callModel.Channel + 1);
             arr[(int)HistoryColumns.HISTORY_COLUMN_STATUS] = CommonProcess.GetStatusString(callModel.Status);
-            arr[(int)HistoryColumns.HISTORY_COLUMN_HANDLE] = CommonProcess.GetCallTypeString(callModel.Type);
+            //++ BUG0006-SPJ (NguyenPT 20161111) Call history
+            //arr[(int)HistoryColumns.HISTORY_COLUMN_HANDLE] = CommonProcess.GetCallTypeString(callModel.Type);
+            // Get list of tyle call id
+            string[] listTypeCall   = callModel.Type_call.Split(GlobalConst.SPLITER_CHR);
+            string typeCall         = string.Empty;
+            // Get list of type call string
+            foreach (string type in listTypeCall)
+            {
+                typeCall += DataPure.Instance.GetTypeCallString(type) + GlobalConst.SPLITER_STR;
+            }
+            // Remove last spliter if need
+            if (!string.IsNullOrEmpty(typeCall))
+            {
+                typeCall = typeCall.Remove(typeCall.Length - 1);
+            }
+            // Replace spliter by space + spliter
+            typeCall = typeCall.Replace(GlobalConst.SPLITER_STR, GlobalConst.SPLITER_SPACE_STR);
+            arr[(int)HistoryColumns.HISTORY_COLUMN_HANDLE] = typeCall;
+            //-- BUG0006-SPJ (NguyenPT 20161111) Call history
+
             if (callModel.Customer != null)
             {
                 arr[(int)HistoryColumns.HISTORY_COLUMN_NOTE] = callModel.Customer.Contact_note;
@@ -227,6 +253,22 @@ namespace MainPrj.View
             }
             // Set tag value
             item.Tag = callModel.Id;
+            //++ BUG0006-SPJ (NguyenPT 20161111) Call history
+            if (!String.IsNullOrEmpty(callModel.Order_id))
+            {
+                // Mark finish
+                item.ForeColor = Properties.Settings.Default.ColorFinishCallText;
+                item.BackColor = Properties.Settings.Default.ColorFinishCallBackground;
+                // Update data
+                for (int i = 0; i < this.listTodayData.Count; i++)
+                {
+                    if (this.listTodayData[i].Id.Equals(callModel.Id))
+                    {
+                        this.listTodayData[i].IsFinish = true;
+                    }
+                }
+            }
+            //-- BUG0006-SPJ (NguyenPT 20161111) Call history
             return item;
         }
         /// <summary>
@@ -236,7 +278,7 @@ namespace MainPrj.View
         /// <param name="e">EventArgs</param>
         private void btnFinish_Click(object sender, EventArgs e)
         {
-            HandleFinishItem();
+            //HandleFinishItem();
         }
         /// <summary>
         /// Mark item is finish.
@@ -536,6 +578,12 @@ namespace MainPrj.View
                                     OrderView order = new OrderView(callModel.Customer);
                                     //-- BUG0065-SPJ (NguyenPT 20160901) Use callMode.Customer instead of DataPure.Instance.CustomerInfo
                                     order.ShowDialog();
+                                    //++ BUG0006-SPJ (NguyenPT 20161111) Call history
+                                    if (!String.IsNullOrEmpty(order.OrderId))
+                                    {
+                                        DataPure.Instance.UpdateOrderIdToCallModel(id, order.OrderId);
+                                    }
+                                    //-- BUG0006-SPJ (NguyenPT 20161111) Call history
                                     break;
                                 case RoleType.ROLE_DIEU_PHOI:
                                     OrderCoordinatorView view = new OrderCoordinatorView();
@@ -679,6 +727,17 @@ namespace MainPrj.View
                                 string id = baseResp.Id;
                                 if (!String.IsNullOrEmpty(id))
                                 {
+                                    if (this.listViewHistory.SelectedItems.Count > 0)
+                                    {
+                                        string callId = this.listViewHistory.SelectedItems[0].Tag.ToString();
+                                        foreach (CallModel callModel in this.listCurrentData)
+                                        {
+                                            if (callModel.Id.Equals(callId))
+                                            {
+                                                DataPure.Instance.UpdateOrderIdToCallModel(callId, baseResp.Id);
+                                            }
+                                        }
+                                    }
                                     toolStripStatusLabel.Text = Properties.Resources.CreateOrderSuccess;
                                     CommonProcess.ShowInformMessage(Properties.Resources.CreateOrderSuccess, MessageBoxButtons.OK);
                                 }
@@ -793,6 +852,58 @@ namespace MainPrj.View
                         }
                         break;
                     }
+                }
+            }
+        }
+
+        private void toolStripMenuItemListenRecord_Click(object sender, EventArgs e)
+        {
+            string id = string.Empty;
+            foreach (ListViewItem item in this.listViewHistory.Items)
+            {
+                if (item.Bounds.Contains(rightClick))
+                {
+                    id = item.Tag.ToString();
+                    break;
+                }
+            }
+            foreach (CallModel item in DataPure.Instance.ListCalls)
+            {
+                if (item.Id.Equals(id))
+                {
+                    if (!string.IsNullOrEmpty(item.File_record_name))
+                    {
+                        view = new RecordPlayerView();
+                        view.Path = item.File_record_name;
+                        view.Location = rightClick;
+                        view.Deactivate += delegate
+                        {
+                            view.Close();
+                        };
+                        view.Show();
+                    }
+                    else
+                    {
+                        CommonProcess.ShowErrorMessage(GlobalConst.CONTENT00001);
+                    }
+                    break;
+                }
+            }
+        }
+
+        private void toolStripMenuItemSelectCallType_Click(object sender, EventArgs e)
+        {
+            string id = string.Empty;
+            foreach (ListViewItem item in this.listViewHistory.Items)
+            {
+                if (item.Bounds.Contains(rightClick))
+                {
+                    id = item.Tag.ToString();
+                    SelectCallTypeView view = new SelectCallTypeView(DataPure.Instance.GetTypeCallByCallId(id));
+                    view.ShowDialog();
+                    DataPure.Instance.UpdateTypeCallToCallModel(id, view.CallType);
+                    this.ReloadListView(this.listCurrentData);
+                    break;
                 }
             }
         }

@@ -128,6 +128,7 @@
             this.chbPromote.TabIndex = 3;
             this.chbPromote.Text = "Không lấy quà Khuyến mãi";
             this.chbPromote.UseVisualStyleBackColor = true;
+            this.chbPromote.Visible = false;
             // 
             // listViewCylinder
             // 

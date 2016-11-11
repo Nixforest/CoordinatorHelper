@@ -104,12 +104,16 @@
             this.tbxUpholdPhone = new System.Windows.Forms.TextBox();
             this.label29 = new System.Windows.Forms.Label();
             this.btnNewNotifyColor = new System.Windows.Forms.Button();
+            this.btnSound = new System.Windows.Forms.Button();
+            this.nUDPromoteMoney = new System.Windows.Forms.NumericUpDown();
+            this.label30 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.nUDMainPort)).BeginInit();
             this.groupBoxServer.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nUDTimeAutoCloseMsgBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDPhoneCutLen)).BeginInit();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nUDPromoteMoney)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -163,12 +167,48 @@
             this.groupBoxServer.Controls.Add(this.groupBox2);
             this.groupBoxServer.Controls.Add(this.tbxURLUpdateCustomerPhone);
             this.groupBoxServer.Controls.Add(this.label8);
+            this.groupBoxServer.Controls.Add(this.btnSearchResultBackground);
             this.groupBoxServer.Controls.Add(this.tbxURLGetCustomerByKeyword);
+            this.groupBoxServer.Controls.Add(this.btnSearchResultText);
             this.groupBoxServer.Controls.Add(this.label6);
+            this.groupBoxServer.Controls.Add(this.btnSearchResult);
+            this.groupBoxServer.Controls.Add(this.btnFinishCallBackColor);
+            this.groupBoxServer.Controls.Add(this.btnTabFinishCallTextColor);
             this.groupBoxServer.Controls.Add(this.tbxURLGetCustomerByPhone);
+            this.groupBoxServer.Controls.Add(this.btnTabHandleCallTextColor);
+            this.groupBoxServer.Controls.Add(this.label26);
             this.groupBoxServer.Controls.Add(this.label3);
+            this.groupBoxServer.Controls.Add(this.label25);
+            this.groupBoxServer.Controls.Add(this.btnTabIncommingTextColor);
+            this.groupBoxServer.Controls.Add(this.btnFinishCallTextColor);
+            this.groupBoxServer.Controls.Add(this.btnNewNotifyColor);
+            this.groupBoxServer.Controls.Add(this.label24);
+            this.groupBoxServer.Controls.Add(this.nUDPhoneCutLen);
             this.groupBoxServer.Controls.Add(this.tbxServerURL);
+            this.groupBoxServer.Controls.Add(this.label23);
+            this.groupBoxServer.Controls.Add(this.btnTabActiveBackgroundColor);
+            this.groupBoxServer.Controls.Add(this.btnFinishCallColor);
             this.groupBoxServer.Controls.Add(this.label2);
+            this.groupBoxServer.Controls.Add(this.label12);
+            this.groupBoxServer.Controls.Add(this.label11);
+            this.groupBoxServer.Controls.Add(this.tbxHistoryFilepath);
+            this.groupBoxServer.Controls.Add(this.tbxHistoryFilename);
+            this.groupBoxServer.Controls.Add(this.label13);
+            this.groupBoxServer.Controls.Add(this.btnMissCallTextColor);
+            this.groupBoxServer.Controls.Add(this.nUDTimeAutoCloseMsgBox);
+            this.groupBoxServer.Controls.Add(this.tbxCallIdFormat);
+            this.groupBoxServer.Controls.Add(this.label22);
+            this.groupBoxServer.Controls.Add(this.cbxTabColorChanged);
+            this.groupBoxServer.Controls.Add(this.label14);
+            this.groupBoxServer.Controls.Add(this.label15);
+            this.groupBoxServer.Controls.Add(this.label21);
+            this.groupBoxServer.Controls.Add(this.label16);
+            this.groupBoxServer.Controls.Add(this.label18);
+            this.groupBoxServer.Controls.Add(this.label17);
+            this.groupBoxServer.Controls.Add(this.btnOpenFile);
+            this.groupBoxServer.Controls.Add(this.label20);
+            this.groupBoxServer.Controls.Add(this.label19);
+            this.groupBoxServer.Controls.Add(this.label29);
             this.groupBoxServer.Location = new System.Drawing.Point(385, 9);
             this.groupBoxServer.Name = "groupBoxServer";
             this.groupBoxServer.Size = new System.Drawing.Size(514, 585);
@@ -201,9 +241,9 @@
             this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Controls.Add(this.tbxKeyIncommingPhone);
             this.groupBox2.Controls.Add(this.label4);
-            this.groupBox2.Location = new System.Drawing.Point(10, 355);
+            this.groupBox2.Location = new System.Drawing.Point(10, 471);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(497, 224);
+            this.groupBox2.Size = new System.Drawing.Size(497, 108);
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Json keys";
@@ -353,7 +393,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(10, 15);
+            this.label11.Location = new System.Drawing.Point(7, 158);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(79, 13);
             this.label11.TabIndex = 0;
@@ -363,7 +403,7 @@
             // 
             this.tbxHistoryFilepath.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.tbxHistoryFilepath.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbxHistoryFilepath.Location = new System.Drawing.Point(95, 12);
+            this.tbxHistoryFilepath.Location = new System.Drawing.Point(92, 155);
             this.tbxHistoryFilepath.Name = "tbxHistoryFilepath";
             this.tbxHistoryFilepath.ReadOnly = true;
             this.tbxHistoryFilepath.Size = new System.Drawing.Size(250, 20);
@@ -371,7 +411,7 @@
             // 
             // btnOpenFile
             // 
-            this.btnOpenFile.Location = new System.Drawing.Point(351, 10);
+            this.btnOpenFile.Location = new System.Drawing.Point(348, 153);
             this.btnOpenFile.Name = "btnOpenFile";
             this.btnOpenFile.Size = new System.Drawing.Size(28, 23);
             this.btnOpenFile.TabIndex = 2;
@@ -382,7 +422,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(10, 41);
+            this.label12.Location = new System.Drawing.Point(7, 184);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(84, 13);
             this.label12.TabIndex = 0;
@@ -392,7 +432,7 @@
             // 
             this.tbxHistoryFilename.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.tbxHistoryFilename.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbxHistoryFilename.Location = new System.Drawing.Point(95, 38);
+            this.tbxHistoryFilename.Location = new System.Drawing.Point(92, 181);
             this.tbxHistoryFilename.Name = "tbxHistoryFilename";
             this.tbxHistoryFilename.Size = new System.Drawing.Size(284, 20);
             this.tbxHistoryFilename.TabIndex = 1;
@@ -400,7 +440,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(10, 67);
+            this.label13.Location = new System.Drawing.Point(7, 210);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(71, 13);
             this.label13.TabIndex = 0;
@@ -410,7 +450,7 @@
             // 
             this.tbxCallIdFormat.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.tbxCallIdFormat.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbxCallIdFormat.Location = new System.Drawing.Point(95, 64);
+            this.tbxCallIdFormat.Location = new System.Drawing.Point(92, 207);
             this.tbxCallIdFormat.Name = "tbxCallIdFormat";
             this.tbxCallIdFormat.Size = new System.Drawing.Size(284, 20);
             this.tbxCallIdFormat.TabIndex = 1;
@@ -418,7 +458,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(10, 93);
+            this.label14.Location = new System.Drawing.Point(7, 236);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(119, 13);
             this.label14.TabIndex = 0;
@@ -426,7 +466,7 @@
             // 
             // btnMissCallTextColor
             // 
-            this.btnMissCallTextColor.Location = new System.Drawing.Point(150, 88);
+            this.btnMissCallTextColor.Location = new System.Drawing.Point(147, 231);
             this.btnMissCallTextColor.Name = "btnMissCallTextColor";
             this.btnMissCallTextColor.Size = new System.Drawing.Size(23, 23);
             this.btnMissCallTextColor.TabIndex = 7;
@@ -436,7 +476,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(10, 122);
+            this.label15.Location = new System.Drawing.Point(7, 265);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(134, 13);
             this.label15.TabIndex = 0;
@@ -444,7 +484,7 @@
             // 
             // btnFinishCallColor
             // 
-            this.btnFinishCallColor.Location = new System.Drawing.Point(150, 117);
+            this.btnFinishCallColor.Location = new System.Drawing.Point(147, 260);
             this.btnFinishCallColor.Name = "btnFinishCallColor";
             this.btnFinishCallColor.Size = new System.Drawing.Size(68, 23);
             this.btnFinishCallColor.TabIndex = 7;
@@ -454,7 +494,7 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(92, 151);
+            this.label16.Location = new System.Drawing.Point(89, 294);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(52, 13);
             this.label16.TabIndex = 0;
@@ -462,7 +502,7 @@
             // 
             // btnFinishCallTextColor
             // 
-            this.btnFinishCallTextColor.Location = new System.Drawing.Point(150, 146);
+            this.btnFinishCallTextColor.Location = new System.Drawing.Point(147, 289);
             this.btnFinishCallTextColor.Name = "btnFinishCallTextColor";
             this.btnFinishCallTextColor.Size = new System.Drawing.Size(23, 23);
             this.btnFinishCallTextColor.TabIndex = 7;
@@ -472,7 +512,7 @@
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(199, 151);
+            this.label17.Location = new System.Drawing.Point(196, 294);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(52, 13);
             this.label17.TabIndex = 0;
@@ -481,7 +521,7 @@
             // btnFinishCallBackColor
             // 
             this.btnFinishCallBackColor.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnFinishCallBackColor.Location = new System.Drawing.Point(257, 146);
+            this.btnFinishCallBackColor.Location = new System.Drawing.Point(254, 289);
             this.btnFinishCallBackColor.Name = "btnFinishCallBackColor";
             this.btnFinishCallBackColor.Size = new System.Drawing.Size(23, 23);
             this.btnFinishCallBackColor.TabIndex = 7;
@@ -491,7 +531,7 @@
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(10, 177);
+            this.label18.Location = new System.Drawing.Point(7, 328);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(168, 13);
             this.label18.TabIndex = 0;
@@ -499,7 +539,7 @@
             // 
             // nUDTimeAutoCloseMsgBox
             // 
-            this.nUDTimeAutoCloseMsgBox.Location = new System.Drawing.Point(184, 175);
+            this.nUDTimeAutoCloseMsgBox.Location = new System.Drawing.Point(181, 326);
             this.nUDTimeAutoCloseMsgBox.Maximum = new decimal(new int[] {
             99999,
             0,
@@ -512,7 +552,7 @@
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(10, 207);
+            this.label19.Location = new System.Drawing.Point(7, 358);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(130, 13);
             this.label19.TabIndex = 0;
@@ -520,7 +560,7 @@
             // 
             // btnTabActiveBackgroundColor
             // 
-            this.btnTabActiveBackgroundColor.Location = new System.Drawing.Point(150, 202);
+            this.btnTabActiveBackgroundColor.Location = new System.Drawing.Point(147, 353);
             this.btnTabActiveBackgroundColor.Name = "btnTabActiveBackgroundColor";
             this.btnTabActiveBackgroundColor.Size = new System.Drawing.Size(23, 23);
             this.btnTabActiveBackgroundColor.TabIndex = 7;
@@ -530,7 +570,7 @@
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(10, 236);
+            this.label20.Location = new System.Drawing.Point(7, 387);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(111, 13);
             this.label20.TabIndex = 0;
@@ -538,7 +578,7 @@
             // 
             // btnTabIncommingTextColor
             // 
-            this.btnTabIncommingTextColor.Location = new System.Drawing.Point(150, 231);
+            this.btnTabIncommingTextColor.Location = new System.Drawing.Point(147, 382);
             this.btnTabIncommingTextColor.Name = "btnTabIncommingTextColor";
             this.btnTabIncommingTextColor.Size = new System.Drawing.Size(23, 23);
             this.btnTabIncommingTextColor.TabIndex = 7;
@@ -548,7 +588,7 @@
             // label21
             // 
             this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(10, 265);
+            this.label21.Location = new System.Drawing.Point(7, 416);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(123, 13);
             this.label21.TabIndex = 0;
@@ -556,7 +596,7 @@
             // 
             // btnTabHandleCallTextColor
             // 
-            this.btnTabHandleCallTextColor.Location = new System.Drawing.Point(150, 260);
+            this.btnTabHandleCallTextColor.Location = new System.Drawing.Point(147, 411);
             this.btnTabHandleCallTextColor.Name = "btnTabHandleCallTextColor";
             this.btnTabHandleCallTextColor.Size = new System.Drawing.Size(23, 23);
             this.btnTabHandleCallTextColor.TabIndex = 7;
@@ -566,7 +606,7 @@
             // label22
             // 
             this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(10, 294);
+            this.label22.Location = new System.Drawing.Point(7, 445);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(122, 13);
             this.label22.TabIndex = 0;
@@ -574,7 +614,7 @@
             // 
             // btnTabFinishCallTextColor
             // 
-            this.btnTabFinishCallTextColor.Location = new System.Drawing.Point(150, 289);
+            this.btnTabFinishCallTextColor.Location = new System.Drawing.Point(147, 440);
             this.btnTabFinishCallTextColor.Name = "btnTabFinishCallTextColor";
             this.btnTabFinishCallTextColor.Size = new System.Drawing.Size(23, 23);
             this.btnTabFinishCallTextColor.TabIndex = 7;
@@ -584,7 +624,7 @@
             // label23
             // 
             this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(10, 322);
+            this.label23.Location = new System.Drawing.Point(184, 387);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(150, 13);
             this.label23.TabIndex = 0;
@@ -592,7 +632,7 @@
             // 
             // nUDPhoneCutLen
             // 
-            this.nUDPhoneCutLen.Location = new System.Drawing.Point(184, 320);
+            this.nUDPhoneCutLen.Location = new System.Drawing.Point(358, 385);
             this.nUDPhoneCutLen.Maximum = new decimal(new int[] {
             99999,
             0,
@@ -605,7 +645,7 @@
             // label24
             // 
             this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(10, 352);
+            this.label24.Location = new System.Drawing.Point(190, 416);
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(111, 13);
             this.label24.TabIndex = 0;
@@ -614,7 +654,7 @@
             // label25
             // 
             this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(92, 381);
+            this.label25.Location = new System.Drawing.Point(272, 445);
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(52, 13);
             this.label25.TabIndex = 0;
@@ -623,7 +663,7 @@
             // label26
             // 
             this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(199, 381);
+            this.label26.Location = new System.Drawing.Point(379, 445);
             this.label26.Name = "label26";
             this.label26.Size = new System.Drawing.Size(52, 13);
             this.label26.TabIndex = 0;
@@ -631,7 +671,7 @@
             // 
             // btnSearchResult
             // 
-            this.btnSearchResult.Location = new System.Drawing.Point(150, 347);
+            this.btnSearchResult.Location = new System.Drawing.Point(330, 411);
             this.btnSearchResult.Name = "btnSearchResult";
             this.btnSearchResult.Size = new System.Drawing.Size(68, 23);
             this.btnSearchResult.TabIndex = 7;
@@ -640,7 +680,7 @@
             // 
             // btnSearchResultText
             // 
-            this.btnSearchResultText.Location = new System.Drawing.Point(150, 376);
+            this.btnSearchResultText.Location = new System.Drawing.Point(330, 440);
             this.btnSearchResultText.Name = "btnSearchResultText";
             this.btnSearchResultText.Size = new System.Drawing.Size(23, 23);
             this.btnSearchResultText.TabIndex = 7;
@@ -649,7 +689,7 @@
             // 
             // btnSearchResultBackground
             // 
-            this.btnSearchResultBackground.Location = new System.Drawing.Point(257, 376);
+            this.btnSearchResultBackground.Location = new System.Drawing.Point(437, 440);
             this.btnSearchResultBackground.Name = "btnSearchResultBackground";
             this.btnSearchResultBackground.Size = new System.Drawing.Size(23, 23);
             this.btnSearchResultBackground.TabIndex = 7;
@@ -669,7 +709,7 @@
             // label27
             // 
             this.label27.AutoSize = true;
-            this.label27.Location = new System.Drawing.Point(10, 412);
+            this.label27.Location = new System.Drawing.Point(10, 18);
             this.label27.Name = "label27";
             this.label27.Size = new System.Drawing.Size(124, 13);
             this.label27.TabIndex = 0;
@@ -679,7 +719,7 @@
             // 
             this.tbxBrand.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.tbxBrand.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbxBrand.Location = new System.Drawing.Point(150, 409);
+            this.tbxBrand.Location = new System.Drawing.Point(150, 15);
             this.tbxBrand.Name = "tbxBrand";
             this.tbxBrand.Size = new System.Drawing.Size(229, 20);
             this.tbxBrand.TabIndex = 1;
@@ -687,7 +727,7 @@
             // cbxTabColorChanged
             // 
             this.cbxTabColorChanged.AutoSize = true;
-            this.cbxTabColorChanged.Location = new System.Drawing.Point(202, 92);
+            this.cbxTabColorChanged.Location = new System.Drawing.Point(199, 235);
             this.cbxTabColorChanged.Name = "cbxTabColorChanged";
             this.cbxTabColorChanged.Size = new System.Drawing.Size(115, 17);
             this.cbxTabColorChanged.TabIndex = 6;
@@ -760,7 +800,7 @@
             // label28
             // 
             this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(10, 434);
+            this.label28.Location = new System.Drawing.Point(10, 40);
             this.label28.Name = "label28";
             this.label28.Size = new System.Drawing.Size(105, 13);
             this.label28.TabIndex = 0;
@@ -770,7 +810,7 @@
             // 
             this.tbxUpholdPhone.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.tbxUpholdPhone.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbxUpholdPhone.Location = new System.Drawing.Point(150, 431);
+            this.tbxUpholdPhone.Location = new System.Drawing.Point(150, 37);
             this.tbxUpholdPhone.Name = "tbxUpholdPhone";
             this.tbxUpholdPhone.Size = new System.Drawing.Size(229, 20);
             this.tbxUpholdPhone.TabIndex = 1;
@@ -778,7 +818,7 @@
             // label29
             // 
             this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(187, 207);
+            this.label29.Location = new System.Drawing.Point(184, 358);
             this.label29.Name = "label29";
             this.label29.Size = new System.Drawing.Size(122, 13);
             this.label29.TabIndex = 0;
@@ -786,69 +826,67 @@
             // 
             // btnNewNotifyColor
             // 
-            this.btnNewNotifyColor.Location = new System.Drawing.Point(315, 202);
+            this.btnNewNotifyColor.Location = new System.Drawing.Point(312, 353);
             this.btnNewNotifyColor.Name = "btnNewNotifyColor";
             this.btnNewNotifyColor.Size = new System.Drawing.Size(23, 23);
             this.btnNewNotifyColor.TabIndex = 7;
             this.btnNewNotifyColor.UseVisualStyleBackColor = true;
             this.btnNewNotifyColor.Click += new System.EventHandler(this.btnNewNotifyColor_Click);
             // 
+            // btnSound
+            // 
+            this.btnSound.Location = new System.Drawing.Point(93, 514);
+            this.btnSound.Name = "btnSound";
+            this.btnSound.Size = new System.Drawing.Size(75, 23);
+            this.btnSound.TabIndex = 12;
+            this.btnSound.Text = "Âm thanh";
+            this.btnSound.UseVisualStyleBackColor = true;
+            this.btnSound.Click += new System.EventHandler(this.btnSound_Click);
+            // 
+            // nUDPromoteMoney
+            // 
+            this.nUDPromoteMoney.Location = new System.Drawing.Point(150, 59);
+            this.nUDPromoteMoney.Maximum = new decimal(new int[] {
+            99999,
+            0,
+            0,
+            0});
+            this.nUDPromoteMoney.Name = "nUDPromoteMoney";
+            this.nUDPromoteMoney.Size = new System.Drawing.Size(229, 20);
+            this.nUDPromoteMoney.TabIndex = 14;
+            // 
+            // label30
+            // 
+            this.label30.AutoSize = true;
+            this.label30.Location = new System.Drawing.Point(9, 59);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(84, 13);
+            this.label30.TabIndex = 13;
+            this.label30.Text = "Tiền chiết khấu:";
+            // 
             // SettingView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(906, 635);
+            this.Controls.Add(this.nUDPromoteMoney);
+            this.Controls.Add(this.label30);
+            this.Controls.Add(this.btnSound);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.btnInputExcel);
             this.Controls.Add(this.btnAccess);
-            this.Controls.Add(this.btnSearchResultBackground);
-            this.Controls.Add(this.btnSearchResultText);
-            this.Controls.Add(this.btnFinishCallBackColor);
-            this.Controls.Add(this.btnSearchResult);
-            this.Controls.Add(this.btnFinishCallTextColor);
-            this.Controls.Add(this.btnFinishCallColor);
-            this.Controls.Add(this.btnTabFinishCallTextColor);
-            this.Controls.Add(this.btnTabHandleCallTextColor);
-            this.Controls.Add(this.btnTabIncommingTextColor);
-            this.Controls.Add(this.btnNewNotifyColor);
-            this.Controls.Add(this.btnTabActiveBackgroundColor);
-            this.Controls.Add(this.btnMissCallTextColor);
-            this.Controls.Add(this.cbxTabColorChanged);
             this.Controls.Add(this.chbTestingMode);
             this.Controls.Add(this.groupBoxServer);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.btnCancel);
-            this.Controls.Add(this.label26);
-            this.Controls.Add(this.btnOpenFile);
-            this.Controls.Add(this.label17);
-            this.Controls.Add(this.label25);
             this.Controls.Add(this.btnPrinterSetting);
-            this.Controls.Add(this.label16);
-            this.Controls.Add(this.nUDPhoneCutLen);
-            this.Controls.Add(this.nUDTimeAutoCloseMsgBox);
-            this.Controls.Add(this.label22);
             this.Controls.Add(this.nUDMainPort);
-            this.Controls.Add(this.label23);
-            this.Controls.Add(this.label21);
-            this.Controls.Add(this.label18);
-            this.Controls.Add(this.label24);
-            this.Controls.Add(this.label20);
-            this.Controls.Add(this.label15);
-            this.Controls.Add(this.label29);
-            this.Controls.Add(this.label19);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.label14);
             this.Controls.Add(this.tbxUpholdPhone);
             this.Controls.Add(this.label28);
             this.Controls.Add(this.tbxBrand);
             this.Controls.Add(this.label27);
-            this.Controls.Add(this.tbxCallIdFormat);
-            this.Controls.Add(this.label13);
-            this.Controls.Add(this.tbxHistoryFilename);
-            this.Controls.Add(this.label12);
-            this.Controls.Add(this.tbxHistoryFilepath);
-            this.Controls.Add(this.label11);
             this.Controls.Add(this.tbxIP);
             this.Controls.Add(this.label10);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -865,6 +903,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.nUDPhoneCutLen)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nUDPromoteMoney)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -946,5 +985,8 @@
         private System.Windows.Forms.TextBox tbxUpholdPhone;
         private System.Windows.Forms.Label label29;
         private System.Windows.Forms.Button btnNewNotifyColor;
+        private System.Windows.Forms.Button btnSound;
+        private System.Windows.Forms.NumericUpDown nUDPromoteMoney;
+        private System.Windows.Forms.Label label30;
     }
 }

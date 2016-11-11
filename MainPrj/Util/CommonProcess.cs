@@ -1,4 +1,5 @@
-﻿using MainPrj.Model;
+﻿using MainPrj.API;
+using MainPrj.Model;
 using MainPrj.Model.Update;
 using MainPrj.View;
 using System;
@@ -43,6 +44,9 @@ namespace MainPrj.Util
         //++ BUG0008-SPJ (NguyenPT 20160830) Order history
         public const string API_ORDER_HISTORY = "/api/default/windowGetCustomerHistory";
         //-- BUG0008-SPJ (NguyenPT 20160830) Order history
+        //++ BUG0006-SPJ (NguyenPT 20161107) Call history
+        public const string API_CALL_HISTORY = "/api/default/callHistorySave";
+        //-- BUG0006-SPJ (NguyenPT 20161107) Call history
         //++ BUG0074-SPJ (NguyenPT 20160913) Handle turn on/off SIP thread
         public const string INI_KEY_PACKET_UDP = "PacketUDP";
         public const string INI_KEY_PACKET_SIP = "PacketSIP";
@@ -54,6 +58,10 @@ namespace MainPrj.Util
         ////++ BUG0082-SPJ (NguyenPT 20160928) Handle save Setting data path on Setting
         //public static string INI_KEY_SETTING_DIRECTORY = "SettingDirectory";
         ////-- BUG0082-SPJ (NguyenPT 20160928) Handle save Setting data path on Setting
+        //++ BUG0086-SPJ (NguyenPT 20161024d Promote money setting
+        public const string INI_KEY_PROMOTE_MONEY = "PromoteMoney";
+        public const double PROMOTE_MONEY_DEFAULT_VALUE = 20000.0;
+        //-- BUG0086-SPJ (NguyenPT 20161024d Promote money setting
         /// <summary>
         /// API: inform received notification.
         /// </summary>
@@ -66,13 +74,13 @@ namespace MainPrj.Util
             "1311",		    // Cửa hàng 1
             "1312",		    // Cửa hàng 2
             "1313",		    // Cửa hàng 3
-            "125798",		// Đại lý Trạm Vĩnh Long 1
+            "30751",		// Cửa hàng Vĩnh Long 1
             "30753",		// Cửa hàng Cần Thơ 1
-            "138544",		// Cửa hàng Cần Thơ 2
-            "262526",		// Cửa Hàng Ô Môn
+            //"138544",		// Cửa hàng Cần Thơ 2
+            //"262526",		// Cửa Hàng Ô Môn
             "118",		    // Đại lý An Thạnh
             "116",		    // Đại lý Bình Đa
-            "122",		    // Đại lý Bình Tân
+            //"122",		    // Đại lý Bình Tân
             "106",		    // Đại lý Bình Thạnh 1
             "115",		    // Đại lý Dĩ An
             "108",		    // Đại lý Hóc Môn
@@ -1043,6 +1051,42 @@ namespace MainPrj.Util
             return ReadSetting(INI_KEY_UPHOLD_PHONE, INI_SECTION_GENERAL);
         }
         //-- BUG0083-SPJ (NguyenPT 20160928) Add Uphold phone setting
+        //++ BUG0086-SPJ (NguyenPT 20161024d Promote money setting
+        /// <summary>
+        /// Write Promote money to setting.ini.
+        /// </summary>
+        /// <param name="money">Promote money</param>
+        public static void WritePromoteMoneyToSetting(double money)
+        {
+            string filepath = String.Format("{0}\\setting.ini", Properties.Settings.Default.SettingFilePath);
+            var iniFile = new INIHandle(filepath);
+            iniFile.Write(INI_KEY_PROMOTE_MONEY, money.ToString(), INI_SECTION_GENERAL);
+        }
+        /// <summary>
+        /// Read Promote money from setting.ini.
+        /// </summary>
+        /// <returns>Promote money</returns>
+        public static string ReadPromoteMoneyFromSetting()
+        {
+            return ReadSetting(INI_KEY_PROMOTE_MONEY, INI_SECTION_GENERAL);
+        }
+        //-- BUG0086-SPJ (NguyenPT 20161024d Promote money setting
+        [System.Runtime.InteropServices.DllImport("winmm.DLL", EntryPoint = "PlaySound", SetLastError = true, CharSet = CharSet.Unicode, ThrowOnUnmappableChar = true)]
+        public static extern bool PlaySound(string szSound, System.IntPtr hMod, PlaySoundFlags flags);
+
+        [System.Flags]
+        public enum PlaySoundFlags : int
+        {
+            SND_SYNC = 0x0000,
+            SND_ASYNC = 0x0001,
+            SND_NODEFAULT = 0x0002,
+            SND_LOOP = 0x0008,
+            SND_NOSTOP = 0x0010,
+            SND_NOWAIT = 0x00002000,
+            SND_FILENAME = 0x00020000,
+            SND_RESOURCE = 0x00040004
+        }
+
         #endregion
 
         #region Common methods
@@ -1703,6 +1747,42 @@ namespace MainPrj.Util
         //    }
         //    return SettingDirectory;
         //}
+        /// <summary>
+        /// Get phone number from record file name.
+        /// </summary>
+        /// <param name="filePath">File name</param>
+        /// <returns>Phone number</returns>
+        public static string GetPhoneFromRecordFilePath(string filePath)
+        {
+            string retVal = string.Empty;
+            Regex regFrom = new Regex(@".*?(\d*)--\w-(?<phone>.*?)---(.*?)",
+                RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace | RegexOptions.Compiled | RegexOptions.Multiline);
+            // FROM
+            Match m = regFrom.Match(filePath);
+            if (m.Success)
+            {
+                retVal = ((string)m.Groups["phone"].Value.ToString().Trim());
+            }
+            return retVal;
+        }
+        /// <summary>
+        /// Get file name from filepath record file
+        /// </summary>
+        /// <param name="filePath">Path</param>
+        /// <returns>Name</returns>
+        public static string GetFileNameFromRecordFilePath(string filePath)
+        {
+            string retVal = string.Empty;
+            Regex regFrom = new Regex(@".*?(?<filename>(\d*)--\w-(?<phone>.*?)---(?<dateTime>.*?)\.wav)",
+                RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace | RegexOptions.Compiled | RegexOptions.Multiline);
+            // FROM
+            Match m = regFrom.Match(filePath);
+            if (m.Success)
+            {
+                retVal = ((string)m.Groups["filename"].Value.ToString().Trim());
+            }
+            return retVal;
+        }
         #endregion
 
         #region Request Server
@@ -2679,6 +2759,22 @@ namespace MainPrj.Util
             // Update notification label
             ((MainForm)DataPure.Instance.MainForm).SetNotificationLabel(DataPure.Instance.GetNewNotificationCount().ToString());
         }
+        //++ BUG0006-SPJ (NguyenPT 20161107) Callr history
+        /// <summary>
+        /// Request create call history.
+        /// </summary>
+        /// <param name="model">Call model</param>
+        /// <param name="progressChanged">Handle when progress changed</param>
+        /// <param name="completedHandler">Handle when completed</param>
+        public static void RequestCreateCallHistory(CallModel model)
+        {
+            model.Agent_id                   = DataPure.Instance.Agent.Id;
+            model.User_id                    = DataPure.Instance.User.User_id;
+            model.Token                      = Properties.Settings.Default.UserToken;
+            CreateCallHistoryRequest request = new CreateCallHistoryRequest(model);
+            request.Execute();
+        }
+        //-- BUG0006-SPJ (NguyenPT 20161107) Callr history
         #endregion
     }
 }

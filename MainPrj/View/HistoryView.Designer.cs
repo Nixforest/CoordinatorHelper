@@ -48,6 +48,8 @@
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItemCopyPhone = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemMarkFinish = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemSelectCallType = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemListenRecord = new System.Windows.Forms.ToolStripMenuItem();
             this.btnCreateOrder = new System.Windows.Forms.Button();
             this.dtpFilterFrom = new System.Windows.Forms.DateTimePicker();
             this.dtpFilterTo = new System.Windows.Forms.DateTimePicker();
@@ -195,9 +197,11 @@
             this.contextMenuStrip.Font = new System.Drawing.Font("Segoe UI", 14F);
             this.contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItemCopyPhone,
-            this.toolStripMenuItemMarkFinish});
+            this.toolStripMenuItemMarkFinish,
+            this.toolStripMenuItemSelectCallType,
+            this.toolStripMenuItemListenRecord});
             this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(278, 64);
+            this.contextMenuStrip.Size = new System.Drawing.Size(278, 124);
             this.contextMenuStrip.Text = "dfsdf";
             // 
             // toolStripMenuItemCopyPhone
@@ -215,6 +219,22 @@
             this.toolStripMenuItemMarkFinish.Size = new System.Drawing.Size(277, 30);
             this.toolStripMenuItemMarkFinish.Text = "Đánh dấu hoàn thành";
             this.toolStripMenuItemMarkFinish.Click += new System.EventHandler(this.toolStripMenuItemMarkFinish_Click);
+            // 
+            // toolStripMenuItemSelectCallType
+            // 
+            this.toolStripMenuItemSelectCallType.Image = global::MainPrj.Properties.Resources.call;
+            this.toolStripMenuItemSelectCallType.Name = "toolStripMenuItemSelectCallType";
+            this.toolStripMenuItemSelectCallType.Size = new System.Drawing.Size(277, 30);
+            this.toolStripMenuItemSelectCallType.Text = "Phân loại cuộc gọi";
+            this.toolStripMenuItemSelectCallType.Click += new System.EventHandler(this.toolStripMenuItemSelectCallType_Click);
+            // 
+            // toolStripMenuItemListenRecord
+            // 
+            this.toolStripMenuItemListenRecord.Image = global::MainPrj.Properties.Resources.record;
+            this.toolStripMenuItemListenRecord.Name = "toolStripMenuItemListenRecord";
+            this.toolStripMenuItemListenRecord.Size = new System.Drawing.Size(277, 30);
+            this.toolStripMenuItemListenRecord.Text = "Nghe ghi âm";
+            this.toolStripMenuItemListenRecord.Click += new System.EventHandler(this.toolStripMenuItemListenRecord_Click);
             // 
             // btnCreateOrder
             // 
@@ -351,5 +371,7 @@
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel;
         private System.Windows.Forms.Button btnUphold;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemSelectCallType;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemListenRecord;
     }
 }

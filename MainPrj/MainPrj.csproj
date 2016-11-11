@@ -84,6 +84,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\BaseRequest.cs" />
+    <Compile Include="API\CreateCallHistoryRequest.cs" />
     <Compile Include="Model\Address\StreetModel.cs" />
     <Compile Include="Model\Address\CityModel.cs" />
     <Compile Include="Model\Address\DistrictModel.cs" />
@@ -117,6 +119,7 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\CardDataStatus.cs" />
+    <Compile Include="Model\Response\CreateCallHistoryResp.cs" />
     <Compile Include="Model\Response\NotificationResponseModel.cs" />
     <Compile Include="Model\Response\OrderResponseModel.cs" />
     <Compile Include="Model\Response\TempDataResponseModel.cs" />
@@ -140,6 +143,7 @@
     <Compile Include="Util\DataPure.cs" />
     <Compile Include="Util\ExcelHandle.cs" />
     <Compile Include="Util\FlashWindowHelper.cs" />
+    <Compile Include="Util\GlobalConst.cs" />
     <Compile Include="Util\INIHandle.cs" />
     <Compile Include="Util\WebSocketUtility.cs" />
     <Compile Include="View\AboutBox.cs">
@@ -153,6 +157,12 @@
     </Compile>
     <Compile Include="View\AgentCellPhoneView.Designer.cs">
       <DependentUpon>AgentCellPhoneView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\CallAnalysisView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\CallAnalysisView.Designer.cs">
+      <DependentUpon>CallAnalysisView.cs</DependentUpon>
     </Compile>
     <Compile Include="View\Component\ChannelControl.cs">
       <SubType>UserControl</SubType>
@@ -274,6 +284,18 @@
     <Compile Include="View\OrderView.Designer.cs">
       <DependentUpon>OrderView.cs</DependentUpon>
     </Compile>
+    <Compile Include="View\RecordPlayerView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\RecordPlayerView.Designer.cs">
+      <DependentUpon>RecordPlayerView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\SelectCallTypeView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\SelectCallTypeView.Designer.cs">
+      <DependentUpon>SelectCallTypeView.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\SelectorView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -322,6 +344,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\AgentCellPhoneView.resx">
       <DependentUpon>AgentCellPhoneView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\CallAnalysisView.resx">
+      <DependentUpon>CallAnalysisView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\Component\ChannelControl.resx">
       <DependentUpon>ChannelControl.cs</DependentUpon>
@@ -382,6 +407,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\OrderView.resx">
       <DependentUpon>OrderView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\RecordPlayerView.resx">
+      <DependentUpon>RecordPlayerView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\SelectCallTypeView.resx">
+      <DependentUpon>SelectCallTypeView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\SelectorView.resx">
       <DependentUpon>SelectorView.cs</DependentUpon>
@@ -569,6 +600,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\nhac-iphone5.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\call.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\record.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

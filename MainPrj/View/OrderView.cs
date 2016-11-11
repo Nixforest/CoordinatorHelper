@@ -25,6 +25,18 @@ namespace MainPrj.View
         /// List data promotes.
         /// </summary>
         private List<PromoteModel> promotes = new List<PromoteModel>();
+        //++ BUG0006-SPJ (NguyenPT 20161111) Call history
+        private string orderId = string.Empty;
+
+        /// <summary>
+        /// Order id
+        /// </summary>
+        public string OrderId
+        {
+            get { return orderId; }
+            set { orderId = value; }
+        }
+        //-- BUG0006-SPJ (NguyenPT 20161111) Call history
         /// <summary>
         /// Total pay money.
         /// </summary>
@@ -227,6 +239,9 @@ namespace MainPrj.View
             //++ BUG0068-SPJ (NguyenPT 20160905) Change promote money
             this._isManualChangePromoteMoney = false;
             //-- BUG0068-SPJ (NguyenPT 20160905) Change promote money
+            //++ BUG0068-SPJ (NguyenPT 20160904) Can change promote money
+            totalPromote = Properties.Settings.Default.PromoteMoney;
+            //-- BUG0068-SPJ (NguyenPT 20160904) Can change promote money
             // Update data
             if (_isUpdateMode && (_data != null))
             {
@@ -293,9 +308,9 @@ namespace MainPrj.View
                 UpdateMoney(this._isManualChangePromoteMoney);
                 //-- BUG0068-SPJ (NguyenPT 20160905) Change promote money
             }
-            //++ BUG0068-SPJ (NguyenPT 20160904) Can change promote money
-            totalPromote = Properties.Settings.Default.PromoteMoney;
-            //-- BUG0068-SPJ (NguyenPT 20160904) Can change promote money
+            ////++ BUG0068-SPJ (NguyenPT 20160904) Can change promote money
+            //totalPromote = Properties.Settings.Default.PromoteMoney;
+            ////-- BUG0068-SPJ (NguyenPT 20160904) Can change promote money
         }
 
         /// <summary>
@@ -816,6 +831,12 @@ namespace MainPrj.View
                 model.TotalPay              = totalPay;
                 model.TotalMoney            = total;
                 model.PromoteMoney          = totalPromote;
+                //++ BUG0086-SPJ (NguyenPT 20161024d Promote money setting
+                if (!model.PromoteMoney.Equals(CommonProcess.PROMOTE_MONEY_DEFAULT_VALUE))
+                {
+                    this._isManualChangePromoteMoney = true;
+                }
+                //-- BUG0086-SPJ (NguyenPT 20161024d Promote money setting
                 //++ BUG0068-SPJ (NguyenPT 20160905) Change promote money
                 model.IsManualChangePromote = this._isManualChangePromoteMoney;
                 //-- BUG0068-SPJ (NguyenPT 20160905) Change promote money
@@ -835,6 +856,9 @@ namespace MainPrj.View
                 {
                     if (!String.IsNullOrEmpty(ret))
                     {
+                        //++ BUG0006-SPJ (NguyenPT 20161111) Save order id to Call history
+                        this.orderId = ret;
+                        //-- BUG0006-SPJ (NguyenPT 20161111) Save order id to Call history
                         // Create order success
                         CommonProcess.ShowInformMessage(Properties.Resources.CreateOrderSuccess, MessageBoxButtons.OK);
                     }

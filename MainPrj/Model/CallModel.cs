@@ -29,6 +29,102 @@ namespace MainPrj.Model
         private CallType type;
         [DataMember(Name = "isFinish", IsRequired = false)]
         private bool isFinish = false;
+        //++ BUG0006-SPJ (NguyenPT 20161111) Call history
+        [DataMember(Name = "type_call", IsRequired = false)]
+        private string type_call;
+        [DataMember(Name = "order_id", IsRequired = false)]
+        private string order_id;
+        [DataMember(Name = "file_record_name", IsRequired = false)]
+        private string file_record_name;
+        [DataMember(Name = "call_id", IsRequired = false)]
+        private string call_id = string.Empty;
+        [DataMember(Name = "created_date", IsRequired = false)]
+        private string created_date;
+        [DataMember(Name = "agent_id", IsRequired = false)]
+        private string agent_id;
+        [DataMember(Name = "user_id", IsRequired = false)]
+        private string user_id;
+        [DataMember(Name = "token", IsRequired = false)]
+        private string token;
+
+        /// <summary>
+        /// Token
+        /// </summary>
+        public string Token
+        {
+            get { return token; }
+            set { token = value; }
+        }
+
+        /// <summary>
+        /// User id
+        /// </summary>
+        public string User_id
+        {
+            get { return user_id; }
+            set { user_id = value; }
+        }
+
+        /// <summary>
+        /// Agent id
+        /// </summary>
+        public string Agent_id
+        {
+            get { return agent_id; }
+            set { agent_id = value; }
+        }
+
+        /// <summary>
+        /// Id of model.
+        /// </summary>
+        public string CallId
+        {
+            get { return call_id; }
+            set { call_id = value; }
+        }
+
+        /// <summary>
+        /// Created date
+        /// </summary>
+        public string Created_date
+        {
+            get { return created_date; }
+            set { created_date = value; }
+        }
+
+        /// <summary>
+        /// Name of record file
+        /// </summary>
+        public string File_record_name
+        {
+            get { return file_record_name; }
+            set { file_record_name = value; }
+        }
+
+        /// <summary>
+        /// Order id
+        /// </summary>
+        public string Order_id
+        {
+            get { return order_id; }
+            set { order_id = value; }
+        }
+
+        /// <summary>
+        /// Type of call:
+        /// 0 - Other type
+        /// 1 - Create customer
+        /// 2 - Create order
+        /// 3 - Request price
+        /// 4 - Customer comment
+        /// 5 - Repeat order
+        /// </summary>
+        public string Type_call
+        {
+            get { return type_call; }
+            set { type_call = value; }
+        }
+        //-- BUG0006-SPJ (NguyenPT 20161111) Call history
 
         /// <summary>
         /// Id of model.
@@ -99,13 +195,19 @@ namespace MainPrj.Model
         public CallModel(DateTime incommingTime, int channel, CustomerModel customer,
             string phone, int status)
         {
-            this.id       = incommingTime.ToString(Properties.Settings.Default.CallIdFormat);
-            this.channel  = channel;
-            this.customer = customer;
-            this.phone    = phone;
-            this.status   = status;
-            this.type     = CallType.CALLTYPE_NUM;
+            this.id               = incommingTime.ToString(Properties.Settings.Default.CallIdFormat);
+            this.channel          = channel;
+            this.customer         = customer;
+            this.phone            = phone;
+            this.status           = status;
+            this.type             = CallType.CALLTYPE_NUM;
             this.isFinish = false;
+            //++ BUG0006-SPJ (NguyenPT 20161111) Call history
+            this.order_id         = "";
+            this.file_record_name = "";
+            this.created_date     = incommingTime.ToString(Properties.Resources.CallDateTimeFormat);
+            this.type_call        = "";
+            //-- BUG0006-SPJ (NguyenPT 20161111) Call history
         }
         
         /// <summary>

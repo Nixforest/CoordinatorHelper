@@ -21,6 +21,18 @@ namespace MainPrj.View
         /// Current data.
         /// </summary>
         private CustomerModel data = new CustomerModel();
+        //++ BUG0006-SPJ (NguyenPT 20161111) Call history
+        private string callId = string.Empty;
+
+        /// <summary>
+        /// Call id.
+        /// </summary>
+        public string CallId
+        {
+            get { return callId; }
+            set { callId = value; }
+        }
+        //-- BUG0006-SPJ (NguyenPT 20161111) Call history
 
         public CustomerModel Data
         {
@@ -684,6 +696,7 @@ namespace MainPrj.View
             this.orderHistoryControl.UpdateData();
         }
         //-- BUG0008-SPJ (NguyenPT 20160830) Order history
+
         //++ BUG0081-SPJ (NguyenPT 20160928) Handle double line jump
         /// <summary>
         /// Get ward string.
@@ -693,6 +706,7 @@ namespace MainPrj.View
         {
             return cbxWard.Text != null ? cbxWard.Text : string.Empty;
         }
+
         /// <summary>
         /// Get district string.
         /// </summary>
@@ -701,6 +715,11 @@ namespace MainPrj.View
         {
             return cbxDistrict.Text != null ? cbxDistrict.Text : string.Empty;
         }
+
+        /// <summary>
+        /// Get full information.
+        /// </summary>
+        /// <returns>Return full information</returns>
         public string GetFullInformation()
         {
             string retVal = string.Empty;
@@ -755,5 +774,13 @@ namespace MainPrj.View
             data.Contact_note = note;
         }
         //-- BUG0081-SPJ (NguyenPT 20160928) Handle double line jump
+        public string GetAddress()
+        {
+            string retVal = string.Empty;
+            retVal = string.Format("{0}, {1}, {2}, {3}, {4}",
+                tbxAddress.Text, cbxStreet.Text, cbxWard.Text,
+                cbxDistrict.Text, cbxCity.Text);
+            return retVal;
+        }
     }
 }
