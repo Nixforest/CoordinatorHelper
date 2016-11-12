@@ -2080,35 +2080,40 @@ namespace MainPrj
                     {
                         // Encoding response data
                         encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);
+                        if (encodingBytes != null)
+                        {
+                            MemoryStream msU = new MemoryStream(encodingBytes);
+                            OrderHistoryResponseModel baseResp = (OrderHistoryResponseModel)js.ReadObject(msU);
+                            if (baseResp != null)
+                            {
+                                if (baseResp.Status.Equals(GlobalConst.RESPONSE_STATUS_SUCCESS))
+                                {
+                                    ChannelControl channelControl = null;
+                                    try
+                                    {
+                                        channelControl = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel);
+                                    }
+                                    catch (ArgumentOutOfRangeException)
+                                    {
+                                        CommonProcess.ShowErrorMessage(Properties.Resources.ArgumentOutOfRange);
+                                        return;
+                                    }
+                                    if (channelControl != null)
+                                    {
+                                        channelControl.SetHistory(baseResp);
+                                    }
+                                }
+                            }
+                        }
                     }
                     catch (System.Text.EncoderFallbackException)
                     {
                         CommonProcess.ShowErrorMessage(Properties.Resources.EncodingError);
                     }
-                    if (encodingBytes != null)
+                    catch (Exception ex)
                     {
-                        MemoryStream msU = new MemoryStream(encodingBytes);
-                        OrderHistoryResponseModel baseResp = (OrderHistoryResponseModel)js.ReadObject(msU);
-                        if (baseResp != null)
-                        {
-                            if (baseResp.Status.Equals("1"))
-                            {
-                                ChannelControl channelControl = null;
-                                try
-                                {
-                                    channelControl = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel);
-                                }
-                                catch (ArgumentOutOfRangeException)
-                                {
-                                    CommonProcess.ShowErrorMessage(Properties.Resources.ArgumentOutOfRange);
-                                    return;
-                                }
-                                if (channelControl != null)
-                                {
-                                    channelControl.SetHistory(baseResp);
-                                }
-                            }
-                        }
+                        CommonProcess.ShowErrorMessage(Properties.Resources.ErrorCause + ex.Message);
+                        CommonProcess.HasError = true;
                     }
                 }
             }

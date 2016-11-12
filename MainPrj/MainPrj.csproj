@@ -158,12 +158,6 @@
     <Compile Include="View\AgentCellPhoneView.Designer.cs">
       <DependentUpon>AgentCellPhoneView.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\CallAnalysisView.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="View\CallAnalysisView.Designer.cs">
-      <DependentUpon>CallAnalysisView.cs</DependentUpon>
-    </Compile>
     <Compile Include="View\Component\ChannelControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -193,6 +187,12 @@
     </Compile>
     <Compile Include="View\Component\OrderHistoryControl.Designer.cs">
       <DependentUpon>OrderHistoryControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Component\OrderHistoryCoordinatorControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Component\OrderHistoryCoordinatorControl.Designer.cs">
+      <DependentUpon>OrderHistoryCoordinatorControl.cs</DependentUpon>
     </Compile>
     <Compile Include="View\Component\WordWrapListView.cs">
       <SubType>Component</SubType>
@@ -265,6 +265,12 @@
     </Compile>
     <Compile Include="View\OrderCoordinatorView.Designer.cs">
       <DependentUpon>OrderCoordinatorView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\OrderHistoryCoordinatorView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\OrderHistoryCoordinatorView.Designer.cs">
+      <DependentUpon>OrderHistoryCoordinatorView.cs</DependentUpon>
     </Compile>
     <Compile Include="View\OrderPrintView.cs">
       <SubType>Form</SubType>
@@ -345,9 +351,6 @@
     <EmbeddedResource Include="View\AgentCellPhoneView.resx">
       <DependentUpon>AgentCellPhoneView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="View\CallAnalysisView.resx">
-      <DependentUpon>CallAnalysisView.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="View\Component\ChannelControl.resx">
       <DependentUpon>ChannelControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -368,6 +371,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\Component\OrderHistoryControl.resx">
       <DependentUpon>OrderHistoryControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Component\OrderHistoryCoordinatorControl.resx">
+      <DependentUpon>OrderHistoryCoordinatorControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\HistoryView1.resx">
       <DependentUpon>HistoryView1.cs</DependentUpon>
@@ -398,6 +404,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\OrderCoordinatorView.resx">
       <DependentUpon>OrderCoordinatorView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\OrderHistoryCoordinatorView.resx">
+      <DependentUpon>OrderHistoryCoordinatorView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\OrderPrintView.resx">
       <DependentUpon>OrderPrintView.cs</DependentUpon>

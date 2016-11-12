@@ -2649,8 +2649,17 @@ namespace MainPrj.Util
                 {
                     // Post keyword to server
                     string value = string.Empty;
-                    value = String.Format("{{\"token\":\"{0}\",\"customer_id\":\"{1}\"}}",
-                        Properties.Settings.Default.UserToken, customerId);
+                    //++ BUG0089-SPJ (NguyenPT 20161111) Order history
+                    //value = String.Format("{{\"token\":\"{0}\",\"customer_id\":\"{1}\"}}",
+                    //    Properties.Settings.Default.UserToken, customerId);
+                    string type = "1";
+                    if (!DataPure.Instance.IsAccountingAgentRole())
+                    {
+                        type = "2";
+                    }
+                    value = String.Format("{{\"token\":\"{0}\",\"customer_id\":\"{1}\",\"type\":\"{2}\"}}",
+                        Properties.Settings.Default.UserToken, customerId, type);
+                    //-- BUG0089-SPJ (NguyenPT 20161111) Order history
                     client.UploadValuesAsync(
                         new Uri(Properties.Settings.Default.ServerURL + API_ORDER_HISTORY),
                         new System.Collections.Specialized.NameValueCollection()

@@ -62,6 +62,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.btnNewCustomer = new System.Windows.Forms.Button();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.orderHistoryCoordinatorControl = new MainPrj.View.Component.OrderHistoryCoordinatorControl();
             this.orderHistoryControl = new MainPrj.View.Component.OrderHistoryControl();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -429,10 +430,23 @@
             this.btnNewCustomer.UseVisualStyleBackColor = true;
             this.btnNewCustomer.Click += new System.EventHandler(this.btnNewCustomer_Click);
             // 
+            // orderHistoryCoordinatorControl
+            // 
+            this.orderHistoryCoordinatorControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.orderHistoryCoordinatorControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.orderHistoryCoordinatorControl.Location = new System.Drawing.Point(844, 269);
+            this.orderHistoryCoordinatorControl.Margin = new System.Windows.Forms.Padding(6);
+            this.orderHistoryCoordinatorControl.Name = "orderHistoryCoordinatorControl";
+            this.orderHistoryCoordinatorControl.Size = new System.Drawing.Size(451, 199);
+            this.orderHistoryCoordinatorControl.TabIndex = 22;
+            // 
             // orderHistoryControl
             // 
             this.orderHistoryControl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
+            this.orderHistoryControl.Data = null;
             this.orderHistoryControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.orderHistoryControl.Location = new System.Drawing.Point(8, 235);
             this.orderHistoryControl.Margin = new System.Windows.Forms.Padding(6);
@@ -444,13 +458,14 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.orderHistoryCoordinatorControl);
             this.Controls.Add(this.btnNewCustomer);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.tbxIncommingNumber);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "ChannelControl";
-            this.Size = new System.Drawing.Size(846, 468);
+            this.Size = new System.Drawing.Size(1307, 468);
             this.Load += new System.EventHandler(this.ChannelControl_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -495,5 +510,6 @@
         private System.Windows.Forms.Button btnNewCustomer;
         private System.Windows.Forms.ToolTip toolTip;
         private Component.OrderHistoryControl orderHistoryControl;
+        private Component.OrderHistoryCoordinatorControl orderHistoryCoordinatorControl;
     }
 }

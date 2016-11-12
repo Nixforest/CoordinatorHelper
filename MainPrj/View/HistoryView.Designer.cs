@@ -154,11 +154,11 @@
             // 
             // btnFinish
             // 
-            this.btnFinish.Location = new System.Drawing.Point(156, 8);
+            this.btnFinish.Location = new System.Drawing.Point(264, 8);
             this.btnFinish.Name = "btnFinish";
             this.btnFinish.Size = new System.Drawing.Size(121, 40);
             this.btnFinish.TabIndex = 1;
-            this.btnFinish.Text = "Hoàn thành";
+            this.btnFinish.Text = "Lịch sử GD";
             this.btnFinish.UseVisualStyleBackColor = true;
             this.btnFinish.Click += new System.EventHandler(this.btnFinish_Click);
             // 
@@ -299,7 +299,7 @@
             // 
             // btnUphold
             // 
-            this.btnUphold.Location = new System.Drawing.Point(283, 8);
+            this.btnUphold.Location = new System.Drawing.Point(156, 8);
             this.btnUphold.Name = "btnUphold";
             this.btnUphold.Size = new System.Drawing.Size(104, 40);
             this.btnUphold.TabIndex = 0;

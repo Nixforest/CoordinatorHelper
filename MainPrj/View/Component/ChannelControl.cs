@@ -340,6 +340,9 @@ namespace MainPrj.View
             tbxSaleName.Visible      = !isAccounting;
             orderHistoryControl.Visible = isAccounting;
             //-- BUG0008-SPJ (NguyenPT 20160830) Order history
+            //++ BUG0089-SPJ (NguyenPT 20161111) Order history
+            orderHistoryCoordinatorControl.Visible = !isAccounting;
+            //-- BUG0089-SPJ (NguyenPT 20161111) Order history
         }
         /// <summary>
         /// Handle when change text of note.
@@ -692,8 +695,19 @@ namespace MainPrj.View
         /// <param name="data">Data of history</param>
         public void SetHistory(OrderHistoryResponseModel data)
         {
-            this.orderHistoryControl.Data = data;
-            this.orderHistoryControl.UpdateData();
+            //++ BUG0089-SPJ (NguyenPT 20161111) Order history
+            //this.orderHistoryControl.Data = data;
+            //this.orderHistoryControl.UpdateData();
+            if (DataPure.Instance.IsAccountingAgentRole())
+            {
+                this.orderHistoryControl.Data = data;
+                this.orderHistoryControl.UpdateData();
+            }
+            else
+            {
+                this.orderHistoryCoordinatorControl.UpdateData(data);
+            }
+            //-- BUG0089-SPJ (NguyenPT 20161111) Order history
         }
         //-- BUG0008-SPJ (NguyenPT 20160830) Order history
 

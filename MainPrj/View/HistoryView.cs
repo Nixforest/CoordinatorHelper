@@ -76,6 +76,9 @@ namespace MainPrj.View
             //}
             this.listCurrentData.AddRange(this.listTodayData);
             ReloadListView(this.listCurrentData);
+            //++ BUG0089-SPJ (NguyenPT 20161111) Order history
+            btnFinish.Visible = DataPure.Instance.IsCoordinatorRole();
+            //-- BUG0089-SPJ (NguyenPT 20161111) Order history
         }
 
         /// <summary>
@@ -278,8 +281,93 @@ namespace MainPrj.View
         /// <param name="e">EventArgs</param>
         private void btnFinish_Click(object sender, EventArgs e)
         {
+            //++ BUG0089-SPJ (NguyenPT 20161111) Order history
             //HandleFinishItem();
+            if (!DataPure.Instance.IsAccountingAgentRole())
+            {
+                HandleShowOrderHistory();
+            }
+            //-- BUG0089-SPJ (NguyenPT 20161111) Order history
         }
+
+        //++ BUG0089-SPJ (NguyenPT 20161111) Order history
+        /// <summary>
+        /// Handle show order history for Coordinator.
+        /// </summary>
+        private void HandleShowOrderHistory()
+        {
+            if (this.listViewHistory.SelectedItems.Count > 0)
+            {
+                string value = this.listViewHistory.SelectedItems[0].Tag.ToString();
+                for (int i = 0; i < this.listCurrentData.Count; i++)
+                {
+                    if (this.listCurrentData[i].Id.Equals(value))
+                    {
+                        CommonProcess.RequestOrderHistory(this.listCurrentData[i].Customer.Id,
+                            orderHistoryProgressChanged, orderHistoryCompleted);
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// Request order history completed.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">UploadValuesCompletedEventArgs</param>
+        private void orderHistoryCompleted(object sender, System.Net.UploadValuesCompletedEventArgs e)
+        {
+            if (e.Cancelled)
+            {
+                toolStripStatusLabel.Text = Properties.Resources.ErrorCause + Properties.Resources.Cancel;
+            }
+            else if (e.Error != null)
+            {
+                toolStripStatusLabel.Text = Properties.Resources.ErrorCause + e.Error.Message;
+            }
+            else
+            {
+                toolStripStatusLabel.Text = Properties.Resources.RequestOrderHistorySuccess;
+                toolStripProgressBar.Value = 0;
+                byte[] response = e.Result;
+                string respStr = String.Empty;
+                respStr = System.Text.Encoding.UTF8.GetString(response);
+                if (!String.IsNullOrEmpty(respStr))
+                {
+                    DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(OrderHistoryResponseModel));
+                    byte[] encodingBytes = null;
+                    try
+                    {
+                        // Encoding response data
+                        encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);
+                    }
+                    catch (System.Text.EncoderFallbackException)
+                    {
+                        CommonProcess.ShowErrorMessage(Properties.Resources.EncodingError);
+                    }
+                    if (encodingBytes != null)
+                    {
+                        MemoryStream msU = new MemoryStream(encodingBytes);
+                        OrderHistoryResponseModel baseResp = (OrderHistoryResponseModel)js.ReadObject(msU);
+                        if (baseResp != null)
+                        {
+                            if (baseResp.Status.Equals(GlobalConst.RESPONSE_STATUS_SUCCESS))
+                            {
+                                OrderHistoryCoordinatorView view = new OrderHistoryCoordinatorView();
+                                view.UpdateData(baseResp);
+                                view.ShowDialog();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void orderHistoryProgressChanged(object sender, System.Net.UploadProgressChangedEventArgs e)
+        {
+            //throw new NotImplementedException();
+        }
+        //-- BUG0089-SPJ (NguyenPT 20161111) Order history
+
         /// <summary>
         /// Mark item is finish.
         /// </summary>

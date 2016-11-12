@@ -18,4 +18,15 @@ namespace MainPrj.Model
         ORDER_HISTORY_COLUMN_NOTE,
         ORDER_HISTORY_COLUMN_NUM
     }
+    /// <summary>
+    /// Enum use for index of HistoryView columns.
+    /// </summary>
+    public enum OrderHistoryCoordinatorColumns
+    {
+        ORDER_HISTORY_COOR_COLUMN_TIME = 0,
+        ORDER_HISTORY_COOR_COLUMN_PRODUCT_NAME,
+        ORDER_HISTORY_COOR_COLUMN_QUANTITY,
+        ORDER_HISTORY_COOR_COLUMN_NOTE,
+        ORDER_HISTORY_COOR_COLUMN_NUM
+    }
 }

@@ -97,7 +97,10 @@ namespace MainPrj.Model
         /// </summary>
         public string File_record_name
         {
-            get { return file_record_name; }
+            get
+            {
+                return String.IsNullOrEmpty(file_record_name) ? string.Empty : file_record_name;
+            }
             set { file_record_name = value; }
         }
 
@@ -106,7 +109,10 @@ namespace MainPrj.Model
         /// </summary>
         public string Order_id
         {
-            get { return order_id; }
+            get
+            {
+                return String.IsNullOrEmpty(order_id) ? string.Empty : order_id;
+            }
             set { order_id = value; }
         }
 
@@ -121,7 +127,10 @@ namespace MainPrj.Model
         /// </summary>
         public string Type_call
         {
-            get { return type_call; }
+            get
+            {
+                return String.IsNullOrEmpty(type_call) ? string.Empty : type_call;
+            }
             set { type_call = value; }
         }
         //-- BUG0006-SPJ (NguyenPT 20161111) Call history
