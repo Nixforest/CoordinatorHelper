@@ -62,6 +62,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.btnNewCustomer = new System.Windows.Forms.Button();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.selectCallTypeControl = new MainPrj.View.Component.SelectCallTypeControl();
             this.orderHistoryCoordinatorControl = new MainPrj.View.Component.OrderHistoryCoordinatorControl();
             this.orderHistoryControl = new MainPrj.View.Component.OrderHistoryControl();
             this.groupBox1.SuspendLayout();
@@ -430,6 +431,20 @@
             this.btnNewCustomer.UseVisualStyleBackColor = true;
             this.btnNewCustomer.Click += new System.EventHandler(this.btnNewCustomer_Click);
             // 
+            // selectCallTypeControl
+            // 
+            this.selectCallTypeControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.selectCallTypeControl.CallType = "";
+            this.selectCallTypeControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.selectCallTypeControl.Location = new System.Drawing.Point(852, 12);
+            this.selectCallTypeControl.Margin = new System.Windows.Forms.Padding(6);
+            this.selectCallTypeControl.Name = "selectCallTypeControl";
+            this.selectCallTypeControl.Size = new System.Drawing.Size(382, 443);
+            this.selectCallTypeControl.TabIndex = 23;
+            this.selectCallTypeControl.Visible = false;
+            // 
             // orderHistoryCoordinatorControl
             // 
             this.orderHistoryCoordinatorControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -458,6 +473,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.selectCallTypeControl);
             this.Controls.Add(this.orderHistoryCoordinatorControl);
             this.Controls.Add(this.btnNewCustomer);
             this.Controls.Add(this.groupBox1);
@@ -511,5 +527,6 @@
         private System.Windows.Forms.ToolTip toolTip;
         private Component.OrderHistoryControl orderHistoryControl;
         private Component.OrderHistoryCoordinatorControl orderHistoryCoordinatorControl;
+        private Component.SelectCallTypeControl selectCallTypeControl;
     }
 }

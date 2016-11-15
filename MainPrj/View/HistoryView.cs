@@ -339,24 +339,29 @@ namespace MainPrj.View
                     {
                         // Encoding response data
                         encodingBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(respStr);
+                        if (encodingBytes != null)
+                        {
+                            MemoryStream msU = new MemoryStream(encodingBytes);
+                            OrderHistoryResponseModel baseResp = (OrderHistoryResponseModel)js.ReadObject(msU);
+                            if (baseResp != null)
+                            {
+                                if (baseResp.Status.Equals(GlobalConst.RESPONSE_STATUS_SUCCESS))
+                                {
+                                    OrderHistoryCoordinatorView view = new OrderHistoryCoordinatorView();
+                                    view.UpdateData(baseResp);
+                                    view.ShowDialog();
+                                }
+                            }
+                        }
                     }
                     catch (System.Text.EncoderFallbackException)
                     {
                         CommonProcess.ShowErrorMessage(Properties.Resources.EncodingError);
                     }
-                    if (encodingBytes != null)
+                    catch (Exception ex)
                     {
-                        MemoryStream msU = new MemoryStream(encodingBytes);
-                        OrderHistoryResponseModel baseResp = (OrderHistoryResponseModel)js.ReadObject(msU);
-                        if (baseResp != null)
-                        {
-                            if (baseResp.Status.Equals(GlobalConst.RESPONSE_STATUS_SUCCESS))
-                            {
-                                OrderHistoryCoordinatorView view = new OrderHistoryCoordinatorView();
-                                view.UpdateData(baseResp);
-                                view.ShowDialog();
-                            }
-                        }
+                        CommonProcess.ShowErrorMessage(Properties.Resources.ErrorCause + ex.Message);
+                        CommonProcess.HasError = true;
                     }
                 }
             }
@@ -979,6 +984,7 @@ namespace MainPrj.View
             }
         }
 
+        //++ BUG0006-SPJ (NguyenPT 20161111) Call history
         private void toolStripMenuItemSelectCallType_Click(object sender, EventArgs e)
         {
             string id = string.Empty;
@@ -987,14 +993,18 @@ namespace MainPrj.View
                 if (item.Bounds.Contains(rightClick))
                 {
                     id = item.Tag.ToString();
-                    SelectCallTypeView view = new SelectCallTypeView(DataPure.Instance.GetTypeCallByCallId(id));
-                    view.ShowDialog();
-                    DataPure.Instance.UpdateTypeCallToCallModel(id, view.CallType);
-                    this.ReloadListView(this.listCurrentData);
+                    CallModel model = DataPure.Instance.GetCallModelByCallId(id);
+                    if (model != null)
+                    {
+                        SelectCallTypeView view = new SelectCallTypeView(model, model.Type_call);
+                        view.ShowDialog();
+                        this.ReloadListView(this.listCurrentData);
+                    }
                     break;
                 }
             }
         }
+        //-- BUG0006-SPJ (NguyenPT 20161111) Call history
         //-- BUG0047-SPJ (NguyenPT 20160826) Handle print Uphold
     }
 }

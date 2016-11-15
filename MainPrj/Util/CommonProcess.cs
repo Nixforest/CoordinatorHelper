@@ -2653,7 +2653,7 @@ namespace MainPrj.Util
                     //value = String.Format("{{\"token\":\"{0}\",\"customer_id\":\"{1}\"}}",
                     //    Properties.Settings.Default.UserToken, customerId);
                     string type = "1";
-                    if (!DataPure.Instance.IsAccountingAgentRole())
+                    if (DataPure.Instance.IsCoordinatorRole())
                     {
                         type = "2";
                     }
@@ -2664,7 +2664,7 @@ namespace MainPrj.Util
                         new Uri(Properties.Settings.Default.ServerURL + API_ORDER_HISTORY),
                         new System.Collections.Specialized.NameValueCollection()
                     {
-                        { "q", value}
+                        { GlobalConst.JSON_ROOT_KEY, value}
                     });
                 }
                 catch (System.Net.WebException)

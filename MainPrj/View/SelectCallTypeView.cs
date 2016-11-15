@@ -32,40 +32,41 @@ namespace MainPrj.View
         /// <summary>
         /// Constructor.
         /// </summary>
-        public SelectCallTypeView(string currentValue)
+        public SelectCallTypeView(CallModel data, string currentValue)
         {
             InitializeComponent();
-            this.CallType = currentValue;
-            // Get list current type call
-            string[] listCurrentValue = currentValue.Split(GlobalConst.SPLITER_CHR);
-            this._listReason = DataPure.Instance.GetListCallType();
-            int offset = 12;
-            int margin = 12;
-            int width = this.Size.Width - 4 * margin;
-            int height = 50;
-            foreach (BaseModel model in this._listReason)
-            {
-                CheckBox cbx                = new CheckBox();
-                cbx.Appearance              = System.Windows.Forms.Appearance.Button;
-                cbx.AutoSize                = false;
-                cbx.Location                = new System.Drawing.Point(margin, offset);
-                cbx.Name                    = model.Id;
-                cbx.Size                    = new System.Drawing.Size(width, height);
-                cbx.TabIndex                = 0;
-                cbx.Text                    = model.Name;
-                cbx.UseVisualStyleBackColor = true;
-                cbx.BackColor               = CommonProcess.ConvertColorFromString(GlobalConst.COLOR_BUTTON_NORMAL);
-                cbx.ForeColor               = Color.White;
-                cbx.TextAlign               = ContentAlignment.MiddleCenter;
-                cbx.Anchor                  = AnchorStyles.Left | AnchorStyles.Right;
-                offset                     += height + margin;
-                cbx.CheckedChanged         += cbx_CheckedChanged;
-                if (listCurrentValue.Contains(model.Id))
-                {
-                    cbx.Checked = true;
-                }
-                this.Controls.Add(cbx);
-            }
+            this.selectCallTypeControl.UpdateData(data, currentValue);
+            //this.CallType = currentValue;
+            //// Get list current type call
+            //string[] listCurrentValue = currentValue.Split(GlobalConst.SPLITER_CHR);
+            //this._listReason = DataPure.Instance.GetListCallType();
+            //int offset = 12;
+            //int margin = 12;
+            //int width = this.Size.Width - 4 * margin;
+            //int height = 50;
+            //foreach (BaseModel model in this._listReason)
+            //{
+            //    CheckBox cbx                = new CheckBox();
+            //    cbx.Appearance              = System.Windows.Forms.Appearance.Button;
+            //    cbx.AutoSize                = false;
+            //    cbx.Location                = new System.Drawing.Point(margin, offset);
+            //    cbx.Name                    = model.Id;
+            //    cbx.Size                    = new System.Drawing.Size(width, height);
+            //    cbx.TabIndex                = 0;
+            //    cbx.Text                    = model.Name;
+            //    cbx.UseVisualStyleBackColor = true;
+            //    cbx.BackColor               = CommonProcess.ConvertColorFromString(GlobalConst.COLOR_BUTTON_NORMAL);
+            //    cbx.ForeColor               = Color.White;
+            //    cbx.TextAlign               = ContentAlignment.MiddleCenter;
+            //    cbx.Anchor                  = AnchorStyles.Left | AnchorStyles.Right;
+            //    offset                     += height + margin;
+            //    cbx.CheckedChanged         += cbx_CheckedChanged;
+            //    if (listCurrentValue.Contains(model.Id))
+            //    {
+            //        cbx.Checked = true;
+            //    }
+            //    this.Controls.Add(cbx);
+            //}
 
         }
 
@@ -94,23 +95,23 @@ namespace MainPrj.View
         /// <param name="e">EventArgs</param>
         private void btnOK_Click(object sender, EventArgs e)
         {
-            this.CallType = string.Empty;
-            // Get all type call by checkbox status
-            foreach (Control control in this.Controls)
-            {
-                if (control is CheckBox)
-                {
-                    if ((control as CheckBox).Checked)
-                    {
-                        this.CallType += control.Name + GlobalConst.SPLITER_STR;
-                    }
-                }
-            }
-            // Remove last spliter
-            if (!string.IsNullOrEmpty(this.CallType))
-            {
-                this.CallType = this.CallType.Remove(this.CallType.Length - 1);
-            }
+            //this.CallType = string.Empty;
+            //// Get all type call by checkbox status
+            //foreach (Control control in this.Controls)
+            //{
+            //    if (control is CheckBox)
+            //    {
+            //        if ((control as CheckBox).Checked)
+            //        {
+            //            this.CallType += control.Name + GlobalConst.SPLITER_STR;
+            //        }
+            //    }
+            //}
+            //// Remove last spliter
+            //if (!string.IsNullOrEmpty(this.CallType))
+            //{
+            //    this.CallType = this.CallType.Remove(this.CallType.Length - 1);
+            //}
             this.Close();
         }
     }

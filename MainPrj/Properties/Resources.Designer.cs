@@ -156,7 +156,7 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to yyyy-MM-dd hh:mm:ss.
+        ///   Looks up a localized string similar to yyyy-MM-dd HH:mm:ss.
         /// </summary>
         internal static string CallDateTimeFormat {
             get {
@@ -1059,6 +1059,16 @@ namespace MainPrj.Properties {
         internal static System.Drawing.Bitmap phone {
             get {
                 object obj = ResourceManager.GetObject("phone", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap play {
+            get {
+                object obj = ResourceManager.GetObject("play", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

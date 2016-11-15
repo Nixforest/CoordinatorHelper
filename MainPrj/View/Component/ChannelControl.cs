@@ -54,6 +54,18 @@ namespace MainPrj.View
         {
             this.tbxIncommingNumber.Text = phone;
         }
+
+        public void SetCallTypeOption(CallModel model)
+        {
+            if (DataPure.Instance.IsAccountingAgentRole())
+            {
+                if (model != null)
+                {
+                    this.selectCallTypeControl.UpdateData(model);
+                    this.selectCallTypeControl.Visible = true;
+                }
+            }
+        }
         /// <summary>
         /// Get phone number.
         /// </summary>

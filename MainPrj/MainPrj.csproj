@@ -194,6 +194,12 @@
     <Compile Include="View\Component\OrderHistoryCoordinatorControl.Designer.cs">
       <DependentUpon>OrderHistoryCoordinatorControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="View\Component\SelectCallTypeControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Component\SelectCallTypeControl.Designer.cs">
+      <DependentUpon>SelectCallTypeControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\Component\WordWrapListView.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -374,6 +380,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\Component\OrderHistoryCoordinatorControl.resx">
       <DependentUpon>OrderHistoryCoordinatorControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Component\SelectCallTypeControl.resx">
+      <DependentUpon>SelectCallTypeControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\HistoryView1.resx">
       <DependentUpon>HistoryView1.cs</DependentUpon>
@@ -615,6 +624,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\record.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\play.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -27,6 +27,7 @@ namespace MainPrj.Util
 
         #region Text string
         public static string CONTENT00001 = "Không có file ghi âm";
+        public static string CONTENT00002 = "Đơn hàng đang xử lý";
         #endregion
 
         #region Domain Constant

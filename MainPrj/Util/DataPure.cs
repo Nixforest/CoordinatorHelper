@@ -584,6 +584,26 @@ namespace MainPrj.Util
         }
 
         /// <summary>
+        /// Get call model from call id.
+        /// </summary>
+        /// <param name="callId">Id of call</param>
+        /// <returns>Model of call</returns>
+        public CallModel GetCallModelByCallId(string callId)
+        {
+            if (!String.IsNullOrEmpty(callId))
+            {
+                foreach (CallModel item in this.listCalls)
+                {
+                    if (item.Id.Equals(callId))
+                    {
+                        return item;
+                    }
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
         /// Upate type of call value to call model.
         /// </summary>
         /// <param name="callId">Id of call model</param>
