@@ -122,7 +122,10 @@ namespace MainPrj
                                 channel = n - 1;
                             }
                         }
-                        status = (int)CardDataStatus.CARDDATA_HANDLING;
+                        //++ BUG0085-SPJ (NguyenPT 20161117) Fix bug
+                        //status = (int)CardDataStatus.CARDDATA_HANDLING;
+                        status = (int)CardDataStatus.CARDDATA_RINGING;
+                        //-- BUG0085-SPJ (NguyenPT 20161117) Fix bug
                     }
                 }
             }

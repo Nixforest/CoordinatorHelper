@@ -32,41 +32,41 @@ namespace MainPrj.View.Component
             get { return _callType; }
             set { _callType = value; }
         }
-        public SelectCallTypeControl(string currentValue)
-        {
-            InitializeComponent();
-            this.CallType = currentValue;
-            // Get list current type call
-            string[] listCurrentValue = currentValue.Split(GlobalConst.SPLITER_CHR);
-            this._listReason = DataPure.Instance.GetListCallType();
-            int offset = 12;
-            int margin = 12;
-            int width = this.Size.Width - 4 * margin;
-            int height = 50;
-            foreach (BaseModel model in this._listReason)
-            {
-                CheckBox cbx                = new CheckBox();
-                cbx.Appearance              = System.Windows.Forms.Appearance.Button;
-                cbx.AutoSize                = false;
-                cbx.Location                = new System.Drawing.Point(margin, offset);
-                cbx.Name                    = model.Id;
-                cbx.Size                    = new System.Drawing.Size(width, height);
-                cbx.TabIndex                = 0;
-                cbx.Text                    = model.Name;
-                cbx.UseVisualStyleBackColor = true;
-                cbx.BackColor               = CommonProcess.ConvertColorFromString(GlobalConst.COLOR_BUTTON_NORMAL);
-                cbx.ForeColor               = Color.White;
-                cbx.TextAlign               = ContentAlignment.MiddleCenter;
-                cbx.Anchor                  = AnchorStyles.Left | AnchorStyles.Right;
-                offset                     += height + margin;
-                cbx.CheckedChanged         += cbx_CheckedChanged;
-                if (listCurrentValue.Contains(model.Id))
-                {
-                    cbx.Checked = true;
-                }
-                this.flowLayoutPanel.Controls.Add(cbx);
-            }
-        }
+        //public SelectCallTypeControl(string currentValue)
+        //{
+        //    InitializeComponent();
+        //    this.CallType = currentValue;
+        //    // Get list current type call
+        //    string[] listCurrentValue = currentValue.Split(GlobalConst.SPLITER_CHR);
+        //    this._listReason = DataPure.Instance.GetListCallType();
+        //    int offset = 12;
+        //    int margin = 12;
+        //    int width = this.flowLayoutPanel.Width - 2 * margin;
+        //    int height = 50;
+        //    foreach (BaseModel model in this._listReason)
+        //    {
+        //        CheckBox cbx                = new CheckBox();
+        //        cbx.Appearance              = System.Windows.Forms.Appearance.Button;
+        //        cbx.AutoSize                = false;
+        //        cbx.Location                = new System.Drawing.Point(margin, offset);
+        //        cbx.Name                    = model.Id;
+        //        cbx.Size                    = new System.Drawing.Size(width, height);
+        //        cbx.TabIndex                = 0;
+        //        cbx.Text                    = model.Name;
+        //        cbx.UseVisualStyleBackColor = true;
+        //        cbx.BackColor               = CommonProcess.ConvertColorFromString(GlobalConst.COLOR_BUTTON_NORMAL);
+        //        cbx.ForeColor               = Color.White;
+        //        cbx.TextAlign               = ContentAlignment.MiddleCenter;
+        //        cbx.Anchor                  = AnchorStyles.Left | AnchorStyles.Right;
+        //        offset                     += height + margin;
+        //        cbx.CheckedChanged         += cbx_CheckedChanged;
+        //        if (listCurrentValue.Contains(model.Id))
+        //        {
+        //            cbx.Checked = true;
+        //        }
+        //        this.flowLayoutPanel.Controls.Add(cbx);
+        //    }
+        //}
         /// <summary>
         /// Update data for control
         /// </summary>
@@ -80,8 +80,8 @@ namespace MainPrj.View.Component
             // Get list current type call
             this._listReason = DataPure.Instance.GetListCallType();
             int offset = 12;
-            int margin = 12;
-            int width = this.Size.Width - 4 * margin;
+            int margin = 4;
+            int width = this.flowLayoutPanel.Size.Width - 2 * margin;
             int height = 50;
             this.flowLayoutPanel.Controls.Clear();
             foreach (BaseModel model in this._listReason)

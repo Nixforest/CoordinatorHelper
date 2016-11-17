@@ -738,7 +738,17 @@ namespace MainPrj.View
             // Set default selection
             //++ BUG0065-SPJ (NguyenPT 20160901) Use callMode.Customer instead of DataPure.Instance.CustomerInfo
             //selectorView.SetSelection(DataPure.Instance.CustomerInfo.Agent_id);
-            selectorView.SetSelection(customerInfo.Agent_id);
+            //++ BUG0069-SPJ (NguyenPT 20160905) Choose delivery agent
+            //selectorView.SetSelection(customerInfo.Agent_id);
+            if (!string.IsNullOrEmpty(customerInfo.Customer_delivery_agent_id))
+            {
+                selectorView.SetSelection(customerInfo.Customer_delivery_agent_id);
+            }
+            else
+            {
+                selectorView.SetSelection(customerInfo.Agent_id);
+            }
+            //-- BUG0069-SPJ (NguyenPT 20160905) Choose delivery agent
             //-- BUG0065-SPJ (NguyenPT 20160901) Use callMode.Customer instead of DataPure.Instance.CustomerInfo
             // Show dialog
             selectorView.ShowDialog();

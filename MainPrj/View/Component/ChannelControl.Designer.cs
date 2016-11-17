@@ -438,12 +438,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.selectCallTypeControl.CallType = "";
             this.selectCallTypeControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.selectCallTypeControl.Location = new System.Drawing.Point(852, 12);
+            this.selectCallTypeControl.Location = new System.Drawing.Point(844, 6);
             this.selectCallTypeControl.Margin = new System.Windows.Forms.Padding(6);
             this.selectCallTypeControl.Name = "selectCallTypeControl";
-            this.selectCallTypeControl.Size = new System.Drawing.Size(382, 443);
+            this.selectCallTypeControl.Size = new System.Drawing.Size(458, 456);
             this.selectCallTypeControl.TabIndex = 23;
-            this.selectCallTypeControl.Visible = false;
             // 
             // orderHistoryCoordinatorControl
             // 
@@ -454,7 +453,7 @@
             this.orderHistoryCoordinatorControl.Location = new System.Drawing.Point(844, 269);
             this.orderHistoryCoordinatorControl.Margin = new System.Windows.Forms.Padding(6);
             this.orderHistoryCoordinatorControl.Name = "orderHistoryCoordinatorControl";
-            this.orderHistoryCoordinatorControl.Size = new System.Drawing.Size(451, 199);
+            this.orderHistoryCoordinatorControl.Size = new System.Drawing.Size(463, 199);
             this.orderHistoryCoordinatorControl.TabIndex = 22;
             // 
             // orderHistoryControl

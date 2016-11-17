@@ -2724,7 +2724,7 @@ namespace MainPrj.Util
                         {
                             baseResp = (BaseResponseModel)js.ReadObject(msU);
                         }
-                        catch (SerializationException e)
+                        catch (SerializationException)
                         {
                             //ShowErrorMessage(Properties.Resources.ConvertJsonError, DataPure.Instance.MainForm);
                             HasError = true;

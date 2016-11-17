@@ -188,7 +188,12 @@ namespace MainPrj
             //CommonProcess.WriteHistory(call);
             ////-- BUG0043-SPJ (NguyenPT 20160822) Fix bug lost all history when program down
             //DataPure.Instance.ListCalls.Add(call);
-            if (status.Equals((int)CardDataStatus.CARDDATA_HANDLING) || status.Equals((int)CardDataStatus.CARDDATA_MISS))
+            //++ BUG0085-SPJ (NguyenPT 20161117) Fix bug
+            //if (status.Equals((int)CardDataStatus.CARDDATA_HANDLING) || status.Equals((int)CardDataStatus.CARDDATA_MISS))
+            if (status.Equals((int)CardDataStatus.CARDDATA_RINGING)
+                || status.Equals((int)CardDataStatus.CARDDATA_MISS)
+                || status.Equals((int)CardDataStatus.CARDDATA_HANDLING))
+            //-- BUG0085-SPJ (NguyenPT 20161117) Fix bug
             {
                 CommonProcess.WriteHistory(call);
                 DataPure.Instance.ListCalls.Add(call);
@@ -987,25 +992,25 @@ namespace MainPrj
         private void btnSearch_Click(object sender, EventArgs e)
         {
             #region Test get customer information
-            //string phone = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel).GetIncommingPhone();
-            //double n = 0;
-            //// Get incomming number information
-            ////if (!String.IsNullOrEmpty(phone) && double.TryParse(phone, out n))
-            //{
-            //    // Insert value into current channel
-            //    try
-            //    {
-            //        ChannelControl tab = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel);
-            //        //HandleDoubleLineJump();
-            //        tab.SetIncommingPhone(phone);
-            //        // Request server and update data from server
-            //        UpdateData(phone, (int)CardDataStatus.CARDDATA_HANDLING, DataPure.Instance.CurrentChannel);
-            //    }
-            //    catch (ArgumentOutOfRangeException)
-            //    {
-            //        CommonProcess.ShowErrorMessage(Properties.Resources.ArgumentOutOfRange);
-            //    }
-            //}
+            string phone = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel).GetIncommingPhone();
+            double n = 0;
+            // Get incomming number information
+            //if (!String.IsNullOrEmpty(phone) && double.TryParse(phone, out n))
+            {
+                // Insert value into current channel
+                try
+                {
+                    ChannelControl tab = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel);
+                    //HandleDoubleLineJump();
+                    tab.SetIncommingPhone(phone);
+                    // Request server and update data from server
+                    UpdateData(phone, (int)CardDataStatus.CARDDATA_HANDLING, DataPure.Instance.CurrentChannel);
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    CommonProcess.ShowErrorMessage(Properties.Resources.ArgumentOutOfRange);
+                }
+            }
             //PrintData("<CRMV1               0002     2016-08-02 16:15:00                               01689908271                    >                                          172.16.1.64                                       {RAWCID:[0939331371]}{DETAILDES:[]}");
             #endregion
             //_TestServer test = new _TestServer();
@@ -1019,14 +1024,14 @@ namespace MainPrj
             //CommonProcess.ShowInformMessage(
             //    CommonProcess.GetPhoneFromRecordFilePath(@"C:\REC\REC201610\20161025\01--A-0838964703---20161025090533.wav") + " - "
             //    + CommonProcess.GetFileNameFromRecordFilePath(@"C:\REC\REC201610\20161025\01--A-0838964703---20161025090533.wav"));
-            RecordPlayerView view = new RecordPlayerView();
-            //view.Path = "";
-            view.Location = this.Location;
-            view.Deactivate += delegate
-            {
-                view.Close();
-            };
-            view.Show();
+            //RecordPlayerView view = new RecordPlayerView();
+            ////view.Path = "";
+            //view.Location = this.Location;
+            //view.Deactivate += delegate
+            //{
+            //    view.Close();
+            //};
+            //view.Show();
         }
         /// <summary>
         /// Handle when click Create order button
@@ -2324,7 +2329,13 @@ namespace MainPrj
                                 FlashWindowHelper.Flash(this.Handle);
                                 statusStr = Properties.Resources.CardDataStatus3;
                                 color = Color.Blue;
-                                needUpdate = true;
+                                //++ BUG0085-SPJ (NguyenPT 20161117) Fix bug
+                                //needUpdate = true;
+                                if (DataPure.Instance.IsCoordinatorRole())
+                                {
+                                  needUpdate = true;  
+                                }
+                                //-- BUG0085-SPJ (NguyenPT 20161117) Fix bug
                                 break;
                             case (int)CardDataStatus.CARDDATA_HANGUP:
                                 statusStr = Properties.Resources.CardDataStatus4;

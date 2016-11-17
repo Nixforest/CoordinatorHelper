@@ -33,10 +33,14 @@
             // 
             // flowLayoutPanel
             // 
+            this.flowLayoutPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.flowLayoutPanel.AutoScroll = true;
+            this.flowLayoutPanel.BackColor = System.Drawing.SystemColors.Control;
             this.flowLayoutPanel.Location = new System.Drawing.Point(3, 3);
             this.flowLayoutPanel.Name = "flowLayoutPanel";
-            this.flowLayoutPanel.Size = new System.Drawing.Size(376, 437);
+            this.flowLayoutPanel.Size = new System.Drawing.Size(452, 450);
             this.flowLayoutPanel.TabIndex = 0;
             // 
             // SelectCallTypeControl
@@ -47,7 +51,7 @@
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "SelectCallTypeControl";
-            this.Size = new System.Drawing.Size(382, 443);
+            this.Size = new System.Drawing.Size(458, 456);
             this.ResumeLayout(false);
 
         }
