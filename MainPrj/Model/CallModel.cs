@@ -46,6 +46,19 @@ namespace MainPrj.Model
         private string user_id;
         [DataMember(Name = "token", IsRequired = false)]
         private string token;
+        //++ BUG0006-SPJ (NguyenPT 20161118) Call history
+        [DataMember(Name = "isUpdateToServer", IsRequired = false)]
+        private bool isUpdateToServer;
+
+        /// <summary>
+        /// Flag check if data was updated to server.
+        /// </summary>
+        public bool IsUpdateToServer
+        {
+            get { return isUpdateToServer; }
+            set { isUpdateToServer = value; }
+        }
+        //-- BUG0006-SPJ (NguyenPT 20161118) Call history
 
         /// <summary>
         /// Token
@@ -216,6 +229,7 @@ namespace MainPrj.Model
             this.file_record_name = "";
             this.created_date     = incommingTime.ToString(Properties.Resources.CallDateTimeFormat);
             this.type_call        = "";
+            this.isUpdateToServer = false;
             //-- BUG0006-SPJ (NguyenPT 20161111) Call history
         }
         

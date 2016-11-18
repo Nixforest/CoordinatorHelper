@@ -156,6 +156,10 @@ namespace MainPrj.View.Component
             {
                 this._data.Type_call = this.CallType;
             }
+            //++ BUG0006-SPJ (NguyenPT 20161118) Call history
+            // Mark this call is not updated to server yet
+            this._data.IsUpdateToServer = false;
+            //-- BUG0006-SPJ (NguyenPT 20161118) Call history
         }
     }
 }

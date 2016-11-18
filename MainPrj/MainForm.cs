@@ -470,6 +470,9 @@ namespace MainPrj
         /// </summary>
         private void HandleClickHistoryButton()
         {
+            //++ BUG0006-SPJ (NguyenPT 20161118) Call history
+            CommonProcess.RequestCreateCallHistory();
+            //-- BUG0006-SPJ (NguyenPT 20161118) Call history
             HistoryView historyView = new HistoryView();
             historyView.ListTodayData.AddRange(DataPure.Instance.ListCalls);
             historyView.ShowDialog();

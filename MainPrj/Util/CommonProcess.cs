@@ -279,6 +279,7 @@ namespace MainPrj.Util
         /// <param name="listData">List of data</param>
         public static bool WriteHistory(List<CallModel> listData)
         {
+            RequestCreateCallHistory();
             if ((listData != null) && (listData.Count > 0))
             {
                 string date = listData[0].Id.Substring(0, 8);
@@ -2768,7 +2769,7 @@ namespace MainPrj.Util
             // Update notification label
             ((MainForm)DataPure.Instance.MainForm).SetNotificationLabel(DataPure.Instance.GetNewNotificationCount().ToString());
         }
-        //++ BUG0006-SPJ (NguyenPT 20161107) Callr history
+        //++ BUG0006-SPJ (NguyenPT 20161107) Call history
         /// <summary>
         /// Request create call history.
         /// </summary>
@@ -2783,7 +2784,20 @@ namespace MainPrj.Util
             CreateCallHistoryRequest request = new CreateCallHistoryRequest(model);
             request.Execute();
         }
-        //-- BUG0006-SPJ (NguyenPT 20161107) Callr history
+        /// <summary>
+        /// Request update all call history.
+        /// </summary>
+        public static void RequestCreateCallHistory()
+        {
+            foreach (CallModel item in DataPure.Instance.ListCalls)
+            {
+                if (!item.IsUpdateToServer)
+                {
+                    RequestCreateCallHistory(item);
+                }
+            }
+        }
+        //-- BUG0006-SPJ (NguyenPT 20161107) Call history
         #endregion
     }
 }

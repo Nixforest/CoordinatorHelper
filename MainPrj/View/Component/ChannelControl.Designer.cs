@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.tbxIncommingNumber = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.orderHistoryControl = new MainPrj.View.Component.OrderHistoryControl();
             this.cbxCity = new System.Windows.Forms.ComboBox();
             this.cbxDistrict = new System.Windows.Forms.ComboBox();
             this.cbxWard = new System.Windows.Forms.ComboBox();
@@ -64,7 +65,6 @@
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.selectCallTypeControl = new MainPrj.View.Component.SelectCallTypeControl();
             this.orderHistoryCoordinatorControl = new MainPrj.View.Component.OrderHistoryCoordinatorControl();
-            this.orderHistoryControl = new MainPrj.View.Component.OrderHistoryControl();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -122,6 +122,18 @@
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Thông tin Khách Hàng";
+            // 
+            // orderHistoryControl
+            // 
+            this.orderHistoryControl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.orderHistoryControl.Data = null;
+            this.orderHistoryControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.orderHistoryControl.Location = new System.Drawing.Point(8, 235);
+            this.orderHistoryControl.Margin = new System.Windows.Forms.Padding(6);
+            this.orderHistoryControl.Name = "orderHistoryControl";
+            this.orderHistoryControl.Size = new System.Drawing.Size(830, 190);
+            this.orderHistoryControl.TabIndex = 21;
             // 
             // cbxCity
             // 
@@ -456,24 +468,12 @@
             this.orderHistoryCoordinatorControl.Size = new System.Drawing.Size(463, 199);
             this.orderHistoryCoordinatorControl.TabIndex = 22;
             // 
-            // orderHistoryControl
-            // 
-            this.orderHistoryControl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.orderHistoryControl.Data = null;
-            this.orderHistoryControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.orderHistoryControl.Location = new System.Drawing.Point(8, 235);
-            this.orderHistoryControl.Margin = new System.Windows.Forms.Padding(6);
-            this.orderHistoryControl.Name = "orderHistoryControl";
-            this.orderHistoryControl.Size = new System.Drawing.Size(830, 190);
-            this.orderHistoryControl.TabIndex = 21;
-            // 
             // ChannelControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.selectCallTypeControl);
             this.Controls.Add(this.orderHistoryCoordinatorControl);
+            this.Controls.Add(this.selectCallTypeControl);
             this.Controls.Add(this.btnNewCustomer);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.tbxIncommingNumber);

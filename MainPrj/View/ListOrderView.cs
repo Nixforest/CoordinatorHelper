@@ -645,6 +645,12 @@ namespace MainPrj.View
                 {
                     promoteStr += " - " + model.Promotes[i].Name;
                 }
+                //++ BUG0087-SPJ (NguyenPT 20161118) Show promote in list order
+                if (model.IsManualChangePromote)
+                {
+                    promoteStr += " + " + CommonProcess.FormatMoney(model.PromoteMoney);
+                }
+                //-- BUG0087-SPJ (NguyenPT 20161118) Show promote in list order
             }
             else
             {

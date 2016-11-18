@@ -240,7 +240,7 @@ namespace MainPrj.View
             this._isManualChangePromoteMoney = false;
             //-- BUG0068-SPJ (NguyenPT 20160905) Change promote money
             //++ BUG0068-SPJ (NguyenPT 20160904) Can change promote money
-            totalPromote = Properties.Settings.Default.PromoteMoney;
+            //totalPromote = Properties.Settings.Default.PromoteMoney;
             //-- BUG0068-SPJ (NguyenPT 20160904) Can change promote money
             // Update data
             if (_isUpdateMode && (_data != null))
@@ -305,8 +305,17 @@ namespace MainPrj.View
                 //++ BUG0068-SPJ (NguyenPT 20160905) Change promote money
                 //UpdateMoney();
                 this._isManualChangePromoteMoney = _data.IsManualChangePromote;
+                //++ BUG0087-SPJ (NguyenPT 20161118) Show promote in list order
+                this.totalPromote = _data.PromoteMoney;
+                //-- BUG0087-SPJ (NguyenPT 20161118) Show promote in list order
                 UpdateMoney(this._isManualChangePromoteMoney);
                 //-- BUG0068-SPJ (NguyenPT 20160905) Change promote money
+                //++ BUG0087-SPJ (NguyenPT 20161118) Show promote in list order
+                if (this._isManualChangePromoteMoney)
+                {
+                    lblPromote.Text = CommonProcess.FormatMoney(this._data.PromoteMoney);
+                }
+                //-- BUG0087-SPJ (NguyenPT 20161118) Show promote in list order
             }
             ////++ BUG0068-SPJ (NguyenPT 20160904) Can change promote money
             //totalPromote = Properties.Settings.Default.PromoteMoney;
