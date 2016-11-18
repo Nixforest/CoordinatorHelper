@@ -162,6 +162,8 @@ namespace MainPrj.API
                                     {
                                         this._model.CallId = resp.Id;
                                     }
+                                    // Mark this model was updated to server
+                                    this._model.IsUpdateToServer = true;
                                 }
                             }
                         }
