@@ -1097,12 +1097,15 @@ namespace MainPrj.View
                         listData.Add(product.Materials_no,
                            new OrderDetailModel()
                            {
-                               Materials_id      = product.Materials_no,
-                               Materials_type_id = product.TypeId,
-                               Quantity          = product.Quantity,
-                               Price             = string.Empty,
-                               TotalPay          = string.Empty,
-                               Seri              = product.Name,
+                               Materials_id        = product.Materials_no,
+                               Materials_type_id   = product.TypeId,
+                               Quantity            = product.Quantity,
+                               Price               = string.Empty,
+                               TotalPay            = string.Empty,
+                               Seri                = product.Name,
+                               //++ BUG0061-SPJ (NguyenPT 20161121) Sell vo different
+                               Materials_parent_id = product.Parent_id,
+                               //-- BUG0061-SPJ (NguyenPT 20161121) Sell vo different
                            });
                     }
                 }

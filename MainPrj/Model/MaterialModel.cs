@@ -35,6 +35,19 @@ namespace MainPrj.Model
         protected string unit_use;
         [DataMember(Name = "price", IsRequired = false)]
         protected string price;
+        //++ BUG0061-SPJ (NguyenPT 20161121) Sell vo different
+        [DataMember(Name = "parent_id", IsRequired = false)]
+        protected string parent_id;
+
+        /// <summary>
+        /// Id of group material.
+        /// </summary>
+        public string Parent_id
+        {
+            get { return parent_id; }
+            set { parent_id = value; }
+        }
+        //-- BUG0061-SPJ (NguyenPT 20161121) Sell vo different
 
         public string Price
         {

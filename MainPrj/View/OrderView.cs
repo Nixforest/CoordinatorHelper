@@ -768,6 +768,9 @@ namespace MainPrj.View
                             Money        = price,
                             Materials_no = item.Materials_no,
                             TypeId       = item.Materials_type_id,
+                            //++ BUG0061-SPJ (NguyenPT 20161121) Sell vo different
+                            Parent_id    = item.Parent_id,
+                            //-- BUG0061-SPJ (NguyenPT 20161121) Sell vo different
                         };
                         foreach (ProductModel product in products)
                         {
@@ -1120,13 +1123,16 @@ namespace MainPrj.View
             }
             ProductModel model = new ProductModel
             {
-                Id = item.Id,
-                Name = item.Name,
-                Quantity = 1,
-                Price = price,
-                Money = price,
+                Id           = item.Id,
+                Name         = item.Name,
+                Quantity     = 1,
+                Price        = price,
+                Money        = price,
                 Materials_no = item.Materials_no,
-                TypeId = item.Materials_type_id,
+                TypeId       = item.Materials_type_id,
+                //++ BUG0061-SPJ (NguyenPT 20161121) Sell vo different
+                Parent_id    = item.Parent_id,
+                //-- BUG0061-SPJ (NguyenPT 20161121) Sell vo different
             };
             foreach (ProductModel product in products)
             {

@@ -37,14 +37,19 @@ namespace MainPrj.View.Component
                 int idx = 0;
                 foreach (CreateOrderModel item in _data.Record)
                 {
-                    this.listView.Items.Add(CreateListViewItem(item, ++idx));
-                    if (item.Order_detail.Count > 1)
+                    //++ BUG0090-SPJ (NguyenPT 20161121) Handle when Order model does not contain order detail
+                    if (item.Order_detail.Count > 0)
                     {
-                        for (int i = 1; i < item.Order_detail.Count; i++)
+                        this.listView.Items.Add(CreateListViewItem(item, ++idx));
+                        if (item.Order_detail.Count > 1)
                         {
-                            this.listView.Items.Add(CreateListViewSubItem(item.Order_detail[i]));
+                            for (int i = 1; i < item.Order_detail.Count; i++)
+                            {
+                                this.listView.Items.Add(CreateListViewSubItem(item.Order_detail[i]));
+                            }
                         }
                     }
+                    //-- BUG0090-SPJ (NguyenPT 20161121) Handle when Order model does not contain order detail
                 }
             }
         }

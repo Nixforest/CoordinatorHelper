@@ -2350,12 +2350,15 @@ namespace MainPrj.Util
                         {
                             OrderDetailModel orderDetail = new OrderDetailModel();
                             // Create data
-                            orderDetail.Materials_id = product.Id;
-                            orderDetail.Materials_type_id = product.TypeId;
-                            orderDetail.Quantity = product.Quantity;
-                            orderDetail.Price = product.Price.ToString();
-                            orderDetail.TotalPay = (product.Price * product.Quantity).ToString();
-                            orderDetail.Seri = string.Empty;
+                            orderDetail.Materials_id        = product.Id;
+                            orderDetail.Materials_type_id   = product.TypeId;
+                            orderDetail.Quantity            = product.Quantity;
+                            orderDetail.Price               = product.Price.ToString();
+                            orderDetail.TotalPay            = (product.Price * product.Quantity).ToString();
+                            orderDetail.Seri                = string.Empty;
+                            //++ BUG0061-SPJ (NguyenPT 20161121) Sell vo different
+                            orderDetail.Materials_parent_id = product.Parent_id;
+                            //-- BUG0061-SPJ (NguyenPT 20161121) Sell vo different
 
                             // Add to list order detail
                             updateModel.Order_detail.Add(orderDetail);
@@ -2510,12 +2513,15 @@ namespace MainPrj.Util
                         {
                             OrderDetailModel orderDetail = new OrderDetailModel();
                             // Create data
-                            orderDetail.Materials_id = product.Id;
-                            orderDetail.Materials_type_id = product.TypeId;
-                            orderDetail.Quantity = product.Quantity;
-                            orderDetail.Price = product.Price.ToString();
-                            orderDetail.TotalPay = (product.Price * product.Quantity).ToString();
-                            orderDetail.Seri = string.Empty;
+                            orderDetail.Materials_id        = product.Id;
+                            orderDetail.Materials_type_id   = product.TypeId;
+                            orderDetail.Quantity            = product.Quantity;
+                            orderDetail.Price               = product.Price.ToString();
+                            orderDetail.TotalPay            = (product.Price * product.Quantity).ToString();
+                            orderDetail.Seri                = string.Empty;
+                            //++ BUG0061-SPJ (NguyenPT 20161121) Sell vo different
+                            orderDetail.Materials_parent_id = product.Parent_id;
+                            //-- BUG0061-SPJ (NguyenPT 20161121) Sell vo different
 
                             // Add to list order detail
                             createModel.Order_detail.Add(orderDetail);

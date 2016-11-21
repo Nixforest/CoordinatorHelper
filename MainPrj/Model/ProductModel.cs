@@ -32,6 +32,19 @@ namespace MainPrj.Model
         private string materials_no;
         [DataMember(Name = "typeId", IsRequired = false)]
         private string typeId;
+        //++ BUG0061-SPJ (NguyenPT 20161121) Sell vo different
+        [DataMember(Name = "parent_id", IsRequired = false)]
+        protected string parent_id;
+
+        /// <summary>
+        /// Id of group material.
+        /// </summary>
+        public string Parent_id
+        {
+            get { return parent_id; }
+            set { parent_id = value; }
+        }
+        //-- BUG0061-SPJ (NguyenPT 20161121) Sell vo different
         /// <summary>
         /// Constructor.
         /// </summary>
@@ -47,6 +60,9 @@ namespace MainPrj.Model
             money        = 0.0;
             materials_no = string.Empty;
             typeId       = string.Empty;
+            //++ BUG0061-SPJ (NguyenPT 20161121) Sell vo different
+            parent_id    = string.Empty;
+            //-- BUG0061-SPJ (NguyenPT 20161121) Sell vo different
         }
         /// <summary>
         /// Copy constructor.
@@ -61,6 +77,9 @@ namespace MainPrj.Model
             this.money        = copy.money;
             this.materials_no = copy.materials_no;
             this.typeId       = copy.typeId;
+            //++ BUG0061-SPJ (NguyenPT 20161121) Sell vo different
+            this.Parent_id    = copy.Parent_id;
+            //-- BUG0061-SPJ (NguyenPT 20161121) Sell vo different
         }
         /// <summary>
         /// Material type id.

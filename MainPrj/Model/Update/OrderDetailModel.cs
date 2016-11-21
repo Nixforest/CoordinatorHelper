@@ -30,6 +30,19 @@ namespace MainPrj.Model.Update
         protected string amount;
         [DataMember(Name = "seri", IsRequired = false)]
         protected string seri;
+        //++ BUG0061-SPJ (NguyenPT 20161121) Sell vo different
+        [DataMember(Name = "materials_parent_id", IsRequired = false)]
+        protected string materials_parent_id;
+
+        /// <summary>
+        /// Id of material group.
+        /// </summary>
+        public string Materials_parent_id
+        {
+            get { return materials_parent_id; }
+            set { materials_parent_id = value; }
+        }
+        //++ BUG0061-SPJ (NguyenPT 20161121) Sell vo different
 
         /// <summary>
         /// Material seri.
