@@ -254,6 +254,15 @@ namespace MainPrj.Util
             return MessageBox.Show(Properties.Resources.FunctionProcessing, Properties.Resources.Inform,
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
+        /// <summary>
+        /// Show message box inform about function blocking.
+        /// </summary>
+        /// <returns>Dialog result</returns>
+        public static DialogResult ShowInformMessageFunctionBlocking()
+        {
+            return MessageBox.Show(Properties.Resources.FunctionBlocking, Properties.Resources.Inform,
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
         public static void HandlerTimer()
         {
             System.Timers.Timer timer = new System.Timers.Timer(Properties.Settings.Default.TimeAutoCloseMsgBox)
@@ -2381,12 +2390,15 @@ namespace MainPrj.Util
                         {
                             OrderDetailModel orderDetail = new OrderDetailModel();
                             // Create data
-                            orderDetail.Materials_id = cylinder.Id;
+                            orderDetail.Materials_id      = cylinder.Id;
                             orderDetail.Materials_type_id = cylinder.TypeId;
-                            orderDetail.Quantity = cylinder.Quantity;
-                            orderDetail.Price = String.Empty;
-                            orderDetail.TotalPay = String.Empty;
-                            orderDetail.Seri = cylinder.Serial;
+                            orderDetail.Quantity          = cylinder.Quantity;
+                            orderDetail.Price             = String.Empty;
+                            orderDetail.TotalPay          = String.Empty;
+                            orderDetail.Seri              = cylinder.Serial;
+                            //++ BUG0061-SPJ (NguyenPT 20161129) Sell vo different
+                            orderDetail.Materials_parent_id = cylinder.Parent_id;
+                            //-- BUG0061-SPJ (NguyenPT 20161129) Sell vo different
 
                             // Add to list order detail
                             updateModel.Order_detail.Add(orderDetail);
@@ -2544,12 +2556,15 @@ namespace MainPrj.Util
                         {
                             OrderDetailModel orderDetail = new OrderDetailModel();
                             // Create data
-                            orderDetail.Materials_id = cylinder.Id;
+                            orderDetail.Materials_id      = cylinder.Id;
                             orderDetail.Materials_type_id = cylinder.TypeId;
-                            orderDetail.Quantity = cylinder.Quantity;
-                            orderDetail.Price = String.Empty;
-                            orderDetail.TotalPay = String.Empty;
-                            orderDetail.Seri = cylinder.Serial;
+                            orderDetail.Quantity          = cylinder.Quantity;
+                            orderDetail.Price             = String.Empty;
+                            orderDetail.TotalPay          = String.Empty;
+                            orderDetail.Seri              = cylinder.Serial;
+                            //++ BUG0061-SPJ (NguyenPT 20161129) Sell vo different
+                            orderDetail.Materials_parent_id = cylinder.Parent_id;
+                            //-- BUG0061-SPJ (NguyenPT 20161129) Sell vo different
 
                             // Add to list order detail
                             createModel.Order_detail.Add(orderDetail);

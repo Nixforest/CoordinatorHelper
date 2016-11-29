@@ -428,12 +428,15 @@ namespace MainPrj.View
                     {
                         CylinderModel model = new CylinderModel
                         {
-                            Id = item.Id,
-                            Name = item.Name,
-                            Quantity = 1,
-                            Serial = String.Empty,
-                            TypeId = item.Materials_type_id,
-                            Materials_no = item.Materials_no
+                            Id           = item.Id,
+                            Name         = item.Name,
+                            Quantity     = 1,
+                            Serial       = String.Empty,
+                            TypeId       = item.Materials_type_id,
+                            Materials_no = item.Materials_no,
+                            //++ BUG0061-SPJ (NguyenPT 20161129) Sell vo different
+                            Parent_id     = item.Parent_id
+                            //-- BUG0061-SPJ (NguyenPT 20161129) Sell vo different
                         };
                         foreach (CylinderModel cylinder in cylinders)
                         {

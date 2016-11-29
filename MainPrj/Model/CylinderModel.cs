@@ -27,6 +27,19 @@ namespace MainPrj.Model
         private string name;
         [DataMember(Name = "materials_no", IsRequired = false)]
         private string materials_no;
+        //++ BUG0061-SPJ (NguyenPT 20161129) Sell vo different
+        [DataMember(Name = "parent_id", IsRequired = false)]
+        protected string parent_id;
+
+        /// <summary>
+        /// Id of group material.
+        /// </summary>
+        public string Parent_id
+        {
+            get { return parent_id; }
+            set { parent_id = value; }
+        }
+        //-- BUG0061-SPJ (NguyenPT 20161129) Sell vo different
         /// <summary>
         /// Materials no.
         /// </summary>
@@ -86,6 +99,7 @@ namespace MainPrj.Model
             this.serial       = string.Empty;
             this.name         = string.Empty;
             this.materials_no = string.Empty;
+            this.parent_id    = string.Empty;
         }
         /// <summary>
         /// Copy constructor.

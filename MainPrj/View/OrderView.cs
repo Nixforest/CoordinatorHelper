@@ -825,11 +825,14 @@ namespace MainPrj.View
                 if (model.Products[0].IsCylinder())
                 {
                     CylinderModel cylinder = new CylinderModel();
-                    cylinder.Id = model.Products[0].Id;
-                    cylinder.Name = model.Products[0].Name;
-                    cylinder.Materials_no = model.Products[0].Materials_no;
-                    cylinder.Quantity = (int)model.Products[0].Quantity;
-                    cylinder.TypeId = model.Products[0].TypeId;
+                    cylinder.Id            = model.Products[0].Id;
+                    cylinder.Name          = model.Products[0].Name;
+                    cylinder.Materials_no  = model.Products[0].Materials_no;
+                    cylinder.Quantity      = (int)model.Products[0].Quantity;
+                    cylinder.TypeId        = model.Products[0].TypeId;
+                    //++ BUG0061-SPJ (NguyenPT 20161129) Sell vo different
+                    cylinder.Parent_id     = model.Products[0].Parent_id;
+                    //-- BUG0061-SPJ (NguyenPT 20161129) Sell vo different
                     model.Cylinders.Insert(0, cylinder);
                     model.Products.RemoveAt(0);
                 }

@@ -651,6 +651,15 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Chức năng đang bị tạm khóa. Xin vui lòng thử lại sau..
+        /// </summary>
+        internal static string FunctionBlocking {
+            get {
+                return ResourceManager.GetString("FunctionBlocking", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Chức năng đang được hoàn thiện. Xin vui lòng thử lại sau..
         /// </summary>
         internal static string FunctionProcessing {

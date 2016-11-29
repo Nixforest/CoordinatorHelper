@@ -1226,7 +1226,7 @@ namespace MainPrj
             Properties.Settings.Default.UserToken = String.Empty;
             Properties.Settings.Default.Save();
             //++ BUG0084-SPJ (NguyenPT 20161004) Web socket Notification
-            CloseWebSocketConnection();
+            //CloseWebSocketConnection();
             //-- BUG0084-SPJ (NguyenPT 20161004) Web socket Notification
             return true;
         }
@@ -1841,7 +1841,7 @@ namespace MainPrj
                 }
                 ReLocateLabel();
                 //++ BUG0084-SPJ (NguyenPT 20161004) Web socket Notification
-                StartReconnectWebSocket();
+                //StartReconnectWebSocket();
                 //-- BUG0084-SPJ (NguyenPT 20161004) Web socket Notification
             }
             // Update address data
@@ -2715,26 +2715,28 @@ namespace MainPrj
         /// <param name="e">EventArgs</param>
         private void toolStripMenuItemConnect_Click(object sender, EventArgs e)
         {
-            // Object is not null
-            if (DataPure.Instance.WebSocket != null)
-            {
-                // Status is closed
-                if (DataPure.Instance.WebSocket.ReadyState.Equals(WebSocketSharp.WebSocketState.Closed))
-                {
-                    // Reconnect
-                    WebSocketUtility.StartWebSocket(openSocket, errorSocket, receiveDataSocket, closeSocket);
-                }
-                else
-                {
-                    // Show error.
-                    CommonProcess.ShowErrorMessage(Properties.Resources.ConnectionWithNotifyCenterOpened);
-                }
-            }
-            else    // Object is null
-            {
-                // Start connect
-                WebSocketUtility.StartWebSocket(openSocket, errorSocket, receiveDataSocket, closeSocket);
-            }
+            //// Object is not null
+            //if (DataPure.Instance.WebSocket != null)
+            //{
+            //    // Status is closed
+            //    if (DataPure.Instance.WebSocket.ReadyState.Equals(WebSocketSharp.WebSocketState.Closed))
+            //    {
+            //        // Reconnect
+            //        WebSocketUtility.StartWebSocket(openSocket, errorSocket, receiveDataSocket, closeSocket);
+            //    }
+            //    else
+            //    {
+            //        // Show error.
+            //        CommonProcess.ShowErrorMessage(Properties.Resources.ConnectionWithNotifyCenterOpened);
+            //    }
+            //}
+            //else    // Object is null
+            //{
+            //    // Start connect
+            //    WebSocketUtility.StartWebSocket(openSocket, errorSocket, receiveDataSocket, closeSocket);
+            //}
+
+            CommonProcess.ShowInformMessageFunctionBlocking();
         }
         /// <summary>
         /// Disconnect with socket server.
@@ -2743,8 +2745,10 @@ namespace MainPrj
         /// <param name="e">EventArgs</param>
         private void toolStripMenuItemDisConnect_Click(object sender, EventArgs e)
         {
-            CloseWebSocketConnection();
-            DataPure.Instance.IsCloseWebSocketConnection = true;
+            //CloseWebSocketConnection();
+            //DataPure.Instance.IsCloseWebSocketConnection = true;
+
+            CommonProcess.ShowInformMessageFunctionBlocking();
         }
         /// <summary>
         /// Close connect.
