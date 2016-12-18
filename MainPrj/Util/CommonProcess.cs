@@ -2799,6 +2799,12 @@ namespace MainPrj.Util
         /// <param name="completedHandler">Handle when completed</param>
         public static void RequestCreateCallHistory(CallModel model)
         {
+            //++ BUG0091-SPJ (NguyenPT 20161216) Handle packet from Zibosoft record card
+            if (!Properties.Settings.Default.UpdatePhone)
+            {
+                return;
+            }
+            //-- BUG0091-SPJ (NguyenPT 20161216) Handle packet from Zibosoft record card
             model.Agent_id                   = DataPure.Instance.Agent.Id;
             model.User_id                    = DataPure.Instance.User.User_id;
             model.Token                      = Properties.Settings.Default.UserToken;

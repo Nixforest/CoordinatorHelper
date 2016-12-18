@@ -864,6 +864,7 @@ namespace MainPrj
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1596, 873);
+            this.Controls.Add(this.tbxLog);
             this.Controls.Add(this.lblNotification);
             this.Controls.Add(this.btnNotification);
             this.Controls.Add(this.btnClose);
@@ -881,7 +882,6 @@ namespace MainPrj
             this.Controls.Add(this.btnOrderList);
             this.Controls.Add(this.btnHistory);
             this.Controls.Add(this.btnCreateCustomer);
-            this.Controls.Add(this.tbxLog);
             this.Controls.Add(this.mainTabControl);
             this.Controls.Add(this.btnUpdateCustomer);
             this.Controls.Add(this.btnUphold);

@@ -192,7 +192,10 @@ namespace MainPrj
             //if (status.Equals((int)CardDataStatus.CARDDATA_HANDLING) || status.Equals((int)CardDataStatus.CARDDATA_MISS))
             if (status.Equals((int)CardDataStatus.CARDDATA_RINGING)
                 || status.Equals((int)CardDataStatus.CARDDATA_MISS)
-                || status.Equals((int)CardDataStatus.CARDDATA_HANDLING))
+                || status.Equals((int)CardDataStatus.CARDDATA_HANDLING)
+                //++ BUG0091-SPJ (NguyenPT 20161216) Handle packet from Zibosoft record card
+                || status.Equals((int)CardDataStatus.CARDDATA_CALLING))
+                //-- BUG0091-SPJ (NguyenPT 20161216) Handle packet from Zibosoft record card
             //-- BUG0085-SPJ (NguyenPT 20161117) Fix bug
             {
                 CommonProcess.WriteHistory(call);
@@ -218,10 +221,10 @@ namespace MainPrj
         /// <param name="onoff">Flag value</param>
         private void TurnOnOffTestingMode(bool onoff)
         {
-            btnSearch.Visible = onoff;
-            tbxLog.Visible = onoff;
-            chbListenFromCard.Visible = onoff;
-            chbUpdatePhone.Visible = onoff;
+            btnSearch.Visible           = onoff;
+            tbxLog.Visible              = onoff;
+            chbListenFromCard.Visible   = onoff;
+            chbUpdatePhone.Visible      = onoff;
             btnTestNotification.Visible = onoff;
 
             if (onoff)
@@ -558,6 +561,19 @@ namespace MainPrj
                                 phone.Substring(Math.Max(0, phone.Length - Properties.Settings.Default.PhoneCutLength)),
                                 statusStr);
                 }
+                //++ BUG0091-SPJ (NguyenPT 20161216) Handle packet from Zibosoft record card
+                foreach (CallModel item in DataPure.Instance.ListCalls)
+                {
+                    // If call model match channel and phone value, and current status is RINGING or HANDLING
+                    if (item.Channel.Equals(channel) && item.Phone.Equals(phone)
+                        && (item.Status.Equals((int)CardDataStatus.CARDDATA_RINGING) || item.Status.Equals((int)CardDataStatus.CARDDATA_HANDLING)))
+                    {
+                        // Update call model status
+                        item.Status = status;
+                        break;
+                    }
+                }
+                //-- BUG0091-SPJ (NguyenPT 20161216) Handle packet from Zibosoft record card
             }
         }
         /// <summary>
@@ -987,6 +1003,7 @@ namespace MainPrj
             //this.coordinatorOrderView_v2.Reset();
             //-- BUG0070-SPJ (NguyenPT 20160908) Reset data
         }
+        private int count = 0;
         /// <summary>
         /// Handle when click button search.
         /// </summary>
@@ -995,25 +1012,69 @@ namespace MainPrj
         private void btnSearch_Click(object sender, EventArgs e)
         {
             #region Test get customer information
-            string phone = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel).GetIncommingPhone();
-            double n = 0;
-            // Get incomming number information
-            //if (!String.IsNullOrEmpty(phone) && double.TryParse(phone, out n))
+            //string phone = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel).GetIncommingPhone();
+            //double n = 0;
+            //// Get incomming number information
+            ////if (!String.IsNullOrEmpty(phone) && double.TryParse(phone, out n))
+            //{
+            //    // Insert value into current channel
+            //    try
+            //    {
+            //        ChannelControl tab = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel);
+            //        //HandleDoubleLineJump();
+            //        tab.SetIncommingPhone(phone);
+            //        // Request server and update data from server
+            //        UpdateData(phone, (int)CardDataStatus.CARDDATA_HANDLING, DataPure.Instance.CurrentChannel);
+            //    }
+            //    catch (ArgumentOutOfRangeException)
+            //    {
+            //        CommonProcess.ShowErrorMessage(Properties.Resources.ArgumentOutOfRange);
+            //    }
+            //}
+            #region Incomming call Zibosoft
+            switch (count)
             {
-                // Insert value into current channel
-                try
-                {
-                    ChannelControl tab = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel);
-                    //HandleDoubleLineJump();
-                    tab.SetIncommingPhone(phone);
-                    // Request server and update data from server
-                    UpdateData(phone, (int)CardDataStatus.CARDDATA_HANDLING, DataPure.Instance.CurrentChannel);
-                }
-                catch (ArgumentOutOfRangeException)
-                {
-                    CommonProcess.ShowErrorMessage(Properties.Resources.ArgumentOutOfRange);
-                }
+                case 0:
+                    PrintData(@"<CRMV1               0007     2016-12-14 15:35:22                               0838110923                    >                                          172.16.1.64                                       {RAWCID:[0838110923]}{DETAILDES:[]}");
+                    break;
+                case 1:
+                    PrintData(@"CHANNELSTATUS                                                                                                                                                                                           {{{STATUS:[OFFHOOK] CHANNEL:[006] {DATA:[]}}}");
+                    break;
+                case 2:
+                    PrintData(@"CHANNELSTATUS                                                                                                                                                                                           {{{STATUS:[DIAL] CHANNEL:[006] {DATA:[8]}}}");
+                    break;
+                case 3:
+                    PrintData(@"CHANNELSTATUS                                                                                                                                                                                           {{{STATUS:[HANGUP] CHANNEL:[006] {DATA:[]}}}");
+                    break;
+                default:
+                    count = -1;
+                    break;
             }
+            this.btnSearch.Text = "Step " + count.ToString();
+            count++; 
+            #endregion
+            #region Out call Zibosoft
+            //string[] data = new string[] {
+            //    @"CHANNELSTATUS                                                                                                                                                                                           {{{STATUS:[OFFHOOK] CHANNEL:[001] {DATA:[]}}}",
+            //    @"CHANNELSTATUS                                                                                                                                                                                           {{{STATUS:[DIAL] CHANNEL:[001] {DATA:[0]}}}",
+            //    @"CHANNELSTATUS                                                                                                                                                                                           {{{STATUS:[DIAL] CHANNEL:[001] {DATA:[09]}}}",
+            //    @"CHANNELSTATUS                                                                                                                                                                                           {{{STATUS:[DIAL] CHANNEL:[001] {DATA:[097]}}}",
+            //    @"CHANNELSTATUS                                                                                                                                                                                           {{{STATUS:[DIAL] CHANNEL:[001] {DATA:[0976]}}}",
+            //    @"CHANNELSTATUS                                                                                                                                                                                           {{{STATUS:[DIAL] CHANNEL:[001] {DATA:[09769]}}}",
+            //    @"CHANNELSTATUS                                                                                                                                                                                           {{{STATUS:[HANGUP] CHANNEL:[001] {DATA:[]}}}",
+            //    @"6765767679858400200001009769948762016121414275500002200009"
+            //};
+            //if (count < data.Length)
+            //{
+            //    PrintData(data[count]);
+            //}
+            //else
+            //{
+            //    count = -1;
+            //}
+            //this.btnSearch.Text = "Step " + count.ToString();
+            //count++;
+            #endregion
             //PrintData("<CRMV1               0002     2016-08-02 16:15:00                               01689908271                    >                                          172.16.1.64                                       {RAWCID:[0939331371]}{DETAILDES:[]}");
             #endregion
             //_TestServer test = new _TestServer();
@@ -2318,27 +2379,38 @@ namespace MainPrj
                                 UpdateStatus(String.Format(Properties.Resources.IncommingCall, model.Phone));
                                 statusStr = Properties.Resources.CardDataStatus1;
                                 color = Color.DarkGreen;
-                                //++ BUG0073-SPJ (NguyenPT 20160909) Update tab if user is accounting
-                                if (DataPure.Instance.IsAccountingAgentRole())
-                                {
-                                    needUpdate = true;
-                                }
-                                //-- BUG0073-SPJ (NguyenPT 20160909) Update tab if user is accounting
+                                //++ BUG0091-SPJ (NguyenPT 20161216) Handle packet from Zibosoft record card
+                                ////++ BUG0073-SPJ (NguyenPT 20160909) Update tab if user is accounting
+                                //if (DataPure.Instance.IsAccountingAgentRole())
+                                //{
+                                //    needUpdate = true;
+                                //}
+                                ////-- BUG0073-SPJ (NguyenPT 20160909) Update tab if user is accounting
+                                // Update call model 
+                                needUpdate = true;
+                                //-- BUG0091-SPJ (NguyenPT 20161216) Handle packet from Zibosoft record card
                                 break;
                             case (int)CardDataStatus.CARDDATA_CALLING:
                                 //statusStr = Properties.Resources.CardDataStatus2;
+                                //++ BUG0091-SPJ (NguyenPT 20161216) Handle packet from Zibosoft record card
+                                // Update call model
+                                statusStr = Properties.Resources.CardDataStatus2;
+                                needUpdate = true;
+                                //-- BUG0091-SPJ (NguyenPT 20161216) Handle packet from Zibosoft record card
                                 break;
                             case (int)CardDataStatus.CARDDATA_HANDLING:
                                 FlashWindowHelper.Flash(this.Handle);
                                 statusStr = Properties.Resources.CardDataStatus3;
                                 color = Color.Blue;
-                                //++ BUG0085-SPJ (NguyenPT 20161117) Fix bug
+                                //++ BUG0091-SPJ (NguyenPT 20161216) Handle packet from Zibosoft record card
+                                ////++ BUG0085-SPJ (NguyenPT 20161117) Fix bug
                                 //needUpdate = true;
-                                if (DataPure.Instance.IsCoordinatorRole())
-                                {
-                                  needUpdate = true;  
-                                }
-                                //-- BUG0085-SPJ (NguyenPT 20161117) Fix bug
+                                //if (DataPure.Instance.IsCoordinatorRole())
+                                //{
+                                //  needUpdate = true;  
+                                //}
+                                ////-- BUG0085-SPJ (NguyenPT 20161117) Fix bug
+                                //++ BUG0091-SPJ (NguyenPT 20161216) Handle packet from Zibosoft record card
                                 break;
                             case (int)CardDataStatus.CARDDATA_HANGUP:
                                 statusStr = Properties.Resources.CardDataStatus4;
