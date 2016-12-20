@@ -575,4 +575,87 @@ Cancel: Quay lại nhập giá.</value>
   <data name="FunctionBlocking" xml:space="preserve">
     <value>Chức năng đang bị tạm khóa. Xin vui lòng thử lại sau.</value>
   </data>
+  <data name="API_CALL_HISTORY" xml:space="preserve">
+    <value>/api/default/callHistorySave</value>
+  </data>
+  <data name="API_NOTIFY_RECEIVED" xml:space="preserve">
+    <value>http://spj.daukhimiennam.com/api/socket/notifyReceived</value>
+  </data>
+  <data name="API_ORDER_HISTORY" xml:space="preserve">
+    <value>/api/default/windowGetCustomerHistory</value>
+  </data>
+  <data name="COLOR_BUTTON_NORMAL" xml:space="preserve">
+    <value>EE3224</value>
+    <comment>Button color: Normal state</comment>
+  </data>
+  <data name="COLOR_BUTTON_SELECTED" xml:space="preserve">
+    <value>08C012</value>
+    <comment>Button color: Selected state</comment>
+  </data>
+  <data name="CONTENT00001" xml:space="preserve">
+    <value>Không có file ghi âm</value>
+  </data>
+  <data name="CONTENT00002" xml:space="preserve">
+    <value>Đơn hàng đang xử lý</value>
+  </data>
+  <data name="INI_KEY_AGENTID" xml:space="preserve">
+    <value>AgentId</value>
+  </data>
+  <data name="INI_KEY_BRAND" xml:space="preserve">
+    <value>Brand</value>
+  </data>
+  <data name="INI_KEY_PACKET_SIP" xml:space="preserve">
+    <value>PacketSIP</value>
+  </data>
+  <data name="INI_KEY_PACKET_UDP" xml:space="preserve">
+    <value>PacketUDP</value>
+  </data>
+  <data name="INI_KEY_PASSWORD" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="INI_KEY_PROMOTE_MONEY" xml:space="preserve">
+    <value>PromoteMoney</value>
+  </data>
+  <data name="INI_KEY_UPHOLD_PHONE" xml:space="preserve">
+    <value>UpholdPhone</value>
+  </data>
+  <data name="INI_KEY_USERNAME" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="INI_KEY_ZIBOSOFT_RECORD_FILEPATH" xml:space="preserve">
+    <value>ZiboFilepath</value>
+  </data>
+  <data name="INI_SECTION_GENERAL" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="JSON_ROOT_KEY" xml:space="preserve">
+    <value>q</value>
+    <comment>Json root key</comment>
+  </data>
+  <data name="RecordDateTimeFormat" xml:space="preserve">
+    <value>yyyyMMdd</value>
+  </data>
+  <data name="RESPONSE_STATUS_FAILED" xml:space="preserve">
+    <value>0</value>
+    <comment>Response status code: Failed</comment>
+  </data>
+  <data name="RESPONSE_STATUS_SUCCESS" xml:space="preserve">
+    <value>1</value>
+    <comment>Response status code: Success</comment>
+  </data>
+  <data name="SPLITER_SPACE_STR" xml:space="preserve">
+    <value> - </value>
+    <comment>Spliter</comment>
+  </data>
+  <data name="SPLITER_STR" xml:space="preserve">
+    <value>-</value>
+    <comment>Spliter</comment>
+  </data>
+  <data name="UPHOLD_PHONE_HCM" xml:space="preserve">
+    <value>0838 408 408</value>
+  </data>
+  <data name="ZIBOSOFT_RECORD_FILEPATH_DEFAULT" xml:space="preserve">
+    <value>D:\VOC</value>
+    <comment>Zibosoft record file path default</comment>
+  </data>
 </root>

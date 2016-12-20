@@ -143,8 +143,8 @@
     <Compile Include="Util\DataPure.cs" />
     <Compile Include="Util\ExcelHandle.cs" />
     <Compile Include="Util\FlashWindowHelper.cs" />
-    <Compile Include="Util\GlobalConst.cs" />
     <Compile Include="Util\INIHandle.cs" />
+    <Compile Include="Util\LogUtility.cs" />
     <Compile Include="Util\WebSocketUtility.cs" />
     <Compile Include="View\AboutBox.cs">
       <SubType>Form</SubType>

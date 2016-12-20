@@ -150,7 +150,7 @@ namespace MainPrj.View
             this.tbxUpholdPhone.Text = CommonProcess.ReadUpholdPhoneFromSetting();
             if (string.IsNullOrEmpty(this.tbxUpholdPhone.Text))
             {
-                this.tbxUpholdPhone.Text = CommonProcess.UPHOLD_PHONE_HCM;
+                this.tbxUpholdPhone.Text = Properties.Resources.UPHOLD_PHONE_HCM;
             }
             //-- BUG0083-SPJ (NguyenPT 20160928) Add Uphold phone setting
             chbSIP.Checked = isStartSIP;

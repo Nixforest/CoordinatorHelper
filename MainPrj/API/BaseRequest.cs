@@ -65,7 +65,7 @@ namespace MainPrj.API
                         new Uri(Properties.Settings.Default.ServerURL + this._url),
                         new NameValueCollection()
                         {
-                            { GlobalConst.JSON_ROOT_KEY, this.Data }
+                            { Properties.Resources.JSON_ROOT_KEY, this.Data }
                         });
                 }
                 catch (System.Net.WebException)

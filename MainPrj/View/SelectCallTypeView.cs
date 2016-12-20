@@ -38,7 +38,7 @@ namespace MainPrj.View
             this.selectCallTypeControl.UpdateData(data, currentValue);
             //this.CallType = currentValue;
             //// Get list current type call
-            //string[] listCurrentValue = currentValue.Split(GlobalConst.SPLITER_CHR);
+            //string[] listCurrentValue = currentValue.Split(Properties.Resources.SPLITER_STR[0]);
             //this._listReason = DataPure.Instance.GetListCallType();
             //int offset = 12;
             //int margin = 12;
@@ -55,7 +55,7 @@ namespace MainPrj.View
             //    cbx.TabIndex                = 0;
             //    cbx.Text                    = model.Name;
             //    cbx.UseVisualStyleBackColor = true;
-            //    cbx.BackColor               = CommonProcess.ConvertColorFromString(GlobalConst.COLOR_BUTTON_NORMAL);
+            //    cbx.BackColor               = CommonProcess.ConvertColorFromString(Properties.Resources.COLOR_BUTTON_NORMAL);
             //    cbx.ForeColor               = Color.White;
             //    cbx.TextAlign               = ContentAlignment.MiddleCenter;
             //    cbx.Anchor                  = AnchorStyles.Left | AnchorStyles.Right;
@@ -80,11 +80,11 @@ namespace MainPrj.View
             CheckBox cbx = sender as CheckBox;
             if (cbx.Checked)
             {
-                cbx.BackColor = CommonProcess.ConvertColorFromString(GlobalConst.COLOR_BUTTON_SELECTED);
+                cbx.BackColor = CommonProcess.ConvertColorFromString(Properties.Resources.COLOR_BUTTON_SELECTED);
             }
             else
             {
-                cbx.BackColor = CommonProcess.ConvertColorFromString(GlobalConst.COLOR_BUTTON_NORMAL);
+                cbx.BackColor = CommonProcess.ConvertColorFromString(Properties.Resources.COLOR_BUTTON_NORMAL);
             }
         }
 
@@ -103,7 +103,7 @@ namespace MainPrj.View
             //    {
             //        if ((control as CheckBox).Checked)
             //        {
-            //            this.CallType += control.Name + GlobalConst.SPLITER_STR;
+            //            this.CallType += control.Name + Properties.Resources.SPLITER_STR;
             //        }
             //    }
             //}

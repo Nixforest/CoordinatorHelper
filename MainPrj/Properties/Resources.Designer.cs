@@ -108,6 +108,33 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to /api/default/callHistorySave.
+        /// </summary>
+        internal static string API_CALL_HISTORY {
+            get {
+                return ResourceManager.GetString("API_CALL_HISTORY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to http://spj.daukhimiennam.com/api/socket/notifyReceived.
+        /// </summary>
+        internal static string API_NOTIFY_RECEIVED {
+            get {
+                return ResourceManager.GetString("API_NOTIFY_RECEIVED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /api/default/windowGetCustomerHistory.
+        /// </summary>
+        internal static string API_ORDER_HISTORY {
+            get {
+                return ResourceManager.GetString("API_ORDER_HISTORY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bạn có chắc chắn khi không chọn Khách hàng nào?
         ///Nhấn YES để thoát.
         ///Nhấn NO để chọn lại Khách hàng..
@@ -312,6 +339,24 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to EE3224.
+        /// </summary>
+        internal static string COLOR_BUTTON_NORMAL {
+            get {
+                return ResourceManager.GetString("COLOR_BUTTON_NORMAL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 08C012.
+        /// </summary>
+        internal static string COLOR_BUTTON_SELECTED {
+            get {
+                return ResourceManager.GetString("COLOR_BUTTON_SELECTED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap config {
@@ -373,6 +418,24 @@ namespace MainPrj.Properties {
         internal static string ConnectionWithNotifyCenterOpened {
             get {
                 return ResourceManager.GetString("ConnectionWithNotifyCenterOpened", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Không có file ghi âm.
+        /// </summary>
+        internal static string CONTENT00001 {
+            get {
+                return ResourceManager.GetString("CONTENT00001", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đơn hàng đang xử lý.
+        /// </summary>
+        internal static string CONTENT00002 {
+            get {
+                return ResourceManager.GetString("CONTENT00002", resourceCulture);
             }
         }
         
@@ -725,6 +788,96 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to AgentId.
+        /// </summary>
+        internal static string INI_KEY_AGENTID {
+            get {
+                return ResourceManager.GetString("INI_KEY_AGENTID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Brand.
+        /// </summary>
+        internal static string INI_KEY_BRAND {
+            get {
+                return ResourceManager.GetString("INI_KEY_BRAND", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PacketSIP.
+        /// </summary>
+        internal static string INI_KEY_PACKET_SIP {
+            get {
+                return ResourceManager.GetString("INI_KEY_PACKET_SIP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PacketUDP.
+        /// </summary>
+        internal static string INI_KEY_PACKET_UDP {
+            get {
+                return ResourceManager.GetString("INI_KEY_PACKET_UDP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password.
+        /// </summary>
+        internal static string INI_KEY_PASSWORD {
+            get {
+                return ResourceManager.GetString("INI_KEY_PASSWORD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PromoteMoney.
+        /// </summary>
+        internal static string INI_KEY_PROMOTE_MONEY {
+            get {
+                return ResourceManager.GetString("INI_KEY_PROMOTE_MONEY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UpholdPhone.
+        /// </summary>
+        internal static string INI_KEY_UPHOLD_PHONE {
+            get {
+                return ResourceManager.GetString("INI_KEY_UPHOLD_PHONE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Username.
+        /// </summary>
+        internal static string INI_KEY_USERNAME {
+            get {
+                return ResourceManager.GetString("INI_KEY_USERNAME", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ZiboFilepath.
+        /// </summary>
+        internal static string INI_KEY_ZIBOSOFT_RECORD_FILEPATH {
+            get {
+                return ResourceManager.GetString("INI_KEY_ZIBOSOFT_RECORD_FILEPATH", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to General.
+        /// </summary>
+        internal static string INI_SECTION_GENERAL {
+            get {
+                return ResourceManager.GetString("INI_SECTION_GENERAL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nhập giá vỏ:.
         /// </summary>
         internal static string InputCylinderPrice {
@@ -757,6 +910,15 @@ namespace MainPrj.Properties {
         internal static string InternetConnectionError {
             get {
                 return ResourceManager.GetString("InternetConnectionError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to q.
+        /// </summary>
+        internal static string JSON_ROOT_KEY {
+            get {
+                return ResourceManager.GetString("JSON_ROOT_KEY", resourceCulture);
             }
         }
         
@@ -1103,6 +1265,15 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to yyyyMMdd.
+        /// </summary>
+        internal static string RecordDateTimeFormat {
+            get {
+                return ResourceManager.GetString("RecordDateTimeFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap report {
@@ -1221,6 +1392,24 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 0.
+        /// </summary>
+        internal static string RESPONSE_STATUS_FAILED {
+            get {
+                return ResourceManager.GetString("RESPONSE_STATUS_FAILED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 1.
+        /// </summary>
+        internal static string RESPONSE_STATUS_SUCCESS {
+            get {
+                return ResourceManager.GetString("RESPONSE_STATUS_SUCCESS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Đại lý đang sử dụng card ghi âm cũ. Cần phải khởi động lại chương trình thì hệ thống mới nhảy Line khi có cuộc gọi đến được. Sau khi nhấn OK để tắt thông báo này, khởi động lại chương trình!.
         /// </summary>
         internal static string RestartProgram {
@@ -1320,6 +1509,24 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to  - .
+        /// </summary>
+        internal static string SPLITER_SPACE_STR {
+            get {
+                return ResourceManager.GetString("SPLITER_SPACE_STR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -.
+        /// </summary>
+        internal static string SPLITER_STR {
+            get {
+                return ResourceManager.GetString("SPLITER_STR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tiến trình đang chạy, không thể thay đổi trạng thái!.
         /// </summary>
         internal static string ThreadStateError {
@@ -1405,6 +1612,15 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 0838 408 408.
+        /// </summary>
+        internal static string UPHOLD_PHONE_HCM {
+            get {
+                return ResourceManager.GetString("UPHOLD_PHONE_HCM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap upload_tray {
@@ -1430,6 +1646,15 @@ namespace MainPrj.Properties {
         internal static string YouMustSelectAnAgent {
             get {
                 return ResourceManager.GetString("YouMustSelectAnAgent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to D:\VOC.
+        /// </summary>
+        internal static string ZIBOSOFT_RECORD_FILEPATH_DEFAULT {
+            get {
+                return ResourceManager.GetString("ZIBOSOFT_RECORD_FILEPATH_DEFAULT", resourceCulture);
             }
         }
         

@@ -37,7 +37,7 @@ namespace MainPrj.View.Component
         //    InitializeComponent();
         //    this.CallType = currentValue;
         //    // Get list current type call
-        //    string[] listCurrentValue = currentValue.Split(GlobalConst.SPLITER_CHR);
+        //    string[] listCurrentValue = currentValue.Split(Properties.Resources.SPLITER_CHR);
         //    this._listReason = DataPure.Instance.GetListCallType();
         //    int offset = 12;
         //    int margin = 12;
@@ -54,7 +54,7 @@ namespace MainPrj.View.Component
         //        cbx.TabIndex                = 0;
         //        cbx.Text                    = model.Name;
         //        cbx.UseVisualStyleBackColor = true;
-        //        cbx.BackColor               = CommonProcess.ConvertColorFromString(GlobalConst.COLOR_BUTTON_NORMAL);
+        //        cbx.BackColor               = CommonProcess.ConvertColorFromString(Properties.Resources.COLOR_BUTTON_NORMAL);
         //        cbx.ForeColor               = Color.White;
         //        cbx.TextAlign               = ContentAlignment.MiddleCenter;
         //        cbx.Anchor                  = AnchorStyles.Left | AnchorStyles.Right;
@@ -76,7 +76,7 @@ namespace MainPrj.View.Component
         {
             this.CallType = currentValue;
             // Get list current type call
-            string[] listCurrentValue = currentValue.Split(GlobalConst.SPLITER_CHR);
+            string[] listCurrentValue = currentValue.Split(Properties.Resources.SPLITER_STR[0]);
             // Get list current type call
             this._listReason = DataPure.Instance.GetListCallType();
             int offset = 12;
@@ -95,7 +95,7 @@ namespace MainPrj.View.Component
                 cbx.TabIndex                = 0;
                 cbx.Text                    = model.Name;
                 cbx.UseVisualStyleBackColor = true;
-                cbx.BackColor               = CommonProcess.ConvertColorFromString(GlobalConst.COLOR_BUTTON_NORMAL);
+                cbx.BackColor               = CommonProcess.ConvertColorFromString(Properties.Resources.COLOR_BUTTON_NORMAL);
                 cbx.ForeColor               = Color.White;
                 cbx.TextAlign               = ContentAlignment.MiddleCenter;
                 cbx.Anchor                  = AnchorStyles.Left | AnchorStyles.Right;
@@ -129,11 +129,11 @@ namespace MainPrj.View.Component
             CheckBox cbx = sender as CheckBox;
             if (cbx.Checked)
             {
-                cbx.BackColor = CommonProcess.ConvertColorFromString(GlobalConst.COLOR_BUTTON_SELECTED);
+                cbx.BackColor = CommonProcess.ConvertColorFromString(Properties.Resources.COLOR_BUTTON_SELECTED);
             }
             else
             {
-                cbx.BackColor = CommonProcess.ConvertColorFromString(GlobalConst.COLOR_BUTTON_NORMAL);
+                cbx.BackColor = CommonProcess.ConvertColorFromString(Properties.Resources.COLOR_BUTTON_NORMAL);
             }
             this.CallType = string.Empty;
             // Get all type call by checkbox status
@@ -143,7 +143,7 @@ namespace MainPrj.View.Component
                 {
                     if ((control as CheckBox).Checked)
                     {
-                        this.CallType += control.Name + GlobalConst.SPLITER_STR;
+                        this.CallType += control.Name + Properties.Resources.SPLITER_STR;
                     }
                 }
             }

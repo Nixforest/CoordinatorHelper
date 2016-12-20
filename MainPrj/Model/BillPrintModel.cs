@@ -51,7 +51,7 @@ namespace MainPrj.Model
             upholdPhone = CommonProcess.ReadUpholdPhoneFromSetting();
             if (string.IsNullOrEmpty(upholdPhone))
             {
-                upholdPhone = CommonProcess.UPHOLD_PHONE_HCM;
+                upholdPhone = Properties.Resources.UPHOLD_PHONE_HCM;
             }
             //-- BUG0083-SPJ (NguyenPT 20160928) Add Uphold phone setting
         }

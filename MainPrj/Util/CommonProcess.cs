@@ -29,44 +29,9 @@ namespace MainPrj.Util
     /// </summary>
     public static class CommonProcess
     {
-        #region Constant
-        //++ BUG0045-SPJ (NguyenPT 20160823) Define constants
-        public const string INI_KEY_AGENTID        = "AgentId";
-        public const string INI_SECTION_GENERAL = "General";
-        //-- BUG0045-SPJ (NguyenPT 20160823) Define constants
-        //++ BUG0046-SPJ (NguyenPT 20160824) Login automatically
-        public const string INI_KEY_USERNAME = "Username";
-        public const string INI_KEY_PASSWORD = "Password";
-        //-- BUG0046-SPJ (NguyenPT 20160824) Login automatically
-        //++ BUG0055-SPJ (NguyenPT 20160826) Save brand information in setting.ini
-        public const string INI_KEY_BRAND = "Brand";
-        //-- BUG0055-SPJ (NguyenPT 20160826) Save brand information in setting.ini
-        //++ BUG0008-SPJ (NguyenPT 20160830) Order history
-        public const string API_ORDER_HISTORY = "/api/default/windowGetCustomerHistory";
-        //-- BUG0008-SPJ (NguyenPT 20160830) Order history
-        //++ BUG0006-SPJ (NguyenPT 20161107) Call history
-        public const string API_CALL_HISTORY = "/api/default/callHistorySave";
-        //-- BUG0006-SPJ (NguyenPT 20161107) Call history
-        //++ BUG0074-SPJ (NguyenPT 20160913) Handle turn on/off SIP thread
-        public const string INI_KEY_PACKET_UDP = "PacketUDP";
-        public const string INI_KEY_PACKET_SIP = "PacketSIP";
-        //-- BUG0074-SPJ (NguyenPT 20160913) Handle turn on/off SIP thread
-        //++ BUG0083-SPJ (NguyenPT 20160928) Add Uphold phone setting
-        public const string INI_KEY_UPHOLD_PHONE = "UpholdPhone";
-        public const string UPHOLD_PHONE_HCM     = "0838 408 408";
-        //-- BUG0083-SPJ (NguyenPT 20160928) Add Uphold phone setting
-        ////++ BUG0082-SPJ (NguyenPT 20160928) Handle save Setting data path on Setting
-        //public static string INI_KEY_SETTING_DIRECTORY = "SettingDirectory";
-        ////-- BUG0082-SPJ (NguyenPT 20160928) Handle save Setting data path on Setting
         //++ BUG0086-SPJ (NguyenPT 20161024d Promote money setting
-        public const string INI_KEY_PROMOTE_MONEY = "PromoteMoney";
         public const double PROMOTE_MONEY_DEFAULT_VALUE = 20000.0;
         //-- BUG0086-SPJ (NguyenPT 20161024d Promote money setting
-        /// <summary>
-        /// API: inform received notification.
-        /// </summary>
-        public const string API_NOTIFY_RECEIVED = @"http://spj.daukhimiennam.com/api/socket/notifyReceived";
-        #endregion
         #region Static variables
         public static SoundPlayer NotificationSound = new SoundPlayer(Properties.Resources.notifySound3);
         public static List<string> AGENT_LIST_ZIBO = new List<string>
@@ -909,7 +874,7 @@ namespace MainPrj.Util
         {
             string filepath = String.Format("{0}\\setting.ini", Properties.Settings.Default.SettingFilePath);
             var iniFile = new INIHandle(filepath);
-            iniFile.Write(INI_KEY_AGENTID, agentId, INI_SECTION_GENERAL);
+            iniFile.Write(Properties.Resources.INI_KEY_AGENTID, agentId, Properties.Resources.INI_SECTION_GENERAL);
         }
         /// <summary>
         /// Read agent id from setting file.
@@ -917,7 +882,7 @@ namespace MainPrj.Util
         /// <returns>Agent id</returns>
         public static string ReadAgentIdFromSetting()
         {
-            return ReadSetting(INI_KEY_AGENTID, INI_SECTION_GENERAL);
+            return ReadSetting(Properties.Resources.INI_KEY_AGENTID, Properties.Resources.INI_SECTION_GENERAL);
         }
         //-- BUG0045-SPJ (NguyenPT 20160823) Read/Write agent id to setting.ini file
         /// <summary>
@@ -929,8 +894,8 @@ namespace MainPrj.Util
         {
             string filepath = String.Format("{0}\\setting.ini", Properties.Settings.Default.SettingFilePath);
             var iniFile = new INIHandle(filepath);
-            iniFile.Write(INI_KEY_USERNAME, username, INI_SECTION_GENERAL);
-            iniFile.Write(INI_KEY_PASSWORD, password, INI_SECTION_GENERAL);
+            iniFile.Write(Properties.Resources.INI_KEY_USERNAME, username, Properties.Resources.INI_SECTION_GENERAL);
+            iniFile.Write(Properties.Resources.INI_KEY_PASSWORD, password, Properties.Resources.INI_SECTION_GENERAL);
         }
         //++ BUG0046-SPJ (NguyenPT 20160824) Login automatically
         /// <summary>
@@ -939,7 +904,7 @@ namespace MainPrj.Util
         /// <returns>Username</returns>
         public static string ReadUsernameFromSetting()
         {
-            return ReadSetting(INI_KEY_USERNAME, INI_SECTION_GENERAL);
+            return ReadSetting(Properties.Resources.INI_KEY_USERNAME, Properties.Resources.INI_SECTION_GENERAL);
         }
         /// <summary>
         /// Read password from setting.ini file.
@@ -947,7 +912,7 @@ namespace MainPrj.Util
         /// <returns>Password</returns>
         public static string ReadPasswordFromSetting()
         {
-            return ReadSetting(INI_KEY_PASSWORD, INI_SECTION_GENERAL);
+            return ReadSetting(Properties.Resources.INI_KEY_PASSWORD, Properties.Resources.INI_SECTION_GENERAL);
         }
         /// <summary>
         /// Read a setting from setting.ini file.
@@ -972,7 +937,7 @@ namespace MainPrj.Util
         {
             string filepath = String.Format("{0}\\setting.ini", Properties.Settings.Default.SettingFilePath);
             var iniFile = new INIHandle(filepath);
-            iniFile.Write(INI_KEY_BRAND, brand, INI_SECTION_GENERAL);
+            iniFile.Write(Properties.Resources.INI_KEY_BRAND, brand, Properties.Resources.INI_SECTION_GENERAL);
         }
         /// <summary>
         /// Read brand information from setting.
@@ -980,7 +945,7 @@ namespace MainPrj.Util
         /// <returns>Brand setting</returns>
         public static string ReadBrandFromSetting()
         {
-            return ReadSetting(INI_KEY_BRAND, INI_SECTION_GENERAL);
+            return ReadSetting(Properties.Resources.INI_KEY_BRAND, Properties.Resources.INI_SECTION_GENERAL);
         }
         //-- BUG0055-SPJ (NguyenPT 20160826) Save brand information in setting.ini
         //++ BUG0074-SPJ (NguyenPT 20160913) Handle turn on/off SIP thread
@@ -992,7 +957,7 @@ namespace MainPrj.Util
         {
             string filepath = String.Format("{0}\\setting.ini", Properties.Settings.Default.SettingFilePath);
             var iniFile = new INIHandle(filepath);
-            iniFile.Write(INI_KEY_PACKET_UDP, packetUDP.ToString(), INI_SECTION_GENERAL);
+            iniFile.Write(Properties.Resources.INI_KEY_PACKET_UDP, packetUDP.ToString(), Properties.Resources.INI_SECTION_GENERAL);
         }
         /// <summary>
         /// Read packet UDP flag.
@@ -1000,7 +965,7 @@ namespace MainPrj.Util
         /// <returns>Packet UDP flag</returns>
         public static string ReadPacketUDPFromSetting()
         {
-            return ReadSetting(INI_KEY_PACKET_UDP, INI_SECTION_GENERAL);
+            return ReadSetting(Properties.Resources.INI_KEY_PACKET_UDP, Properties.Resources.INI_SECTION_GENERAL);
         }
         /// <summary>
         /// Write Packet SIP flag.
@@ -1010,7 +975,7 @@ namespace MainPrj.Util
         {
             string filepath = String.Format("{0}\\setting.ini", Properties.Settings.Default.SettingFilePath);
             var iniFile = new INIHandle(filepath);
-            iniFile.Write(INI_KEY_PACKET_SIP, packetSIP.ToString(), INI_SECTION_GENERAL);
+            iniFile.Write(Properties.Resources.INI_KEY_PACKET_SIP, packetSIP.ToString(), Properties.Resources.INI_SECTION_GENERAL);
         }
         /// <summary>
         /// Read packet SIP flag.
@@ -1018,7 +983,7 @@ namespace MainPrj.Util
         /// <returns>Packet SIP flag</returns>
         public static string ReadPacketSIPFromSetting()
         {
-            return ReadSetting(INI_KEY_PACKET_SIP, INI_SECTION_GENERAL);
+            return ReadSetting(Properties.Resources.INI_KEY_PACKET_SIP, Properties.Resources.INI_SECTION_GENERAL);
         }
         //-- BUG0074-SPJ (NguyenPT 20160913) Handle turn on/off SIP thread
         ////++ BUG0082-SPJ (NguyenPT 20160928) Handle save Setting data path on Setting
@@ -1050,7 +1015,7 @@ namespace MainPrj.Util
         {
             string filepath = String.Format("{0}\\setting.ini", Properties.Settings.Default.SettingFilePath);
             var iniFile = new INIHandle(filepath);
-            iniFile.Write(INI_KEY_UPHOLD_PHONE, phone, INI_SECTION_GENERAL);
+            iniFile.Write(Properties.Resources.INI_KEY_UPHOLD_PHONE, phone, Properties.Resources.INI_SECTION_GENERAL);
         }
         /// <summary>
         /// Read uphold phone from setting.ini.
@@ -1058,7 +1023,7 @@ namespace MainPrj.Util
         /// <returns>Uphold phone</returns>
         public static string ReadUpholdPhoneFromSetting()
         {
-            return ReadSetting(INI_KEY_UPHOLD_PHONE, INI_SECTION_GENERAL);
+            return ReadSetting(Properties.Resources.INI_KEY_UPHOLD_PHONE, Properties.Resources.INI_SECTION_GENERAL);
         }
         //-- BUG0083-SPJ (NguyenPT 20160928) Add Uphold phone setting
         //++ BUG0086-SPJ (NguyenPT 20161024d Promote money setting
@@ -1070,7 +1035,7 @@ namespace MainPrj.Util
         {
             string filepath = String.Format("{0}\\setting.ini", Properties.Settings.Default.SettingFilePath);
             var iniFile = new INIHandle(filepath);
-            iniFile.Write(INI_KEY_PROMOTE_MONEY, money.ToString(), INI_SECTION_GENERAL);
+            iniFile.Write(Properties.Resources.INI_KEY_PROMOTE_MONEY, money.ToString(), Properties.Resources.INI_SECTION_GENERAL);
         }
         /// <summary>
         /// Read Promote money from setting.ini.
@@ -1078,7 +1043,7 @@ namespace MainPrj.Util
         /// <returns>Promote money</returns>
         public static string ReadPromoteMoneyFromSetting()
         {
-            return ReadSetting(INI_KEY_PROMOTE_MONEY, INI_SECTION_GENERAL);
+            return ReadSetting(Properties.Resources.INI_KEY_PROMOTE_MONEY, Properties.Resources.INI_SECTION_GENERAL);
         }
         //-- BUG0086-SPJ (NguyenPT 20161024d Promote money setting
         [System.Runtime.InteropServices.DllImport("winmm.DLL", EntryPoint = "PlaySound", SetLastError = true, CharSet = CharSet.Unicode, ThrowOnUnmappableChar = true)]
@@ -1096,7 +1061,24 @@ namespace MainPrj.Util
             SND_FILENAME = 0x00020000,
             SND_RESOURCE = 0x00040004
         }
-
+        /// <summary>
+        /// Write Zibosoft Record Filepath to setting.ini.
+        /// </summary>
+        /// <param name="recordFilepath">Promote money</param>
+        public static void WriteZibosoftRecordFilepathToSetting(string recordFilepath)
+        {
+            string filepath = String.Format("{0}\\setting.ini", Properties.Settings.Default.SettingFilePath);
+            var iniFile = new INIHandle(filepath);
+            iniFile.Write(Properties.Resources.INI_KEY_ZIBOSOFT_RECORD_FILEPATH, recordFilepath, Properties.Resources.INI_SECTION_GENERAL);
+        }
+        /// <summary>
+        /// Read Zibosoft Record Filepath from setting.ini.
+        /// </summary>
+        /// <returns>Zibosoft Record Filepath</returns>
+        public static string ReadZibosoftRecordFilepathFromSetting()
+        {
+            return ReadSetting(Properties.Resources.INI_KEY_ZIBOSOFT_RECORD_FILEPATH, Properties.Resources.INI_SECTION_GENERAL);
+        }
         #endregion
 
         #region Common methods
@@ -1780,16 +1762,47 @@ namespace MainPrj.Util
         /// </summary>
         /// <param name="filePath">Path</param>
         /// <returns>Name</returns>
+        //public static string GetFileNameFromRecordFilePath(string filePath)
+        //{
+        //    string retVal = string.Empty;
+        //    Regex regFrom = new Regex(@".*?(?<filename>(\d*)--\w-(?<phone>.*?)---(?<dateTime>.*?)\.wav)",
+        //        RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace | RegexOptions.Compiled | RegexOptions.Multiline);
+        //    // FROM
+        //    Match m = regFrom.Match(filePath);
+        //    if (m.Success)
+        //    {
+        //        retVal = ((string)m.Groups["filename"].Value.ToString().Trim());
+        //    }
+        //    return retVal;
+        //}
         public static string GetFileNameFromRecordFilePath(string filePath)
         {
-            string retVal = string.Empty;
-            Regex regFrom = new Regex(@".*?(?<filename>(\d*)--\w-(?<phone>.*?)---(?<dateTime>.*?)\.wav)",
-                RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace | RegexOptions.Compiled | RegexOptions.Multiline);
-            // FROM
-            Match m = regFrom.Match(filePath);
-            if (m.Success)
+            return Path.GetFileName(filePath);
+        }
+
+        /// <summary>
+        /// Search call model in list call which condition below:
+        ///  - Match Phone value
+        ///  - Match Channel value
+        ///  - Biggest order
+        /// </summary>
+        /// <param name="phone">Search condition value: Phone</param>
+        /// <param name="channel">Search condition value: Channel</param>
+        /// <returns></returns>
+        public static CallModel SearchInListCalls(string phone, int channel)
+        {
+            CallModel retVal = null;
+            // Loop through all item in list call (reverse order)
+            for (int i = DataPure.Instance.ListCalls.Count - 1; i >= 0; i--)
             {
-                retVal = ((string)m.Groups["filename"].Value.ToString().Trim());
+                // Check value of Phone and Channel
+                if (DataPure.Instance.ListCalls[i].Phone.Equals(phone)
+                    && DataPure.Instance.ListCalls[i].Channel.Equals(channel))
+                {
+                    // Return current model
+                    retVal = DataPure.Instance.ListCalls[i];
+                    break;
+                }
             }
             return retVal;
         }
@@ -2683,10 +2696,10 @@ namespace MainPrj.Util
                         Properties.Settings.Default.UserToken, customerId, type);
                     //-- BUG0089-SPJ (NguyenPT 20161111) Order history
                     client.UploadValuesAsync(
-                        new Uri(Properties.Settings.Default.ServerURL + API_ORDER_HISTORY),
+                        new Uri(Properties.Settings.Default.ServerURL + Properties.Resources.API_ORDER_HISTORY),
                         new System.Collections.Specialized.NameValueCollection()
                     {
-                        { GlobalConst.JSON_ROOT_KEY, value}
+                        { Properties.Resources.JSON_ROOT_KEY, value}
                     });
                 }
                 catch (System.Net.WebException)
@@ -2710,7 +2723,7 @@ namespace MainPrj.Util
                         Properties.Settings.Default.UserToken,
                         notifyId, receiveId, receivedName, note);
                     byte[] response = client.UploadValues(
-                        API_NOTIFY_RECEIVED,
+                        Properties.Resources.API_NOTIFY_RECEIVED,
                         new System.Collections.Specialized.NameValueCollection()
                     {
                         { "q", value}

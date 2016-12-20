@@ -25,7 +25,8 @@ namespace MainPrj.API
         /// Constructor.
         /// </summary>
         /// <param name="model">Call model</param>
-        public CreateCallHistoryRequest(CallModel model) : base(CommonProcess.API_CALL_HISTORY)
+        public CreateCallHistoryRequest(CallModel model)
+            : base(Properties.Resources.API_CALL_HISTORY)
         {
             this._model = model;
             // Back-up filepath
@@ -78,7 +79,7 @@ namespace MainPrj.API
                             if (resp != null)
                             {
                                 // Response result is success
-                                if (resp.Status.Equals(GlobalConst.RESPONSE_STATUS_SUCCESS))
+                                if (resp.Status.Equals(Properties.Resources.RESPONSE_STATUS_SUCCESS))
                                 {
                                     if (String.IsNullOrEmpty(this._model.CallId))
                                     {
@@ -123,15 +124,25 @@ namespace MainPrj.API
                 string respStr = String.Empty;
                 try
                 {
+                    using (StreamWriter w = File.AppendText("log.txt"))
+                    {
+                        LogUtility.Log(this._data, w);
+                        //LogUtility.Log("List calls: " + DataPure.Instance.ListCalls.ToString(), w);
+                    }
                     // Post keyword to server
                     byte[] response = client.UploadValues(
                         Properties.Settings.Default.ServerURL + this._url,
                         new System.Collections.Specialized.NameValueCollection()
                     {
-                        { GlobalConst.JSON_ROOT_KEY, this._data }
+                        { Properties.Resources.JSON_ROOT_KEY, this._data }
                     });
                     // Get response
                     respStr = System.Text.Encoding.UTF8.GetString(response);
+                    using (StreamWriter w = File.AppendText("log.txt"))
+                    {
+                        LogUtility.Log(respStr, w);
+                        //LogUtility.Log("List calls: " + DataPure.Instance.ListCalls.ToString(), w);
+                    }
                 }
                 catch (System.Net.WebException)
                 {
@@ -155,12 +166,16 @@ namespace MainPrj.API
                             if (resp != null)
                             {
                                 // Response result is success
-                                if (resp.Status.Equals(GlobalConst.RESPONSE_STATUS_SUCCESS))
+                                if (resp.Status.Equals(Properties.Resources.RESPONSE_STATUS_SUCCESS))
                                 {
                                     // Update id of call
                                     if (String.IsNullOrEmpty(this._model.CallId))
                                     {
                                         this._model.CallId = resp.Id;
+                                        using (StreamWriter w = File.AppendText("log.txt"))
+                                        {
+                                            LogUtility.Log("Call id created: " + resp.Id, w);
+                                        }
                                     }
                                     // Mark this model was updated to server
                                     this._model.IsUpdateToServer = true;

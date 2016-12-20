@@ -51,7 +51,7 @@ namespace MainPrj.View.Component
             }
             else
             {
-                name = GlobalConst.CONTENT00002;
+                name = Properties.Resources.CONTENT00002;
             }
             arr[(int)OrderHistoryCoordinatorColumns.ORDER_HISTORY_COOR_COLUMN_PRODUCT_NAME] = name;
             string qty = string.Empty;

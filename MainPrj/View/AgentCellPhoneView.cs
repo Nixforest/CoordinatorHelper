@@ -99,6 +99,9 @@ namespace MainPrj.View
                             {
                                 toolStripStatusLabel.Text = Properties.Resources.RequestAgentInfoSuccess;
                                 DataPure.Instance.Agent.Agent_cell_phone = tbxPhone.Text;
+                                //++ BUG0092-SPJ (NguyenPT 20161220) Show message
+                                CommonProcess.ShowInformMessage(baseResp.Message, MessageBoxButtons.OK);
+                                //-- BUG0092-SPJ (NguyenPT 20161220) Show message
                             }
                             else
                             {

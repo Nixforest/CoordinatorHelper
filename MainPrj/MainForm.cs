@@ -562,15 +562,14 @@ namespace MainPrj
                                 statusStr);
                 }
                 //++ BUG0091-SPJ (NguyenPT 20161216) Handle packet from Zibosoft record card
-                foreach (CallModel item in DataPure.Instance.ListCalls)
+                CallModel item = CommonProcess.SearchInListCalls(phone, channel);
+                if (item != null)
                 {
-                    // If call model match channel and phone value, and current status is RINGING or HANDLING
-                    if (item.Channel.Equals(channel) && item.Phone.Equals(phone)
-                        && (item.Status.Equals((int)CardDataStatus.CARDDATA_RINGING) || item.Status.Equals((int)CardDataStatus.CARDDATA_HANDLING)))
+                    if ((item.Status.Equals((int)CardDataStatus.CARDDATA_RINGING)
+                        || item.Status.Equals((int)CardDataStatus.CARDDATA_HANDLING)))
                     {
                         // Update call model status
                         item.Status = status;
-                        break;
                     }
                 }
                 //-- BUG0091-SPJ (NguyenPT 20161216) Handle packet from Zibosoft record card
@@ -2164,7 +2163,7 @@ namespace MainPrj
                             OrderHistoryResponseModel baseResp = (OrderHistoryResponseModel)js.ReadObject(msU);
                             if (baseResp != null)
                             {
-                                if (baseResp.Status.Equals(GlobalConst.RESPONSE_STATUS_SUCCESS))
+                                if (baseResp.Status.Equals(Properties.Resources.RESPONSE_STATUS_SUCCESS))
                                 {
                                     ChannelControl channelControl = null;
                                     try
@@ -2340,15 +2339,22 @@ namespace MainPrj
                 if (!String.IsNullOrEmpty(phone))
                 {
                     // Add record file name to call model
-                    foreach (CallModel item in DataPure.Instance.ListCalls)
+                    CallModel item = CommonProcess.SearchInListCalls(phone, model.Channel);
+                    if (item != null)
                     {
-                        if (item.Phone.Equals(phone) && item.Channel.Equals(model.Channel))
-                        {
-                            //item.File_record_name = CommonProcess.GetFileNameFromRecordFilePath(model.Phone);
-                            item.File_record_name = model.Phone;
-                            CommonProcess.RequestCreateCallHistory(item);
-                        }
+                        item.File_record_name = model.Phone;
+                        CommonProcess.RequestCreateCallHistory(item);
                     }
+                    //foreach (CallModel item in DataPure.Instance.ListCalls)
+                    //{
+                    //    if (item.Phone.Equals(phone) && item.Channel.Equals(model.Channel))
+                    //    {
+                    //        //item.File_record_name = CommonProcess.GetFileNameFromRecordFilePath(model.Phone);
+                    //        item.File_record_name = model.Phone;
+                    //        CommonProcess.RequestCreateCallHistory(item);
+                    //        break;
+                    //    }
+                    //}
                 }
                 this.tbxLog.Text = data + "\r\n" + this.tbxLog.Text;
                 return;
@@ -2415,6 +2421,26 @@ namespace MainPrj
                             case (int)CardDataStatus.CARDDATA_HANGUP:
                                 statusStr = Properties.Resources.CardDataStatus4;
                                 color = Color.Pink;
+                                //++ BUG0091-SPJ (NguyenPT 20161216) Handle packet from Zibosoft record card
+                                // Success
+                                if (!String.IsNullOrEmpty(CardDataModel.lastRecord[model.Channel][0]))
+                                {
+                                    CallModel item = CommonProcess.SearchInListCalls(model.Phone, model.Channel);
+                                    if (item != null)
+                                    {
+                                        using (StreamWriter w = File.AppendText("log.txt"))
+                                        {
+                                            LogUtility.Log("Record: " + CardDataModel.lastRecord[model.Channel][0], w);
+                                            LogUtility.Log("Call id: " + item.CallId, w);
+                                        }
+                                        // Add record file name to call model
+                                        item.File_record_name = CardDataModel.lastRecord[model.Channel][0];
+                                        CommonProcess.RequestCreateCallHistory(item);
+                                        CardDataModel.lastRecord[model.Channel][0] = string.Empty;
+                                    }
+                                }
+                                //-- BUG0091-SPJ (NguyenPT 20161216) Handle packet from Zibosoft record card
+                                this.tbxLog.Text = data + "\r\n" + this.tbxLog.Text;
                                 break;
                             case (int)CardDataStatus.CARDDATA_MISS:
                                 needUpdate = true;

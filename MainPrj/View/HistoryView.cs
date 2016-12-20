@@ -218,12 +218,12 @@ namespace MainPrj.View
             //++ BUG0006-SPJ (NguyenPT 20161111) Call history
             //arr[(int)HistoryColumns.HISTORY_COLUMN_HANDLE] = CommonProcess.GetCallTypeString(callModel.Type);
             // Get list of tyle call id
-            string[] listTypeCall   = callModel.Type_call.Split(GlobalConst.SPLITER_CHR);
+            string[] listTypeCall   = callModel.Type_call.Split(Properties.Resources.SPLITER_STR[0]);
             string typeCall         = string.Empty;
             // Get list of type call string
             foreach (string type in listTypeCall)
             {
-                typeCall += DataPure.Instance.GetTypeCallString(type) + GlobalConst.SPLITER_STR;
+                typeCall += DataPure.Instance.GetTypeCallString(type) + Properties.Resources.SPLITER_STR;
             }
             // Remove last spliter if need
             if (!string.IsNullOrEmpty(typeCall))
@@ -231,7 +231,7 @@ namespace MainPrj.View
                 typeCall = typeCall.Remove(typeCall.Length - 1);
             }
             // Replace spliter by space + spliter
-            typeCall = typeCall.Replace(GlobalConst.SPLITER_STR, GlobalConst.SPLITER_SPACE_STR);
+            typeCall = typeCall.Replace(Properties.Resources.SPLITER_STR, Properties.Resources.SPLITER_SPACE_STR);
             arr[(int)HistoryColumns.HISTORY_COLUMN_HANDLE] = typeCall;
             //-- BUG0006-SPJ (NguyenPT 20161111) Call history
 
@@ -345,7 +345,7 @@ namespace MainPrj.View
                             OrderHistoryResponseModel baseResp = (OrderHistoryResponseModel)js.ReadObject(msU);
                             if (baseResp != null)
                             {
-                                if (baseResp.Status.Equals(GlobalConst.RESPONSE_STATUS_SUCCESS))
+                                if (baseResp.Status.Equals(Properties.Resources.RESPONSE_STATUS_SUCCESS))
                                 {
                                     OrderHistoryCoordinatorView view = new OrderHistoryCoordinatorView();
                                     view.UpdateData(baseResp);
@@ -987,7 +987,7 @@ namespace MainPrj.View
                     }
                     else
                     {
-                        CommonProcess.ShowErrorMessage(GlobalConst.CONTENT00001);
+                        CommonProcess.ShowErrorMessage(Properties.Resources.CONTENT00001);
                     }
                     break;
                 }
