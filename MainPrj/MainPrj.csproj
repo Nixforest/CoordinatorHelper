@@ -86,6 +86,7 @@
   <ItemGroup>
     <Compile Include="API\BaseRequest.cs" />
     <Compile Include="API\CreateCallHistoryRequest.cs" />
+    <Compile Include="API\CreateCarOrderRequest.cs" />
     <Compile Include="Model\Address\StreetModel.cs" />
     <Compile Include="Model\Address\CityModel.cs" />
     <Compile Include="Model\Address\DistrictModel.cs" />
@@ -120,6 +121,7 @@
     </Compile>
     <Compile Include="Model\CardDataStatus.cs" />
     <Compile Include="Model\Response\CreateCallHistoryResp.cs" />
+    <Compile Include="Model\Response\CreateCarOrderRespModel.cs" />
     <Compile Include="Model\Response\NotificationResponseModel.cs" />
     <Compile Include="Model\Response\OrderResponseModel.cs" />
     <Compile Include="Model\Response\TempDataResponseModel.cs" />

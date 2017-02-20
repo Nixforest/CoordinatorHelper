@@ -43,6 +43,14 @@ namespace MainPrj.Model
         protected string agent_province;
         [DataMember(Name = "agent_district", IsRequired = false)]
         protected string agent_district;
+        [DataMember(Name = "list_user_executive", IsRequired = false)]
+        protected List<SelectorModel> list_user_executive;
+
+        public List<SelectorModel> List_user_executive
+        {
+            get { return list_user_executive; }
+            set { list_user_executive = value; }
+        }
         //++ BUG0006-SPJ (NguyenPT 20161111) Call history
         [DataMember(Name = "list_order_reason", IsRequired = false)]
         protected List<SelectorModel> list_order_reason;

@@ -307,6 +307,15 @@ namespace MainPrj.Util
             return new List<SelectorModel>();
         }
 
+        public List<SelectorModel> GetListExecutive()
+        {
+            if ((tempData != null) && (tempData.List_user_executive != null))
+            {
+                return tempData.List_user_executive;
+            }
+            return new List<SelectorModel>();
+        }
+
         //++ BUG0006-SPJ (NguyenPT 20161111) Call history
         /// <summary>
         /// Get list of type call.

@@ -61,7 +61,7 @@ namespace MainPrj.Util
             "120",		    // Đại lý Tân Sơn
             "110",		    // Đại lý Thủ Dầu Một
             "112",		    // Đại lý Thủ Đức 1
-            "123"		    // Đại lý Trảng Dài
+            //"123"		    // Đại lý Trảng Dài
         };
         /// <summary>
         /// Material color.
@@ -2839,5 +2839,7 @@ namespace MainPrj.Util
         }
         //-- BUG0006-SPJ (NguyenPT 20161107) Call history
         #endregion
+
+        public delegate void CompletionAction(object model);
     }
 }

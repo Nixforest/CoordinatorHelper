@@ -117,6 +117,15 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to /api/default/windowOrderCar.
+        /// </summary>
+        internal static string API_CREATE_CAR_ORDER {
+            get {
+                return ResourceManager.GetString("API_CREATE_CAR_ORDER", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to http://spj.daukhimiennam.com/api/socket/notifyReceived.
         /// </summary>
         internal static string API_NOTIFY_RECEIVED {

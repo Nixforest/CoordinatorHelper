@@ -36,7 +36,7 @@ namespace MainPrj.API
                 // Get file name
                 this._model.File_record_name = CommonProcess.GetFileNameFromRecordFilePath(filepath);
             }
-            base.Data = this._model.ToString();
+            base._data = this._model.ToString();
             // Restore filepath
             this._model.File_record_name = filepath;
         }

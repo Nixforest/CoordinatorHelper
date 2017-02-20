@@ -122,5 +122,37 @@ namespace MainPrj.View.Component
         {
 
         }
+
+        public String getB50()
+        {
+            return nUDQuantityB50.Value.ToString();
+        }
+
+        public String getB45()
+        {
+            return nUDQuantityB45.Value.ToString();
+        }
+
+        public String getB12()
+        {
+            return nUDQuantityB12.Value.ToString();
+        }
+
+        public String getB6()
+        {
+            return nUDQuantityB6.Value.ToString();
+        }
+
+        public bool isEmpty()
+        {
+            if ((nUDQuantityB50.Value == 0)
+                && (nUDQuantityB45.Value == 0)
+                && (nUDQuantityB12.Value == 0)
+                && (nUDQuantityB6.Value == 0))
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

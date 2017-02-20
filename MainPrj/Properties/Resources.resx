@@ -658,4 +658,7 @@ Cancel: Quay lại nhập giá.</value>
     <value>D:\VOC</value>
     <comment>Zibosoft record file path default</comment>
   </data>
+  <data name="API_CREATE_CAR_ORDER" xml:space="preserve">
+    <value>/api/default/windowOrderCar</value>
+  </data>
 </root>

@@ -1,4 +1,5 @@
-﻿using MainPrj.Model;
+﻿using MainPrj.API;
+using MainPrj.Model;
 using MainPrj.Model.Response;
 using MainPrj.Util;
 using MainPrj.View;
@@ -380,7 +381,8 @@ namespace MainPrj
         {
             //OrderCarView order = new OrderCarView();
             //order.Show();
-            CommonProcess.ShowInformMessageProcessing();
+            //CommonProcess.ShowInformMessageProcessing();
+            HandleCreateCarOrder();
         }
         /// <summary>
         /// Handle when click Update Customer button.
@@ -1203,6 +1205,7 @@ namespace MainPrj
                     }
                     break;
                 case Keys.F7:
+                    HandleCreateCarOrder();
                     //HistoryView1 historyView = new HistoryView1();
                     //foreach (CallModel item in DataPure.Instance.ListCalls)
                     //{
@@ -1224,6 +1227,69 @@ namespace MainPrj
                 default:
                     break;
             }
+        }
+
+        private void HandleCreateCarOrder()
+        {
+            ChannelControl channelControl = null;
+            try
+            {
+                channelControl = this.listChannelControl.ElementAt(DataPure.Instance.CurrentChannel);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                CommonProcess.ShowErrorMessage(Properties.Resources.ArgumentOutOfRange);
+                return;
+            }
+            if ((channelControl.Data != null) && (!string.IsNullOrEmpty(channelControl.Data.Id)))
+            {
+                //CommonProcess.RequestOrderHistory(channelControl.Data.Id, orderHistoryProgressChanged, orderHistoryCompleted);
+                if (coordinatorOrderView_v2.isEmpty())
+                {
+                    CommonProcess.ShowInformMessage("Bạn phải chọn vật tư trước.", MessageBoxButtons.OK);
+                }
+                else
+                {
+                    List<SelectorModel> listSelector = new List<SelectorModel>();
+                    foreach (SelectorModel item in DataPure.Instance.GetListExecutive())
+                    {
+                        listSelector.Add((SelectorModel)item.Clone());
+                    }
+                    listSelector.Sort();
+
+                    SelectorView selectorView = new SelectorView();
+                    // Set data
+                    selectorView.ListData = listSelector;
+                    // Set title
+                    selectorView.Text = "Chọn xe cần điều";
+                    // Set header text
+                    selectorView.SetHeaderText(SelectorColumns.SELECTOR_COLUMN_ADDRESS, string.Empty);
+                    // Set default selection
+                    // Show dialog
+                    selectorView.ShowDialog();
+                    string selectorId = selectorView.SelectedId;
+                    if (!String.IsNullOrEmpty(selectorId))
+                    {
+                        CreateCarOrderRequest.requestCreateCarOrder(channelControl.Data.Id, selectorId,
+                            coordinatorOrderView_v2.getB50(),
+                            coordinatorOrderView_v2.getB45(),
+                            coordinatorOrderView_v2.getB12(),
+                            coordinatorOrderView_v2.getB6(),
+                            createCarOrderProgressChanged, createCarOrderFinish);
+                    }
+                }
+            }
+        }
+
+        private void createCarOrderFinish(object model)
+        {
+            CreateCarOrderRespModel obj = (CreateCarOrderRespModel)model;
+            CommonProcess.ShowInformMessage(String.Format("{0}, id = \"{1}\"", obj.Message, obj.Id), MessageBoxButtons.OK);
+        }
+
+        private void createCarOrderProgressChanged(object sender, UploadProgressChangedEventArgs e)
+        {
+            UpdateProgress(e, "Đang gửi yêu cầu");
         }
 
         /// <summary>
@@ -1815,6 +1881,7 @@ namespace MainPrj
 
             if (!String.IsNullOrEmpty(respStr))
             {
+                //Console.Write(respStr);
                 timer.Stop();
                 Console.WriteLine("Time elapsed [respStr = System.Text.Encoding.UTF8.GetString(response);]:\t{0}", timer.ElapsedMilliseconds);
                 timer.Restart();
