@@ -2182,6 +2182,7 @@ namespace MainPrj.Util
         /// <param name="customerId">Id of customer</param>
         /// <param name="note">Note of order</param>
         public static string RequestCreateOrderCoordinator(string agentId, string customerId, string note,
+            String b50, String b45, String b12, String b6,
             UploadProgressChangedEventHandler progressChanged,
             UploadValuesCompletedEventHandler completedHandler)
         {
@@ -2195,9 +2196,9 @@ namespace MainPrj.Util
                 {
                     // Post keyword to server
                     string value = string.Empty;
-                    value = String.Format("{{\"token\":\"{0}\",\"customer_id\":\"{1}\",\"agent_id\":\"{2}\",\"note\":\"{3}\"}}",
+                    value = String.Format("{{\"token\":\"{0}\",\"customer_id\":\"{1}\",\"agent_id\":\"{2}\",\"note\":\"{3}\", \"b50\":\"{4}\", \"b45\":\"{5}\", \"b12\":\"{6}\", \"b6\":\"{7}\"}}",
                         Properties.Settings.Default.UserToken,
-                        customerId, agentId, note);
+                        customerId, agentId, note, b50, b45, b12, b6);
                     client.UploadValuesAsync(
                         new Uri(Properties.Settings.Default.ServerURL + Properties.Settings.Default.URLCreateOrderCoordinator),
                         new System.Collections.Specialized.NameValueCollection()

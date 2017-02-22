@@ -343,6 +343,10 @@ namespace MainPrj
                                         //DataPure.Instance.CustomerInfo.Id, note,
                                         customerInfo.Id, note,
                                         //-- BUG0069-SPJ (NguyenPT 20160905) Choose delivery agent
+                                        coordinatorOrderView_v2.getB50(),
+                                        coordinatorOrderView_v2.getB45(),
+                                        coordinatorOrderView_v2.getB12(),
+                                        coordinatorOrderView_v2.getB6(),
                                         createOrderProgressChanged, createOrderCompleted);
                                 }
                             }

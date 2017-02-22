@@ -690,7 +690,7 @@ namespace MainPrj.View
                                             //++ BUG0065-SPJ (NguyenPT 20160901) Use callMode.Customer instead of DataPure.Instance.CustomerInfo
                                             //SelectAgent(note);
                                             //SelectAgent(note, callModel.Customer);
-                                            SelectAgent(note + " - ĐT: " + customerInfo.ActivePhone, customerInfo);
+                                            SelectAgent(note + " - ĐT: " + customerInfo.ActivePhone, customerInfo, view);
                                             //-- BUG0065-SPJ (NguyenPT 20160901) Use callMode.Customer instead of DataPure.Instance.CustomerInfo
                                         }
                                         else
@@ -718,7 +718,7 @@ namespace MainPrj.View
         /// <param name="note">Note</param>
         //++ BUG0065-SPJ (NguyenPT 20160901) Use callMode.Customer instead of DataPure.Instance.CustomerInfo
         //private void SelectAgent(string note)
-        private void SelectAgent(string note, CustomerModel customerInfo)
+        private void SelectAgent(string note, CustomerModel customerInfo, OrderCoordinatorView view)
         //-- BUG0065-SPJ (NguyenPT 20160901) Use callMode.Customer instead of DataPure.Instance.CustomerInfo
         {
             List<SelectorModel> listSelector = new List<SelectorModel>();
@@ -768,6 +768,10 @@ namespace MainPrj.View
                     //CommonProcess.RequestCreateOrderCoordinator(selectorId, DataPure.Instance.CustomerInfo.Id, note,
                     CommonProcess.RequestCreateOrderCoordinator(selectorId, customerInfo.Id, note,
                     //++ BUG0065-SPJ (NguyenPT 20160901) Use callMode.Customer instead of DataPure.Instance.CustomerInfo
+                                        view.getContent().getB50(),
+                                        view.getContent().getB45(),
+                                        view.getContent().getB12(),
+                                        view.getContent().getB6(),
                         createOrderProgressChanged, createOrderCompleted);
                 }
             }
@@ -780,7 +784,7 @@ namespace MainPrj.View
                 {
                     //++ BUG0065-SPJ (NguyenPT 20160901) Use callMode.Customer instead of DataPure.Instance.CustomerInfo
                     //SelectAgent(note);
-                    SelectAgent(note, customerInfo);
+                    SelectAgent(note, customerInfo, view);
                     //++ BUG0065-SPJ (NguyenPT 20160901) Use callMode.Customer instead of DataPure.Instance.CustomerInfo
                 }
             }

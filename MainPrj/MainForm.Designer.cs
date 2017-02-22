@@ -740,7 +740,7 @@ namespace MainPrj
             this.btnSaveData.Name = "btnSaveData";
             this.btnSaveData.Size = new System.Drawing.Size(180, 64);
             this.btnSaveData.TabIndex = 3;
-            this.btnSaveData.Text = "Đặt hàng sau (F2)";
+            this.btnSaveData.Text = "Đặt hàng xe giao (F2)";
             this.btnSaveData.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnSaveData.UseVisualStyleBackColor = true;
             this.btnSaveData.Click += new System.EventHandler(this.btnSaveData_Click);

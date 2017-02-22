@@ -1,4 +1,5 @@
 ﻿using MainPrj.Util;
+using MainPrj.View.Component;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -30,6 +31,10 @@ namespace MainPrj.View
             note = coordinatorOrderView_v2.GetData();
             this.DialogResult = DialogResult.OK;
             this.Close();
+        }
+        public CoordinatorOrderView_v2 getContent()
+        {
+            return coordinatorOrderView_v2;
         }
     }
 }
