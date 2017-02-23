@@ -222,7 +222,7 @@ namespace MainPrj.Model
             // Customer name
             Offset = Offset + (int)size.Height;
             //++ BUG0051-SPJ (NguyenPT 20160824) Remove "Không rõ" in bill
-            this.CustomerName = this.CustomerName.Replace("Không rõ", "");
+            this.CustomerName = this.CustomerName.Replace(DomainConst.CONTENT00267, DomainConst.BLANK);
             //-- BUG0051-SPJ (NguyenPT 20160824) Remove "Không rõ" in bill
             text = String.Format("Khách hàng: {0}", this.CustomerName);
             font = new Font(Properties.Settings.Default.BilllFont, 12, FontStyle.Bold);
@@ -233,7 +233,7 @@ namespace MainPrj.Model
 
             // Customer address
             //++ BUG0051-SPJ (NguyenPT 20160824) Remove "Không rõ" in bill
-            this.CustomerAddress = this.CustomerAddress.Replace(", Không rõ", "");
+            this.CustomerAddress = this.CustomerAddress.Replace(", Không rõ", DomainConst.BLANK);
             //-- BUG0051-SPJ (NguyenPT 20160824) Remove "Không rõ" in bill
             Offset = Offset + (int)size.Height;
             text = String.Format("ĐC: {0}", this.CustomerAddress);
@@ -418,7 +418,7 @@ namespace MainPrj.Model
             graphics.DrawString(text, font, brush, positionX, startY + Offset);
             // Glad
             Offset = Offset + (int)size.Height;
-            text = "Bảo trì bếp & chăm sóc khách hàng";
+            text = DomainConst.CONTENT00268;
             font = new Font(Properties.Settings.Default.BilllFont, 12);
             size = graphics.MeasureString(text, font);
             positionX = startX + (Properties.Settings.Default.BillSizeW - (int)size.Width) / 2;
@@ -435,7 +435,7 @@ namespace MainPrj.Model
             graphics.DrawString(text, font, brush, positionX, startY + Offset);
             // Glad
             Offset = Offset + (int)size.Height;
-            text = "Cảm ơn quý khách và hẹn gặp lại!";
+            text = DomainConst.CONTENT00269;
             font = new Font(Properties.Settings.Default.BilllFont, 12);
             size = graphics.MeasureString(text, font);
             positionX = startX + (Properties.Settings.Default.BillSizeW - (int)size.Width) / 2;

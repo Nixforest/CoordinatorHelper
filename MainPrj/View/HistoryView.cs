@@ -1,4 +1,6 @@
-﻿using MainPrj.Model;
+﻿using MainPrj.API;
+using MainPrj.Model;
+using MainPrj.Model.Response;
 using MainPrj.Util;
 using System;
 using System.Collections.Generic;
@@ -698,6 +700,44 @@ namespace MainPrj.View
                                             CommonProcess.ShowErrorMessage(Properties.Resources.NotSelectMaterial);
                                         }
                                     }
+                                    else if (result.Equals(DialogResult.Yes))
+                                    {
+                                        if (view.getContent().isEmpty())
+                                        {
+                                            CommonProcess.ShowInformMessage("Bạn phải chọn vật tư trước.", MessageBoxButtons.OK);
+                                        }
+                                        else
+                                        {
+                                            List<SelectorModel> listSelector = new List<SelectorModel>();
+                                            foreach (SelectorModel item in DataPure.Instance.GetListExecutive())
+                                            {
+                                                listSelector.Add((SelectorModel)item.Clone());
+                                            }
+                                            listSelector.Sort();
+
+                                            SelectorView selectorView = new SelectorView();
+                                            // Set data
+                                            selectorView.ListData = listSelector;
+                                            // Set title
+                                            selectorView.Text = "Chọn xe cần điều";
+                                            // Set header text
+                                            selectorView.SetHeaderText(SelectorColumns.SELECTOR_COLUMN_ADDRESS, string.Empty);
+                                            // Set default selection
+                                            // Show dialog
+                                            selectorView.ShowDialog();
+                                            string selectorId = selectorView.SelectedId;
+                                            if (!String.IsNullOrEmpty(selectorId))
+                                            {
+                                                CreateCarOrderRequest.requestCreateCarOrder(customerInfo.Id, selectorId,
+                                                    view.getContent().getB50(),
+                                                    view.getContent().getB45(),
+                                                    view.getContent().getB12(),
+                                                    view.getContent().getB6(),
+                                                    view.getContent().getNote(),
+                                                    createCarOrderProgressChanged, createCarOrderFinish);
+                                            }
+                                        }
+                                    }
                                     break;
                                 default:
                                     break;
@@ -711,6 +751,18 @@ namespace MainPrj.View
                     }
                 }
             }
+        }
+
+        private void createCarOrderFinish(object model)
+        {
+            CreateCarOrderRespModel obj = (CreateCarOrderRespModel)model;
+            CommonProcess.ShowInformMessage(String.Format("{0}, id = \"{1}\"", obj.Message, obj.Id), MessageBoxButtons.OK);
+        }
+
+        private void createCarOrderProgressChanged(object sender, System.Net.UploadProgressChangedEventArgs e)
+        {
+            CommonProcess.UpdateProgress(e, Properties.Resources.RequestingCreateOrder,
+                   toolStripProgressBar, toolStripStatusLabel);
         }
         /// <summary>
         /// Select agent for create order.

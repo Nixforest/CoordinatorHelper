@@ -135,7 +135,7 @@ namespace MainPrj.Model
         /// <returns>TRUE if material no is contain "GAS"</returns>
         public bool IsGas()
         {
-            if (this.materials_no.Contains("GAS"))
+            if (this.materials_no.Contains(DomainConst.GAS_STRING))
             {
                 return true;
             }

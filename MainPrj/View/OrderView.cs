@@ -847,7 +847,7 @@ namespace MainPrj.View
                 model.TotalMoney            = total;
                 model.PromoteMoney          = totalPromote;
                 //++ BUG0086-SPJ (NguyenPT 20161024d Promote money setting
-                if (!model.PromoteMoney.Equals(CommonProcess.PROMOTE_MONEY_DEFAULT_VALUE))
+                if (!model.PromoteMoney.Equals(DomainConst.PROMOTE_MONEY_DEFAULT_VALUE))
                 {
                     this._isManualChangePromoteMoney = true;
                 }

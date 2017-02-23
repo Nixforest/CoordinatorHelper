@@ -27,14 +27,37 @@ namespace MainPrj.View
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            //note = coordinatorOrderView.GetData();
-            note = coordinatorOrderView_v2.GetData();
-            this.DialogResult = DialogResult.OK;
-            this.Close();
+            if (ValidateData())
+            {
+                note = coordinatorOrderView_v2.GetData();
+                this.DialogResult = DialogResult.OK;
+                this.Close();
+            }
         }
         public CoordinatorOrderView_v2 getContent()
         {
             return coordinatorOrderView_v2;
+        }
+
+        private void btnSaveData_Click(object sender, EventArgs e)
+        {
+            if (ValidateData())
+            {
+                note = coordinatorOrderView_v2.GetData();
+                this.DialogResult = DialogResult.Yes;
+                this.Close();
+            }
+
+        }
+
+        private bool ValidateData()
+        {
+            if (coordinatorOrderView_v2.isEmpty())
+            {
+                CommonProcess.ShowInformMessage("Bạn phải chọn vật tư trước.", MessageBoxButtons.OK);
+                return false;
+            }
+            return true;
         }
     }
 }

@@ -33,6 +33,7 @@
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.coordinatorOrderView_v2 = new MainPrj.View.Component.CoordinatorOrderView_v2();
+            this.btnSaveData = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // coordinatorOrderView
@@ -48,18 +49,18 @@
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(77, 173);
+            this.btnOK.Location = new System.Drawing.Point(12, 173);
             this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(99, 40);
+            this.btnOK.Size = new System.Drawing.Size(105, 40);
             this.btnOK.TabIndex = 1;
-            this.btnOK.Text = "OK";
+            this.btnOK.Text = "Giao ngay";
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(182, 173);
+            this.btnCancel.Location = new System.Drawing.Point(257, 173);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(99, 40);
             this.btnCancel.TabIndex = 1;
@@ -76,6 +77,16 @@
             this.coordinatorOrderView_v2.Size = new System.Drawing.Size(289, 163);
             this.coordinatorOrderView_v2.TabIndex = 0;
             // 
+            // btnSaveData
+            // 
+            this.btnSaveData.Location = new System.Drawing.Point(123, 173);
+            this.btnSaveData.Name = "btnSaveData";
+            this.btnSaveData.Size = new System.Drawing.Size(128, 40);
+            this.btnSaveData.TabIndex = 2;
+            this.btnSaveData.Text = "Xe tải giao";
+            this.btnSaveData.UseVisualStyleBackColor = true;
+            this.btnSaveData.Click += new System.EventHandler(this.btnSaveData_Click);
+            // 
             // OrderCoordinatorView
             // 
             this.AcceptButton = this.btnOK;
@@ -83,7 +94,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(291, 220);
+            this.ClientSize = new System.Drawing.Size(363, 220);
+            this.Controls.Add(this.btnSaveData);
             this.Controls.Add(this.coordinatorOrderView_v2);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
@@ -106,5 +118,6 @@
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Button btnCancel;
         private Component.CoordinatorOrderView_v2 coordinatorOrderView_v2;
+        private System.Windows.Forms.Button btnSaveData;
     }
 }

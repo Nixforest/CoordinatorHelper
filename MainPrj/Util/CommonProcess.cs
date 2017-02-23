@@ -30,39 +30,9 @@ namespace MainPrj.Util
     public static class CommonProcess
     {
         //++ BUG0086-SPJ (NguyenPT 20161024d Promote money setting
-        public const double PROMOTE_MONEY_DEFAULT_VALUE = 20000.0;
         //-- BUG0086-SPJ (NguyenPT 20161024d Promote money setting
         #region Static variables
         public static SoundPlayer NotificationSound = new SoundPlayer(Properties.Resources.notifySound3);
-        public static List<string> AGENT_LIST_ZIBO = new List<string>
-        {
-            "1311",		    // Cửa hàng 1
-            "1312",		    // Cửa hàng 2
-            "1313",		    // Cửa hàng 3
-            "30751",		// Cửa hàng Vĩnh Long 1
-            "30753",		// Cửa hàng Cần Thơ 1
-            //"138544",		// Cửa hàng Cần Thơ 2
-            //"262526",		// Cửa Hàng Ô Môn
-            "118",		    // Đại lý An Thạnh
-            "116",		    // Đại lý Bình Đa
-            //"122",		    // Đại lý Bình Tân
-            "106",		    // Đại lý Bình Thạnh 1
-            "115",		    // Đại lý Dĩ An
-            "108",		    // Đại lý Hóc Môn
-            "109",		    // Đại lý Lái Thiêu
-            "114",		    // Đại lý Long Bình Tân
-            "121",		    // Đại lý Ngã Ba Trị An
-            "100",		    // Đại lý Quận 2
-            "113",		    // Đại lý Quận 3
-            "101",		    // Đại lý Quận 4
-            "102",		    // Đại lý Quận 7
-            "119",			// Đại lý Tân Định
-            "126",		    // Đại lý Tân Phú
-            "120",		    // Đại lý Tân Sơn
-            "110",		    // Đại lý Thủ Dầu Một
-            "112",		    // Đại lý Thủ Đức 1
-            //"123"		    // Đại lý Trảng Dài
-        };
         /// <summary>
         /// Material color.
         /// </summary>

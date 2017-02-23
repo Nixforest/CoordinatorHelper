@@ -143,6 +143,7 @@
     <Compile Include="Util\CommonProcess.cs" />
     <Compile Include="Util\CrossThreadUtility.cs" />
     <Compile Include="Util\DataPure.cs" />
+    <Compile Include="Util\DomainConst.cs" />
     <Compile Include="Util\ExcelHandle.cs" />
     <Compile Include="Util\FlashWindowHelper.cs" />
     <Compile Include="Util\INIHandle.cs" />

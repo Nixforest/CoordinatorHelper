@@ -89,7 +89,7 @@ namespace MainPrj.Model
             int startY = 5;
             SolidBrush brush = new SolidBrush(Color.Black);
             //Offset = Offset + (int)size.Height;
-            text = "Tên hàng";
+            text = DomainConst.CONTENT00270;
             Font font = new Font(Properties.Settings.Default.BilllFont, 8, FontStyle.Bold | FontStyle.Underline);
             size = graphics.MeasureString(text, font, nameW);
             //positionX = startX + (nameW - (int)size.Width) / 2;
@@ -97,19 +97,19 @@ namespace MainPrj.Model
             graphics.DrawString(text, font, brush, new RectangleF(new PointF(positionX, startY + Offset),
                 new SizeF(nameW, size.Height)));
 
-            text = "SL";
+            text = DomainConst.CONTENT00271;
             size = graphics.MeasureString(text, font, qtyW);
             positionX = startX + nameW + (qtyW - (int)size.Width) / 2;
             graphics.DrawString(text, font, brush, new RectangleF(new PointF(positionX, startY + Offset),
                 new SizeF(qtyW, size.Height)));
 
-            text = "ĐG";
+            text = DomainConst.CONTENT00272;
             size = graphics.MeasureString(text, font, moneyW);
             positionX = startX + nameW + qtyW + (moneyW - (int)size.Width) / 2;
             graphics.DrawString(text, font, brush, new RectangleF(new PointF(positionX, startY + Offset),
                 new SizeF(moneyW, size.Height)));
 
-            text = "T.Tiền";
+            text = DomainConst.CONTENT00273;
             size = graphics.MeasureString(text, font, totalW);
             positionX = startX + nameW + qtyW + moneyW + (totalW - (int)size.Width) / 2;
             graphics.DrawString(text, font, brush, new RectangleF(new PointF(positionX, startY + Offset),
@@ -158,7 +158,7 @@ namespace MainPrj.Model
             {
                 Offset = Offset + (int)size.Height;
 
-                text = "1";
+                text = DomainConst.NUMBER_ONE_VALUE;
                 size = graphics.MeasureString(text, font, qtyW);
                 positionX = startX + nameW + (qtyW - (int)size.Width) / 2;
                 graphics.DrawString(text, font, brush, new RectangleF(new PointF(positionX, startY + Offset),
@@ -186,7 +186,7 @@ namespace MainPrj.Model
 
             // Promote label
             Offset = Offset + (int)size.Height;
-            text = "Quà tặng kèm theo";
+            text = DomainConst.CONTENT00274;
             font = new Font(Properties.Settings.Default.BilllFont, 10, FontStyle.Bold | FontStyle.Underline | FontStyle.Italic);
             size = graphics.MeasureString(text, font, Properties.Settings.Default.BillSizeW);
             positionX = startX;
@@ -196,7 +196,7 @@ namespace MainPrj.Model
             // Promote label Name
             Offset = Offset + (int)size.Height;
             nameW = 150;
-            text = "Tên quà tặng";
+            text = DomainConst.CONTENT00275;
             font = new Font(Properties.Settings.Default.BilllFont, 8, FontStyle.Bold | FontStyle.Underline);
             size = graphics.MeasureString(text, font, nameW);
             //positionX = startX + (nameW - (int)size.Width) / 2;
@@ -204,7 +204,7 @@ namespace MainPrj.Model
             graphics.DrawString(text, font, brush, new RectangleF(new PointF(positionX, startY + Offset),
                 new SizeF(nameW, size.Height)));
 
-            text = "SL";
+            text = DomainConst.CONTENT00271;
             size = graphics.MeasureString(text, font, qtyW);
             positionX = startX + nameW + (qtyW - (int)size.Width) / 2;
             graphics.DrawString(text, font, brush, new RectangleF(new PointF(positionX, startY + Offset),
@@ -235,7 +235,7 @@ namespace MainPrj.Model
 
             // Total money
             Offset = Offset + (int)size.Height;
-            text = "Tổng hóa đơn:";
+            text = DomainConst.CONTENT00276;
             font = new Font(Properties.Settings.Default.BilllFont, 12, FontStyle.Bold);
             size = graphics.MeasureString(text, font, Properties.Settings.Default.BillSizeW);
             positionX = startX;
@@ -253,7 +253,7 @@ namespace MainPrj.Model
 
             // Total promote
             Offset = Offset + (int)size.Height;
-            text = "Tổng chiết khấu:";
+            text = DomainConst.CONTENT00277;
             font = new Font(Properties.Settings.Default.BilllFont, 10, FontStyle.Italic);
             size = graphics.MeasureString(text, font, Properties.Settings.Default.BillSizeW);
             positionX = startX;
@@ -268,7 +268,7 @@ namespace MainPrj.Model
 
             // Total pay
             Offset = Offset + (int)size.Height;
-            text = "Tổng phải thu:";
+            text = DomainConst.CONTENT00278;
             font = new Font(Properties.Settings.Default.BilllFont, 12, FontStyle.Bold);
             size = graphics.MeasureString(text, font, Properties.Settings.Default.BillSizeW);
             positionX = startX;

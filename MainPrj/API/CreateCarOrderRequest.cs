@@ -31,23 +31,34 @@ namespace MainPrj.API
         /// <param name="b45">Quantity of 45kg type</param>
         /// <param name="b12">Quantity of 12kg type</param>
         /// <param name="b6">Quantity of 6kg type</param>
+        /// <param name="note">Note of customer</param>
         /// <param name="progressChangedHandler">Upload progress changed event handler</param>
         /// <param name="completedHandler">Completion action</param>
         public static void requestCreateCarOrder(String customerId, String user_id_executive,
-            String b50, String b45, String b12, String b6,
+            String b50, String b45, String b12, String b6, String note,
             UploadProgressChangedEventHandler progressChangedHandler,
             MainPrj.Util.CommonProcess.CompletionAction completedHandler)
         {
             CreateCarOrderRequest request = new CreateCarOrderRequest();
-            request._data = String.Format("{{\"token\":\"{0}\", \"customer_id\":\"{1}\", \"user_id_executive\":\"{2}\", \"b50\":\"{3}\", \"b45\":\"{4}\", \"b12\":\"{5}\", \"b6\":\"{6}\"}}",
-                        Properties.Settings.Default.UserToken,
-                        customerId, user_id_executive,
-                        b50, b45, b12, b6);
+            request._data = String.Format("{{\"{0}\":\"{1}\", \"{2}\":\"{3}\", \"{4}\":\"{5}\", \"{6}\":\"{7}\", \"{8}\":\"{9}\", \"{10}\":\"{11}\", \"{12}\":\"{13}\", \"{14}\":\"{15}\"}}",
+                        DomainConst.KEY_TOKEN, Properties.Settings.Default.UserToken,
+                        DomainConst.KEY_CUSTOMER_ID, customerId,
+                        DomainConst.KEY_USER_ID_EXECUTIVE, user_id_executive,
+                        DomainConst.KEY_B50, b50,
+                        DomainConst.KEY_B45, b45,
+                        DomainConst.KEY_B12, b12,
+                        DomainConst.KEY_B6, b6,
+                        DomainConst.KEY_NOTE, note);
             request._progressChangedHandler = progressChangedHandler;
             request._completionAction = completedHandler;
             request.ExecuteAsync();
         }
 
+        /// <summary>
+        /// Convert response data to object
+        /// </summary>
+        /// <param name="js">DataContractJsonSerializer</param>
+        /// <param name="msU">MemoryStream</param>
         protected override void ConvertData(System.Runtime.Serialization.Json.DataContractJsonSerializer js, System.IO.MemoryStream msU)
         {
             // Convert json to object

@@ -193,9 +193,9 @@ namespace MainPrj
             //if (status.Equals((int)CardDataStatus.CARDDATA_HANDLING) || status.Equals((int)CardDataStatus.CARDDATA_MISS))
             if (status.Equals((int)CardDataStatus.CARDDATA_RINGING)
                 || status.Equals((int)CardDataStatus.CARDDATA_MISS)
-                || status.Equals((int)CardDataStatus.CARDDATA_HANDLING)
+                || status.Equals((int)CardDataStatus.CARDDATA_HANDLING))
                 //++ BUG0091-SPJ (NguyenPT 20161216) Handle packet from Zibosoft record card
-                || status.Equals((int)CardDataStatus.CARDDATA_CALLING))
+                //|| status.Equals((int)CardDataStatus.CARDDATA_CALLING))
                 //-- BUG0091-SPJ (NguyenPT 20161216) Handle packet from Zibosoft record card
             //-- BUG0085-SPJ (NguyenPT 20161117) Fix bug
             {
@@ -702,7 +702,7 @@ namespace MainPrj
         private void CheckRecordDevice()
         {
             // Check if agent use zibo record card
-            if (CommonProcess.AGENT_LIST_ZIBO.Contains(DataPure.Instance.Agent.Id)
+            if (DomainConst.AGENT_LIST_ZIBO.Contains(DataPure.Instance.Agent.Id)
                 //if (CommonProcess.AGENT_LIST_ZIBO.Any(str => str.Contains(DataPure.Instance.Agent.Id))
                 && (Properties.Settings.Default.UdpMainPort != Properties.Settings.Default.ZiboUdpPort))
             {
@@ -1250,7 +1250,7 @@ namespace MainPrj
                 //CommonProcess.RequestOrderHistory(channelControl.Data.Id, orderHistoryProgressChanged, orderHistoryCompleted);
                 if (coordinatorOrderView_v2.isEmpty())
                 {
-                    CommonProcess.ShowInformMessage("Bạn phải chọn vật tư trước.", MessageBoxButtons.OK);
+                    CommonProcess.ShowInformMessage(DomainConst.CONTENT00264, MessageBoxButtons.OK);
                 }
                 else
                 {
@@ -1265,7 +1265,7 @@ namespace MainPrj
                     // Set data
                     selectorView.ListData = listSelector;
                     // Set title
-                    selectorView.Text = "Chọn xe cần điều";
+                    selectorView.Text = DomainConst.CONTENT00265;
                     // Set header text
                     selectorView.SetHeaderText(SelectorColumns.SELECTOR_COLUMN_ADDRESS, string.Empty);
                     // Set default selection
@@ -1279,6 +1279,7 @@ namespace MainPrj
                             coordinatorOrderView_v2.getB45(),
                             coordinatorOrderView_v2.getB12(),
                             coordinatorOrderView_v2.getB6(),
+                            coordinatorOrderView_v2.getNote(),
                             createCarOrderProgressChanged, createCarOrderFinish);
                     }
                 }
@@ -1293,7 +1294,7 @@ namespace MainPrj
 
         private void createCarOrderProgressChanged(object sender, UploadProgressChangedEventArgs e)
         {
-            UpdateProgress(e, "Đang gửi yêu cầu");
+            UpdateProgress(e, DomainConst.CONTENT00266);
         }
 
         /// <summary>
@@ -1579,7 +1580,7 @@ namespace MainPrj
                     }
                     if (baseResp != null)
                     {
-                        if (baseResp.Status.Equals("1"))
+                        if (baseResp.Status.Equals(DomainConst.RESPONSE_STATUS_SUCCESS))
                         {
                             baseResp.Record.IsNew = true;
                             // Check if id is not existed in list notification
@@ -1638,7 +1639,7 @@ namespace MainPrj
         /// <param name="text">Label content</param>
         public void SetNotificationLabel(string text)
         {
-            if (text.Equals("0"))
+            if (text.Equals(DomainConst.NUMBER_ZERO_VALUE))
             {
                 SetControlText(this.lblNotification, string.Empty);
             }
@@ -1801,7 +1802,7 @@ namespace MainPrj
                         //}
                         if (baseResp != null)
                         {
-                            if (baseResp.Status.Equals("1"))
+                            if (baseResp.Status.Equals(DomainConst.RESPONSE_STATUS_SUCCESS))
                             {
                                 // Create customer is success.
                                 toolStripStatusLabel.Text = Properties.Resources.CreateCustomerSuccess;
@@ -2146,7 +2147,7 @@ namespace MainPrj
                             }
                             UserLoginResponseModel userResp = baseResp;
                             UserLoginModel user = new UserLoginModel();
-                            if (userResp.Status.Equals("1"))
+                            if (userResp.Status.Equals(DomainConst.RESPONSE_STATUS_SUCCESS))
                             {
                                 // Login success
                                 if (!String.IsNullOrEmpty(userResp.Token))
@@ -2458,13 +2459,13 @@ namespace MainPrj
                                 color = Color.DarkGreen;
                                 //++ BUG0091-SPJ (NguyenPT 20161216) Handle packet from Zibosoft record card
                                 ////++ BUG0073-SPJ (NguyenPT 20160909) Update tab if user is accounting
-                                //if (DataPure.Instance.IsAccountingAgentRole())
-                                //{
-                                //    needUpdate = true;
-                                //}
+                                if (DataPure.Instance.IsAccountingAgentRole())
+                                {
+                                    needUpdate = true;
+                                }
                                 ////-- BUG0073-SPJ (NguyenPT 20160909) Update tab if user is accounting
                                 // Update call model 
-                                needUpdate = true;
+                                //needUpdate = true;
                                 //-- BUG0091-SPJ (NguyenPT 20161216) Handle packet from Zibosoft record card
                                 break;
                             case (int)CardDataStatus.CARDDATA_CALLING:
@@ -2482,10 +2483,10 @@ namespace MainPrj
                                 //++ BUG0091-SPJ (NguyenPT 20161216) Handle packet from Zibosoft record card
                                 ////++ BUG0085-SPJ (NguyenPT 20161117) Fix bug
                                 //needUpdate = true;
-                                //if (DataPure.Instance.IsCoordinatorRole())
-                                //{
-                                //  needUpdate = true;  
-                                //}
+                                if (DataPure.Instance.IsCoordinatorRole())
+                                {
+                                    needUpdate = true;
+                                }
                                 ////-- BUG0085-SPJ (NguyenPT 20161117) Fix bug
                                 //++ BUG0091-SPJ (NguyenPT 20161216) Handle packet from Zibosoft record card
                                 break;

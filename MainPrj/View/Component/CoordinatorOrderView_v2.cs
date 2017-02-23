@@ -143,6 +143,11 @@ namespace MainPrj.View.Component
             return nUDQuantityB6.Value.ToString();
         }
 
+        public String getNote()
+        {
+            return tbxNote.Text;
+        }
+
         public bool isEmpty()
         {
             if ((nUDQuantityB50.Value == 0)
