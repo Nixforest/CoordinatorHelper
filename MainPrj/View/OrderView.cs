@@ -846,12 +846,12 @@ namespace MainPrj.View
                 model.TotalPay              = totalPay;
                 model.TotalMoney            = total;
                 model.PromoteMoney          = totalPromote;
-                //++ BUG0086-SPJ (NguyenPT 20161024d Promote money setting
-                if (!model.PromoteMoney.Equals(DomainConst.PROMOTE_MONEY_DEFAULT_VALUE))
+                //++ BUG0086-SPJ (NguyenPT 20161024) Promote money setting
+                if (!model.PromoteMoney.Equals(DomainConst.PROMOTE_MONEY_DEFAULT_VALUE) && !model.PromoteMoney.Equals(0))
                 {
                     this._isManualChangePromoteMoney = true;
                 }
-                //-- BUG0086-SPJ (NguyenPT 20161024d Promote money setting
+                //-- BUG0086-SPJ (NguyenPT 20161024) Promote money setting
                 //++ BUG0068-SPJ (NguyenPT 20160905) Change promote money
                 model.IsManualChangePromote = this._isManualChangePromoteMoney;
                 //-- BUG0068-SPJ (NguyenPT 20160905) Change promote money
@@ -1221,6 +1221,12 @@ namespace MainPrj.View
                     _data.TotalPay     = totalPay;
                     _data.TotalMoney   = total;
                     _data.PromoteMoney = totalPromote;
+                    //++ BUG0086-SPJ (NguyenPT 20170227) Promote money setting
+                    if (!_data.PromoteMoney.Equals(DomainConst.PROMOTE_MONEY_DEFAULT_VALUE) && !_data.PromoteMoney.Equals(0))
+                    {
+                        _data.IsManualChangePromote = true;
+                    }
+                    //-- BUG0086-SPJ (NguyenPT 20170227) Promote money setting
                     _data.Order_type = (int)this._orderType;
                     _data.Type_amount = this.otherMoney;
                     string retId = CommonProcess.UpdateOrderToServer(_data);

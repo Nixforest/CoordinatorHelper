@@ -72,13 +72,13 @@ namespace MainPrj.View
                 CommonProcess.WriteUpholdPhoneToSetting(this.tbxUpholdPhone.Text);
             }
             //-- BUG0083-SPJ (NguyenPT 20160928) Add Uphold phone setting
-            //++ BUG0086-SPJ (NguyenPT 20161024d Promote money setting
+            //++ BUG0086-SPJ (NguyenPT 20161024) Promote money setting
             if (this.nUDPromoteMoney.Value != 0)
             {
                 Properties.Settings.Default.PromoteMoney = (double)this.nUDPromoteMoney.Value;
                 CommonProcess.WritePromoteMoneyToSetting((double)this.nUDPromoteMoney.Value);
             }
-            //-- BUG0086-SPJ (NguyenPT 20161024d Promote money setting
+            //-- BUG0086-SPJ (NguyenPT 20161024) Promote money setting
             // Save setting
             Properties.Settings.Default.Save();
             // Close form
@@ -157,9 +157,9 @@ namespace MainPrj.View
 
             this.btnNewNotifyColor.BackColor = CommonProcess.ConvertColorFromString(CommonProcess.FACEBOOK_NEW_ITEM_COLOR);
 
-            //++ BUG0086-SPJ (NguyenPT 20161024d Promote money setting
+            //++ BUG0086-SPJ (NguyenPT 20161024) Promote money setting
             this.nUDPromoteMoney.Value = (decimal)Properties.Settings.Default.PromoteMoney;
-            //-- BUG0086-SPJ (NguyenPT 20161024d Promote money setting
+            //-- BUG0086-SPJ (NguyenPT 20161024) Promote money setting
         }
         /// <summary>
         /// Handle when click on button Open file.

@@ -923,7 +923,7 @@ namespace MainPrj
             CommonProcess.ReadSetting();
             CommonProcess.ReadSettingPromote();
             
-            //++ BUG0086-SPJ (NguyenPT 20161024d Promote money setting
+            //++ BUG0086-SPJ (NguyenPT 20161024) Promote money setting
             // Get promote money value from setting.ini
             string promoteMoney = CommonProcess.ReadPromoteMoneyFromSetting();
             // Check if promote money value is not empty
@@ -939,7 +939,7 @@ namespace MainPrj
                     Properties.Settings.Default.Save();
                 }
             }
-            //-- BUG0086-SPJ (NguyenPT 20161024d Promote money setting
+            //-- BUG0086-SPJ (NguyenPT 20161024) Promote money setting
 
             //++ BUG0046-SPJ (NguyenPT 20160824) Login automatically
             // Check if login automatically

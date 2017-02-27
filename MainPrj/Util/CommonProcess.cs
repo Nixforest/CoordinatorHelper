@@ -29,8 +29,8 @@ namespace MainPrj.Util
     /// </summary>
     public static class CommonProcess
     {
-        //++ BUG0086-SPJ (NguyenPT 20161024d Promote money setting
-        //-- BUG0086-SPJ (NguyenPT 20161024d Promote money setting
+        //++ BUG0086-SPJ (NguyenPT 20161024) Promote money setting
+        //-- BUG0086-SPJ (NguyenPT 20161024) Promote money setting
         #region Static variables
         public static SoundPlayer NotificationSound = new SoundPlayer(Properties.Resources.notifySound3);
         /// <summary>
@@ -996,7 +996,7 @@ namespace MainPrj.Util
             return ReadSetting(Properties.Resources.INI_KEY_UPHOLD_PHONE, Properties.Resources.INI_SECTION_GENERAL);
         }
         //-- BUG0083-SPJ (NguyenPT 20160928) Add Uphold phone setting
-        //++ BUG0086-SPJ (NguyenPT 20161024d Promote money setting
+        //++ BUG0086-SPJ (NguyenPT 20161024) Promote money setting
         /// <summary>
         /// Write Promote money to setting.ini.
         /// </summary>
@@ -1015,7 +1015,7 @@ namespace MainPrj.Util
         {
             return ReadSetting(Properties.Resources.INI_KEY_PROMOTE_MONEY, Properties.Resources.INI_SECTION_GENERAL);
         }
-        //-- BUG0086-SPJ (NguyenPT 20161024d Promote money setting
+        //-- BUG0086-SPJ (NguyenPT 20161024) Promote money setting
         [System.Runtime.InteropServices.DllImport("winmm.DLL", EntryPoint = "PlaySound", SetLastError = true, CharSet = CharSet.Unicode, ThrowOnUnmappableChar = true)]
         public static extern bool PlaySound(string szSound, System.IntPtr hMod, PlaySoundFlags flags);
 
