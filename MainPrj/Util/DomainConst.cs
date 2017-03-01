@@ -743,6 +743,7 @@ namespace MainPrj.Util
             "110",		    // Đại lý Thủ Dầu Một
             "112",		    // Đại lý Thủ Đức 1
             //"123"		    // Đại lý Trảng Dài
+            "945418",       // Đại lý Quận 4.2
         };
     
     
