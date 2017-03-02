@@ -2470,11 +2470,13 @@ namespace MainPrj
                                 break;
                             case (int)CardDataStatus.CARDDATA_CALLING:
                                 //statusStr = Properties.Resources.CardDataStatus2;
-                                //++ BUG0091-SPJ (NguyenPT 20161216) Handle packet from Zibosoft record card
-                                // Update call model
-                                statusStr = Properties.Resources.CardDataStatus2;
-                                needUpdate = true;
-                                //-- BUG0091-SPJ (NguyenPT 20161216) Handle packet from Zibosoft record card
+                                //++ BUG0098-SPJ (NguyenPT 20170302) Fix bug update calling at Coordinator
+                                ////++ BUG0091-SPJ (NguyenPT 20161216) Handle packet from Zibosoft record card
+                                //// Update call model
+                                //statusStr = Properties.Resources.CardDataStatus2;
+                                //needUpdate = true;
+                                ////-- BUG0091-SPJ (NguyenPT 20161216) Handle packet from Zibosoft record card
+                                //-- BUG0098-SPJ (NguyenPT 20170302) Fix bug update calling at Coordinator
                                 break;
                             case (int)CardDataStatus.CARDDATA_HANDLING:
                                 FlashWindowHelper.Flash(this.Handle);

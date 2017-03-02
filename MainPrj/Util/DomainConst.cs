@@ -742,8 +742,10 @@ namespace MainPrj.Util
             "120",		    // Đại lý Tân Sơn
             "110",		    // Đại lý Thủ Dầu Một
             "112",		    // Đại lý Thủ Đức 1
+            //++ BUG0095-SPJ (NguyenPT 20170302) Fix bug phone line not update
             //"123"		    // Đại lý Trảng Dài
             "945418",       // Đại lý Quận 4.2
+            //-- BUG0095-SPJ (NguyenPT 20170302) Fix bug phone line not update
         };
     
     
