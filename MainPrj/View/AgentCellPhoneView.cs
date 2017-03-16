@@ -40,14 +40,27 @@ namespace MainPrj.View
         {
             if (!DataPure.Instance.Agent.Agent_cell_phone.Equals(tbxPhone.Text))
             {
-                tbxPhone.Enabled = false;
-                //++ BUG0060-SPJ (NguyenPT 20160831) Handle disable OK button
-                btnOK.Enabled = false;
-                //-- BUG0060-SPJ (NguyenPT 20160831) Handle disable OK button
-                CommonProcess.UpdateAgentCellPhone(DataPure.Instance.Agent.Id,
-                    tbxPhone.Text,
-                    updateAgentProgressChanged,
-                    updateAgentCompleted);
+                InputPassword view = new InputPassword();
+                DialogResult result = view.ShowDialog();
+                if (result.Equals(DialogResult.OK))
+                {
+                    tbxPhone.Enabled = false;
+                    //++ BUG0060-SPJ (NguyenPT 20160831) Handle disable OK button
+                    btnOK.Enabled = false;
+                    //-- BUG0060-SPJ (NguyenPT 20160831) Handle disable OK button
+                    CommonProcess.UpdateAgentCellPhone(DataPure.Instance.Agent.Id,
+                        tbxPhone.Text,
+                        updateAgentProgressChanged,
+                        updateAgentCompleted);
+                }
+                //tbxPhone.Enabled = false;
+                ////++ BUG0060-SPJ (NguyenPT 20160831) Handle disable OK button
+                //btnOK.Enabled = false;
+                ////-- BUG0060-SPJ (NguyenPT 20160831) Handle disable OK button
+                //CommonProcess.UpdateAgentCellPhone(DataPure.Instance.Agent.Id,
+                //    tbxPhone.Text,
+                //    updateAgentProgressChanged,
+                //    updateAgentCompleted);
             }
         }
         /// <summary>

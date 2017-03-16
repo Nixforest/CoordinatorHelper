@@ -29,7 +29,7 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -54,16 +54,20 @@
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PcapDotNet.Base">
+    <Reference Include="PcapDotNet.Base, Version=1.0.2.21699, Culture=neutral, PublicKeyToken=4b6f3e583145a652, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Pcap\PcapDotNet.Base.dll</HintPath>
     </Reference>
-    <Reference Include="PcapDotNet.Core">
+    <Reference Include="PcapDotNet.Core, Version=1.0.2.21711, Culture=neutral, PublicKeyToken=4b6f3e583145a652, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Pcap\PcapDotNet.Core.dll</HintPath>
     </Reference>
-    <Reference Include="PcapDotNet.Core.Extensions">
+    <Reference Include="PcapDotNet.Core.Extensions, Version=1.0.2.21712, Culture=neutral, PublicKeyToken=4b6f3e583145a652, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Pcap\PcapDotNet.Core.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="PcapDotNet.Packets">
+    <Reference Include="PcapDotNet.Packets, Version=1.0.2.21701, Culture=neutral, PublicKeyToken=4b6f3e583145a652, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Pcap\PcapDotNet.Packets.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -239,6 +243,12 @@
     <Compile Include="View\Component\EditableListView.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="View\InputPassword.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\InputPassword.Designer.cs">
+      <DependentUpon>InputPassword.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\ListOrderView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -398,6 +408,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\HistoryView.resx">
       <DependentUpon>HistoryView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\InputPassword.resx">
+      <DependentUpon>InputPassword.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\ListOrderView.resx">
       <DependentUpon>ListOrderView.cs</DependentUpon>

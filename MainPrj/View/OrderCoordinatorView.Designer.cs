@@ -49,7 +49,7 @@
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(12, 173);
+            this.btnOK.Location = new System.Drawing.Point(12, 198);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(105, 40);
             this.btnOK.TabIndex = 1;
@@ -60,7 +60,7 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(257, 173);
+            this.btnCancel.Location = new System.Drawing.Point(257, 198);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(99, 40);
             this.btnCancel.TabIndex = 1;
@@ -74,12 +74,12 @@
             this.coordinatorOrderView_v2.Location = new System.Drawing.Point(1, 1);
             this.coordinatorOrderView_v2.Margin = new System.Windows.Forms.Padding(6);
             this.coordinatorOrderView_v2.Name = "coordinatorOrderView_v2";
-            this.coordinatorOrderView_v2.Size = new System.Drawing.Size(289, 163);
+            this.coordinatorOrderView_v2.Size = new System.Drawing.Size(289, 188);
             this.coordinatorOrderView_v2.TabIndex = 0;
             // 
             // btnSaveData
             // 
-            this.btnSaveData.Location = new System.Drawing.Point(123, 173);
+            this.btnSaveData.Location = new System.Drawing.Point(123, 198);
             this.btnSaveData.Name = "btnSaveData";
             this.btnSaveData.Size = new System.Drawing.Size(128, 40);
             this.btnSaveData.TabIndex = 2;
@@ -94,7 +94,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(363, 220);
+            this.ClientSize = new System.Drawing.Size(363, 250);
             this.Controls.Add(this.btnSaveData);
             this.Controls.Add(this.coordinatorOrderView_v2);
             this.Controls.Add(this.btnCancel);

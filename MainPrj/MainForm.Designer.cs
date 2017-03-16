@@ -843,7 +843,7 @@ namespace MainPrj
             this.coordinatorOrderView_v2.Location = new System.Drawing.Point(862, 65);
             this.coordinatorOrderView_v2.Margin = new System.Windows.Forms.Padding(6);
             this.coordinatorOrderView_v2.Name = "coordinatorOrderView_v2";
-            this.coordinatorOrderView_v2.Size = new System.Drawing.Size(292, 170);
+            this.coordinatorOrderView_v2.Size = new System.Drawing.Size(292, 191);
             this.coordinatorOrderView_v2.TabIndex = 17;
             this.coordinatorOrderView_v2.Visible = false;
             // 

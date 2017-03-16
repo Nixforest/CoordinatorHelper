@@ -148,6 +148,11 @@ namespace MainPrj.View.Component
             return tbxNote.Text;
         }
 
+        public String getDate()
+        {
+            return dtpDate.Value.ToString(Properties.Resources.DefaultDateTimeFormat);
+        }
+
         public bool isEmpty()
         {
             if ((nUDQuantityB50.Value == 0)

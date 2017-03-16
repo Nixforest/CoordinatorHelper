@@ -202,7 +202,9 @@ namespace MainPrj.Util
         /// <returns>True if User is Accounting Agent, False otherwise</returns>
         public bool IsAccountingAgentRole()
         {
-            return GetUserRole().Equals(RoleType.ROLE_ACCOUNTING_AGENT) || GetUserRole().Equals(RoleType.ROLE_ACCOUNTING_ZONE);
+            //return GetUserRole().Equals(RoleType.ROLE_ACCOUNTING_AGENT) || GetUserRole().Equals(RoleType.ROLE_ACCOUNTING_ZONE);
+            return GetUserRole().Equals(RoleType.ROLE_ACCOUNTING_AGENT) || GetUserRole().Equals(RoleType.ROLE_ACCOUNTING_ZONE)
+                || GetUserRole().Equals(RoleType.ROLE_MONITORING_MARKET_DEVELOPMENT) || GetUserRole().Equals(RoleType.ROLE_EMPLOYEE_MARKET_DEVELOPMENT);
         }
         /// <summary>
         /// Check if user is in Coordinator Role.

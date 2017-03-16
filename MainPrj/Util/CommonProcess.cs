@@ -2151,8 +2151,12 @@ namespace MainPrj.Util
         /// <param name="agentId">Id of agent</param>
         /// <param name="customerId">Id of customer</param>
         /// <param name="note">Note of order</param>
+        /// <param name="dateDelivery">Delivery date</param>
         public static string RequestCreateOrderCoordinator(string agentId, string customerId, string note,
             String b50, String b45, String b12, String b6,
+            //++ BUG0101-SPJ (NguyenPT 20170315) Add create date for coordinator order
+            String dateDelivery,
+            //-- BUG0101-SPJ (NguyenPT 20170315) Add create date for coordinator order
             UploadProgressChangedEventHandler progressChanged,
             UploadValuesCompletedEventHandler completedHandler)
         {
@@ -2166,9 +2170,15 @@ namespace MainPrj.Util
                 {
                     // Post keyword to server
                     string value = string.Empty;
-                    value = String.Format("{{\"token\":\"{0}\",\"customer_id\":\"{1}\",\"agent_id\":\"{2}\",\"note\":\"{3}\", \"b50\":\"{4}\", \"b45\":\"{5}\", \"b12\":\"{6}\", \"b6\":\"{7}\"}}",
+                    //++ BUG0101-SPJ (NguyenPT 20170315) Add create date for coordinator order
+                    //value = String.Format("{{\"token\":\"{0}\",\"customer_id\":\"{1}\",\"agent_id\":\"{2}\",\"note\":\"{3}\", \"b50\":\"{4}\", \"b45\":\"{5}\", \"b12\":\"{6}\", \"b6\":\"{7}\"}}",
+                    value = String.Format("{{\"token\":\"{0}\",\"customer_id\":\"{1}\",\"agent_id\":\"{2}\",\"note\":\"{3}\", \"b50\":\"{4}\", \"b45\":\"{5}\", \"b12\":\"{6}\", \"b6\":\"{7}\", \"date_delivery\":\"{8}\"}}",
+                    //-- BUG0101-SPJ (NguyenPT 20170315) Add create date for coordinator order
                         Properties.Settings.Default.UserToken,
-                        customerId, agentId, note, b50, b45, b12, b6);
+                        //++ BUG0101-SPJ (NguyenPT 20170315) Add create date for coordinator order
+                        //customerId, agentId, note, b50, b45, b12, b6);
+                        customerId, agentId, note, b50, b45, b12, b6, dateDelivery);
+                        //-- BUG0101-SPJ (NguyenPT 20170315) Add create date for coordinator order
                     client.UploadValuesAsync(
                         new Uri(Properties.Settings.Default.ServerURL + Properties.Settings.Default.URLCreateOrderCoordinator),
                         new System.Collections.Specialized.NameValueCollection()

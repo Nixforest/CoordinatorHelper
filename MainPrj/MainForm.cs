@@ -265,6 +265,8 @@ namespace MainPrj
                 {
                     case RoleType.ROLE_ACCOUNTING_AGENT:
                     case RoleType.ROLE_ACCOUNTING_ZONE:
+                    case RoleType.ROLE_MONITORING_MARKET_DEVELOPMENT:
+                    case RoleType.ROLE_EMPLOYEE_MARKET_DEVELOPMENT:
                         OrderView order = new OrderView(DataPure.Instance.CustomerInfo);
                         order.ShowDialog();
                         //++ BUG0006-SPJ (NguyenPT 20161111) Call history
@@ -347,6 +349,9 @@ namespace MainPrj
                                         coordinatorOrderView_v2.getB45(),
                                         coordinatorOrderView_v2.getB12(),
                                         coordinatorOrderView_v2.getB6(),
+                                        //++ BUG0101-SPJ (NguyenPT 20170315) Add create date for coordinator order
+                                        coordinatorOrderView_v2.getDate(),
+                                        //-- BUG0101-SPJ (NguyenPT 20170315) Add create date for coordinator order
                                         createOrderProgressChanged, createOrderCompleted);
                                 }
                             }
@@ -517,6 +522,8 @@ namespace MainPrj
                 {
                     case RoleType.ROLE_ACCOUNTING_AGENT:
                     case RoleType.ROLE_ACCOUNTING_ZONE:
+                    case RoleType.ROLE_MONITORING_MARKET_DEVELOPMENT:
+                    case RoleType.ROLE_EMPLOYEE_MARKET_DEVELOPMENT:
                         UpholdCreateView view = new UpholdCreateView(DataPure.Instance.CustomerInfo);
                         view.ShowDialog();
                         break;
@@ -1280,6 +1287,9 @@ namespace MainPrj
                             coordinatorOrderView_v2.getB12(),
                             coordinatorOrderView_v2.getB6(),
                             coordinatorOrderView_v2.getNote(),
+                            //++ BUG0101-SPJ (NguyenPT 20170315) Add create date for coordinator order
+                            coordinatorOrderView_v2.getDate(),
+                            //-- BUG0101-SPJ (NguyenPT 20170315) Add create date for coordinator order
                             createCarOrderProgressChanged, createCarOrderFinish);
                     }
                 }
@@ -2555,6 +2565,7 @@ namespace MainPrj
                     else    // Same line
                     {
                         HandleDoubleLineJump();
+
                     }
                     //-- BUG0081-SPJ (NguyenPT 20160928) Handle double line jump
                     if (channel != null)

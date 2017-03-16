@@ -668,6 +668,8 @@ namespace MainPrj.View
                             {
                                 case RoleType.ROLE_ACCOUNTING_AGENT:
                                 case RoleType.ROLE_ACCOUNTING_ZONE:
+                                case RoleType.ROLE_MONITORING_MARKET_DEVELOPMENT:
+                                case RoleType.ROLE_EMPLOYEE_MARKET_DEVELOPMENT:
                                     //++ BUG0065-SPJ (NguyenPT 20160901) Use callMode.Customer instead of DataPure.Instance.CustomerInfo
                                     //OrderView order = new OrderView(DataPure.Instance.CustomerInfo);
                                     OrderView order = new OrderView(callModel.Customer);
@@ -734,6 +736,9 @@ namespace MainPrj.View
                                                     view.getContent().getB12(),
                                                     view.getContent().getB6(),
                                                     view.getContent().getNote(),
+                                                    //++ BUG0101-SPJ (NguyenPT 20170315) Add create date for coordinator order
+                                                    view.getContent().getDate(),
+                                                    //-- BUG0101-SPJ (NguyenPT 20170315) Add create date for coordinator order
                                                     createCarOrderProgressChanged, createCarOrderFinish);
                                             }
                                         }
@@ -824,7 +829,10 @@ namespace MainPrj.View
                                         view.getContent().getB45(),
                                         view.getContent().getB12(),
                                         view.getContent().getB6(),
-                        createOrderProgressChanged, createOrderCompleted);
+                                        //++ BUG0101-SPJ (NguyenPT 20170315) Add create date for coordinator order
+                                        view.getContent().getDate(),
+                                        //-- BUG0101-SPJ (NguyenPT 20170315) Add create date for coordinator order
+                                        createOrderProgressChanged, createOrderCompleted);
                 }
             }
             else
@@ -907,6 +915,13 @@ namespace MainPrj.View
                                 {
                                     CommonProcess.ShowInformMessage(Properties.Resources.CreateOrderServerError1987, MessageBoxButtons.OK);
                                 }
+                                //++ BUG0101-SPJ (NguyenPT 20170315) Add create date for coordinator order
+                                else
+                                {
+                                    toolStripStatusLabel.Text = baseResp.Message;
+                                    CommonProcess.ShowInformMessage(baseResp.Message, MessageBoxButtons.OK);
+                                }
+                                //-- BUG0101-SPJ (NguyenPT 20170315) Add create date for coordinator order
                             }
                         }
                         else
@@ -996,6 +1011,8 @@ namespace MainPrj.View
                             {
                                 case RoleType.ROLE_ACCOUNTING_AGENT:
                                 case RoleType.ROLE_ACCOUNTING_ZONE:
+                                case RoleType.ROLE_MONITORING_MARKET_DEVELOPMENT:
+                                case RoleType.ROLE_EMPLOYEE_MARKET_DEVELOPMENT:
                                     UpholdCreateView view = new UpholdCreateView(DataPure.Instance.CustomerInfo);
                                     view.ShowDialog();
                                     break;

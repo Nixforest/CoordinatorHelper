@@ -32,15 +32,22 @@ namespace MainPrj.API
         /// <param name="b12">Quantity of 12kg type</param>
         /// <param name="b6">Quantity of 6kg type</param>
         /// <param name="note">Note of customer</param>
+        /// <param name="dateDelivery">Delivery date</param>
         /// <param name="progressChangedHandler">Upload progress changed event handler</param>
         /// <param name="completedHandler">Completion action</param>
         public static void requestCreateCarOrder(String customerId, String user_id_executive,
             String b50, String b45, String b12, String b6, String note,
+            //++ BUG0101-SPJ (NguyenPT 20170315) Add create date for coordinator order
+            String dateDelivery,
+            //-- BUG0101-SPJ (NguyenPT 20170315) Add create date for coordinator order
             UploadProgressChangedEventHandler progressChangedHandler,
             MainPrj.Util.CommonProcess.CompletionAction completedHandler)
         {
             CreateCarOrderRequest request = new CreateCarOrderRequest();
-            request._data = String.Format("{{\"{0}\":\"{1}\", \"{2}\":\"{3}\", \"{4}\":\"{5}\", \"{6}\":\"{7}\", \"{8}\":\"{9}\", \"{10}\":\"{11}\", \"{12}\":\"{13}\", \"{14}\":\"{15}\"}}",
+            //++ BUG0101-SPJ (NguyenPT 20170315) Add create date for coordinator order
+            //request._data = String.Format("{{\"{0}\":\"{1}\", \"{2}\":\"{3}\", \"{4}\":\"{5}\", \"{6}\":\"{7}\", \"{8}\":\"{9}\", \"{10}\":\"{11}\", \"{12}\":\"{13}\", \"{14}\":\"{15}\"}}",
+            request._data = String.Format("{{\"{0}\":\"{1}\", \"{2}\":\"{3}\", \"{4}\":\"{5}\", \"{6}\":\"{7}\", \"{8}\":\"{9}\", \"{10}\":\"{11}\", \"{12}\":\"{13}\", \"{14}\":\"{15}\", \"{16}\":\"{17}\"}}",
+            //-- BUG0101-SPJ (NguyenPT 20170315) Add create date for coordinator order
                         DomainConst.KEY_TOKEN, Properties.Settings.Default.UserToken,
                         DomainConst.KEY_CUSTOMER_ID, customerId,
                         DomainConst.KEY_USER_ID_EXECUTIVE, user_id_executive,
@@ -48,7 +55,12 @@ namespace MainPrj.API
                         DomainConst.KEY_B45, b45,
                         DomainConst.KEY_B12, b12,
                         DomainConst.KEY_B6, b6,
-                        DomainConst.KEY_NOTE, note);
+                        //++ BUG0101-SPJ (NguyenPT 20170315) Add create date for coordinator order
+                        //DomainConst.KEY_NOTE, note);
+                        DomainConst.KEY_NOTE, note,
+                        DomainConst.KEY_DATE_DELIVERY, dateDelivery
+                        );
+                        //-- BUG0101-SPJ (NguyenPT 20170315) Add create date for coordinator order
             request._progressChangedHandler = progressChangedHandler;
             request._completionAction = completedHandler;
             request.ExecuteAsync();

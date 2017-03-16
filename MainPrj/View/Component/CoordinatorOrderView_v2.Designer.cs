@@ -40,6 +40,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tbxNote = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.dtpDate = new System.Windows.Forms.DateTimePicker();
+            this.label6 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nUDQuantityB6)).BeginInit();
@@ -50,12 +52,14 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.dtpDate);
             this.groupBox1.Controls.Add(this.tableLayoutPanel1);
             this.groupBox1.Controls.Add(this.tbxNote);
+            this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(278, 157);
+            this.groupBox1.Size = new System.Drawing.Size(283, 184);
             this.groupBox1.TabIndex = 18;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Đặt hàng";
@@ -182,6 +186,25 @@
             this.label4.Text = "Ghi chú:";
             this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
+            // dtpDate
+            // 
+            this.dtpDate.CustomFormat = "dd-MM-yyyy";
+            this.dtpDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpDate.Location = new System.Drawing.Point(102, 146);
+            this.dtpDate.Name = "dtpDate";
+            this.dtpDate.Size = new System.Drawing.Size(129, 29);
+            this.dtpDate.TabIndex = 13;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(13, 150);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(59, 24);
+            this.label6.TabIndex = 1;
+            this.label6.Text = "Ngày:";
+            this.label6.Click += new System.EventHandler(this.label4_Click);
+            // 
             // CoordinatorOrderView_v2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
@@ -191,7 +214,7 @@
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "CoordinatorOrderView_v2";
-            this.Size = new System.Drawing.Size(289, 163);
+            this.Size = new System.Drawing.Size(289, 190);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
@@ -218,6 +241,8 @@
         private System.Windows.Forms.NumericUpDown nUDQuantityB6;
         private System.Windows.Forms.NumericUpDown nUDQuantityB12;
         private System.Windows.Forms.NumericUpDown nUDQuantityB45;
+        private System.Windows.Forms.DateTimePicker dtpDate;
+        private System.Windows.Forms.Label label6;
 
     }
 }
