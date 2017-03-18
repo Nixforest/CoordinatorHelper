@@ -2158,7 +2158,11 @@ namespace MainPrj.Util
             String dateDelivery,
             //-- BUG0101-SPJ (NguyenPT 20170315) Add create date for coordinator order
             UploadProgressChangedEventHandler progressChanged,
-            UploadValuesCompletedEventHandler completedHandler)
+            UploadValuesCompletedEventHandler completedHandler
+            //++ BUG0102-SPJ (NguyenPT 20170318) Add return cylinder function
+            , String type = "1"
+            )
+            //-- BUG0102-SPJ (NguyenPT 20170318) Add return cylinder function
         {
             string retVal = string.Empty;
             using (WebClient client = new WebClient())
@@ -2172,12 +2176,20 @@ namespace MainPrj.Util
                     string value = string.Empty;
                     //++ BUG0101-SPJ (NguyenPT 20170315) Add create date for coordinator order
                     //value = String.Format("{{\"token\":\"{0}\",\"customer_id\":\"{1}\",\"agent_id\":\"{2}\",\"note\":\"{3}\", \"b50\":\"{4}\", \"b45\":\"{5}\", \"b12\":\"{6}\", \"b6\":\"{7}\"}}",
-                    value = String.Format("{{\"token\":\"{0}\",\"customer_id\":\"{1}\",\"agent_id\":\"{2}\",\"note\":\"{3}\", \"b50\":\"{4}\", \"b45\":\"{5}\", \"b12\":\"{6}\", \"b6\":\"{7}\", \"date_delivery\":\"{8}\"}}",
+                    //++ BUG0102-SPJ (NguyenPT 20170318) Add return cylinder function
+                    //value = String.Format("{{\"token\":\"{0}\",\"customer_id\":\"{1}\",\"agent_id\":\"{2}\",\"note\":\"{3}\", \"b50\":\"{4}\", \"b45\":\"{5}\", \"b12\":\"{6}\", \"b6\":\"{7}\", \"date_delivery\":\"{8}\"}}",
+                    value = String.Format("{{\"token\":\"{0}\",\"customer_id\":\"{1}\",\"agent_id\":\"{2}\",\"note\":\"{3}\", \"b50\":\"{4}\", \"b45\":\"{5}\", \"b12\":\"{6}\", \"b6\":\"{7}\", \"{8}\":\"{9}\", \"{10}\":\"{11}\"}}",
+                    //-- BUG0102-SPJ (NguyenPT 20170318) Add return cylinder function
                     //-- BUG0101-SPJ (NguyenPT 20170315) Add create date for coordinator order
                         Properties.Settings.Default.UserToken,
                         //++ BUG0101-SPJ (NguyenPT 20170315) Add create date for coordinator order
                         //customerId, agentId, note, b50, b45, b12, b6);
-                        customerId, agentId, note, b50, b45, b12, b6, dateDelivery);
+                        //++ BUG0102-SPJ (NguyenPT 20170318) Add return cylinder function
+                        //customerId, agentId, note, b50, b45, b12, b6, dateDelivery);
+                        customerId, agentId, note, b50, b45, b12, b6,
+                        DomainConst.KEY_DATE_DELIVERY, dateDelivery,
+                        DomainConst.KEY_TYPE, type);
+                        //-- BUG0102-SPJ (NguyenPT 20170318) Add return cylinder function
                         //-- BUG0101-SPJ (NguyenPT 20170315) Add create date for coordinator order
                     client.UploadValuesAsync(
                         new Uri(Properties.Settings.Default.ServerURL + Properties.Settings.Default.URLCreateOrderCoordinator),

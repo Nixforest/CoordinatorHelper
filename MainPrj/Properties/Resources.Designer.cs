@@ -1428,6 +1428,18 @@ namespace MainPrj.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bạn đang tạo thẻ kho thu vỏ cho Khách hàng {0} - {3}:
+        ///{1}
+        ///tại {2}.
+        ///Bạn chắn chắn không?.
+        /// </summary>
+        internal static string ReturnCylinder {
+            get {
+                return ResourceManager.GetString("ReturnCylinder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bộ phận.
         /// </summary>
         internal static string Role {

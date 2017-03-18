@@ -661,4 +661,10 @@ Cancel: Quay lại nhập giá.</value>
   <data name="API_CREATE_CAR_ORDER" xml:space="preserve">
     <value>/api/default/windowOrderCar</value>
   </data>
+  <data name="ReturnCylinder" xml:space="preserve">
+    <value>Bạn đang tạo thẻ kho thu vỏ cho Khách hàng {0} - {3}:
+{1}
+tại {2}.
+Bạn chắn chắn không?</value>
+  </data>
 </root>

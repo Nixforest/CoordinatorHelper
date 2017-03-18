@@ -240,6 +240,7 @@ namespace MainPrj
         /// <summary>
         /// Handle when click Create order button.
         /// </summary>
+        /// <param name="customerInfo">Information of customer</param>
         //++ BUG0069-SPJ (NguyenPT 20160908) Fix bug select wrong customer information
         //private void HandleClickCreateOrderButton()
         private void HandleClickCreateOrderButton(CustomerModel customerInfo = null)
@@ -629,6 +630,9 @@ namespace MainPrj
             btnCreateCustomer.Enabled = DataPure.Instance.IsAccountingAgentRole();
             //coordinatorOrderView.Enabled = DataPure.Instance.IsCoordinatorRole();
             coordinatorOrderView_v2.Visible = DataPure.Instance.IsCoordinatorRole();
+            //++ BUG0102-SPJ (NguyenPT 20170318) Add return cylinder function
+            btnReturnCylinder.Visible = DataPure.Instance.IsCoordinatorRole();
+            //-- BUG0102-SPJ (NguyenPT 20170318) Add return cylinder function
             CommonProcess.RequestTempData(reqTempDataProgressChanged, reqTempDataCompleted);
             pbxAvatar.Image = CommonProcess.CreateAvatar(avatarString, pbxAvatar.Size.Height);
 
@@ -1177,7 +1181,17 @@ namespace MainPrj
                     HandleClickUpdateCustomerButton();
                     break;
                 case Keys.F4:
-                    HandleClickCreateCustomerButton();
+                    //++ BUG0102-SPJ (NguyenPT 20170318) Add return cylinder function
+                    //HandleClickCreateCustomerButton();
+                    if (DataPure.Instance.IsAccountingAgentRole())
+                    {
+                        HandleClickCreateCustomerButton();
+                    }
+                    else if (DataPure.Instance.IsCoordinatorRole())
+                    {
+                        HandleReturnCylinder();
+                    }
+                    //-- BUG0102-SPJ (NguyenPT 20170318) Add return cylinder function
                     break;
                 case Keys.F5:
                     HandleClickHistoryButton();
@@ -3010,6 +3024,102 @@ namespace MainPrj
             }
         }
         //-- BUG0084-SPJ (NguyenPT 20161004) Web socket Notification
+
+        //++ BUG0102-SPJ (NguyenPT 20170318) Add return cylinder function
+        /// <summary>
+        /// Handle when click Return Cylinder button.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void btnReturnCylinder_Click(object sender, EventArgs e)
+        {
+            HandleReturnCylinder();
+        }
+
+        /// <summary>
+        /// Handle return cylinder.
+        /// </summary>
+        /// <param name="customerInfo">Information of customer</param>
+        private void HandleReturnCylinder(CustomerModel customerInfo = null)
+        {
+            DataPure.Instance.CustomerInfo = this.listChannelControl[DataPure.Instance.CurrentChannel].Data;
+            if (customerInfo == null)
+            {
+                customerInfo = new CustomerModel(this.listChannelControl[DataPure.Instance.CurrentChannel].Data);
+            }
+            // Check if customer name is empty
+            if ((DataPure.Instance.CustomerInfo != null)
+                && (!String.IsNullOrEmpty(DataPure.Instance.CustomerInfo.Name)))
+            {
+                string note = string.Empty;
+                note = coordinatorOrderView_v2.GetData();
+                // Show list agents
+                List<SelectorModel> listSelector = new List<SelectorModel>();
+                foreach (SelectorModel item in DataPure.Instance.GetListAgents())
+                {
+                    listSelector.Add((SelectorModel)item.Clone());
+                }
+                listSelector.Sort();
+
+                SelectorView selectorView = new SelectorView();
+                // Set data
+                selectorView.ListData = listSelector;
+                // Set title
+                selectorView.Text = Properties.Resources.SelectorTitleAgent;
+                // Set header text
+                selectorView.SetHeaderText(SelectorColumns.SELECTOR_COLUMN_ADDRESS, string.Empty);
+                // Set default selection
+                if (!string.IsNullOrEmpty(customerInfo.Customer_delivery_agent_id))
+                {
+                    selectorView.SetSelection(customerInfo.Customer_delivery_agent_id);
+                }
+                else
+                {
+                    selectorView.SetSelection(customerInfo.Agent_id);
+                }
+                // Show dialog
+                selectorView.ShowDialog();
+                string selectorId = selectorView.SelectedId;
+                if (!String.IsNullOrEmpty(selectorId))
+                {
+                    if (!String.IsNullOrEmpty(note))
+                    {
+                        note += " - ĐT: " + customerInfo.ActivePhone;
+                        DialogResult result = CommonProcess.ShowInformMessage(
+                            String.Format(Properties.Resources.ReturnCylinder,
+                                customerInfo.Name, note, DataPure.Instance.GetAgentNameById(selectorId),
+                                customerInfo.ActivePhone),
+                            MessageBoxButtons.OKCancel);
+                        if (result.Equals(DialogResult.OK))
+                        {
+                            CommonProcess.RequestCreateOrderCoordinator(selectorId,
+                                customerInfo.Id, note,
+                                coordinatorOrderView_v2.getB50(),
+                                coordinatorOrderView_v2.getB45(),
+                                coordinatorOrderView_v2.getB12(),
+                                coordinatorOrderView_v2.getB6(),
+                                coordinatorOrderView_v2.getDate(),
+                                createOrderProgressChanged, createOrderCompleted, "2");
+                        }
+                    }
+                    else
+                    {
+                        CommonProcess.ShowErrorMessage(Properties.Resources.NotSelectMaterial);
+                    }
+                }
+                else
+                {
+                    // User not choose any agent
+                    DialogResult result = CommonProcess.ShowInformMessage(
+                        Properties.Resources.YouMustSelectAnAgent, MessageBoxButtons.RetryCancel);
+                    if (result.Equals(DialogResult.Retry))
+                    {
+                        HandleReturnCylinder(customerInfo);
+                    }
+                }
+            }
+        }
+        //-- BUG0102-SPJ (NguyenPT 20170318) Add return cylinder function
         #endregion
     }
 }
