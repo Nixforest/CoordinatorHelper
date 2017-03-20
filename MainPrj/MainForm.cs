@@ -3084,7 +3084,7 @@ namespace MainPrj
                 string selectorId = selectorView.SelectedId;
                 if (!String.IsNullOrEmpty(selectorId))
                 {
-                    if (!String.IsNullOrEmpty(note))
+                    //if (!String.IsNullOrEmpty(note))
                     {
                         note += " - ĐT: " + customerInfo.ActivePhone + " (Thu vỏ)";
                         DialogResult result = CommonProcess.ShowInformMessage(
@@ -3104,10 +3104,10 @@ namespace MainPrj
                                 createOrderProgressChanged, createOrderCompleted, "2");
                         }
                     }
-                    else
-                    {
-                        CommonProcess.ShowErrorMessage(Properties.Resources.NotSelectMaterial);
-                    }
+                    //else
+                    //{
+                    //    CommonProcess.ShowErrorMessage(Properties.Resources.NotSelectMaterial);
+                    //}
                 }
                 else
                 {

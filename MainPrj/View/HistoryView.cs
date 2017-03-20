@@ -1163,15 +1163,15 @@ namespace MainPrj.View
                 if (result.Equals(DialogResult.OK))
                 {
                     string note = view.Note;
-                    if (!String.IsNullOrEmpty(note))
+                    //if (!String.IsNullOrEmpty(note))
                     {
                         SelectAgent(note + " - ĐT: " + customerInfo.ActivePhone + " (Thu vỏ)",
                             customerInfo, view, "2");
                     }
-                    else
-                    {
-                        CommonProcess.ShowErrorMessage(Properties.Resources.NotSelectMaterial);
-                    }
+                    //else
+                    //{
+                    //    CommonProcess.ShowErrorMessage(Properties.Resources.NotSelectMaterial);
+                    //}
                 }
             }
             else

@@ -314,7 +314,7 @@
             this.btnReturnCylinder.Name = "btnReturnCylinder";
             this.btnReturnCylinder.Size = new System.Drawing.Size(104, 40);
             this.btnReturnCylinder.TabIndex = 10;
-            this.btnReturnCylinder.Text = "Trả vỏ";
+            this.btnReturnCylinder.Text = "Thu vỏ";
             this.btnReturnCylinder.UseVisualStyleBackColor = true;
             this.btnReturnCylinder.Click += new System.EventHandler(this.btnReturnCylinder_Click);
             // 

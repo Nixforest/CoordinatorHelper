@@ -57,10 +57,17 @@ namespace MainPrj.View
 
         private bool ValidateData()
         {
-            if (coordinatorOrderView_v2.isEmpty())
+            if (mode == "1")
             {
-                CommonProcess.ShowInformMessage("Bạn phải chọn vật tư trước.", MessageBoxButtons.OK);
-                return false;
+                if (coordinatorOrderView_v2.isEmpty())
+                {
+                    CommonProcess.ShowInformMessage("Bạn phải chọn vật tư trước.", MessageBoxButtons.OK);
+                    return false;
+                }
+            }
+            else if (mode == "2")
+            {
+                return true;
             }
             return true;
         }
