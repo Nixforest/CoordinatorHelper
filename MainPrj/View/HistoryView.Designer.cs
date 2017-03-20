@@ -58,6 +58,7 @@
             this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.btnUphold = new System.Windows.Forms.Button();
+            this.btnReturnCylinder = new System.Windows.Forms.Button();
             this.contextMenuStrip.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -307,12 +308,23 @@
             this.btnUphold.UseVisualStyleBackColor = true;
             this.btnUphold.Click += new System.EventHandler(this.btnUphold_Click);
             // 
+            // btnReturnCylinder
+            // 
+            this.btnReturnCylinder.Location = new System.Drawing.Point(156, 8);
+            this.btnReturnCylinder.Name = "btnReturnCylinder";
+            this.btnReturnCylinder.Size = new System.Drawing.Size(104, 40);
+            this.btnReturnCylinder.TabIndex = 10;
+            this.btnReturnCylinder.Text = "Trả vỏ";
+            this.btnReturnCylinder.UseVisualStyleBackColor = true;
+            this.btnReturnCylinder.Click += new System.EventHandler(this.btnReturnCylinder_Click);
+            // 
             // HistoryView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
             this.ClientSize = new System.Drawing.Size(1318, 639);
+            this.Controls.Add(this.btnReturnCylinder);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.dtpFilterTo);
@@ -373,5 +385,6 @@
         private System.Windows.Forms.Button btnUphold;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemSelectCallType;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemListenRecord;
+        private System.Windows.Forms.Button btnReturnCylinder;
     }
 }

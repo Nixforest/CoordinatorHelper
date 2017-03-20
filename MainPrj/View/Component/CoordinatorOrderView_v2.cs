@@ -110,6 +110,9 @@ namespace MainPrj.View.Component
             nUDQuantityB45.Value = 0;
             nUDQuantityB12.Value = 0;
             nUDQuantityB6.Value = 0;
+            //++ BUG0101-SPJ (NguyenPT 20170315) Add create date for coordinator order
+            dtpDate.ResetText();
+            //-- BUG0101-SPJ (NguyenPT 20170315) Add create date for coordinator order
         }
         //-- BUG0070-SPJ (NguyenPT 20160908) Reset data
 

@@ -13,16 +13,21 @@ namespace MainPrj.View
 {
     public partial class OrderCoordinatorView : Form
     {
+        /// <summary>
+        /// Note
+        /// </summary>
         private string note = string.Empty;
+        private string mode = "1";
 
         public string Note
         {
             get { return note; }
             set { note = value; }
         }
-        public OrderCoordinatorView()
+        public OrderCoordinatorView(string mode = "1")
         {
             InitializeComponent();
+            this.mode = mode;
         }
 
         private void btnOK_Click(object sender, EventArgs e)
@@ -58,6 +63,36 @@ namespace MainPrj.View
                 return false;
             }
             return true;
+        }
+
+        private void OrderCoordinatorView_Load(object sender, EventArgs e)
+        {
+            if (mode == "1")
+            {
+                this.Text = "Tạo đơn hàng";
+                this.btnOK.Text = "Giao ngay";
+                ActiveButton(this.btnOK);
+                this.btnSaveData.Text = "Xe tải giao";
+                ActiveButton(this.btnSaveData);
+            }
+            else if (mode == "2")
+            {
+                this.Text = "Tạo thẻ kho Thu vỏ";
+                this.btnOK.Text = "OK";
+                ActiveButton(this.btnOK);
+                this.btnSaveData.Text = "Xe tải giao";
+                ActiveButton(this.btnSaveData, false);
+            }
+        }
+        /// <summary>
+        /// Active button
+        /// </summary>
+        /// <param name="btn">Button</param>
+        /// <param name="isActive">Active flag</param>
+        private void ActiveButton(Button btn, bool isActive = true)
+        {
+            btn.Enabled = isActive;
+            btn.Visible = isActive;
         }
     }
 }

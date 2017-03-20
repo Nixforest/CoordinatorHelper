@@ -234,5 +234,17 @@ namespace MainPrj.Model
             }
             return retVal;
         }
+        //++ BUG0102-SPJ (NguyenPT 20170318) Add return cylinder function
+        /// <summary>
+        /// Check if customer information is valid
+        /// </summary>
+        /// <returns>True if customer name is not empty, False otherwise</returns>
+        public bool IsValid()
+        {
+            bool retVal = false;
+            retVal = !String.IsNullOrEmpty(this.Name);
+            return retVal;
+        }
+        //-- BUG0102-SPJ (NguyenPT 20170318) Add return cylinder function
     }
 }

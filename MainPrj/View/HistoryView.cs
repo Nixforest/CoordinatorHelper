@@ -71,6 +71,10 @@ namespace MainPrj.View
             //++ BUG0047-SPJ (NguyenPT 20160826) Handle print Uphold
             btnUphold.Enabled = DataPure.Instance.IsAccountingAgentRole();
             //-- BUG0047-SPJ (NguyenPT 20160826) Handle print Uphold
+            //++ BUG0102-SPJ (NguyenPT 20170318) Add return cylinder function
+            btnReturnCylinder.Enabled = DataPure.Instance.IsCoordinatorRole();
+            btnReturnCylinder.Visible = DataPure.Instance.IsCoordinatorRole();
+            //-- BUG0102-SPJ (NguyenPT 20170318) Add return cylinder function
             //listData.Sort();
             //for (int i = listData.Count - 1; i >= 0; i--)
             //{
@@ -775,7 +779,12 @@ namespace MainPrj.View
         /// <param name="note">Note</param>
         //++ BUG0065-SPJ (NguyenPT 20160901) Use callMode.Customer instead of DataPure.Instance.CustomerInfo
         //private void SelectAgent(string note)
-        private void SelectAgent(string note, CustomerModel customerInfo, OrderCoordinatorView view)
+        //++ BUG0102-SPJ (NguyenPT 20170318) Add return cylinder function
+        //private void SelectAgent(string note, CustomerModel customerInfo, OrderCoordinatorView view)
+        private void SelectAgent(string note, CustomerModel customerInfo, OrderCoordinatorView view
+            , string mode = "1"
+            )
+        //-- BUG0102-SPJ (NguyenPT 20170318) Add return cylinder function
         //-- BUG0065-SPJ (NguyenPT 20160901) Use callMode.Customer instead of DataPure.Instance.CustomerInfo
         {
             List<SelectorModel> listSelector = new List<SelectorModel>();
@@ -812,8 +821,22 @@ namespace MainPrj.View
             string selectorId = selectorView.SelectedId;
             if (!String.IsNullOrEmpty(selectorId))
             {
+                //++ BUG0102-SPJ (NguyenPT 20170318) Add return cylinder function
+                String msgFormat = String.Empty;
+                if (mode == "1")
+                {
+                    msgFormat = Properties.Resources.CreatingOrder;
+                }
+                else if (mode == "2")
+                {
+                    msgFormat = Properties.Resources.ReturnCylinder;
+                }
+                //-- BUG0102-SPJ (NguyenPT 20170318) Add return cylinder function
                 DialogResult result = CommonProcess.ShowInformMessage(
-                    String.Format(Properties.Resources.CreatingOrder,
+                    //++ BUG0102-SPJ (NguyenPT 20170318) Add return cylinder function
+                    //String.Format(Properties.Resources.CreatingOrder,
+                    String.Format(msgFormat,
+                    //-- BUG0102-SPJ (NguyenPT 20170318) Add return cylinder function
                     //++ BUG0065-SPJ (NguyenPT 20160901) Use callMode.Customer instead of DataPure.Instance.CustomerInfo
                         //DataPure.Instance.CustomerInfo.Name, note, DataPure.Instance.GetAgentNameById(selectorId),),
                         customerInfo.Name, note, DataPure.Instance.GetAgentNameById(selectorId), customerInfo.ActivePhone),
@@ -832,7 +855,12 @@ namespace MainPrj.View
                                         //++ BUG0101-SPJ (NguyenPT 20170315) Add create date for coordinator order
                                         view.getContent().getDate(),
                                         //-- BUG0101-SPJ (NguyenPT 20170315) Add create date for coordinator order
-                                        createOrderProgressChanged, createOrderCompleted);
+                                        //++ BUG0102-SPJ (NguyenPT 20170318) Add return cylinder function
+                                        //createOrderProgressChanged, createOrderCompleted);
+                                        createOrderProgressChanged, createOrderCompleted
+                                        , mode
+                                        );
+                                        //-- BUG0102-SPJ (NguyenPT 20170318) Add return cylinder function
                 }
             }
             else
@@ -844,7 +872,12 @@ namespace MainPrj.View
                 {
                     //++ BUG0065-SPJ (NguyenPT 20160901) Use callMode.Customer instead of DataPure.Instance.CustomerInfo
                     //SelectAgent(note);
-                    SelectAgent(note, customerInfo, view);
+                    //++ BUG0102-SPJ (NguyenPT 20170318) Add return cylinder function
+                    //SelectAgent(note, customerInfo, view);
+                    SelectAgent(note, customerInfo, view
+                        , mode
+                        );
+                    //-- BUG0102-SPJ (NguyenPT 20170318) Add return cylinder function
                     //++ BUG0065-SPJ (NguyenPT 20160901) Use callMode.Customer instead of DataPure.Instance.CustomerInfo
                 }
             }
@@ -1089,5 +1122,63 @@ namespace MainPrj.View
         }
         //-- BUG0006-SPJ (NguyenPT 20161111) Call history
         //-- BUG0047-SPJ (NguyenPT 20160826) Handle print Uphold
+
+        //++ BUG0102-SPJ (NguyenPT 20170318) Add return cylinder function
+        /// <summary>
+        /// Get current customer
+        /// </summary>
+        /// <returns>Current customer</returns>
+        private CustomerModel GetCurrentCustomer()
+        {
+            CustomerModel retVal = null;
+            if (this.listViewHistory.SelectedItems.Count > 0)
+            {
+                // Get tag object
+                string id = this.listViewHistory.SelectedItems[0].Tag.ToString();
+                // Loop for all list current data
+                foreach (CallModel callModel in this.listCurrentData)
+                {
+                    if (callModel.Id.Equals(id))
+                    {
+                        return new CustomerModel(callModel.Customer);
+                    }
+                }
+            }
+            return retVal;
+        }
+
+        /// <summary>
+        /// Handle when click button Return cylinder
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
+        private void btnReturnCylinder_Click(object sender, EventArgs e)
+        {
+            // Get current customer information
+            CustomerModel customerInfo = GetCurrentCustomer();
+            if ((customerInfo != null) && (customerInfo.IsValid()))
+            {
+                OrderCoordinatorView view = new OrderCoordinatorView("2");
+                DialogResult result = view.ShowDialog();
+                if (result.Equals(DialogResult.OK))
+                {
+                    string note = view.Note;
+                    if (!String.IsNullOrEmpty(note))
+                    {
+                        SelectAgent(note + " - ĐT: " + customerInfo.ActivePhone + " (Thu vỏ)",
+                            customerInfo, view, "2");
+                    }
+                    else
+                    {
+                        CommonProcess.ShowErrorMessage(Properties.Resources.NotSelectMaterial);
+                    }
+                }
+            }
+            else
+            {
+                CommonProcess.ShowErrorMessage(Properties.Resources.MissCustomerInfor);
+            }
+        }
+        //-- BUG0102-SPJ (NguyenPT 20170318) Add return cylinder function
     }
 }

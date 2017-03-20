@@ -632,6 +632,7 @@ namespace MainPrj
             coordinatorOrderView_v2.Visible = DataPure.Instance.IsCoordinatorRole();
             //++ BUG0102-SPJ (NguyenPT 20170318) Add return cylinder function
             btnReturnCylinder.Visible = DataPure.Instance.IsCoordinatorRole();
+            btnReturnCylinder.Enabled = DataPure.Instance.IsCoordinatorRole();
             //-- BUG0102-SPJ (NguyenPT 20170318) Add return cylinder function
             CommonProcess.RequestTempData(reqTempDataProgressChanged, reqTempDataCompleted);
             pbxAvatar.Image = CommonProcess.CreateAvatar(avatarString, pbxAvatar.Size.Height);
@@ -3024,6 +3025,7 @@ namespace MainPrj
             }
         }
         //-- BUG0084-SPJ (NguyenPT 20161004) Web socket Notification
+        #endregion
 
         //++ BUG0102-SPJ (NguyenPT 20170318) Add return cylinder function
         /// <summary>
@@ -3084,7 +3086,7 @@ namespace MainPrj
                 {
                     if (!String.IsNullOrEmpty(note))
                     {
-                        note += " - ĐT: " + customerInfo.ActivePhone;
+                        note += " - ĐT: " + customerInfo.ActivePhone + " (Thu vỏ)";
                         DialogResult result = CommonProcess.ShowInformMessage(
                             String.Format(Properties.Resources.ReturnCylinder,
                                 customerInfo.Name, note, DataPure.Instance.GetAgentNameById(selectorId),
@@ -3118,8 +3120,11 @@ namespace MainPrj
                     }
                 }
             }
+            else
+            {
+                CommonProcess.ShowErrorMessage(Properties.Resources.MissCustomerInfor);
+            }
         }
         //-- BUG0102-SPJ (NguyenPT 20170318) Add return cylinder function
-        #endregion
     }
 }
