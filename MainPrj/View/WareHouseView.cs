@@ -372,7 +372,10 @@ namespace MainPrj.View
             Dictionary<string, MaterialModel> listPromotes = new Dictionary<string, MaterialModel>();
             foreach (MaterialModel item in DataPure.Instance.TempData.Material_promotion)
             {
-                if (item.IsContainString(tbxSearch.Text.Trim()))
+                //++ BUG0103-SPJ (NguyenPT 20170422) Search in promotion tab
+                //if (item.IsContainString(tbxSearch.Text.Trim()))
+                if (item.IsContainString(tbxSearchPromote.Text.Trim()))
+                //++ BUG0103-SPJ (NguyenPT 20170422) Search in promotion tab
                 {
                     listPromotes.Add(item.Materials_no, item);
                 }

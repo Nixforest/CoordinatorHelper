@@ -923,13 +923,15 @@ namespace MainPrj.View
                 CommonProcess.ShowErrorMessage(Properties.Resources.NotSelectCustomer);
                 return false;
             }
-            // Not select deliver or CCS
-            if ((cbxDeliver.SelectedIndex <= 0)
-                    && (cbxCCS.SelectedIndex <= 0))
-            {
-                CommonProcess.ShowErrorMessage(Properties.Resources.NotSelectDeliverCCS);
-                return false;
-            }
+            //++ BUG0104-SPJ (NguyenPT 20170422) No need select deliver and CSS
+            //// Not select deliver or CCS
+            //if ((cbxDeliver.SelectedIndex <= 0)
+            //        && (cbxCCS.SelectedIndex <= 0))
+            //{
+            //    CommonProcess.ShowErrorMessage(Properties.Resources.NotSelectDeliverCCS);
+            //    return false;
+            //}
+            //-- BUG0104-SPJ (NguyenPT 20170422) No need select deliver and CSS
             // Not select products.
             if (products.Count == 0)
             {
