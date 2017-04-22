@@ -2526,6 +2526,16 @@ namespace MainPrj.Util
                         }
                         createModel.Employee_maintain_id = model.DeliverId;
                         createModel.Monitor_market_development_id = model.CCSId;
+                        //++ BUG0104-SPJ (NguyenPT 20170422) No need select deliver and CSS
+                        if (String.IsNullOrEmpty(createModel.Employee_maintain_id))
+                        {
+                            createModel.Employee_maintain_id = DomainConst.NUMBER_ZERO_VALUE;
+                        }
+                        if (String.IsNullOrEmpty(createModel.Monitor_market_development_id))
+                        {
+                            createModel.Monitor_market_development_id = DomainConst.NUMBER_ZERO_VALUE;
+                        }
+                        //-- BUG0104-SPJ (NguyenPT 20170422) No need select deliver and CSS
                         createModel.Order_detail = new List<OrderDetailModel>();
                         foreach (ProductModel product in model.Products)
                         {
